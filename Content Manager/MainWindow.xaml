@@ -1,0 +1,38 @@
+﻿<Window x:Class="Content_Manager.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        Title="MainWindow" Height="450" Width="800"
+        >
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <ListView x:Name="LvSegments" Grid.Column="0" ItemsSource="{Binding Segments}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Title}" Background="AliceBlue" Width="200px" />
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <Button Grid.Column="0"
+                Name="BtnNewSection"
+                Style="{StaticResource AddNewButton}" Click="BtnNewSection_Click"/>
+
+        <!--<ListView Grid.Column="1">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn/>
+                </GridView>
+            </ListView.View>
+        </ListView>-->
+
+        <Button Grid.Column="1"
+                Name="BtnNewExercise"
+                Style="{StaticResource AddNewButton}"/>
+    </Grid>
+</Window>
