@@ -1,4 +1,5 @@
-﻿using Content_Manager.Models;
+﻿using Content_Manager.Commands;
+using Content_Manager.Models;
 using Content_Manager.Stores;
 using Data;
 using Data.Interfaces;
@@ -27,9 +28,10 @@ namespace Content_Manager
     /// </summary>0
     public partial class MainWindow : Window
     {
+        public ICommand DeleteSelectedSegment { get; }
+
         private readonly ContentStore _contentStore;
         public ObservableCollection<ISegment> Segments { get; }
-
 
         public MainWindow()
         {
@@ -53,11 +55,16 @@ namespace Content_Manager
             Segments = new ObservableCollection<ISegment>();
             foreach (var segment in _contentStore.StoredSegments)
             {
-                Segments.Add(new Segment(segment));
+                Segments.Add(segment);
             }
 
             // Set events
             _contentStore.ItemAdded += OnSegmentAdded;
+            _contentStore.ItemDeleted += OnSegmentDeleted;
+            _contentStore.ItemUpdated+= OnSegmentUpdated;
+
+            // Initialize commands
+            DeleteSelectedSegment = new SegmentCommands.DeleteSegment(_contentStore, this);
 
             // Bind data
             DataContext = this;
@@ -68,14 +75,33 @@ namespace Content_Manager
             if (model.GetType().IsAssignableTo(typeof(ISegment)) == false) return;
 
             var segment = model as ISegment;
-            Segments.Add(new Segment(segment));
+            Segments.Add(segment);
+        }
+
+        private void OnSegmentUpdated(IModelBase model)
+        {
+            if (model.GetType().IsAssignableTo(typeof(ISegment)) == false) return;
+
+            var segment = model as ISegment;
+            var index = Segments.ToList().FindIndex(s => s.Id == segment!.Id);
+            Segments[index] = segment;
+        }
+
+        private void OnSegmentDeleted(IModelBase model)
+        {
+            if (model.GetType().IsAssignableTo(typeof(ISegment)) == false) return;
+
+            var segment = model as ISegment;
+            var index = Segments.ToList().FindIndex(s => s.Id == segment!.Id);
+            Segments.RemoveAt(index);
         }
 
         private void BtnNewSection_Click(object sender, RoutedEventArgs e)
         {
-            ISegment segment = new Segment() { Title = "New Segment" };
+            ISegment segment = new Segment() { Title = "Керла дакъа" };
 
             _contentStore.AddItem<ISegment>(segment);
         }
+
     }
 }

@@ -4,14 +4,31 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         Title="MainWindow" Height="450" Width="800"
-        >
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        <ListView x:Name="LvSegments" Grid.Column="0" ItemsSource="{Binding Segments}">
+        <ListView x:Name="lvSegments" Grid.Column="0" ItemsSource="{Binding Segments}">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="SelectionChanged">
+                    <i:InvokeCommandAction
+                        Command="{Binding SelectionChanged}" 
+                        CommandParameter="{Binding ElementName=lvSegments, Path=SelectedItems}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+            
+            <ListView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem 
+                                Header="Delete"
+                                Command="{Binding DeleteSelectedSegment}"
+                                CommandParameter="{Binding}"
+                            />
+                </ContextMenu>
+            </ListView.ContextMenu>
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Title}" Background="AliceBlue" Width="200px" />
@@ -20,8 +37,12 @@
         </ListView>
 
         <Button Grid.Column="0"
+                Content="Добавить раздел"
                 Name="BtnNewSection"
-                Style="{StaticResource AddNewButton}" Click="BtnNewSection_Click"/>
+                Click="BtnNewSection_Click"
+                VerticalAlignment="Bottom"
+                Height="23"
+                />
 
         <!--<ListView Grid.Column="1">
             <ListView.View>
@@ -31,8 +52,19 @@
             </ListView.View>
         </ListView>-->
 
-        <Button Grid.Column="1"
-                Name="BtnNewExercise"
-                Style="{StaticResource AddNewButton}"/>
+        <TabControl Grid.Column="1">
+            <TabItem Header="О Разделе">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+            <TabItem Header="Чтение">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+            <TabItem Header="Аудирование">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+            <TabItem Header="Задачи">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>

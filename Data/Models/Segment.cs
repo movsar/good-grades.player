@@ -11,14 +11,5 @@ namespace Data.Models
     {
         public string Title { get; set; }
         public string Description { get; set; }
-        public Segment()
-        {
-
-        }
-        public Segment(ISegment segment)
-        {
-            Title = segment.Title;
-            Description = segment.Description;
-        }
     }
 }
