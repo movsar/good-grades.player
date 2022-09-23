@@ -32,19 +32,6 @@ namespace Content_Manager
     {
         public ICommand DeleteSelectedSegment { get; }
 
-        public Segment? CurrentSegment
-        {
-            get { return (Segment)GetValue(CurrentSegmentProperty); }
-            set { SetValue(CurrentSegmentProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for SegmentId.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty CurrentSegmentProperty =
-            DependencyProperty.Register("CurrentSegment", typeof(Segment), typeof(MainWindow), new PropertyMetadata(null));
-
-
-
-
         private readonly ContentStore _contentStore;
         public ObservableCollection<ISegment> Segments { get; }
 

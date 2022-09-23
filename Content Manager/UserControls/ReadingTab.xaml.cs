@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.IO;
+using Content_Manager.Windows;
+using Data.Models;
 
 namespace Content_Manager.UserControls
 {
@@ -21,17 +23,31 @@ namespace Content_Manager.UserControls
     /// </summary>
     public partial class ReadingTab : UserControl
     {
+        public Segment SelectedSegment
+        {
+            get => (Segment)GetValue(SelectedSegmentProperty);
+            set => SetValue(SelectedSegmentProperty, value);
+        }
+
+
         public ReadingTab()
         {
             InitializeComponent();
             DataContext = this;
-            var rtfPath = "c:\\users\\x.dr\\Desktop\\aaa.rtf";
-            var contentts = File.ReadAllText(rtfPath);
-            MemoryStream stream = new MemoryStream(ASCIIEncoding.Default.GetBytes(contentts));
 
-            rtbMain.Selection.Load(stream, DataFormats.Rtf);
-            rtbMain.Selection.Select(rtbMain.Document.ContentEnd, rtbMain.Document.ContentEnd);
+            spReadingMaterialControls.Children.Add(new ReadingMaterialControl());
+            spReadingMaterialControls.Children.Add(new ReadingMaterialControl());
+            spReadingMaterialControls.Children.Add(new ReadingMaterialControl());
+            spReadingMaterialControls.Children.Add(new ReadingMaterialControl());
+            spReadingMaterialControls.Children.Add(new ReadingMaterialControl());
+            spReadingMaterialControls.Children.Add(new ReadingMaterialControl());
+        }
 
+      
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var rtbPreviewWindow = new RtbPreviewWindow(@"C:\users\x.dr\desktop\aaa.rtf");
+            rtbPreviewWindow.ShowDialog();
         }
     }
 }

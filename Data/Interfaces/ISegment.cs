@@ -8,7 +8,6 @@ namespace Data.Interfaces
 {
     public interface ISegment : IModelBase
     {
-        string Id { get; set; }
         string Title { get; set; }
         string Description { get; set; }
     }

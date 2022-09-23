@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Data.Entities
+namespace Data.Interfaces
 {
-    public interface Exercise
+    internal interface IReadingMaterial : IModelBase
     {
-        string Id { get; set; }
-        string Title { get; set; }
+        string Content { get; set; }
     }
 }
