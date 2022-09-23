@@ -32,7 +32,7 @@ namespace Content_Manager
     {
         public ICommand DeleteSelectedSegment { get; }
 
-        public Segment CurrentSegment
+        public Segment? CurrentSegment
         {
             get { return (Segment)GetValue(CurrentSegmentProperty); }
             set { SetValue(CurrentSegmentProperty, value); }
@@ -99,7 +99,8 @@ namespace Content_Manager
 
             var segment = model as ISegment;
             var index = Segments.ToList().FindIndex(s => s.Id == segment!.Id);
-            Segments[index] = segment;
+
+            lvSegments.Items.Refresh();
         }
 
         private void OnSegmentDeleted(IModelBase model)
@@ -121,6 +122,11 @@ namespace Content_Manager
         private void lvSegments_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             CurrentSegment = ((Segment)lvSegments.SelectedItem);
+        }
+
+        private void BtnSave_Click(object sender, RoutedEventArgs e)
+        {
+            _contentStore.UpdateItem<ISegment>(CurrentSegment);
         }
     }
 }

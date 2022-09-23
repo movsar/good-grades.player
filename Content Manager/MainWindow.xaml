@@ -7,7 +7,12 @@
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors" xmlns:usercontrols="clr-namespace:Content_Manager.UserControls"
         x:Name="mainWindow">
         
-    <Grid>
+    <Grid Margin="5 0 5 5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="25"></RowDefinition>
+        </Grid.RowDefinitions>
+        
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
@@ -15,9 +20,11 @@
 
         <ListView x:Name="lvSegments" 
                   Grid.Column="0" 
-                  ItemsSource="{Binding Segments}"
+                  Grid.Row="0"
+                  ItemsSource="{Binding Path=Segments}"
                   SelectionMode="Single"
-                  SelectionChanged="lvSegments_SelectionChanged">
+                  SelectionChanged="lvSegments_SelectionChanged"                  
+                  >
             <ListView.ContextMenu>
                 <ContextMenu>
                     <MenuItem 
@@ -29,28 +36,12 @@
             </ListView.ContextMenu>
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding Title}" Background="AliceBlue" Width="200px" />
+                    <TextBlock Text="{Binding Title}" Background="AliceBlue" Width="180px" />
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-
-        <Button Grid.Column="0"
-                Content="Добавить раздел"
-                Name="BtnNewSection"
-                Click="BtnNewSection_Click"
-                VerticalAlignment="Bottom"
-                Height="23"
-                />
-
-        <!--<ListView Grid.Column="1">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn/>
-                </GridView>
-            </ListView.View>
-        </ListView>-->
-
-        <TabControl Grid.Column="1">
+ 
+        <TabControl Grid.Column="1" Grid.Row="0">
             <TabItem Header="О Разделе">
                 <usercontrols:SegmentInfoTab SelectedSegment="{Binding Path=CurrentSegment, ElementName=mainWindow}"/>
             </TabItem>
@@ -64,5 +55,29 @@
                 <Grid Background="#FFE5E5E5"/>
             </TabItem>
         </TabControl>
+
+
+        <Button Grid.Column="0"
+                Grid.Row="1"
+                Content="Добавить раздел"
+                Name="BtnNewSection"
+                Click="BtnNewSection_Click"
+                VerticalAlignment="Bottom"
+                Cursor="Hand"
+                Height="23"
+                />
+
+
+        <Button Grid.Column="1"
+                Grid.Row="1"
+                Width="100"
+                Content="Сохранить"
+                Name="BtnSave"
+                Click="BtnSave_Click"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Cursor="Hand"
+                Height="23"
+                />
     </Grid>
 </Window>

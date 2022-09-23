@@ -66,6 +66,19 @@ namespace Content_Manager.Stores
                     throw new Exception();
             }
         }
+        internal void UpdateItem<TModel>(IModelBase item) where TModel : IModelBase
+        {
+            // Update in runtime collection
+            var (collectionName, items) = SelectCollection<TModel>();
+            var index = items.ToList().FindIndex(d => d.Id == item.Id);
+            items[index] = (TModel)item;
+
+            // Save to DB
+            _contentModel.UpdateItem<TModel>(item);
+
+            // Let everybody know
+            OnItemUpdated(item, collectionName);
+        }
         internal void AddItem<TModel>(IModelBase item) where TModel : IModelBase
         {
             // Add to DB
