@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.IO;
 
 namespace Content_Manager.UserControls
 {
@@ -23,6 +24,14 @@ namespace Content_Manager.UserControls
         public ReadingTab()
         {
             InitializeComponent();
+            DataContext = this;
+            var rtfPath = "c:\\users\\x.dr\\Desktop\\aaa.rtf";
+            var contentts = File.ReadAllText(rtfPath);
+            MemoryStream stream = new MemoryStream(ASCIIEncoding.Default.GetBytes(contentts));
+
+            rtbMain.Selection.Load(stream, DataFormats.Rtf);
+            rtbMain.Selection.Select(rtbMain.Document.ContentEnd, rtbMain.Document.ContentEnd);
+
         }
     }
 }
