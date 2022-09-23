@@ -54,7 +54,7 @@
                 <usercontrols:SegmentInfoTab SelectedSegment="{Binding Path=CurrentSegment, ElementName=mainWindow}"/>
             </TabItem>
             <TabItem Header="Чтение">
-                <Grid Background="#FFE5E5E5"/>
+                <usercontrols:ReadingTab/>
             </TabItem>
             <TabItem Header="Аудирование">
                 <Grid Background="#FFE5E5E5"/>
