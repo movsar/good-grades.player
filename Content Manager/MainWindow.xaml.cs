@@ -1,6 +1,7 @@
 ﻿using Content_Manager.Commands;
 using Content_Manager.Models;
 using Content_Manager.Stores;
+using Content_Manager.UserControls;
 using Data;
 using Data.Interfaces;
 using Data.Models;
@@ -20,8 +21,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml.Linq;
 
-namespace Content_Manager
+namespace Content_Manager 
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -29,6 +31,19 @@ namespace Content_Manager
     public partial class MainWindow : Window
     {
         public ICommand DeleteSelectedSegment { get; }
+
+        public string SegmentId
+        {
+            get { return (string)GetValue(SegmentIdProperty); }
+            set { SetValue(SegmentIdProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for SegmentId.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SegmentIdProperty =
+            DependencyProperty.Register("SegmentId", typeof(string), typeof(MainWindow), new PropertyMetadata(string.Empty));
+
+
+
 
         private readonly ContentStore _contentStore;
         public ObservableCollection<ISegment> Segments { get; }
@@ -61,7 +76,7 @@ namespace Content_Manager
             // Set events
             _contentStore.ItemAdded += OnSegmentAdded;
             _contentStore.ItemDeleted += OnSegmentDeleted;
-            _contentStore.ItemUpdated+= OnSegmentUpdated;
+            _contentStore.ItemUpdated += OnSegmentUpdated;
 
             // Initialize commands
             DeleteSelectedSegment = new SegmentCommands.DeleteSegment(_contentStore, this);
@@ -103,5 +118,9 @@ namespace Content_Manager
             _contentStore.AddItem<ISegment>(segment);
         }
 
+        private void lvSegments_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SegmentId = ((Segment)lvSegments.SelectedItem).Id;
+        }
     }
 }
