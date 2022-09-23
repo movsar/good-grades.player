@@ -52,7 +52,7 @@
 
         <TabControl Grid.Column="1">
             <TabItem Header="О Разделе">
-                <usercontrols:SegmentInfoTab SelectedSegmentId="{Binding Path=SegmentId, ElementName=mainWindow}"/>
+                <usercontrols:SegmentInfoTab SelectedSegment="{Binding Path=CurrentSegment, ElementName=mainWindow}"/>
             </TabItem>
             <TabItem Header="Чтение">
                 <Grid Background="#FFE5E5E5"/>

@@ -32,15 +32,15 @@ namespace Content_Manager
     {
         public ICommand DeleteSelectedSegment { get; }
 
-        public string SegmentId
+        public Segment CurrentSegment
         {
-            get { return (string)GetValue(SegmentIdProperty); }
-            set { SetValue(SegmentIdProperty, value); }
+            get { return (Segment)GetValue(CurrentSegmentProperty); }
+            set { SetValue(CurrentSegmentProperty, value); }
         }
 
         // Using a DependencyProperty as the backing store for SegmentId.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty SegmentIdProperty =
-            DependencyProperty.Register("SegmentId", typeof(string), typeof(MainWindow), new PropertyMetadata(string.Empty));
+        public static readonly DependencyProperty CurrentSegmentProperty =
+            DependencyProperty.Register("CurrentSegment", typeof(Segment), typeof(MainWindow), new PropertyMetadata(null));
 
 
 
@@ -120,7 +120,7 @@ namespace Content_Manager
 
         private void lvSegments_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            SegmentId = ((Segment)lvSegments.SelectedItem).Id;
+            CurrentSegment = ((Segment)lvSegments.SelectedItem);
         }
     }
 }

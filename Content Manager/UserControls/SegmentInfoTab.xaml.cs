@@ -17,19 +17,19 @@ namespace Content_Manager.UserControls
             DataContext = this;
         }
 
-        public static readonly DependencyProperty SelectedSegmentProperty = DependencyProperty.Register("SelectedSegmentId",
-            typeof(string),
+        public static readonly DependencyProperty SelectedSegmentProperty = DependencyProperty.Register("SelectedSegment",
+            typeof(Segment),
             typeof(SegmentInfoTab),
-            new PropertyMetadata(string.Empty, OnSelectedSegmentIdChanged));
+            new PropertyMetadata(null, OnSelectedSegmentChanged));
         
-        public string SelectedSegmentId {
-            get => (string)GetValue(SelectedSegmentProperty);
+        public Segment SelectedSegment {
+            get => (Segment)GetValue(SelectedSegmentProperty);
             set => SetValue(SelectedSegmentProperty, value);
         }
 
-        private static void OnSelectedSegmentIdChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnSelectedSegmentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var newValue= e.NewValue as string;
+            var newValue= e.NewValue as Segment;
         }
     }
 }
