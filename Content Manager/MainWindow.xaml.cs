@@ -23,7 +23,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml.Linq;
 
-namespace Content_Manager 
+namespace Content_Manager
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -83,6 +83,8 @@ namespace Content_Manager
 
             // Bind data
             DataContext = this;
+
+            tbcMain.Visibility = Visibility.Hidden;
         }
 
         private void OnSegmentAdded(IModelBase model)
@@ -91,6 +93,9 @@ namespace Content_Manager
 
             var segment = model as ISegment;
             Segments.Add(segment);
+            CurrentSegment = (Segment)segment;
+            tbcMain.Visibility = Visibility.Visible;
+
         }
 
         private void OnSegmentUpdated(IModelBase model)
@@ -110,6 +115,12 @@ namespace Content_Manager
             var segment = model as ISegment;
             var index = Segments.ToList().FindIndex(s => s.Id == segment!.Id);
             Segments.RemoveAt(index);
+            
+            if (CurrentSegment == segment)
+            {
+                CurrentSegment = null;
+                tbcMain.Visibility = Visibility.Hidden;
+            }
         }
 
         private void BtnNewSection_Click(object sender, RoutedEventArgs e)
@@ -121,7 +132,11 @@ namespace Content_Manager
 
         private void lvSegments_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            CurrentSegment = ((Segment)lvSegments.SelectedItem);
+            var segment = ((Segment)lvSegments.SelectedItem);
+            if (segment == null) return;
+
+            CurrentSegment = segment;
+            tbcMain.Visibility = Visibility.Visible;
         }
 
         private void BtnSave_Click(object sender, RoutedEventArgs e)

@@ -18,6 +18,7 @@
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
+        
         <ListView x:Name="lvSegments" 
                   Grid.Column="0" 
                   Grid.Row="0"
@@ -40,8 +41,15 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
- 
-        <TabControl Grid.Column="1" Grid.Row="0">
+
+        <Label Grid.Column="1" Grid.Row="0" x:Name="lblWelcome" 
+               Content="Выберите раздел с которым хотите работать"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"               
+               BorderThickness="1"
+               />
+
+        <TabControl Grid.Column="1" Grid.Row="0" x:Name="tbcMain">
             <TabItem Header="О Разделе">
                 <usercontrols:SegmentInfoTab SelectedSegment="{Binding Path=CurrentSegment, ElementName=mainWindow}"/>
             </TabItem>
