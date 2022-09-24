@@ -16,15 +16,5 @@ namespace Content_Manager.UserControls
             InitializeComponent();
             DataContext = this;
         }
-
-        public static readonly DependencyProperty SelectedSegmentProperty = DependencyProperty.Register("SelectedSegment",
-            typeof(Segment),
-            typeof(SegmentInfoTab),
-            new PropertyMetadata(null));
-        
-        public Segment SelectedSegment {
-            get => (Segment)GetValue(SelectedSegmentProperty);
-            set => SetValue(SelectedSegmentProperty, value);
-        }
     }
 }

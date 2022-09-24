@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace Data.Interfaces
 {
-    internal interface IReadingMaterial : IModelBase
+    public interface IReadingMaterial : IModelBase
     {
+        string Title { get; set; }
         string Content { get; set; }
     }
 }

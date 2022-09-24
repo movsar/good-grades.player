@@ -7,11 +7,9 @@ using System.Threading.Tasks;
 
 namespace Data.Models
 {
-
-    public class Segment : ModelBase, ISegment
+    public class ReadingMaterial : ModelBase, IReadingMaterial
     {
+        public string Content { get; set; }
         public string Title { get; set; }
-        public string Description { get; set; }
-        public List<IReadingMaterial> ReadingMaterials { get; set; }
     }
 }

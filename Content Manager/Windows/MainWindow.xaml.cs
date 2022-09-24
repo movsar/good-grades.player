@@ -35,23 +35,22 @@ namespace Content_Manager
         private readonly ContentStore _contentStore;
         public ObservableCollection<ISegment> Segments { get; }
 
-        public MainWindow()
+        public Segment CurrentSegment
+        {
+            get { return (Segment)GetValue(CurrentSegmentProperty); }
+            set { SetValue(CurrentSegmentProperty, value); _contentStore.SelectedSegment = value; }
+        }
+
+        public static readonly DependencyProperty CurrentSegmentProperty =
+            DependencyProperty.Register("CurrentSegment", typeof(Segment), typeof(MainWindow), new PropertyMetadata(null));
+
+
+        public MainWindow(ContentStore contentStore)
         {
             InitializeComponent();
 
-            // Initialize DB
-            Storage storage;
-            try
-            {
-                storage = new Storage(false);
-            }
-            catch
-            {
-                storage = new Storage(true);
-            }
-
             // Initialize content store
-            _contentStore = new ContentStore(new ContentModel(storage));
+            _contentStore = contentStore;
 
             // Set existing segments
             Segments = new ObservableCollection<ISegment>();
@@ -72,17 +71,25 @@ namespace Content_Manager
             DataContext = this;
 
             tbcMain.Visibility = Visibility.Hidden;
+
+          
         }
 
         private void OnSegmentAdded(IModelBase model)
         {
             if (model.GetType().IsAssignableTo(typeof(ISegment)) == false) return;
 
-            var segment = model as ISegment;
+            var segment = model as Segment;
+            segment.ReadingMaterials = new List<IReadingMaterial>();
             Segments.Add(segment);
             CurrentSegment = (Segment)segment;
             tbcMain.Visibility = Visibility.Visible;
 
+            _contentStore.SelectedSegment?.ReadingMaterials.Add(new ReadingMaterial()
+            {
+                Title = "Super Content",
+                Content = "Amazing Material"
+            });
         }
 
         private void OnSegmentUpdated(IModelBase model)

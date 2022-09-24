@@ -15,6 +15,8 @@ using System.Windows.Shapes;
 using System.IO;
 using Content_Manager.Windows;
 using Data.Models;
+using Microsoft.Extensions.DependencyInjection;
+using Content_Manager.Stores;
 
 namespace Content_Manager.UserControls
 {
@@ -23,18 +25,21 @@ namespace Content_Manager.UserControls
     /// </summary>
     public partial class ReadingTab : UserControl
     {
-        public Segment SelectedSegment
-        {
-            get => (Segment)GetValue(SelectedSegmentProperty);
-            set => SetValue(SelectedSegmentProperty, value);
-        }
-
-
+        private ContentStore _contentStore { get; }
         public ReadingTab()
         {
             InitializeComponent();
             DataContext = this;
 
+            _contentStore = App.AppHost!.Services.GetRequiredService<ContentStore>();
+            _contentStore.SelectedSegmentChanged += _contentStore_SegmentChanged;
+           
+        }
+
+        private void _contentStore_SegmentChanged(Segment selectedSegment)
+        {
+            
+            spReadingMaterialControls.Children.Clear();
             spReadingMaterialControls.Children.Add(new ReadingMaterialControl());
             spReadingMaterialControls.Children.Add(new ReadingMaterialControl());
             spReadingMaterialControls.Children.Add(new ReadingMaterialControl());
@@ -43,7 +48,6 @@ namespace Content_Manager.UserControls
             spReadingMaterialControls.Children.Add(new ReadingMaterialControl());
         }
 
-      
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             var rtbPreviewWindow = new RtbPreviewWindow(@"C:\users\x.dr\desktop\aaa.rtf");

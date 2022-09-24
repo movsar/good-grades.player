@@ -12,12 +12,16 @@
             
             <Label Content="Название раздела"/>
             <TextBox Margin="10 0 10 0"
-                     Text="{Binding SelectedSegment.Title}"
+                     Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor,
+                                                         AncestorType={x:Type Window}},
+                                                         Path=DataContext.CurrentSegment.Title}"
                      VerticalAlignment="Top" />
             
             <Label Content="Описание"/>
             <TextBox Margin="10 0 10 0"
-                     Text="{Binding SelectedSegment.Description, Mode=TwoWay}"
+                     Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor,
+                                                         AncestorType={x:Type Window}},
+                                                         Path=DataContext.CurrentSegment.Description, Mode=TwoWay}"
                      VerticalAlignment="Top" />
             
         </StackPanel>

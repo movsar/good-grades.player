@@ -51,7 +51,7 @@
 
         <TabControl Grid.Column="1" Grid.Row="0" x:Name="tbcMain">
             <TabItem Header="О Разделе">
-                <usercontrols:SegmentInfoTab SelectedSegment="{Binding Path=CurrentSegment, ElementName=mainWindow}"/>
+                <usercontrols:SegmentInfoTab/>
             </TabItem>
             <TabItem Header="Чтение">
                 <usercontrols:ReadingTab/>

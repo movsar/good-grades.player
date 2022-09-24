@@ -8,10 +8,11 @@
              d:DesignHeight="450" d:DesignWidth="800"
              x:Name="ucReading">
     <Grid>
-
+        <Label Content="{Binding RelativeSource={RelativeSource Mode=FindAncestor,
+                                                         AncestorType={x:Type Window}},
+                                                         Path=DataContext.CurrentSegment.Title}"/>
         <ScrollViewer>
             <StackPanel x:Name="spReadingMaterialControls"></StackPanel>
-            
         </ScrollViewer>
 
     </Grid>

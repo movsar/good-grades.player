@@ -18,6 +18,21 @@ namespace Content_Manager.Stores
         public List<ISegment> StoredSegments = new();
 
         private readonly ContentModel _contentModel;
+
+        private Segment? _selectedSegment;
+        public Segment? SelectedSegment
+        {
+            get
+            {
+                return _selectedSegment;
+            }
+            internal set
+            {
+                _selectedSegment = value;
+                OnSegmentChange(value);
+            }
+        }
+        public event Action<Segment>? SelectedSegmentChanged;
         public ContentStore(ContentModel contentModel)
         {
             _contentModel = contentModel;
@@ -28,6 +43,10 @@ namespace Content_Manager.Stores
         public event Action<IModelBase>? ItemUpdated;
         public event Action<IModelBase>? ItemDeleted;
 
+        private void OnSegmentChange(Segment segment)
+        {
+            SelectedSegmentChanged?.Invoke(segment);
+        }
         private void OnItemAdded(IModelBase item, string collectionName)
         {
             ItemAdded?.Invoke(item);

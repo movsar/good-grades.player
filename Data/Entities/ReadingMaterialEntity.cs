@@ -1,4 +1,5 @@
 ﻿using Data.Interfaces;
+using Data.Models;
 using MongoDB.Bson;
 using Realms;
 using System;
@@ -16,13 +17,14 @@ namespace Data.Entities
 
         [Required]
         public string Title { get; set; }
-        public string Description { get; set; }
         public string Content { get; set; }
         public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.Now;
         public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;
         public void SetFromModel(IModelBase model)
         {
             var o = model as IReadingMaterial;
+            
+            Title = o.Title;
             Content = o.Content;
             ModifiedAt = DateTime.Now;
         }
