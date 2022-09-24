@@ -12,6 +12,6 @@ namespace Data.Models
     {
         public string Title { get; set; }
         public string Description { get; set; }
-        public List<IReadingMaterial> ReadingMaterials { get; set; }
+        public List<ReadingMaterial> ReadingMaterials { get; set; }
     }
 }

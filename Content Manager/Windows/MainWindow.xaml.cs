@@ -80,9 +80,9 @@ namespace Content_Manager
             if (model.GetType().IsAssignableTo(typeof(ISegment)) == false) return;
 
             var segment = model as Segment;
-            segment.ReadingMaterials = new List<IReadingMaterial>();
+            segment.ReadingMaterials = new List<ReadingMaterial>();
             Segments.Add(segment);
-            CurrentSegment = (Segment)segment;
+            CurrentSegment = segment;
             tbcMain.Visibility = Visibility.Visible;
 
             _contentStore.SelectedSegment?.ReadingMaterials.Add(new ReadingMaterial()

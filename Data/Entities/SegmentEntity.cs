@@ -18,7 +18,7 @@ namespace Data.Entities
         [Required]
         public string Title { get; set; }
         public string Description { get; set; }
-        public IList<ReadingMaterialEntity> ReadingMaterials { get; set; }
+        public IList<ReadingMaterialEntity> ReadingMaterials { get; }
         public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.Now;
         public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;
         public void SetFromModel(IModelBase model)
@@ -37,7 +37,7 @@ namespace Data.Entities
             {
                 var readingMaterialEntity = new ReadingMaterialEntity();
                 readingMaterialEntity.SetFromModel(material);
-                ReadingMaterials.Add(readingMaterialEntity);
+                ReadingMaterials?.Add(readingMaterialEntity);
             }
         }
     }
