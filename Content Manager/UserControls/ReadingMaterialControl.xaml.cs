@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Content_Manager.Stores;
+using Data.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +22,20 @@ namespace Content_Manager.UserControls
     /// </summary>
     public partial class ReadingMaterialControl : UserControl
     {
-        public ReadingMaterialControl()
+        ContentStore _contentStore { get; }
+        public ReadingMaterial Material { get; }
+        public ReadingMaterialControl(ContentStore contentStore)
         {
             InitializeComponent();
+            DataContext = this;
+            _contentStore = contentStore;
         }
+        public ReadingMaterialControl(ContentStore contentStore, ReadingMaterial material)
+        {
+            base(contentStore);
+            Material = material;
+        }
+
+
     }
 }

@@ -10,10 +10,6 @@ namespace Data.Repositories
 {
     public class SegmentRepository : GeneralRepository<SegmentEntity>
     {
-        private readonly Realm _realmInstance;
-        public SegmentRepository(Realm realmInstance) : base(realmInstance)
-        {
-            _realmInstance = realmInstance;
-        }
+        public SegmentRepository(Realm realmInstance) : base(realmInstance) { }
     }
 }

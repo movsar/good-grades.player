@@ -38,14 +38,14 @@ namespace Content_Manager.UserControls
 
         private void _contentStore_SegmentChanged(Segment selectedSegment)
         {
-            
             spReadingMaterialControls.Children.Clear();
-            spReadingMaterialControls.Children.Add(new ReadingMaterialControl());
-            spReadingMaterialControls.Children.Add(new ReadingMaterialControl());
-            spReadingMaterialControls.Children.Add(new ReadingMaterialControl());
-            spReadingMaterialControls.Children.Add(new ReadingMaterialControl());
-            spReadingMaterialControls.Children.Add(new ReadingMaterialControl());
-            spReadingMaterialControls.Children.Add(new ReadingMaterialControl());
+
+            foreach (var material in selectedSegment.ReadingMaterials)
+            {
+                spReadingMaterialControls.Children.Add(new ReadingMaterialControl(_contentStore, material));
+            }
+
+            spReadingMaterialControls.Children.Add(new ReadingMaterialControl(_contentStore));
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

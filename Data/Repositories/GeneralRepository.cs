@@ -11,77 +11,85 @@ namespace Data.Repositories
 {
     public class GeneralRepository<TEntity> : IGeneralRepository where TEntity : RealmObject, new()
     {
-            private readonly Realm _realmInstance;
+        private readonly Realm _realmInstance;
 
-            internal GeneralRepository(Realm realm)
+        internal GeneralRepository(Realm realm)
+        {
+            _realmInstance = realm;
+        }
+
+        #region Generic CRUD
+        public TModel GetById<TModel>(string id)
+        {
+            var result = _realmInstance.Find<TEntity>(id);
+            return EntitiesToModels<TEntity, TModel>(result);
+        }
+
+        public virtual void Add<TModel>(TModel model) where TModel : IModelBase
+        {
+            dynamic entity = new TEntity();
+            entity.SetFromModel(model);
+
+            _realmInstance.Write(() =>
             {
-                _realmInstance = realm;
-            }
+                _realmInstance.Add(entity);
+            });
 
-            #region Generic CRUD
+            // Set the Id for the inserted object
+            model.Id = entity.Id;
+        }
 
-            public TModel GetById<TModel>(string id)
+        public virtual void Update<TModel>(TModel model) where TModel : IModelBase
+        {
+            dynamic entity = _realmInstance.Find<TEntity>(model.Id);
+            _realmInstance.Write(() =>
             {
-                var result = _realmInstance.Find<TEntity>(id);
-                return EntitiesToModels<TEntity, TModel>(result);
-            }
-
-            public virtual void Add<TModel>(TModel model) where TModel : IModelBase
-            {
-                dynamic entity = new TEntity();
                 entity.SetFromModel(model);
+            });
+        }
 
-                _realmInstance.Write(() =>
-                {
-                    _realmInstance.Add(entity);
-                });
-
-                // Set the Id for the inserted object
-                model.Id = entity.Id;
-            }
-
-            public virtual void Update<TModel>(TModel model) where TModel : IModelBase
+        public virtual void Delete<TModel>(TModel model) where TModel : IModelBase
+        {
+            var entity = _realmInstance.Find<TEntity>(model.Id);
+            _realmInstance.Write(() =>
             {
-                dynamic entity = _realmInstance.Find<TEntity>(model.Id);
-                _realmInstance.Write(() =>
-                {
-                    entity.SetFromModel(model);
-                });
-            }
+                _realmInstance.Remove(entity);
+            });
+        }
 
-            public virtual void Delete<TModel>(TModel model) where TModel : IModelBase
+        public virtual IEnumerable<TModel> GetAll<TModel>() where TModel : IModelBase
+        {
+            var entries = _realmInstance.All<TEntity>();
+            return EntitiesToModels<TEntity, TModel>(entries);
+        }
+        #endregion
+
+        #region EntitiesToModels
+
+        // These method takes RealmObjects and turns them into plain model objects, works only for retrieval
+
+        internal IEnumerable<TTarget> EntitiesToModels<TSource, TTarget>(IEnumerable<TSource> realmObjects)
+        {
+            string jsonString = JsonSerializer.Serialize(realmObjects);
+            if (realmObjects != null && string.IsNullOrEmpty(jsonString))
             {
-                var entity = _realmInstance.Find<TEntity>(model.Id);
-                _realmInstance.Write(() =>
-                {
-                    _realmInstance.Remove(entity);
-                });
+                throw new IndexOutOfRangeException();
             }
 
-            public virtual IEnumerable<TModel> GetAll<TModel>() where TModel : IModelBase
+            return JsonSerializer.Deserialize<IEnumerable<TTarget>>(jsonString);
+        }
+        public TTarget EntitiesToModels<TSource, TTarget>(TSource realmObject)
+        {
+            string jsonString = JsonSerializer.Serialize(realmObject);
+            if (realmObject != null && string.IsNullOrEmpty(jsonString))
             {
-                var entries = _realmInstance.All<TEntity>();
-                return EntitiesToModels<TEntity, TModel>(entries);
+                throw new IndexOutOfRangeException();
             }
 
-            #endregion
+            return JsonSerializer.Deserialize<TTarget>(jsonString);
+        }
 
-            #region EntitiesToModels
-
-            // These method takes RealmObjects and turns them into plain model objects, works only for retrieval
-
-            internal IEnumerable<TTarget> EntitiesToModels<TSource, TTarget>(IEnumerable<TSource> realmObjects)
-            {
-                string jsonString = JsonSerializer.Serialize(realmObjects);
-                return JsonSerializer.Deserialize<IEnumerable<TTarget>>(jsonString);
-            }
-            public TTarget EntitiesToModels<TSource, TTarget>(TSource realmObject)
-            {
-                string jsonString = JsonSerializer.Serialize(realmObject);
-                return JsonSerializer.Deserialize<TTarget>(jsonString);
-            }
-
-            #endregion
+        #endregion
 
     }
 }

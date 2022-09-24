@@ -36,8 +36,11 @@ namespace Content_Manager
                 {
                     services.AddSingleton(provider => new ContentModel(storage));
                     services.AddSingleton<ContentStore>(); 
-                    services.AddSingleton<SegmentInfoTab>();
                     services.AddSingleton<MainWindow>();
+
+                    services.AddTransient<SegmentInfoTab>();
+                    services.AddTransient<ReadingMaterialControl>();
+
                 }).Build();
         }
 
