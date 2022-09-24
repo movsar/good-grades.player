@@ -42,10 +42,10 @@ namespace Content_Manager.UserControls
 
             foreach (var material in selectedSegment.ReadingMaterials)
             {
-                spReadingMaterialControls.Children.Add(new ReadingMaterialControl(_contentStore, material));
+                spReadingMaterialControls.Children.Add(new ReadingMaterialControl(material));
             }
 
-            spReadingMaterialControls.Children.Add(new ReadingMaterialControl(_contentStore));
+            spReadingMaterialControls.Children.Add(new ReadingMaterialControl());
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

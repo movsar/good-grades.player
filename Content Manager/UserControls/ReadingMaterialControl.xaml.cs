@@ -1,5 +1,6 @@
 ﻿using Content_Manager.Stores;
 using Data.Models;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,20 +23,43 @@ namespace Content_Manager.UserControls
     /// </summary>
     public partial class ReadingMaterialControl : UserControl
     {
-        ContentStore _contentStore { get; }
-        public ReadingMaterial Material { get; }
-        public ReadingMaterialControl(ContentStore contentStore)
+        ContentStore ContentStore => App.AppHost!.Services.GetRequiredService<ContentStore>();
+
+        public ReadingMaterial Material { get; set; }
+        private void Init()
         {
             InitializeComponent();
             DataContext = this;
-            _contentStore = contentStore;
         }
-        public ReadingMaterialControl(ContentStore contentStore, ReadingMaterial material)
+        public ReadingMaterialControl()
         {
-            base(contentStore);
+            Init();
+            Material = new ReadingMaterial()
+            {
+                Title = "Введите название материала"
+            };
+        }
+        public ReadingMaterialControl(ReadingMaterial material)
+        {
+            Init();
             Material = material;
+            txtTitle.IsEnabled = false;
         }
 
+        private void txtTitle_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (Material.Title == "Введите название материала")
+            {
+                Material.Title = "";
+            }
+        }
 
+        private void txtTitle_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (Material.Title == "")
+            {
+                Material.Title = "Введите название материала";
+            }
+        }
     }
 }
