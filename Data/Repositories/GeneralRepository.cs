@@ -1,4 +1,6 @@
-﻿using Data.Interfaces;
+﻿using Data.Entities;
+using Data.Interfaces;
+using Data.Models;
 using Realms;
 using System;
 using System.Collections.Generic;
@@ -18,11 +20,14 @@ namespace Data.Repositories
             _realmInstance = realm;
         }
 
+        public event Action<SegmentEntity, IModelBase>? ItemAdded;
+        public event Action<SegmentEntity, IModelBase>? ItemUpdated;
+
         #region Generic CRUD
         public TModel GetById<TModel>(string id)
         {
             var result = _realmInstance.Find<TEntity>(id);
-            return EntitiesToModels<TEntity, TModel>(result);
+            return EntityToModel<TEntity, TModel>(result);
         }
 
         public virtual void Add<TModel>(TModel model) where TModel : IModelBase
@@ -35,8 +40,7 @@ namespace Data.Repositories
                 _realmInstance.Add(entity);
             });
 
-            // Set the Id for the inserted object
-            model.Id = entity.Id;
+            ItemAdded?.Invoke(entity, model);
         }
 
         public virtual void Update<TModel>(TModel model) where TModel : IModelBase
@@ -46,6 +50,8 @@ namespace Data.Repositories
             {
                 entity.SetFromModel(model);
             });
+
+            ItemUpdated?.Invoke(entity, model);
         }
 
         public virtual void Delete<TModel>(TModel model) where TModel : IModelBase
@@ -68,7 +74,7 @@ namespace Data.Repositories
 
         // These method takes RealmObjects and turns them into plain model objects, works only for retrieval
 
-        internal IEnumerable<TTarget> EntitiesToModels<TSource, TTarget>(IEnumerable<TSource> realmObjects)
+        public IEnumerable<TTarget> EntitiesToModels<TSource, TTarget>(IEnumerable<TSource> realmObjects)
         {
             string jsonString = JsonSerializer.Serialize(realmObjects);
             if (realmObjects != null && string.IsNullOrEmpty(jsonString))
@@ -78,7 +84,7 @@ namespace Data.Repositories
 
             return JsonSerializer.Deserialize<IEnumerable<TTarget>>(jsonString);
         }
-        public TTarget EntitiesToModels<TSource, TTarget>(TSource realmObject)
+        public TTarget EntityToModel<TSource, TTarget>(TSource realmObject)
         {
             string jsonString = JsonSerializer.Serialize(realmObject);
             if (realmObject != null && string.IsNullOrEmpty(jsonString))

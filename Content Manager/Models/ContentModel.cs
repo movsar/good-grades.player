@@ -1,5 +1,7 @@
 ﻿using Data;
+using Data.Entities;
 using Data.Interfaces;
+using Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +15,23 @@ namespace Content_Manager.Models
         private readonly Storage _storage;
         public ContentModel(Storage storage)
         {
-            _storage = storage;            
+            _storage = storage;
+            _storage.SegmentsRepository.ItemAdded += SegmentsRepository_ItemAdded;
+            _storage.SegmentsRepository.ItemUpdated += SegmentsRepository_ItemUpdated;
+        }
+
+        private void SegmentsRepository_ItemUpdated(SegmentEntity dbEntity, IModelBase model)
+        {
+            dynamic segmentEntity = dbEntity;
+            var segment = model as Segment;
+            segment!.ReadingMaterials = _storage.SegmentsRepository.EntitiesToModels<ReadingMaterialEntity, ReadingMaterial>(segmentEntity.ReadingMaterials);
+        }
+
+        private void SegmentsRepository_ItemAdded(SegmentEntity dbEntity, IModelBase model)
+        {
+
+            // Set the Id for the inserted object
+            model.Id = dbEntity.Id;
         }
 
         private IGeneralRepository SelectRepository<TModel>()

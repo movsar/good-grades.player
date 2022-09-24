@@ -35,7 +35,7 @@ namespace Data.Entities
 
             foreach (var material in segment.ReadingMaterials)
             {
-                var existingReadingMaterial = ReadingMaterials.FirstOrDefault((rm => rm.Id == material.Id));
+                var existingReadingMaterial = ReadingMaterials?.FirstOrDefault((rm => rm.Id == material.Id));
                 if (existingReadingMaterial != null)
                 {
                     existingReadingMaterial.SetFromModel(material);

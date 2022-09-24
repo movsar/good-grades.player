@@ -40,6 +40,8 @@ namespace Content_Manager.UserControls
         {
             spReadingMaterialControls.Children.Clear();
 
+            if (selectedSegment == null) return;
+
             foreach (var material in selectedSegment.ReadingMaterials)
             {
                 spReadingMaterialControls.Children.Add(new ReadingMaterialControl(material));
