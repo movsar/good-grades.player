@@ -35,9 +35,17 @@ namespace Data.Entities
 
             foreach (var material in segment.ReadingMaterials)
             {
-                var readingMaterialEntity = new ReadingMaterialEntity();
-                readingMaterialEntity.SetFromModel(material);
-                ReadingMaterials?.Add(readingMaterialEntity);
+                var existingReadingMaterial = ReadingMaterials.FirstOrDefault((rm => rm.Id == material.Id));
+                if (existingReadingMaterial != null)
+                {
+                    existingReadingMaterial.SetFromModel(material);
+                }
+                else
+                {
+                    var newReadingMaterial = new ReadingMaterialEntity();
+                    newReadingMaterial.SetFromModel(material);
+                    ReadingMaterials?.Add(newReadingMaterial);
+                }
             }
         }
     }
