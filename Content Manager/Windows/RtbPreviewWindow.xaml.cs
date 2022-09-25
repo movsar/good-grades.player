@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Data.Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -15,20 +16,12 @@ using System.Windows.Shapes;
 
 namespace Content_Manager.Windows
 {
-    /// <summary>
-    /// Interaction logic for RtbPreviewWindow.xaml
-    /// </summary>
     public partial class RtbPreviewWindow : Window
     {
-        public RtbPreviewWindow(string filePath)
+        public RtbPreviewWindow(ReadingMaterial material)
         {
             InitializeComponent();
-            LoadFile(filePath);
-        }
-        private void LoadFile(string filePath)
-        {
-            var contentts = File.ReadAllText(filePath);
-            MemoryStream stream = new MemoryStream(ASCIIEncoding.Default.GetBytes(contentts));
+            MemoryStream stream = new MemoryStream(ASCIIEncoding.Default.GetBytes(material.Content));
 
             rtbMain.Selection.Load(stream, DataFormats.Rtf);
             rtbMain.Selection.Select(rtbMain.Document.ContentEnd, rtbMain.Document.ContentEnd);

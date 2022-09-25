@@ -49,11 +49,5 @@ namespace Content_Manager.UserControls
 
             spReadingMaterialControls.Children.Add(new ReadingMaterialControl());
         }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            var rtbPreviewWindow = new RtbPreviewWindow(@"C:\users\x.dr\desktop\aaa.rtf");
-            rtbPreviewWindow.ShowDialog();
-        }
     }
 }

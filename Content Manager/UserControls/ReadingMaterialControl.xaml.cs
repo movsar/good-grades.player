@@ -1,8 +1,10 @@
 ﻿using Content_Manager.Stores;
+using Content_Manager.Windows;
 using Data.Models;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,6 +32,7 @@ namespace Content_Manager.UserControls
         {
             InitializeComponent();
             DataContext = this;
+            btnEdit.IsEnabled = false;
         }
         public ReadingMaterialControl()
         {
@@ -43,7 +46,7 @@ namespace Content_Manager.UserControls
         {
             Init();
             Material = material;
-            txtTitle.IsEnabled = false;
+            toggleIsEnabled();
         }
 
         private void txtTitle_GotFocus(object sender, RoutedEventArgs e)
@@ -60,6 +63,50 @@ namespace Content_Manager.UserControls
             {
                 Material.Title = "Введите название материала";
             }
+        }
+
+        private void toggleIsEnabled()
+        {
+            btnPreview.IsEnabled = !btnPreview.IsEnabled;
+            btnUploadFromFile.IsEnabled = !btnUploadFromFile.IsEnabled;
+            txtTitle.IsEnabled = !txtTitle.IsEnabled;
+            btnEdit.IsEnabled = !btnEdit.IsEnabled;
+        }
+
+        private void btnEditClick(object sender, RoutedEventArgs e)
+        {
+            toggleIsEnabled();
+        }
+
+        private void btnPreview_Click(object sender, RoutedEventArgs e)
+        {
+            var rtbPreviewWindow = new RtbPreviewWindow(Material);
+            rtbPreviewWindow.ShowDialog();
+        }
+
+        private void btnUploadFromFile_Click(object sender, RoutedEventArgs e)
+        {
+            // Configure open file dialog box
+            var dialog = new Microsoft.Win32.OpenFileDialog();
+            dialog.FileName = "Document"; // Default file name
+            dialog.DefaultExt = ".txt"; // Default file extension
+            dialog.Filter = "RTF документы (.rtf)|*.rtf"; // Filter files by extension
+
+            // Show open file dialog box
+            bool? result = dialog.ShowDialog();
+
+            // Process open file dialog box results
+            if (result == false)
+            {
+                return;
+            }
+
+            string filename = dialog.FileName;
+            var contents = File.ReadAllText(filename);
+
+            Material.Content = contents;
+            Material.Title = txtTitle.Text;
+            ContentStore.SelectedSegment?.ReadingMaterials.Add(Material);
         }
     }
 }

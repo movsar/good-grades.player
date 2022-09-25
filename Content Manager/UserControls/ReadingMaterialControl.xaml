@@ -12,15 +12,22 @@
             <TextBox x:Name="txtTitle"
                      Margin="10 0 0 0" 
                      Padding="5 0 0 0"
-                     Width="300" 
+                     Width="250" 
                      Text="{Binding Path=Material.Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                      TextAlignment="Left"
                      VerticalContentAlignment="Center"
                      GotFocus="txtTitle_GotFocus"
                      LostFocus="txtTitle_LostFocus"
                      />
-            <Button Margin="10 0 0 0" Padding="7 0 7 0" Content="Загрузить из файла"/>
-            <Button Margin="10 0 0 0" Padding="7 0 7 0" Content="Просмотр1"/>
+            
+            <Button x:Name="btnUploadFromFile"
+                    Margin="10 0 0 0" Padding="7 0 7 0" Content="Загрузить из файла" Click="btnUploadFromFile_Click"/>
+            
+            <Button x:Name="btnPreview" 
+                    Margin="10 0 0 0" Padding="7 0 7 0" Content="Просмотр" Click="btnPreview_Click"/>
+            
+            <Button x:Name="btnEdit" 
+                    Margin="10 0 0 0" Padding="7 0 7 0" Content="Изменить" Click="btnEditClick"/>
         </StackPanel>
     </Grid>
 </UserControl>

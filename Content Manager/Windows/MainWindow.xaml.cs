@@ -1,33 +1,16 @@
 ﻿using Content_Manager.Commands;
-using Content_Manager.Models;
 using Content_Manager.Stores;
-using Content_Manager.UserControls;
-using Data;
 using Data.Interfaces;
 using Data.Models;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Xml.Linq;
 
 namespace Content_Manager
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>0
     public partial class MainWindow : Window
     {
         public ICommand DeleteSelectedSegment { get; }
@@ -43,7 +26,6 @@ namespace Content_Manager
 
         public static readonly DependencyProperty CurrentSegmentProperty =
             DependencyProperty.Register("CurrentSegment", typeof(Segment), typeof(MainWindow), new PropertyMetadata(null));
-
 
         public MainWindow(ContentStore contentStore)
         {
@@ -71,8 +53,6 @@ namespace Content_Manager
             DataContext = this;
 
             tbcMain.Visibility = Visibility.Hidden;
-
-          
         }
 
         private void OnSegmentAdded(IModelBase model)
@@ -84,12 +64,6 @@ namespace Content_Manager
             Segments.Add(segment);
             CurrentSegment = segment;
             tbcMain.Visibility = Visibility.Visible;
-
-            _contentStore.SelectedSegment?.ReadingMaterials.Add(new ReadingMaterial()
-            {
-                Title = "Super Content",
-                Content = "Amazing Material"
-            });
         }
 
         private void OnSegmentUpdated(IModelBase model)
