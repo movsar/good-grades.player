@@ -3,6 +3,7 @@ using Content_Manager.Windows;
 using Data.Models;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -20,38 +21,34 @@ using System.Windows.Shapes;
 
 namespace Content_Manager.UserControls
 {
-    /// <summary>
-    /// Interaction logic for ReadingMaterialControl.xaml
-    /// </summary>
     public partial class ReadingMaterialControl : UserControl
     {
         ContentStore ContentStore => App.AppHost!.Services.GetRequiredService<ContentStore>();
-
         public ReadingMaterial Material { get; set; }
+        private const string TitleHintText = "Введите название материала";
         private void Init()
         {
             InitializeComponent();
             DataContext = this;
-            btnEdit.IsEnabled = false;
         }
         public ReadingMaterialControl()
         {
             Init();
             Material = new ReadingMaterial()
             {
-                Title = "Введите название материала"
+                Title = TitleHintText
             };
         }
         public ReadingMaterialControl(ReadingMaterial material)
         {
             Init();
             Material = material;
-            toggleIsEnabled();
+            btnPreview.IsEnabled = true;
         }
 
         private void txtTitle_GotFocus(object sender, RoutedEventArgs e)
         {
-            if (Material.Title == "Введите название материала")
+            if (Material.Title == TitleHintText && string.IsNullOrEmpty(Material.Content))
             {
                 Material.Title = "";
             }
@@ -59,23 +56,10 @@ namespace Content_Manager.UserControls
 
         private void txtTitle_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (Material.Title == "")
+            if (string.IsNullOrEmpty(Material.Title) && string.IsNullOrEmpty(Material.Content))
             {
-                Material.Title = "Введите название материала";
+                Material.Title = TitleHintText;
             }
-        }
-
-        private void toggleIsEnabled()
-        {
-            btnPreview.IsEnabled = !btnPreview.IsEnabled;
-            btnUploadFromFile.IsEnabled = !btnUploadFromFile.IsEnabled;
-            txtTitle.IsEnabled = !txtTitle.IsEnabled;
-            btnEdit.IsEnabled = !btnEdit.IsEnabled;
-        }
-
-        private void btnEditClick(object sender, RoutedEventArgs e)
-        {
-            toggleIsEnabled();
         }
 
         private void btnPreview_Click(object sender, RoutedEventArgs e)
@@ -84,29 +68,46 @@ namespace Content_Manager.UserControls
             rtbPreviewWindow.ShowDialog();
         }
 
-        private void btnUploadFromFile_Click(object sender, RoutedEventArgs e)
+        private static string SelectFilePath()
         {
             // Configure open file dialog box
             var dialog = new Microsoft.Win32.OpenFileDialog();
-            dialog.FileName = "Document"; // Default file name
-            dialog.DefaultExt = ".txt"; // Default file extension
-            dialog.Filter = "RTF документы (.rtf)|*.rtf"; // Filter files by extension
+            dialog.Filter = "RTF документы (.rtf)|*.rtf"; 
 
             // Show open file dialog box
             bool? result = dialog.ShowDialog();
 
             // Process open file dialog box results
-            if (result == false)
+            return (result == false) ? "" : dialog.FileName;
+        }
+        private void btnUploadFromFile_Click(object sender, RoutedEventArgs e)
+        {
+            // Read the rtf file
+            string filePath = SelectFilePath();
+            if (string.IsNullOrEmpty(filePath))
             {
                 return;
             }
+            var contents = File.ReadAllText(filePath);
 
-            string filename = dialog.FileName;
-            var contents = File.ReadAllText(filename);
-
+            // Load contents to the object and add to collection
             Material.Content = contents;
-            Material.Title = txtTitle.Text;
             ContentStore.SelectedSegment?.ReadingMaterials.Add(Material);
+            
+            // Refresh UI
+            ContentStore.SelectedSegment = ContentStore.SelectedSegment;
+            btnPreview.IsEnabled = true;
+        }
+
+        private void txtTitle_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (txtTitle.Text == TitleHintText || string.IsNullOrEmpty(txtTitle.Text))
+            {
+                btnUploadFromFile.IsEnabled = false;
+            } else
+            {
+                btnUploadFromFile.IsEnabled = true;
+            }
         }
     }
 }

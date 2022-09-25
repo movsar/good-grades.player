@@ -18,16 +18,17 @@
                      VerticalContentAlignment="Center"
                      GotFocus="txtTitle_GotFocus"
                      LostFocus="txtTitle_LostFocus"
+                     TextChanged="txtTitle_TextChanged"
                      />
             
             <Button x:Name="btnUploadFromFile"
-                    Margin="10 0 0 0" Padding="7 0 7 0" Content="Загрузить из файла" Click="btnUploadFromFile_Click"/>
+                    Margin="10 0 0 0" Padding="7 0 7 0" 
+                    Content="Загрузить из файла" Click="btnUploadFromFile_Click"/>
             
             <Button x:Name="btnPreview" 
-                    Margin="10 0 0 0" Padding="7 0 7 0" Content="Просмотр" Click="btnPreview_Click"/>
-            
-            <Button x:Name="btnEdit" 
-                    Margin="10 0 0 0" Padding="7 0 7 0" Content="Изменить" Click="btnEditClick"/>
+                    IsEnabled="False"
+                    Margin="10 0 0 0" Padding="7 0 7 0" 
+                    Content="Просмотр" Click="btnPreview_Click"/>
         </StackPanel>
     </Grid>
 </UserControl>

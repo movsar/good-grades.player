@@ -60,7 +60,7 @@ namespace Content_Manager
             if (model.GetType().IsAssignableTo(typeof(ISegment)) == false) return;
 
             var segment = model as Segment;
-            segment.ReadingMaterials = new List<ReadingMaterial>();
+            segment.ReadingMaterials = new ();
             Segments.Add(segment);
             CurrentSegment = segment;
             tbcMain.Visibility = Visibility.Visible;
