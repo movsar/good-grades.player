@@ -23,6 +23,7 @@ namespace Data.Entities
         public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;
         public void SetFromModel(IModelBase model)
         {
+            // Set segment info
             var segment = model as Segment;
             Title = segment.Title;
             Description = segment.Description;
@@ -33,6 +34,15 @@ namespace Data.Entities
                 return;
             }
 
+            // Commit removed reading materials
+            var currentReadingMaterialsIds = segment.ReadingMaterials.Select(x => x.Id).ToList();
+            var readingMaterialsToRemove = ReadingMaterials.Where(rm => !currentReadingMaterialsIds.Contains(rm.Id));
+            foreach (var readingMaterial in readingMaterialsToRemove)
+            {
+                ReadingMaterials.Remove(readingMaterial);
+            }
+
+            // Add or update reading materials
             foreach (var material in segment.ReadingMaterials)
             {
                 var existingReadingMaterial = ReadingMaterials?.FirstOrDefault((rm => rm.Id == material.Id));

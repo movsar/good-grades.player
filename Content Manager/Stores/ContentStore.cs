@@ -47,15 +47,15 @@ namespace Content_Manager.Stores
         {
             SelectedSegmentChanged?.Invoke(segment);
         }
-        private void OnItemAdded(IModelBase item, string collectionName)
+        private void OnItemAdded(IModelBase item)
         {
             ItemAdded?.Invoke(item);
         }
-        private void OnItemUpdated(IModelBase item, string collectionName)
+        private void OnItemUpdated(IModelBase item)
         {
             ItemUpdated?.Invoke(item);
         }
-        private void OnItemDeleted(IModelBase item, string collectionName)
+        private void OnItemDeleted(IModelBase item)
         {
             ItemDeleted?.Invoke(item);
         }
@@ -72,31 +72,17 @@ namespace Content_Manager.Stores
                 StoredSegments.Add(segment);
             }
         }
-        private (string, IList<TModel>) SelectCollection<TModel>() where TModel : IModelBase
-        {
-            var t = typeof(TModel);
-            switch (t)
-            {
-                case var _ when t.IsAssignableTo(typeof(ISegment)):
-                case var _ when t.IsAssignableFrom(typeof(ISegment)):
-                    return new(nameof(StoredSegments), (IList<TModel>)StoredSegments);
-
-                default:
-                    throw new Exception();
-            }
-        }
         internal void UpdateItem<TModel>(IModelBase item) where TModel : IModelBase
         {
             // Update in runtime collection
-            var (collectionName, items) = SelectCollection<TModel>();
-            var index = items.ToList().FindIndex(d => d.Id == item.Id);
-            items[index] = (TModel)item;
+            var index = StoredSegments.ToList().FindIndex(d => d.Id == item.Id);
+            StoredSegments[index] = (ISegment)item;
 
             // Save to DB
             _contentModel.UpdateItem<TModel>(item);
 
             // Let everybody know
-            OnItemUpdated(item, collectionName);
+            OnItemUpdated(item);
         }
         internal void AddItem<TModel>(IModelBase item) where TModel : IModelBase
         {
@@ -104,11 +90,10 @@ namespace Content_Manager.Stores
             _contentModel.AddItem<TModel>(item);
 
             // Add to collection
-            var (collectionName, items) = SelectCollection<TModel>();
-            items.Add((TModel)item);
+            StoredSegments.Add((ISegment)item);
 
             // Let everybody know
-            OnItemAdded(item, collectionName);
+            OnItemAdded(item);
         }
 
         public void DeleteItem<TModel>(TModel item) where TModel : IModelBase
@@ -117,12 +102,11 @@ namespace Content_Manager.Stores
             _contentModel.DeleteItem<TModel>(item);
 
             // Remove from collection
-            var (collectionName, items) = SelectCollection<TModel>();
-            var index = items.ToList().FindIndex(d => d.Id == item.Id);
-            items.RemoveAt(index);
+            var index = StoredSegments.ToList().FindIndex(d => d.Id == item.Id);
+            StoredSegments.RemoveAt(index);
 
             // Let everybody know
-            OnItemDeleted(item, collectionName);
+            OnItemDeleted(item);
         }
 
         internal ISegment? FindSegmentByTitle(string segmentTitle)

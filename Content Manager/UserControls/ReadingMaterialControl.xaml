@@ -23,12 +23,19 @@
             
             <Button x:Name="btnUploadFromFile"
                     Margin="10 0 0 0" Padding="7 0 7 0" 
+                    Cursor="Hand"
                     Content="Загрузить из файла" Click="btnUploadFromFile_Click"/>
             
             <Button x:Name="btnPreview" 
                     IsEnabled="False"
                     Margin="10 0 0 0" Padding="7 0 7 0" 
+                    Cursor="Hand"
                     Content="Просмотр" Click="btnPreview_Click"/>
+
+            <Button x:Name="btnDelete" 
+                    Margin="10 0 0 0" Padding="7 0 7 0" 
+                    Cursor="Hand"
+                    Content="x" Click="btnDelete_Click"/>
         </StackPanel>
     </Grid>
 </UserControl>
