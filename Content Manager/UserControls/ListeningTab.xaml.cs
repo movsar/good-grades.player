@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Content_Manager.Stores;
+using Data.Models;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,39 +15,33 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.IO;
-using Content_Manager.Windows;
-using Data.Models;
-using Microsoft.Extensions.DependencyInjection;
-using Content_Manager.Stores;
 
 namespace Content_Manager.UserControls
 {
-    public partial class ReadingTab : UserControl
+    public partial class ListeningTab : UserControl
     {
         private ContentStore _contentStore { get; }
-        public ReadingTab()
+        public ListeningTab()
         {
             InitializeComponent();
             DataContext = this;
 
             _contentStore = App.AppHost!.Services.GetRequiredService<ContentStore>();
             _contentStore.SelectedSegmentChanged += _contentStore_SegmentChanged;
-           
         }
 
         private void _contentStore_SegmentChanged(Segment selectedSegment)
         {
-            spReadingMaterialControls.Children.Clear();
+            spListeningMaterialControls.Children.Clear();
 
             if (selectedSegment == null) return;
 
-            foreach (var material in selectedSegment.ReadingMaterials)
+            foreach (var material in selectedSegment.ListeningMaterials)
             {
-                spReadingMaterialControls.Children.Add(new ReadingMaterialControl(material));
+                spListeningMaterialControls.Children.Add(new ListeningMaterialControl(material));
             }
 
-            spReadingMaterialControls.Children.Add(new ReadingMaterialControl());
+            spListeningMaterialControls.Children.Add(new ListeningMaterialControl());
         }
     }
 }

@@ -57,7 +57,7 @@
                 <usercontrols:ReadingTab/>
             </TabItem>
             <TabItem Header="Аудирование">
-                <Grid Background="#FFE5E5E5"/>
+                <usercontrols:ListeningTab/>
             </TabItem>
             <TabItem Header="Задачи">
                 <Grid Background="#FFE5E5E5"/>
