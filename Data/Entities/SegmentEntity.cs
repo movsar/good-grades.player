@@ -2,11 +2,6 @@
 using Data.Models;
 using MongoDB.Bson;
 using Realms;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Data.Entities
 {
@@ -14,13 +9,11 @@ namespace Data.Entities
     {
         [PrimaryKey]
         public string Id { get; set; } = ObjectId.GenerateNewId().ToString();
-
         [Required]
         public string Title { get; set; }
         public string Description { get; set; }
         public IList<ReadingMaterialEntity> ReadingMaterials { get; }
         public IList<ListeningMaterialEntity> ListeningMaterials { get; }
-
         public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.Now;
         public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;
         public void SetFromModel(IModelBase model)
@@ -42,7 +35,7 @@ namespace Data.Entities
                 return;
             }
 
-            // Commit removed reading materials
+            // Commit removed materials
             var currentListeningMaterialsIds = segment.ListeningMaterials.Select(x => x.Id).ToList();
             var listeningMaterialsToRemove = ListeningMaterials.Where(rm => !currentListeningMaterialsIds.Contains(rm.Id));
             foreach (var listeningMaterial in listeningMaterialsToRemove)
@@ -50,7 +43,7 @@ namespace Data.Entities
                 ListeningMaterials.Remove(listeningMaterial);
             }
 
-            // Add or update reading materials
+            // Add or update materials
             foreach (var material in segment.ListeningMaterials)
             {
                 var existingListeningMaterial = ListeningMaterials?.FirstOrDefault((rm => rm.Id == material.Id));

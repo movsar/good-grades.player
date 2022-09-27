@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Data.Models
 {
-    public class ListeningMaterial : ModelBase, IReadingMaterial
+    public class ListeningMaterial : ModelBase, IListeningMaterial
     {
         private string _content;
         public string Content
@@ -23,8 +23,8 @@ namespace Data.Models
             set { SetProperty(ref _audio, value, nameof(Audio)); }
         }
 
-        private string _image;
-        public string Image
+        private byte[] _image;
+        public byte[] Image
         {
             get { return _image; }
             set { SetProperty(ref _image, value, nameof(Image)); }

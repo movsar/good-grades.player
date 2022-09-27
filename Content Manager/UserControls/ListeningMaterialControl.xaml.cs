@@ -1,6 +1,9 @@
-﻿using Content_Manager.Stores;
+﻿using Content_Manager.Services;
+using Content_Manager.Stores;
+using Content_Manager.Windows;
 using Data.Models;
 using Microsoft.Extensions.DependencyInjection;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -9,7 +12,6 @@ namespace Content_Manager.UserControls
 {
     public partial class ListeningMaterialControl : UserControl
     {
-
         ContentStore ContentStore => App.AppHost!.Services.GetRequiredService<ContentStore>();
         public ListeningMaterial Material { get; set; }
         private const string TitleHintText = "Введите название материала";
@@ -54,8 +56,8 @@ namespace Content_Manager.UserControls
 
         private void btnPreview_Click(object sender, RoutedEventArgs e)
         {
-            //var rtbPreviewWindow = new RtbPreviewWindow(Material);
-            //rtbPreviewWindow.ShowDialog();
+            var listeningPreviewWindow = new ListeningPreviewWindow(Material);
+            listeningPreviewWindow.ShowDialog();
         }
 
         private void btnChooseImage_Click(object sender, RoutedEventArgs e)
@@ -63,22 +65,18 @@ namespace Content_Manager.UserControls
         }
         private void btnChooseAudio_Click(object sender, RoutedEventArgs e)
         {
+            // Read the rtf file
+            string filePath = FileService.SelectFilePath("MP3 Файлы (.mp3) | *.mp3");
+            if (string.IsNullOrEmpty(filePath)) return;
+
+            // Read, load contents to the object and add to collection
+            var contents = File.ReadAllBytes(filePath);
+            Material.Audio = contents;
+            ContentStore.SelectedSegment?.ListeningMaterials.Add(Material);
+
+            // Refresh UI
+            ContentStore.SelectedSegment = ContentStore.SelectedSegment;
         }
-
-        //private void btnUploadFromFile_Click(object sender, RoutedEventArgs e)
-        //{
-        //    // Read the rtf file
-        //    string filePath = FileService.SelectFilePath();
-        //    if (string.IsNullOrEmpty(filePath)) return;
-
-        //    // Read, load contents to the object and add to collection
-        //    var contents = File.ReadAllText(filePath);
-        //    Material.Content = contents;
-        //    ContentStore.SelectedSegment?.ReadingMaterials.Add(Material);
-
-        //    // Refresh UI
-        //    ContentStore.SelectedSegment = ContentStore.SelectedSegment;
-        //}
 
         private void txtTitle_TextChanged(object sender, TextChangedEventArgs e)
         {

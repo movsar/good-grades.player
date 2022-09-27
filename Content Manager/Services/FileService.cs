@@ -8,11 +8,11 @@ namespace Content_Manager.Services
 {
     internal class FileService
     {
-        internal static string SelectFilePath()
+        internal static string SelectFilePath(string filter)
         {
             // Configure open file dialog box
             var dialog = new Microsoft.Win32.OpenFileDialog();
-            dialog.Filter = "RTF документы (.rtf)|*.rtf";
+            dialog.Filter = filter;
 
             // Show open file dialog box
             bool? result = dialog.ShowDialog();

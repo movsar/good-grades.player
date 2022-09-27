@@ -6,7 +6,26 @@
         xmlns:local="clr-namespace:Content_Manager.Windows"
         mc:Ignorable="d"
         Title="ListeningPreviewWindow" Height="450" Width="800">
+    <Window.Resources>
+        <Style x:Key="GreenButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="Button.Width" Value="120"/>
+            <Setter Property="Button.Height" Value="30"/>
+            <Setter Property="Button.FontFamily" Value="Verdana"/>
+            <Setter Property="Button.FontSize" Value="14"/>
+            <Setter Property="Button.FontWeight" Value="Normal"/>
+            <Setter Property="Button.Foreground" Value="White"/>
+            <Setter Property="Button.Background" Value="DarkGreen"/>
+            <Setter Property="Button.BorderBrush" Value="Black"/>
+        </Style>
+    </Window.Resources>
     <Grid>
         
+        <StackPanel Orientation="Horizontal">
+            <Button Style="{StaticResource GreenButtonStyle}" x:Name="btnPlay" Content="Play" Click="btnPlay_Click"></Button>
+            <Button Style="{StaticResource GreenButtonStyle}" x:Name="btnPause" Content="Play" Click="btnPause_Click"></Button>
+            <Button Style="{StaticResource GreenButtonStyle}" x:Name="btnStop" Content="Play" Click="btnStop_Click"></Button>
+
+        </StackPanel>
     </Grid>
+
 </Window>

@@ -65,7 +65,7 @@ namespace Content_Manager.UserControls
         private void btnUploadFromFile_Click(object sender, RoutedEventArgs e)
         {
             // Read the rtf file
-            string filePath = FileService.SelectFilePath();
+            string filePath = FileService.SelectFilePath("RTF документы (.rtf)|*.rtf");
             if (string.IsNullOrEmpty(filePath)) return;
 
             // Read, load contents to the object and add to collection

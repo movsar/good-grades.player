@@ -1,27 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Data.Models;
+using Plugin.SimpleAudioPlayer;
+using System.IO;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace Content_Manager.Windows
 {
-    /// <summary>
-    /// Interaction logic for ListeningPreviewWindow.xaml
-    /// </summary>
     public partial class ListeningPreviewWindow : Window
     {
-        public ListeningPreviewWindow()
+        public ListeningPreviewWindow(ListeningMaterial listeningMaterial)
         {
             InitializeComponent();
+            CrossSimpleAudioPlayer.Current.Load(new MemoryStream(listeningMaterial.Audio));
+        }
+
+        private void btnPlay_Click(object sender, RoutedEventArgs e)
+        {
+            CrossSimpleAudioPlayer.Current.Play();
+        }
+
+        private void btnStop_Click(object sender, RoutedEventArgs e)
+        {
+            CrossSimpleAudioPlayer.Current.Stop();
+        }
+
+        private void btnPause_Click(object sender, RoutedEventArgs e)
+        {
+            CrossSimpleAudioPlayer.Current.Pause();
         }
     }
 }
