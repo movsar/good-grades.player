@@ -8,23 +8,48 @@
         Title="ListeningPreviewWindow" Height="450" Width="800">
     <Window.Resources>
         <Style x:Key="GreenButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="Button.Margin" Value="0 0 2 0"/>
             <Setter Property="Button.Width" Value="120"/>
             <Setter Property="Button.Height" Value="30"/>
             <Setter Property="Button.FontFamily" Value="Verdana"/>
             <Setter Property="Button.FontSize" Value="14"/>
             <Setter Property="Button.FontWeight" Value="Normal"/>
-            <Setter Property="Button.Foreground" Value="White"/>
-            <Setter Property="Button.Background" Value="DarkGreen"/>
+            <Setter Property="Button.Foreground" Value="Black"/>
+            <Setter Property="Button.Background" Value="Cornsilk"/>
             <Setter Property="Button.BorderBrush" Value="Black"/>
         </Style>
     </Window.Resources>
     <Grid>
-        
         <StackPanel Orientation="Horizontal">
-            <Button Style="{StaticResource GreenButtonStyle}" x:Name="btnPlay" Content="Play" Click="btnPlay_Click"></Button>
-            <Button Style="{StaticResource GreenButtonStyle}" x:Name="btnPause" Content="Play" Click="btnPause_Click"></Button>
-            <Button Style="{StaticResource GreenButtonStyle}" x:Name="btnStop" Content="Play" Click="btnStop_Click"></Button>
+            <TextBox x:Name="txtMain" Width="150" TextWrapping="Wrap" 
+                     AcceptsReturn="True" Text="asdsadsads"
+                     HorizontalAlignment="Right"
+                     AcceptsTab="True" IsReadOnly="True"/>  
+            
+            <Image StretchDirection="Both">
+                <Image.Source>
+                    <BitmapImage UriSource="../../Assets/Images/Sound.png" />
+                </Image.Source>
+            </Image>
+            
+           
+        </StackPanel>
+        
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="5">
+            <Button Style="{StaticResource GreenButtonStyle}" 
+                    x:Name="btnStop" 
+                    FontFamily="Segoe MDL2 Assets" Content="&#xE71A;"
+                    Click="btnStop_Click"/>
 
+            <Button Style="{StaticResource GreenButtonStyle}" 
+                    x:Name="btnPause" 
+                    FontFamily="Segoe MDL2 Assets" Content="&#xE769;" 
+                    Click="btnPause_Click"/>
+
+            <Button Style="{StaticResource GreenButtonStyle}" 
+                    x:Name="btnPlay" 
+                    FontFamily="Segoe MDL2 Assets" Content="&#xE102;" 
+                    Click="btnPlay_Click"/>
         </StackPanel>
     </Grid>
 
