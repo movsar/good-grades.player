@@ -13,6 +13,7 @@ namespace Content_Manager.UserControls
 {
     public partial class ListeningMaterialControl : UserControl
     {
+
         ContentStore ContentStore => App.AppHost!.Services.GetRequiredService<ContentStore>();
         public ListeningMaterial Material { get; set; }
         private const string TitleHintText = "Введите название материала";
@@ -30,13 +31,36 @@ namespace Content_Manager.UserControls
             };
             btnDelete.Visibility = Visibility.Hidden;
         }
+
+        private static void SetButtonStyle(Button button, ModelBase model, bool isContentSet)
+        {
+            if (!isContentSet) return;
+
+            if (model.Id == null)
+            {
+                button.Background = Brushes.LightYellow;
+            }
+            else
+            {
+                button.Background = Brushes.LightGreen;
+            }
+        }
+
         public ListeningMaterialControl(ListeningMaterial material)
         {
             Init();
             Material = material;
-            btnPreview.IsEnabled = true;
-            btnPreview.Background = Brushes.LimeGreen;
-            btnDelete.Visibility = Visibility.Visible;
+            if (material.Id != null && material.Audio != null || material.Image != null || material.Content != null)
+            {
+                btnPreview.IsEnabled = true;
+                btnPreview.Background = Brushes.LightGreen;
+                btnDelete.Visibility = Visibility.Visible;
+                btnDelete.Background = Brushes.Red;
+            }
+
+            SetButtonStyle(btnChooseAudio, material, material.Audio != null);
+            SetButtonStyle(btnChooseImage, material, material.Image != null);
+            SetButtonStyle(btnChooseText, material, material.Content != null);
         }
 
         private void txtTitle_GotFocus(object sender, RoutedEventArgs e)
@@ -67,7 +91,10 @@ namespace Content_Manager.UserControls
             if (string.IsNullOrEmpty(filePath)) return;
 
             // Read, load contents to the object and add to collection
-            Material.Content = File.ReadAllText(filePath);
+            var content = File.ReadAllText(filePath);
+            if (string.IsNullOrEmpty(filePath)) return;
+
+            Material.Content = content;
             if (Material.Id == null)
             {
                 ContentStore.SelectedSegment?.ListeningMaterials.Add(Material);
@@ -83,7 +110,10 @@ namespace Content_Manager.UserControls
             if (string.IsNullOrEmpty(filePath)) return;
 
             // Read, load contents to the object and add to collection
-            Material.Image = File.ReadAllBytes(filePath);
+            var content = File.ReadAllBytes(filePath);
+            if (content.Length == 0) return;
+
+            Material.Image = content;
             if (Material.Id == null)
             {
                 ContentStore.SelectedSegment?.ListeningMaterials.Add(Material);
@@ -91,6 +121,7 @@ namespace Content_Manager.UserControls
 
             // Refresh UI
             ContentStore.SelectedSegment = ContentStore.SelectedSegment;
+
         }
         private void btnChooseAudio_Click(object sender, RoutedEventArgs e)
         {
@@ -99,7 +130,10 @@ namespace Content_Manager.UserControls
             if (string.IsNullOrEmpty(filePath)) return;
 
             // Read, load contents to the object and add to collection
-            Material.Audio = File.ReadAllBytes(filePath);
+            var content = File.ReadAllBytes(filePath);
+            if (content.Length == 0) return;
+
+            Material.Audio = content;
             if (Material.Id == null)
             {
                 ContentStore.SelectedSegment?.ListeningMaterials.Add(Material);
