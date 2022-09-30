@@ -11,7 +11,7 @@
             <TextBox x:Name="txtTitle"
                      Margin="10 0 0 0" 
                      Padding="5 0 0 0"
-                     Width="250" 
+                     Width="200" 
                      Text="{Binding Path=Material.Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                      TextAlignment="Left"
                      VerticalContentAlignment="Center"
@@ -19,6 +19,11 @@
                      LostFocus="txtTitle_LostFocus"
                      TextChanged="txtTitle_TextChanged"/>
 
+            <Button x:Name="btnChooseText" 
+                    Margin="10 0 0 0" Padding="7 0 7 0" 
+                    Cursor="Hand"
+                    Content="Текст" Click="btnChooseText_Click"/>
+            
             <Button x:Name="btnChooseAudio"
                     Margin="10 0 0 0" Padding="7 0 7 0" 
                     Cursor="Hand"

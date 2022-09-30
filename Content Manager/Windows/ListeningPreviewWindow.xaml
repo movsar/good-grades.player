@@ -20,22 +20,20 @@
         </Style>
     </Window.Resources>
     <Grid>
-        <StackPanel Orientation="Horizontal">
-            <TextBox x:Name="txtMain" Width="150" TextWrapping="Wrap" 
-                     AcceptsReturn="True" Text="asdsadsads"
-                     HorizontalAlignment="Right"
-                     AcceptsTab="True" IsReadOnly="True"/>  
-            
-            <Image StretchDirection="Both">
-                <Image.Source>
-                    <BitmapImage UriSource="../../Assets/Images/Sound.png" />
-                </Image.Source>
-            </Image>
-            
-           
-        </StackPanel>
-        
-        <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="5">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="7*"></ColumnDefinition>
+            <ColumnDefinition Width="4*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+
+        <Image x:Name="imgMain" Grid.Column="0" HorizontalAlignment="Stretch"/>
+
+        <TextBox Grid.Column="1" x:Name="txtMain" TextWrapping="Wrap" 
+                     AcceptsReturn="True" FontSize="18"
+                     HorizontalAlignment="Stretch"
+                     AcceptsTab="True" IsReadOnly="True"/>
+
+        <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="5">
             <Button Style="{StaticResource GreenButtonStyle}" 
                     x:Name="btnStop" 
                     FontFamily="Segoe MDL2 Assets" Content="&#xE71A;"

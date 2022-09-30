@@ -34,7 +34,7 @@ namespace Content_Manager.UserControls
         {
             spListeningMaterialControls.Children.Clear();
 
-            if (selectedSegment == null) return;
+            if (selectedSegment == null || selectedSegment.ListeningMaterials == null) return;
 
             foreach (var material in selectedSegment.ListeningMaterials)
             {

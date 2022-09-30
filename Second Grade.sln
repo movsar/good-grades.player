@@ -5,14 +5,14 @@ VisualStudioVersion = 17.3.32901.215
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Second Grade", "Second Grade\Second Grade.csproj", "{650B4477-8223-46EB-875B-4E9C3D2B7A6E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data", "Data\Data.csproj", "{C73BB0E7-4C4D-4597-9127-AB8948BCBD04}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data", "Data\Data.csproj", "{C73BB0E7-4C4D-4597-9127-AB8948BCBD04}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D9369D19-B300-4A92-90B6-0A1BECB48D3D}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Content Manager", "Content Manager\Content Manager.csproj", "{4240FB4B-F6E9-4D6F-852C-EE305E515A92}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Content Manager", "Content Manager\Content Manager.csproj", "{4240FB4B-F6E9-4D6F-852C-EE305E515A92}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

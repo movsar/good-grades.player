@@ -4,6 +4,7 @@ using Content_Manager.Windows;
 using Data.Models;
 using Microsoft.Extensions.DependencyInjection;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -60,8 +61,36 @@ namespace Content_Manager.UserControls
             listeningPreviewWindow.ShowDialog();
         }
 
+        private void btnChooseText_Click(object sender, RoutedEventArgs e)
+        {
+            string filePath = FileService.SelectFilePath("Файлы с текстом (.txt) | *.txt;");
+            if (string.IsNullOrEmpty(filePath)) return;
+
+            // Read, load contents to the object and add to collection
+            Material.Content = File.ReadAllText(filePath);
+            if (Material.Id == null)
+            {
+                ContentStore.SelectedSegment?.ListeningMaterials.Add(Material);
+            }
+
+            // Refresh UI
+            ContentStore.SelectedSegment = ContentStore.SelectedSegment;
+        }
+
         private void btnChooseImage_Click(object sender, RoutedEventArgs e)
         {
+            string filePath = FileService.SelectFilePath("Файлы изображений (.png) | *.png; *.jpg; *.jpeg; *.tiff");
+            if (string.IsNullOrEmpty(filePath)) return;
+
+            // Read, load contents to the object and add to collection
+            Material.Image = File.ReadAllBytes(filePath);
+            if (Material.Id == null)
+            {
+                ContentStore.SelectedSegment?.ListeningMaterials.Add(Material);
+            }
+
+            // Refresh UI
+            ContentStore.SelectedSegment = ContentStore.SelectedSegment;
         }
         private void btnChooseAudio_Click(object sender, RoutedEventArgs e)
         {
@@ -70,9 +99,11 @@ namespace Content_Manager.UserControls
             if (string.IsNullOrEmpty(filePath)) return;
 
             // Read, load contents to the object and add to collection
-            var contents = File.ReadAllBytes(filePath);
-            Material.Audio = contents;
-            ContentStore.SelectedSegment?.ListeningMaterials.Add(Material);
+            Material.Audio = File.ReadAllBytes(filePath);
+            if (Material.Id == null)
+            {
+                ContentStore.SelectedSegment?.ListeningMaterials.Add(Material);
+            }
 
             // Refresh UI
             ContentStore.SelectedSegment = ContentStore.SelectedSegment;
