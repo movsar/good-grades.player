@@ -61,6 +61,7 @@ namespace Content_Manager
 
             var segment = model as Segment;
             segment.ReadingMaterials = new ();
+            segment.ListeningMaterials = new ();
             Segments.Add(segment);
             CurrentSegment = segment;
             tbcMain.Visibility = Visibility.Visible;
