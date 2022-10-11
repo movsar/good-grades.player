@@ -12,61 +12,47 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 
-namespace Content_Manager.UserControls
-{
-    public partial class ListeningMaterialControl : UserControl
-    {
+namespace Content_Manager.UserControls {
+    public partial class ListeningMaterialControl : UserControl {
 
         ContentStore ContentStore => App.AppHost!.Services.GetRequiredService<ContentStore>();
         public ListeningMaterial Material { get; set; }
         private const string TitleHintText = "Введите название материала";
-        private void Init()
-        {
+        private void Init() {
             InitializeComponent();
             DataContext = this;
         }
-        public ListeningMaterialControl()
-        {
+        public ListeningMaterialControl() {
             Init();
-            Material = new ListeningMaterial()
-            {
+            Material = new ListeningMaterial() {
                 Title = TitleHintText
             };
             btnDelete.Visibility = Visibility.Hidden;
         }
-        private void SaveIfReady()
-        {
-            if (Material.Audio != null && Material.Image != null && Material.Content != null)
-            {
-                if (Material.Id == null)
-                {
+        private void SaveIfReady() {
+            if (Material.Audio != null && Material.Image != null && Material.Content != null) {
+                if (Material.Id == null) {
                     ContentStore.SelectedSegment?.ListeningMaterials.Add(Material);
                 }
 
                 ContentStore.UpdateItem<Segment>(ContentStore.SelectedSegment!);
-                Task.Delay(5000);
                 ContentStore.SelectedSegment = ContentStore.SelectedSegment;
+                btnPreview.IsEnabled = true;
             }
         }
-        private static void SetButtonStyle(Button button, string modelId, bool isContentSet)
-        {
+        private static void SetButtonStyle(Button button, string modelId, bool isContentSet) {
             if (!isContentSet) return;
-            if (modelId == null)
-            {
+            if (modelId == null) {
                 button.Background = Brushes.LightYellow;
-            }
-            else
-            {
+            } else {
                 button.Background = Brushes.LightGreen;
             }
         }
 
-        public ListeningMaterialControl(ListeningMaterial material)
-        {
+        public ListeningMaterialControl(ListeningMaterial material) {
             Init();
             Material = material;
-            if (material.Id != null && material.Audio != null && material.Image != null && material.Content != null)
-            {
+            if (material.Id != null && material.Audio != null && material.Image != null && material.Content != null) {
                 btnPreview.IsEnabled = true;
                 btnPreview.Background = Brushes.LightGreen;
                 btnDelete.Visibility = Visibility.Visible;
@@ -78,30 +64,24 @@ namespace Content_Manager.UserControls
             SetButtonStyle(btnChooseText, material.Id, material.Content != null);
         }
 
-        private void txtTitle_GotFocus(object sender, RoutedEventArgs e)
-        {
-            if (Material.Title == TitleHintText && string.IsNullOrEmpty(Material.Content))
-            {
+        private void txtTitle_GotFocus(object sender, RoutedEventArgs e) {
+            if (Material.Title == TitleHintText && string.IsNullOrEmpty(Material.Content)) {
                 Material.Title = "";
             }
         }
 
-        private void txtTitle_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (string.IsNullOrEmpty(Material.Title) && string.IsNullOrEmpty(Material.Content))
-            {
+        private void txtTitle_LostFocus(object sender, RoutedEventArgs e) {
+            if (string.IsNullOrEmpty(Material.Title) && string.IsNullOrEmpty(Material.Content)) {
                 Material.Title = TitleHintText;
             }
         }
 
-        private void btnPreview_Click(object sender, RoutedEventArgs e)
-        {
+        private void btnPreview_Click(object sender, RoutedEventArgs e) {
             var listeningPreviewWindow = new ListeningPreviewWindow(Material);
             listeningPreviewWindow.ShowDialog();
         }
 
-        private void btnChooseText_Click(object sender, RoutedEventArgs e)
-        {
+        private void btnChooseText_Click(object sender, RoutedEventArgs e) {
             string filePath = FileService.SelectFilePath("Файлы с текстом (.txt) | *.txt;");
             if (string.IsNullOrEmpty(filePath)) return;
 
@@ -115,8 +95,7 @@ namespace Content_Manager.UserControls
             SaveIfReady();
         }
 
-        private void btnChooseImage_Click(object sender, RoutedEventArgs e)
-        {
+        private void btnChooseImage_Click(object sender, RoutedEventArgs e) {
             string filePath = FileService.SelectFilePath("Файлы изображений (.png) | *.png; *.jpg; *.jpeg; *.tiff");
             if (string.IsNullOrEmpty(filePath)) return;
 
@@ -133,8 +112,7 @@ namespace Content_Manager.UserControls
             // ContentStore.SelectedSegment = ContentStore.SelectedSegment;
 
         }
-        private void btnChooseAudio_Click(object sender, RoutedEventArgs e)
-        {
+        private void btnChooseAudio_Click(object sender, RoutedEventArgs e) {
             // Read the rtf file
             string filePath = FileService.SelectFilePath("MP3 Файлы (.mp3) | *.mp3");
             if (string.IsNullOrEmpty(filePath)) return;
@@ -149,24 +127,19 @@ namespace Content_Manager.UserControls
             SaveIfReady();
         }
 
-        private void txtTitle_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (txtTitle.Text == TitleHintText || string.IsNullOrEmpty(txtTitle.Text))
-            {
+        private void txtTitle_TextChanged(object sender, TextChangedEventArgs e) {
+            if (txtTitle.Text == TitleHintText || string.IsNullOrEmpty(txtTitle.Text)) {
                 btnChooseAudio.IsEnabled = false;
                 btnChooseImage.IsEnabled = false;
                 btnChooseText.IsEnabled = false;
-            }
-            else
-            {
+            } else {
                 btnChooseAudio.IsEnabled = true;
                 btnChooseImage.IsEnabled = true;
                 btnChooseText.IsEnabled = true;
             }
         }
 
-        private void btnDelete_Click(object sender, RoutedEventArgs e)
-        {
+        private void btnDelete_Click(object sender, RoutedEventArgs e) {
             ContentStore.SelectedSegment!.ListeningMaterials.Remove(Material);
             ContentStore.UpdateItem<Segment>(ContentStore.SelectedSegment);
             ContentStore.SelectedSegment = ContentStore.SelectedSegment;
