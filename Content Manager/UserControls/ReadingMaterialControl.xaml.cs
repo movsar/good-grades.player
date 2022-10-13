@@ -1,4 +1,5 @@
-﻿using Content_Manager.Services;
+﻿using Content_Manager.Models;
+using Content_Manager.Services;
 using Content_Manager.Stores;
 using Content_Manager.Windows;
 using Data.Interfaces;
@@ -17,41 +18,12 @@ using System.Windows.Media.Media3D;
 
 namespace Content_Manager.UserControls {
     public partial class ReadingMaterialControl : UserControl {
-        enum FormValues {
-            Title,
-            Content
-        }
-        class FormCompletionInfo {
-            public event Action<bool> StatusChanged;
-            public bool IsReady => _stats.Where(s => s.Value == true).Count() == _stats.Count();
-            private readonly StylingService _stylingService;
-
-            private readonly Dictionary<string, bool> _stats = new Dictionary<string, bool>();
-
-            public FormCompletionInfo(bool existingElement) {
-                // Initialize the dictionary
-                foreach (var v in Enum.GetNames<FormValues>()) {
-                    _stats.Add(v, existingElement);
-                }
-            }
-
-            public void Update(FormValues formValue, bool isSet) {
-                if (_stats[Enum.GetName(formValue)] == isSet) {
-                    return;
-                }
-
-                _stats[Enum.GetName(formValue)] = isSet;
-
-                StatusChanged?.Invoke(IsReady);
-            }
-        }
-
         ContentStore ContentStore => App.AppHost!.Services.GetRequiredService<ContentStore>();
         StylingService StylingService => App.AppHost!.Services.GetRequiredService<StylingService>();
-        public ReadingMaterial Material { get; set; }
-        private const string TitleHintText = "Введите название материала";
-        private readonly FormCompletionInfo formCompletionInfo;
 
+        private const string TitleHintText = "Введите название материала";
+        private FormCompletionInfo formCompletionInfo;
+        public ReadingMaterial Material { get; set; }
 
 
         #region Reactions
@@ -65,12 +37,12 @@ namespace Content_Manager.UserControls {
             }
         }
         private void OnTitleSet(bool isSet) {
-            formCompletionInfo.Update(FormValues.Title, isSet);
+            formCompletionInfo.Update(nameof(Material.Title), isSet);
         }
         private void OnContentSet(bool isSet = true) {
             btnUploadFromFile.Background = StylingService.StagedBrush;
 
-            formCompletionInfo.Update(FormValues.Content, isSet);
+            formCompletionInfo.Update(nameof(Material.Content), isSet);
         }
         #endregion
 
@@ -94,7 +66,8 @@ namespace Content_Manager.UserControls {
             InitializeComponent();
             SetUiForNewMaterial();
 
-            formCompletionInfo = new FormCompletionInfo(false);
+            var propertiesToWatch = new string[] { nameof(Material.Title), nameof(Material.Content) };
+            formCompletionInfo = new FormCompletionInfo(propertiesToWatch, false);
             formCompletionInfo.StatusChanged += OnFormStatusChanged;
 
             Material = new ReadingMaterial() { Title = TitleHintText };
@@ -104,7 +77,8 @@ namespace Content_Manager.UserControls {
             InitializeComponent();
             SetUiForExistingMaterial();
 
-            formCompletionInfo = new FormCompletionInfo(true);
+            var propertiesToWatch = new string[] { nameof(Material.Title), nameof(Material.Content) };
+            formCompletionInfo = new FormCompletionInfo(propertiesToWatch, true);
             formCompletionInfo.StatusChanged += OnFormStatusChanged;
 
             Material = material;
