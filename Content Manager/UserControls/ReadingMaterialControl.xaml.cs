@@ -20,7 +20,7 @@ namespace Content_Manager.UserControls {
 
         private bool IsModelReady() {
             return !string.IsNullOrEmpty(Material?.Content) && !string.IsNullOrEmpty(txtTitle.Text);
-       
+
         }
         private void SetupForNewMaterial() {
             btnUploadFromFile.IsEnabled = true;
@@ -90,9 +90,12 @@ namespace Content_Manager.UserControls {
                 MessageBox.Show("Укажите все необходимые данные для материала");
                 return;
             }
+            
+            if (string.IsNullOrEmpty(Material.Id)) {
+                ContentStore.SelectedSegment?.ReadingMaterials.Add(Material);
+            }
 
-            ContentStore.SelectedSegment?.ReadingMaterials.Add(Material);
-            ContentStore.SelectedSegment = ContentStore.SelectedSegment;
+            ContentStore.UpdateItem<Segment>(ContentStore!.SelectedSegment!);
         }
 
         private void btnPreview_Click(object sender, RoutedEventArgs e) {
