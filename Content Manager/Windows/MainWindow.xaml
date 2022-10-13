@@ -75,17 +75,5 @@
                 Height="23"
                 />
 
-
-        <Button Grid.Column="1"
-                Grid.Row="1"
-                Width="100"
-                Content="Сохранить"
-                Name="BtnSave"
-                Click="BtnSave_Click"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Bottom"
-                Cursor="Hand"
-                Height="23"
-                />
     </Grid>
 </Window>

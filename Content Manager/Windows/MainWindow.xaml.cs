@@ -54,10 +54,8 @@ namespace Content_Manager {
             if (model.GetType().IsAssignableTo(typeof(ISegment)) == false) return;
 
             var segment = model as Segment;
-            segment.ReadingMaterials = new();
-            segment.ListeningMaterials = new();
-            Segments.Add(segment);
-            CurrentSegment = segment;
+            Segments.Add(segment!);
+            CurrentSegment = segment!;
             tbcMain.Visibility = Visibility.Visible;
         }
 
@@ -101,10 +99,6 @@ namespace Content_Manager {
 
             CurrentSegment = segment;
             tbcMain.Visibility = Visibility.Visible;
-        }
-
-        private void BtnSave_Click(object sender, RoutedEventArgs e) {
-            _contentStore.UpdateItem<ISegment>(CurrentSegment);
         }
     }
 }

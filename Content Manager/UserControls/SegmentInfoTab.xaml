@@ -8,23 +8,34 @@
              d:DesignHeight="450" d:DesignWidth="800"
              x:Name="SegmentInfo">
     <Grid>
+
+     
+
         <StackPanel Margin="10 10 0 0">
-            
+            <Button x:Name="btnSave" 
+                    Background="LightSeaGreen"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    Margin="10 0 0 0" Padding="7 7 7 7" 
+                    Cursor="Hand"
+                    FontFamily="Segoe MDL2 Assets" Content="&#xE74E;" 
+                    Click="btnSave_Click"/>
             <Label Content="Название раздела"/>
             <TextBox Margin="10 0 10 0"
                      Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor,
                                                          AncestorType={x:Type Window}},
                                                          Path=DataContext.CurrentSegment.Title}"
                      VerticalAlignment="Top" />
-            
+
             <Label Content="Описание"/>
             <TextBox Margin="10 0 10 0"
                      Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor,
                                                          AncestorType={x:Type Window}},
                                                          Path=DataContext.CurrentSegment.Description, Mode=TwoWay}"
                      VerticalAlignment="Top" />
-            
+
         </StackPanel>
+
 
     </Grid>
 </UserControl>

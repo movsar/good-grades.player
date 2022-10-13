@@ -29,9 +29,10 @@ namespace Content_Manager.Models
 
         private void SegmentsRepository_ItemAdded(SegmentEntity dbEntity, IModelBase model)
         {
-
-            // Set the Id for the inserted object
-            model.Id = dbEntity.Id;
+            var segment = model as Segment;
+            segment!.Id = dbEntity.Id;
+            segment!.ReadingMaterials = new();
+            segment!.ListeningMaterials = new();
         }
 
         private IGeneralRepository SelectRepository<TModel>()
