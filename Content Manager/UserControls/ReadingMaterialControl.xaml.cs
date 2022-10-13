@@ -22,9 +22,8 @@ namespace Content_Manager.UserControls {
         StylingService StylingService => App.AppHost!.Services.GetRequiredService<StylingService>();
 
         private const string TitleHintText = "Введите название материала";
-        private FormCompletionInfo formCompletionInfo;
+        private FormCompletionInfo _formCompletionInfo;
         public ReadingMaterial Material { get; set; }
-
 
         #region Reactions
         private void OnFormStatusChanged(bool isReady) {
@@ -37,38 +36,40 @@ namespace Content_Manager.UserControls {
             }
         }
         private void OnTitleSet(bool isSet) {
-            formCompletionInfo.Update(nameof(Material.Title), isSet);
+            _formCompletionInfo.Update(nameof(Material.Title), isSet);
         }
         private void OnContentSet(bool isSet = true) {
             btnUploadFromFile.Background = StylingService.StagedBrush;
 
-            formCompletionInfo.Update(nameof(Material.Content), isSet);
+            _formCompletionInfo.Update(nameof(Material.Content), isSet);
         }
         #endregion
 
         #region Initialization
         private void SetUiForNewMaterial() {
-            DataContext = this;
-
             btnPreview.Visibility = Visibility.Collapsed;
             btnDelete.Visibility = Visibility.Collapsed;
             btnSave.Visibility = Visibility.Collapsed;
+
+            btnPreview.Background = StylingService.StagedBrush;
         }
         private void SetUiForExistingMaterial() {
-            DataContext = this;
-
             btnUploadFromFile.Background = StylingService.ReadyBrush;
             btnPreview.Background = StylingService.ReadyBrush;
             btnDelete.Visibility = Visibility.Visible;
         }
 
+        private void SharedInitialization(bool isExistingMaterial = false) {
+            DataContext = this;
+            
+            var propertiesToWatch = new string[] { nameof(Material.Title), nameof(Material.Content) };
+            _formCompletionInfo = new FormCompletionInfo(propertiesToWatch, isExistingMaterial);
+            _formCompletionInfo.StatusChanged += OnFormStatusChanged;
+        }
         public ReadingMaterialControl() {
+            SharedInitialization();
             InitializeComponent();
             SetUiForNewMaterial();
-
-            var propertiesToWatch = new string[] { nameof(Material.Title), nameof(Material.Content) };
-            formCompletionInfo = new FormCompletionInfo(propertiesToWatch, false);
-            formCompletionInfo.StatusChanged += OnFormStatusChanged;
 
             Material = new ReadingMaterial() { Title = TitleHintText };
         }
@@ -76,10 +77,7 @@ namespace Content_Manager.UserControls {
         public ReadingMaterialControl(ReadingMaterial material) {
             InitializeComponent();
             SetUiForExistingMaterial();
-
-            var propertiesToWatch = new string[] { nameof(Material.Title), nameof(Material.Content) };
-            formCompletionInfo = new FormCompletionInfo(propertiesToWatch, true);
-            formCompletionInfo.StatusChanged += OnFormStatusChanged;
+            SharedInitialization(true);
 
             Material = material;
         }
