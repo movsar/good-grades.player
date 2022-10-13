@@ -12,7 +12,7 @@
                      Margin="10 0 0 0" 
                      Padding="5 0 0 0"
                      Width="200" 
-                     Text="{Binding Path=Material.Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                     Text="{Binding Path=LmTitle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                      TextAlignment="Left"
                      VerticalContentAlignment="Center"
                      GotFocus="txtTitle_GotFocus"
@@ -34,16 +34,26 @@
                     Cursor="Hand"
                     Content="Изображение" Click="btnChooseImage_Click"/>
 
-            <Button x:Name="btnPreview" 
-                    IsEnabled="False"
+            <Button x:Name="btnPreview"
+                    Background="LightSeaGreen"
                     Margin="10 0 0 0" Padding="7 0 7 0" 
                     Cursor="Hand"
-                    Content="Просмотр" Click="btnPreview_Click"/>
+                    FontFamily="Segoe MDL2 Assets" Content="&#xE8FF;" 
+                    Click="btnPreview_Click"/>
+            
+            <Button x:Name="btnSave" 
+                    Background="LightSeaGreen"
+                    Margin="10 0 0 0" Padding="7 0 7 0" 
+                    Cursor="Hand"
+                    FontFamily="Segoe MDL2 Assets" Content="&#xE74E;" 
+                    Click="btnSave_Click"/>
 
             <Button x:Name="btnDelete" 
+                    Background="IndianRed"
                     Margin="10 0 0 0" Padding="7 0 7 0" 
                     Cursor="Hand"
-                    Content="x" Click="btnDelete_Click"/>
+                    FontFamily="Segoe MDL2 Assets" Content="&#xE74D;" 
+                    Click="btnDelete_Click"/>
         </StackPanel>
     </Grid>
 </UserControl>

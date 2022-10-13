@@ -105,8 +105,12 @@ namespace Content_Manager.Stores {
             }
         }
 
-        public ReadingMaterial GetReadingMaterialById(string id) {
+        internal ReadingMaterial GetReadingMaterialById(string id) {
             return SelectedSegment!.ReadingMaterials.Where(rm => rm.Id == id).First();
+        }
+
+        internal ListeningMaterial GetListeningMaterialById(string id) {
+            return SelectedSegment!.ListeningMaterials.Where(rm => rm.Id == id).First();
         }
     }
 }

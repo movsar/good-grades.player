@@ -1,4 +1,5 @@
-﻿using Data.Models;
+﻿using Data.Interfaces;
+using Data.Models;
 using Plugin.SimpleAudioPlayer;
 using System;
 using System.IO;
@@ -13,19 +14,29 @@ namespace Content_Manager.Windows {
         int index;
         readonly string _path;
 
-        public ListeningPreviewWindow(ListeningMaterial listeningMaterial) {
+        private string _lmTitle;
+        private string _lmText;
+        private byte[] _lmImage;
+        private byte[] _lmAudio;
+
+        public ListeningPreviewWindow(string lmTitle, string lmText, byte[] lmImage, byte[] lmAudio) {
+            _lmTitle = lmTitle;
+            _lmText = lmText;
+            _lmImage = lmImage;
+            _lmAudio = lmAudio;
+
             PurgeAudioFiles();
-            CrossSimpleAudioPlayer.Current.Load(new MemoryStream(listeningMaterial.Audio));
+            CrossSimpleAudioPlayer.Current.Load(new MemoryStream(_lmAudio));
 
             InitializeComponent();
 
             BitmapImage logo = new BitmapImage();
             logo.BeginInit();
-            logo.StreamSource = new MemoryStream(listeningMaterial.Image);
+            logo.StreamSource = new MemoryStream(_lmImage);
             logo.EndInit();
 
             imgMain.Source = logo;
-            txtMain.Text = listeningMaterial.Content;
+            txtMain.Text = _lmText;
         }
 
         private void PurgeAudioFiles() {

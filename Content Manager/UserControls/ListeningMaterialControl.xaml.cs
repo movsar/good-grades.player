@@ -1,8 +1,10 @@
-﻿using Content_Manager.Services;
+﻿using Content_Manager.Models;
+using Content_Manager.Services;
 using Content_Manager.Stores;
 using Content_Manager.Windows;
 using Data.Models;
 using Microsoft.Extensions.DependencyInjection;
+using Realms;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -15,72 +17,122 @@ using System.Windows.Media.Media3D;
 namespace Content_Manager.UserControls {
     public partial class ListeningMaterialControl : UserControl {
 
-        ContentStore ContentStore => App.AppHost!.Services.GetRequiredService<ContentStore>();
-        public ListeningMaterial Material { get; set; }
+        #region Fields
+        private FormCompletionInfo _formCompletionInfo;
         private const string TitleHintText = "Введите название материала";
-        private void Init() {
+        #endregion
+
+        #region Properties
+        ContentStore ContentStore => App.AppHost!.Services.GetRequiredService<ContentStore>();
+        StylingService StylingService => App.AppHost!.Services.GetRequiredService<StylingService>();
+
+        public string LmTitle {
+            get { return (string)GetValue(TitleProperty); }
+            set { SetValue(TitleProperty, value); }
+        }
+        public static readonly DependencyProperty TitleProperty =
+            DependencyProperty.Register("LmTitle", typeof(string), typeof(ListeningMaterialControl), new PropertyMetadata(""));
+
+        public string LmText { get; set; }
+        public byte[] LmAudio { get; set; }
+        public byte[] LmImage { get; set; }
+        private string LmId { get; }
+        #endregion
+
+        #region Reactions
+        private void OnFormStatusChanged(bool isReady) {
+            if (isReady) {
+                btnSave.Visibility = Visibility.Visible;
+                btnPreview.Visibility = Visibility.Visible;
+            } else {
+                btnSave.Visibility = Visibility.Collapsed;
+                btnPreview.Visibility = Visibility.Collapsed;
+            }
+        }
+        private void OnTitleSet(bool isSet) {
+            _formCompletionInfo.Update(nameof(LmTitle), isSet);
+        }
+        private void OnTextSet(bool isSet = true) {
+            btnChooseText.Background = StylingService.StagedBrush;
+
+            _formCompletionInfo.Update(nameof(LmText), isSet);
+        }
+        private void OnImageSet(bool isSet = true) {
+            btnChooseImage.Background = StylingService.StagedBrush;
+
+            _formCompletionInfo.Update(nameof(LmImage), isSet);
+        }
+        private void OnAudioSet(bool isSet = true) {
+            btnChooseAudio.Background = StylingService.StagedBrush;
+
+            _formCompletionInfo.Update(nameof(LmAudio), isSet);
+        }
+        #endregion
+
+        #region Initialization
+        private void SetUiForNewMaterial() {
+            btnPreview.Visibility = Visibility.Collapsed;
+            btnDelete.Visibility = Visibility.Collapsed;
+            btnSave.Visibility = Visibility.Collapsed;
+        }
+        private void SetUiForExistingMaterial() {
+            btnDelete.Visibility = Visibility.Visible;
+            btnChooseText.Background = StylingService.ReadyBrush;
+            btnChooseAudio.Background = StylingService.ReadyBrush;
+            btnChooseImage.Background = StylingService.ReadyBrush;
+
+        }
+        private void SharedInitialization(bool isExistingMaterial = false) {
             InitializeComponent();
             DataContext = this;
+
+            var propertiesToWatch = new string[] {
+                nameof(LmTitle), nameof(LmText), nameof(LmAudio), nameof(LmImage)
+            };
+            _formCompletionInfo = new FormCompletionInfo(propertiesToWatch, isExistingMaterial);
+            _formCompletionInfo.StatusChanged += OnFormStatusChanged;
         }
         public ListeningMaterialControl() {
-            Init();
-            Material = new ListeningMaterial() {
-                Title = TitleHintText
-            };
-            btnDelete.Visibility = Visibility.Hidden;
-        }
-        private void SaveIfReady() {
-            if (Material.Audio != null && Material.Image != null && Material.Content != null) {
-                if (Material.Id == null) {
-                    ContentStore.SelectedSegment?.ListeningMaterials.Add(Material);
-                }
+            SharedInitialization();
+            SetUiForNewMaterial();
 
-                ContentStore.UpdateItem<Segment>(ContentStore.SelectedSegment!);
-                ContentStore.SelectedSegment = ContentStore.SelectedSegment;
-                btnPreview.IsEnabled = true;
-            }
-        }
-        private static void SetButtonStyle(Button button, string modelId, bool isContentSet) {
-            if (!isContentSet) return;
-            if (modelId == null) {
-                button.Background = Brushes.LightYellow;
-            } else {
-                button.Background = Brushes.LightGreen;
-            }
+            LmTitle = TitleHintText;
         }
 
         public ListeningMaterialControl(ListeningMaterial material) {
-            Init();
-            Material = material;
-            if (material.Id != null && material.Audio != null && material.Image != null && material.Content != null) {
-                btnPreview.IsEnabled = true;
-                btnPreview.Background = Brushes.LightGreen;
-                btnDelete.Visibility = Visibility.Visible;
-                btnDelete.Background = Brushes.Red;
-            }
+            SharedInitialization(true);
+            SetUiForExistingMaterial();
 
-            SetButtonStyle(btnChooseAudio, material.Id, material.Audio != null);
-            SetButtonStyle(btnChooseImage, material.Id, material.Image != null);
-            SetButtonStyle(btnChooseText, material.Id, material.Content != null);
+            LmId = material.Id;
+            LmTitle = material.Title;
+            LmAudio = material.Audio;
+            LmImage = material.Image;
         }
+        #endregion
 
+        #region TitleHandlers
         private void txtTitle_GotFocus(object sender, RoutedEventArgs e) {
-            if (Material.Title == TitleHintText && string.IsNullOrEmpty(Material.Content)) {
-                Material.Title = "";
+            if (LmTitle == TitleHintText) {
+                LmTitle = "";
             }
         }
 
         private void txtTitle_LostFocus(object sender, RoutedEventArgs e) {
-            if (string.IsNullOrEmpty(Material.Title) && string.IsNullOrEmpty(Material.Content)) {
-                Material.Title = TitleHintText;
+            if (string.IsNullOrEmpty(LmTitle)) {
+                LmTitle = TitleHintText;
             }
         }
 
-        private void btnPreview_Click(object sender, RoutedEventArgs e) {
-            var listeningPreviewWindow = new ListeningPreviewWindow(Material);
-            listeningPreviewWindow.ShowDialog();
+        private void txtTitle_TextChanged(object sender, TextChangedEventArgs e) {
+            if (string.IsNullOrEmpty(txtTitle.Text) || txtTitle.Text.Equals(TitleHintText)) {
+                OnTitleSet(false);
+            } else {
+                OnTitleSet(true);
+            }
         }
+        #endregion
 
+        #region ButtonHandlers
         private void btnChooseText_Click(object sender, RoutedEventArgs e) {
             string filePath = FileService.SelectFilePath("Файлы с текстом (.txt) | *.txt;");
             if (string.IsNullOrEmpty(filePath)) return;
@@ -89,10 +141,8 @@ namespace Content_Manager.UserControls {
             var content = File.ReadAllText(filePath);
             if (string.IsNullOrEmpty(filePath)) return;
 
-            Material.Content = content;
-            SetButtonStyle(btnChooseText, Material.Id, true);
-
-            SaveIfReady();
+            LmText = content;
+            OnTextSet(true);
         }
 
         private void btnChooseImage_Click(object sender, RoutedEventArgs e) {
@@ -103,15 +153,10 @@ namespace Content_Manager.UserControls {
             var content = File.ReadAllBytes(filePath);
             if (content.Length == 0) return;
 
-            Material.Image = content;
-            SetButtonStyle(btnChooseImage, Material.Id, true);
-
-            SaveIfReady();
-
-            // Refresh UI
-            // ContentStore.SelectedSegment = ContentStore.SelectedSegment;
-
+            LmImage = content;
+            OnImageSet(true);
         }
+
         private void btnChooseAudio_Click(object sender, RoutedEventArgs e) {
             // Read the rtf file
             string filePath = FileService.SelectFilePath("MP3 Файлы (.mp3) | *.mp3");
@@ -121,28 +166,37 @@ namespace Content_Manager.UserControls {
             var content = File.ReadAllBytes(filePath);
             if (content.Length == 0) return;
 
-            Material.Audio = content;
-            SetButtonStyle(btnChooseAudio, Material.Id, true);
-
-            SaveIfReady();
+            LmAudio = content;
+            OnAudioSet(true);
         }
 
-        private void txtTitle_TextChanged(object sender, TextChangedEventArgs e) {
-            if (txtTitle.Text == TitleHintText || string.IsNullOrEmpty(txtTitle.Text)) {
-                btnChooseAudio.IsEnabled = false;
-                btnChooseImage.IsEnabled = false;
-                btnChooseText.IsEnabled = false;
+        private void btnPreview_Click(object sender, RoutedEventArgs e) {
+            var listeningPreviewWindow = new ListeningPreviewWindow(LmTitle, LmText, LmImage, LmAudio);
+            listeningPreviewWindow.ShowDialog();
+        }
+        private void btnSave_Click(object sender, RoutedEventArgs e) {
+            //MessageBox.Show("Укажите все необходимые данные для материала");
+
+            if (string.IsNullOrEmpty(LmId)) {
+                ContentStore.SelectedSegment?.ListeningMaterials
+                    .Add(new ListeningMaterial(LmTitle, LmText, audio: LmAudio, image: LmImage));
             } else {
-                btnChooseAudio.IsEnabled = true;
-                btnChooseImage.IsEnabled = true;
-                btnChooseText.IsEnabled = true;
+                var lm = ContentStore.GetListeningMaterialById(LmId);
+                lm.Title = LmTitle;
+                lm.Content = LmText;
+                lm.Image = LmImage;
+                lm.Audio = LmAudio;
             }
+
+            ContentStore.UpdateItem<Segment>(ContentStore!.SelectedSegment!);
         }
 
         private void btnDelete_Click(object sender, RoutedEventArgs e) {
-            ContentStore.SelectedSegment!.ListeningMaterials.Remove(Material);
+            ContentStore.SelectedSegment!.ListeningMaterials.Remove(ContentStore.GetListeningMaterialById(LmId));
             ContentStore.UpdateItem<Segment>(ContentStore.SelectedSegment);
             ContentStore.SelectedSegment = ContentStore.SelectedSegment;
         }
+        #endregion
+
     }
 }

@@ -20,21 +20,15 @@ namespace Content_Manager.UserControls {
         ContentStore ContentStore => App.AppHost!.Services.GetRequiredService<ContentStore>();
         StylingService StylingService => App.AppHost!.Services.GetRequiredService<StylingService>();
 
-        public string Title {
+        public string RmTitle {
             get { return (string)GetValue(TitleProperty); }
             set { SetValue(TitleProperty, value); }
         }
         public static readonly DependencyProperty TitleProperty =
-            DependencyProperty.Register("Title", typeof(string), typeof(ReadingMaterialControl), new PropertyMetadata(""));
+            DependencyProperty.Register("RmTitle", typeof(string), typeof(ReadingMaterialControl), new PropertyMetadata(""));
 
-        public string Content {
-            get { return (string)GetValue(ContentProperty); }
-            set { SetValue(ContentProperty, value); }
-        }
-        public static readonly DependencyProperty ContentProperty =
-            DependencyProperty.Register("Content", typeof(string), typeof(ReadingMaterialControl), new PropertyMetadata(""));
-
-        private string Id { get; }
+        public string RmText { get; set; }
+        private string RmId { get; }
 
         #endregion
 
@@ -49,12 +43,12 @@ namespace Content_Manager.UserControls {
             }
         }
         private void OnTitleSet(bool isSet) {
-            _formCompletionInfo.Update(nameof(Title), isSet);
+            _formCompletionInfo.Update(nameof(RmTitle), isSet);
         }
         private void OnContentSet(bool isSet = true) {
             btnUploadFromFile.Background = StylingService.StagedBrush;
 
-            _formCompletionInfo.Update(nameof(Content), isSet);
+            _formCompletionInfo.Update(nameof(RmText), isSet);
         }
         #endregion
 
@@ -73,41 +67,40 @@ namespace Content_Manager.UserControls {
         }
 
         private void SharedInitialization(bool isExistingMaterial = false) {
+            InitializeComponent();
             DataContext = this;
 
-            var propertiesToWatch = new string[] { nameof(Title), nameof(Content) };
+            var propertiesToWatch = new string[] { nameof(RmTitle), nameof(RmText) };
             _formCompletionInfo = new FormCompletionInfo(propertiesToWatch, isExistingMaterial);
             _formCompletionInfo.StatusChanged += OnFormStatusChanged;
         }
         public ReadingMaterialControl() {
             SharedInitialization();
-            InitializeComponent();
             SetUiForNewMaterial();
 
-            Title = TitleHintText;
+            RmTitle = TitleHintText;
         }
 
         public ReadingMaterialControl(ReadingMaterial material) {
-            InitializeComponent();
-            SetUiForExistingMaterial();
             SharedInitialization(true);
+            SetUiForExistingMaterial();
 
-            Id = material.Id!;
-            Title = material.Title;
-            Content = material.Content;
+            RmId = material.Id!;
+            RmTitle = material.Title;
+            RmText = material.Content;
         }
         #endregion
 
         #region TitleHandlers
         private void txtTitle_GotFocus(object sender, RoutedEventArgs e) {
-            if (Title == TitleHintText) {
-                Title = "";
+            if (RmTitle == TitleHintText) {
+                RmTitle = "";
             }
         }
 
         private void txtTitle_LostFocus(object sender, RoutedEventArgs e) {
-            if (string.IsNullOrEmpty(Title)) {
-                Title = TitleHintText;
+            if (string.IsNullOrEmpty(RmTitle)) {
+                RmTitle = TitleHintText;
             }
         }
 
@@ -121,26 +114,6 @@ namespace Content_Manager.UserControls {
         #endregion
 
         #region ButtonHandlers
-        private void btnSave_Click(object sender, RoutedEventArgs e) {
-            //MessageBox.Show("Укажите все необходимые данные для материала");
-
-            if (string.IsNullOrEmpty(Id)) {
-                ContentStore.SelectedSegment?.ReadingMaterials
-                    .Add(new ReadingMaterial(Title, Content));
-            } else {
-                var rm = ContentStore.GetReadingMaterialById(Id);
-                rm.Title = Title;
-                rm.Content = Content;
-            }
-
-            ContentStore.UpdateItem<Segment>(ContentStore!.SelectedSegment!);
-        }
-
-        private void btnPreview_Click(object sender, RoutedEventArgs e) {
-            var rtbPreviewWindow = new RtbPreviewWindow(Title, Content);
-            rtbPreviewWindow.ShowDialog();
-        }
-
         private void btnUploadFromFile_Click(object sender, RoutedEventArgs e) {
             // Read the rtf file
             string filePath = FileService.SelectFilePath("RTF документы (.rtf)|*.rtf");
@@ -148,13 +121,32 @@ namespace Content_Manager.UserControls {
 
             // Read, load contents to the object and add to collection
             var contents = File.ReadAllText(filePath);
-            Content = contents;
+            RmText = contents;
 
             OnContentSet(true);
         }
+        private void btnPreview_Click(object sender, RoutedEventArgs e) {
+            var rtbPreviewWindow = new RtbPreviewWindow(RmTitle, RmText);
+            rtbPreviewWindow.ShowDialog();
+        }
+
+        private void btnSave_Click(object sender, RoutedEventArgs e) {
+            //MessageBox.Show("Укажите все необходимые данные для материала");
+
+            if (string.IsNullOrEmpty(RmId)) {
+                ContentStore.SelectedSegment?.ReadingMaterials
+                    .Add(new ReadingMaterial(RmTitle, RmText));
+            } else {
+                var rm = ContentStore.GetReadingMaterialById(RmId);
+                rm.Title = RmTitle;
+                rm.Content = RmText;
+            }
+
+            ContentStore.UpdateItem<Segment>(ContentStore!.SelectedSegment!);
+        }
 
         private void btnDelete_Click(object sender, RoutedEventArgs e) {
-            ContentStore.SelectedSegment!.ReadingMaterials.Remove(ContentStore.GetReadingMaterialById(Id));
+            ContentStore.SelectedSegment!.ReadingMaterials.Remove(ContentStore.GetReadingMaterialById(RmId));
             ContentStore.UpdateItem<Segment>(ContentStore.SelectedSegment);
             ContentStore.SelectedSegment = ContentStore.SelectedSegment;
         }

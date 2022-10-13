@@ -12,7 +12,7 @@
                      Margin="10 0 0 0" 
                      Padding="5 0 0 0"
                      Width="250" 
-                     Text="{Binding Path=Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                     Text="{Binding Path=RmTitle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                      TextAlignment="Left"
                      VerticalContentAlignment="Center"
                      GotFocus="txtTitle_GotFocus"
@@ -25,11 +25,13 @@
                     Cursor="Hand"
                     Content="Текст" Click="btnUploadFromFile_Click"/>
 
-            <Button x:Name="btnPreview" 
+            <Button x:Name="btnPreview"
+                    Background="LightSeaGreen"
                     Margin="10 0 0 0" Padding="7 0 7 0" 
                     Cursor="Hand"
-                    Content="Просмотр" Click="btnPreview_Click"/>
-
+                    FontFamily="Segoe MDL2 Assets" Content="&#xE8FF;" 
+                    Click="btnPreview_Click"/>
+            
             <Button x:Name="btnSave" 
                     Background="LightSeaGreen"
                     Margin="10 0 0 0" Padding="7 0 7 0" 
@@ -38,7 +40,6 @@
                     Click="btnSave_Click"/>
 
             <Button x:Name="btnDelete" 
-                    Visibility="Hidden"
                     Background="IndianRed"
                     Margin="10 0 0 0" Padding="7 0 7 0" 
                     Cursor="Hand"
