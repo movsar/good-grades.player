@@ -18,29 +18,24 @@ using Data.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Content_Manager.Stores;
 
-namespace Content_Manager.UserControls
-{
-    public partial class ReadingTab : UserControl
-    {
+namespace Content_Manager.UserControls {
+    public partial class ReadingTab : UserControl {
         private ContentStore _contentStore { get; }
-        public ReadingTab()
-        {
+        public ReadingTab() {
             InitializeComponent();
             DataContext = this;
 
             _contentStore = App.AppHost!.Services.GetRequiredService<ContentStore>();
             _contentStore.SelectedSegmentChanged += _contentStore_SegmentChanged;
-           
+
         }
 
-        private void _contentStore_SegmentChanged(Segment selectedSegment)
-        {
+        private void _contentStore_SegmentChanged(Segment selectedSegment) {
             spReadingMaterialControls.Children.Clear();
 
             if (selectedSegment == null) return;
 
-            foreach (var material in selectedSegment.ReadingMaterials)
-            {
+            foreach (var material in selectedSegment.ReadingMaterials) {
                 spReadingMaterialControls.Children.Add(new ReadingMaterialControl(material));
             }
 

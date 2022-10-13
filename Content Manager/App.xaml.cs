@@ -1,51 +1,33 @@
 ﻿using Content_Manager.Models;
+using Content_Manager.Services;
 using Content_Manager.Stores;
-using Content_Manager.UserControls;
 using Data;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 
-namespace Content_Manager
-{
-    public partial class App : Application
-    {
+namespace Content_Manager {
+    public partial class App : Application {
         public static IHost? AppHost { get; private set; }
-        public App()
-        {
+        public App() {
             // Initialize DB
             Storage storage;
-            try
-            {
+            try {
                 storage = new Storage(false);
-            }
-            catch
-            {
+            } catch {
                 storage = new Storage(true);
             }
 
             AppHost = Host.CreateDefaultBuilder()
-                .ConfigureServices((hostContext, services) =>
-                {
+                .ConfigureServices((hostContext, services) => {
                     services.AddSingleton(provider => new ContentModel(storage));
-                    services.AddSingleton<ContentStore>(); 
+                    services.AddSingleton<ContentStore>();
                     services.AddSingleton<MainWindow>();
-
-                    services.AddTransient<SegmentInfoTab>();
-                    services.AddTransient<ReadingMaterialControl>();
-
+                    services.AddSingleton<StylingService>();
                 }).Build();
         }
 
-        protected override void OnStartup(StartupEventArgs e)
-        {
+        protected override void OnStartup(StartupEventArgs e) {
             AppHost.Start();
             var startUpForm = AppHost!.Services.GetRequiredService<MainWindow>();
             startUpForm.Show();
@@ -53,8 +35,7 @@ namespace Content_Manager
             base.OnStartup(e);
         }
 
-        protected override void OnExit(ExitEventArgs e)
-        {
+        protected override void OnExit(ExitEventArgs e) {
             AppHost!.StopAsync();
             base.OnExit(e);
         }

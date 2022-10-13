@@ -9,17 +9,14 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace Content_Manager
-{
-    public partial class MainWindow : Window
-    {
+namespace Content_Manager {
+    public partial class MainWindow : Window {
         public ICommand DeleteSelectedSegment { get; }
 
         private readonly ContentStore _contentStore;
         public ObservableCollection<ISegment> Segments { get; }
 
-        public Segment CurrentSegment
-        {
+        public Segment CurrentSegment {
             get { return (Segment)GetValue(CurrentSegmentProperty); }
             set { SetValue(CurrentSegmentProperty, value); _contentStore.SelectedSegment = value; }
         }
@@ -27,8 +24,7 @@ namespace Content_Manager
         public static readonly DependencyProperty CurrentSegmentProperty =
             DependencyProperty.Register("CurrentSegment", typeof(Segment), typeof(MainWindow), new PropertyMetadata(null));
 
-        public MainWindow(ContentStore contentStore)
-        {
+        public MainWindow(ContentStore contentStore) {
             InitializeComponent();
 
             // Initialize content store
@@ -36,8 +32,7 @@ namespace Content_Manager
 
             // Set existing segments
             Segments = new ObservableCollection<ISegment>();
-            foreach (var segment in _contentStore.StoredSegments)
-            {
+            foreach (var segment in _contentStore.StoredSegments) {
                 Segments.Add(segment);
             }
 
@@ -55,52 +50,52 @@ namespace Content_Manager
             tbcMain.Visibility = Visibility.Hidden;
         }
 
-        private void OnSegmentAdded(IModelBase model)
-        {
+        private void OnSegmentAdded(IModelBase model) {
             if (model.GetType().IsAssignableTo(typeof(ISegment)) == false) return;
 
             var segment = model as Segment;
-            segment.ReadingMaterials = new ();
-            segment.ListeningMaterials = new ();
+            segment.ReadingMaterials = new();
+            segment.ListeningMaterials = new();
             Segments.Add(segment);
             CurrentSegment = segment;
             tbcMain.Visibility = Visibility.Visible;
         }
 
-        private void OnSegmentUpdated(IModelBase model)
-        {
+        private void OnSegmentUpdated(IModelBase model) {
             if (model.GetType().IsAssignableTo(typeof(ISegment)) == false) return;
 
-            var segment = model as ISegment;
+            var segment = model as Segment;
             var index = Segments.ToList().FindIndex(s => s.Id == segment!.Id);
 
+            // Refresh UI
             lvSegments.Items.Refresh();
+            
+            // Force Segment's refresh
+            if (_contentStore.SelectedSegment!.Id == segment!.Id) {
+                _contentStore.SelectedSegment = segment;
+            }
         }
 
-        private void OnSegmentDeleted(IModelBase model)
-        {
+        private void OnSegmentDeleted(IModelBase model) {
             if (model.GetType().IsAssignableTo(typeof(ISegment)) == false) return;
 
             var segment = model as ISegment;
             var index = Segments.ToList().FindIndex(s => s.Id == segment!.Id);
             Segments.RemoveAt(index);
-            
-            if (CurrentSegment == segment)
-            {
+
+            if (CurrentSegment == segment) {
                 CurrentSegment = null;
                 tbcMain.Visibility = Visibility.Hidden;
             }
         }
 
-        private void BtnNewSection_Click(object sender, RoutedEventArgs e)
-        {
+        private void BtnNewSection_Click(object sender, RoutedEventArgs e) {
             ISegment segment = new Segment() { Title = "Керла дакъа" };
 
             _contentStore.AddItem<ISegment>(segment);
         }
 
-        private void lvSegments_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
+        private void lvSegments_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             var segment = ((Segment)lvSegments.SelectedItem);
             if (segment == null) return;
 
@@ -108,8 +103,7 @@ namespace Content_Manager
             tbcMain.Visibility = Visibility.Visible;
         }
 
-        private void BtnSave_Click(object sender, RoutedEventArgs e)
-        {
+        private void BtnSave_Click(object sender, RoutedEventArgs e) {
             _contentStore.UpdateItem<ISegment>(CurrentSegment);
         }
     }

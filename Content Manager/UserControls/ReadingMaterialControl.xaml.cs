@@ -24,6 +24,7 @@ namespace Content_Manager.UserControls {
         class FormCompletionInfo {
             public event Action<bool> StatusChanged;
             public bool IsReady => _stats.Where(s => s.Value == true).Count() == _stats.Count();
+            private readonly StylingService _stylingService;
 
             private readonly Dictionary<string, bool> _stats = new Dictionary<string, bool>();
 
@@ -46,6 +47,7 @@ namespace Content_Manager.UserControls {
         }
 
         ContentStore ContentStore => App.AppHost!.Services.GetRequiredService<ContentStore>();
+        StylingService StylingService => App.AppHost!.Services.GetRequiredService<StylingService>();
         public ReadingMaterial Material { get; set; }
         private const string TitleHintText = "Введите название материала";
         private readonly FormCompletionInfo formCompletionInfo;
@@ -56,15 +58,17 @@ namespace Content_Manager.UserControls {
         private void OnFormStatusChanged(bool isReady) {
             if (isReady) {
                 btnSave.Visibility = Visibility.Visible;
+                btnPreview.Visibility = Visibility.Visible;
             } else {
                 btnSave.Visibility = Visibility.Collapsed;
+                btnPreview.Visibility = Visibility.Collapsed;
             }
         }
         private void OnTitleSet(bool isSet) {
             formCompletionInfo.Update(FormValues.Title, isSet);
         }
         private void OnContentSet(bool isSet = true) {
-            btnUploadFromFile.Background = Brushes.LightYellow;
+            btnUploadFromFile.Background = StylingService.StagedBrush;
 
             formCompletionInfo.Update(FormValues.Content, isSet);
         }
@@ -74,8 +78,6 @@ namespace Content_Manager.UserControls {
         private void SetUiForNewMaterial() {
             DataContext = this;
 
-            btnUploadFromFile.IsEnabled = true;
-
             btnPreview.Visibility = Visibility.Collapsed;
             btnDelete.Visibility = Visibility.Collapsed;
             btnSave.Visibility = Visibility.Collapsed;
@@ -83,12 +85,8 @@ namespace Content_Manager.UserControls {
         private void SetUiForExistingMaterial() {
             DataContext = this;
 
-            btnUploadFromFile.Background = Brushes.LimeGreen;
-            btnUploadFromFile.IsEnabled = true;
-
-            btnPreview.IsEnabled = true;
-            btnPreview.Background = Brushes.LimeGreen;
-
+            btnUploadFromFile.Background = StylingService.ReadyBrush;
+            btnPreview.Background = StylingService.ReadyBrush;
             btnDelete.Visibility = Visibility.Visible;
         }
 
@@ -135,6 +133,7 @@ namespace Content_Manager.UserControls {
         }
         #endregion
 
+        #region Buttons
         private void btnSave_Click(object sender, RoutedEventArgs e) {
             //MessageBox.Show("Укажите все необходимые данные для материала");
 
@@ -143,7 +142,6 @@ namespace Content_Manager.UserControls {
             }
 
             ContentStore.UpdateItem<Segment>(ContentStore!.SelectedSegment!);
-            ContentStore.SelectedSegment = ContentStore.SelectedSegment;
         }
 
         private void btnPreview_Click(object sender, RoutedEventArgs e) {
@@ -168,7 +166,7 @@ namespace Content_Manager.UserControls {
             ContentStore.UpdateItem<Segment>(ContentStore.SelectedSegment);
             ContentStore.SelectedSegment = ContentStore.SelectedSegment;
         }
-
+        #endregion
 
     }
 }
