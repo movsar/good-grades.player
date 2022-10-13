@@ -17,7 +17,7 @@ namespace Data.Entities
 
         [Required]
         public string Title { get; set; }
-        public string Content { get; set; }
+        public string Text { get; set; }
         public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.Now;
         public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;
         public void SetFromModel(IModelBase model)
@@ -25,7 +25,7 @@ namespace Data.Entities
             var o = model as IReadingMaterial;
             
             Title = o.Title;
-            Content = o.Content;
+            Text = o.Text;
             ModifiedAt = DateTime.Now;
         }
     }

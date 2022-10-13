@@ -2,7 +2,6 @@
 using Content_Manager.Stores;
 using Data.Interfaces;
 using Data.Models;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;

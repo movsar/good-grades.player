@@ -2,12 +2,12 @@
 
 namespace Data.Models {
     public class ReadingMaterial : ModelBase, IReadingMaterial {
-        public string Content { get; set; }
+        public string Text { get; set; }
         public string Title { get; set; }
 
-        public ReadingMaterial(string title, string content) {
+        public ReadingMaterial(string title, string text) {
             Title = title;
-            Content = content;
+            Text = text;
         }
     }
 }

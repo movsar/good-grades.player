@@ -87,7 +87,7 @@ namespace Content_Manager.UserControls {
 
             RmId = material.Id!;
             RmTitle = material.Title;
-            RmText = material.Content;
+            RmText = material.Text;
         }
         #endregion
 
@@ -139,7 +139,7 @@ namespace Content_Manager.UserControls {
             } else {
                 var rm = ContentStore.GetReadingMaterialById(RmId);
                 rm.Title = RmTitle;
-                rm.Content = RmText;
+                rm.Text = RmText;
             }
 
             ContentStore.UpdateItem<Segment>(ContentStore!.SelectedSegment!);

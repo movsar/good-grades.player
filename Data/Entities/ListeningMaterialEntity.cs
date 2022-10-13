@@ -17,7 +17,7 @@ namespace Data.Entities
 
         [Required]
         public string Title { get; set; }
-        public string Content { get; set; }
+        public string Text { get; set; }
         public byte[] Audio { get; set; }
         public byte[] Image { get; set; }
         public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.Now;
@@ -27,7 +27,7 @@ namespace Data.Entities
             var o = model as IListeningMaterial;
             
             Title = o.Title;
-            Content = o.Content;
+            Text = o.Text;
             Image = o.Image;
             Audio = o.Audio;
             ModifiedAt = DateTime.Now;

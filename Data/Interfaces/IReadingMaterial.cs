@@ -9,6 +9,6 @@ namespace Data.Interfaces
     public interface IReadingMaterial : IModelBase
     {
         string Title { get; set; }
-        string Content { get; set; }
+        string Text { get; set; }
     }
 }

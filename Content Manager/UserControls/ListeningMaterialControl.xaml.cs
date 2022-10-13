@@ -183,7 +183,7 @@ namespace Content_Manager.UserControls {
             } else {
                 var lm = ContentStore.GetListeningMaterialById(LmId);
                 lm.Title = LmTitle;
-                lm.Content = LmText;
+                lm.Text = LmText;
                 lm.Image = LmImage;
                 lm.Audio = LmAudio;
             }
