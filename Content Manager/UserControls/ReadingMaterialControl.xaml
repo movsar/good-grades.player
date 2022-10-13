@@ -12,7 +12,7 @@
                      Margin="10 0 0 0" 
                      Padding="5 0 0 0"
                      Width="250" 
-                     Text="{Binding Path=Material.Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                     Text="{Binding Path=Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                      TextAlignment="Left"
                      VerticalContentAlignment="Center"
                      GotFocus="txtTitle_GotFocus"

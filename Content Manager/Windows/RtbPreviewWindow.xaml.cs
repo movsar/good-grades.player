@@ -14,14 +14,11 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace Content_Manager.Windows
-{
-    public partial class RtbPreviewWindow : Window
-    {
-        public RtbPreviewWindow(ReadingMaterial material)
-        {
+namespace Content_Manager.Windows {
+    public partial class RtbPreviewWindow : Window {
+        public RtbPreviewWindow(string title, string content) {
             InitializeComponent();
-            MemoryStream stream = new MemoryStream(ASCIIEncoding.Default.GetBytes(material.Content));
+            MemoryStream stream = new MemoryStream(ASCIIEncoding.Default.GetBytes(content));
 
             rtbMain.Selection.Load(stream, DataFormats.Rtf);
             rtbMain.Selection.Select(rtbMain.Document.ContentEnd, rtbMain.Document.ContentEnd);

@@ -19,5 +19,10 @@ namespace Data.Models
 			set { SetProperty(ref _title, value, nameof(Title)); }
 		}
 
+        public ReadingMaterial(string title, string content) {
+            _title = title;
+            _content = content;
+        }
+
 	}
 }
