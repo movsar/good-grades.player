@@ -5,7 +5,11 @@ using Data.Interfaces;
 using Data.Models;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -13,23 +17,72 @@ using System.Windows.Media.Media3D;
 
 namespace Content_Manager.UserControls {
     public partial class ReadingMaterialControl : UserControl {
+        enum FormValues {
+            Title,
+            Content
+        }
+        class FormCompletionInfo {
+            public event Action<bool> StatusChanged;
+            public bool IsReady => _stats.Where(s => s.Value == true).Count() == _stats.Count();
+
+            private readonly Dictionary<string, bool> _stats = new Dictionary<string, bool>();
+
+            public FormCompletionInfo(bool existingElement) {
+                // Initialize the dictionary
+                foreach (var v in Enum.GetNames<FormValues>()) {
+                    _stats.Add(v, existingElement);
+                }
+            }
+
+            public void Update(FormValues formValue, bool isSet) {
+                if (_stats[Enum.GetName(formValue)] == isSet) {
+                    return;
+                }
+
+                _stats[Enum.GetName(formValue)] = isSet;
+
+                StatusChanged?.Invoke(IsReady);
+            }
+        }
+
         ContentStore ContentStore => App.AppHost!.Services.GetRequiredService<ContentStore>();
         public ReadingMaterial Material { get; set; }
         private const string TitleHintText = "Введите название материала";
-        private int _stepsToComplete = 0;
+        private readonly FormCompletionInfo formCompletionInfo;
 
-        private bool IsModelReady() {
-            return !string.IsNullOrEmpty(Material?.Content) && !string.IsNullOrEmpty(txtTitle.Text);
 
+
+        #region Reactions
+        private void OnFormStatusChanged(bool isReady) {
+            if (isReady) {
+                btnSave.Visibility = Visibility.Visible;
+            } else {
+                btnSave.Visibility = Visibility.Collapsed;
+            }
         }
-        private void SetupForNewMaterial() {
+        private void OnTitleSet(bool isSet) {
+            formCompletionInfo.Update(FormValues.Title, isSet);
+        }
+        private void OnContentSet(bool isSet = true) {
+            btnUploadFromFile.Background = Brushes.LightYellow;
+
+            formCompletionInfo.Update(FormValues.Content, isSet);
+        }
+        #endregion
+
+        #region Initialization
+        private void SetUiForNewMaterial() {
+            DataContext = this;
+
             btnUploadFromFile.IsEnabled = true;
 
-            btnPreview.Visibility = Visibility.Hidden;
+            btnPreview.Visibility = Visibility.Collapsed;
             btnDelete.Visibility = Visibility.Collapsed;
             btnSave.Visibility = Visibility.Collapsed;
         }
-        private void SetupForExistingMaterial() {
+        private void SetUiForExistingMaterial() {
+            DataContext = this;
+
             btnUploadFromFile.Background = Brushes.LimeGreen;
             btnUploadFromFile.IsEnabled = true;
 
@@ -39,30 +92,22 @@ namespace Content_Manager.UserControls {
             btnDelete.Visibility = Visibility.Visible;
         }
 
-        #region Reactions
-        private void OnContentSet() {
-            btnUploadFromFile.Background = Brushes.LightYellow;
-        }
-        #endregion
-
-        #region Constructors
         public ReadingMaterialControl() {
-            // Initialize UI
             InitializeComponent();
-            DataContext = this;
+            SetUiForNewMaterial();
 
-            SetupForNewMaterial();
+            formCompletionInfo = new FormCompletionInfo(false);
+            formCompletionInfo.StatusChanged += OnFormStatusChanged;
 
-            // Setup a new UI
             Material = new ReadingMaterial() { Title = TitleHintText };
         }
 
         public ReadingMaterialControl(ReadingMaterial material) {
-            // Initialize UI
             InitializeComponent();
-            DataContext = this;
+            SetUiForExistingMaterial();
 
-            SetupForExistingMaterial();
+            formCompletionInfo = new FormCompletionInfo(true);
+            formCompletionInfo.StatusChanged += OnFormStatusChanged;
 
             Material = material;
         }
@@ -70,32 +115,35 @@ namespace Content_Manager.UserControls {
 
         #region TitleHandlers
         private void txtTitle_GotFocus(object sender, RoutedEventArgs e) {
-            // Clear the hint text when clicking on title field
-            if (Material.Title == TitleHintText && string.IsNullOrEmpty(Material.Content)) {
+            if (Material.Title == TitleHintText) {
                 Material.Title = "";
             }
         }
 
         private void txtTitle_LostFocus(object sender, RoutedEventArgs e) {
-            // Set the hint text when losing focust from the title field, when nothing has been written
-            if (string.IsNullOrEmpty(Material.Title) && string.IsNullOrEmpty(Material.Content)) {
+            if (string.IsNullOrEmpty(Material.Title)) {
                 Material.Title = TitleHintText;
+            }
+        }
+
+        private void txtTitle_TextChanged(object sender, TextChangedEventArgs e) {
+            if (string.IsNullOrEmpty(txtTitle.Text) || txtTitle.Text.Equals(TitleHintText)) {
+                OnTitleSet(false);
+            } else {
+                OnTitleSet(true);
             }
         }
         #endregion
 
         private void btnSave_Click(object sender, RoutedEventArgs e) {
-            // TODO: Change so that Add automatically saves and triggers refresh
-            if (!IsModelReady()) {
-                MessageBox.Show("Укажите все необходимые данные для материала");
-                return;
-            }
-            
+            //MessageBox.Show("Укажите все необходимые данные для материала");
+
             if (string.IsNullOrEmpty(Material.Id)) {
                 ContentStore.SelectedSegment?.ReadingMaterials.Add(Material);
             }
 
             ContentStore.UpdateItem<Segment>(ContentStore!.SelectedSegment!);
+            ContentStore.SelectedSegment = ContentStore.SelectedSegment;
         }
 
         private void btnPreview_Click(object sender, RoutedEventArgs e) {
@@ -112,7 +160,7 @@ namespace Content_Manager.UserControls {
             var contents = File.ReadAllText(filePath);
             Material.Content = contents;
 
-            OnContentSet();
+            OnContentSet(true);
         }
 
         private void btnDelete_Click(object sender, RoutedEventArgs e) {
@@ -120,5 +168,7 @@ namespace Content_Manager.UserControls {
             ContentStore.UpdateItem<Segment>(ContentStore.SelectedSegment);
             ContentStore.SelectedSegment = ContentStore.SelectedSegment;
         }
+
+
     }
 }
