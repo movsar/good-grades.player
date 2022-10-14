@@ -21,7 +21,7 @@ namespace Content_Manager.UserControls.Tabs {
     /// Interaction logic for CelebrityWordsQuizTab.xaml
     /// </summary>
     public partial class CelebrityWordsQuizTab : UserControl {
-        
+
         private ContentStore _contentStore { get; }
         public CelebrityWordsQuizTab() {
             InitializeComponent();
@@ -29,6 +29,15 @@ namespace Content_Manager.UserControls.Tabs {
 
             _contentStore = App.AppHost!.Services.GetRequiredService<ContentStore>();
             //_contentStore.SelectedSegmentChanged += _contentStore_SegmentChanged;
+
+            spQuizList.Children.Add(new CwQmControl());
+        }
+
+        private void btnPreview_Click(object sender, RoutedEventArgs e) {
+
+        }
+
+        private void btnSave_Click(object sender, RoutedEventArgs e) {
 
         }
 

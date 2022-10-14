@@ -21,5 +21,21 @@ namespace Content_Manager.UserControls {
         public CwQmControl() {
             InitializeComponent();
         }
+
+        private void btnDelete_Click(object sender, RoutedEventArgs e) {
+
+        }
+
+        private void txtTitle_GotFocus(object sender, RoutedEventArgs e) {
+
+        }
+
+        private void txtTitle_LostFocus(object sender, RoutedEventArgs e) {
+
+        }
+
+        private void txtTitle_TextChanged(object sender, TextChangedEventArgs e) {
+
+        }
     }
 }
