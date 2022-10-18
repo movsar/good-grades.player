@@ -1,9 +1,4 @@
 ﻿using Data.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Data.Models
 {
@@ -14,5 +9,6 @@ namespace Data.Models
         public string Description { get; set; }
         public List<ReadingMaterial> ReadingMaterials { get; set; }
         public List<ListeningMaterial> ListeningMaterials { get; set; }
+        public CelebrityWordsQuiz CelebrityWodsQuiz { get; set; }
     }
 }

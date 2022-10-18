@@ -8,29 +8,19 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Content_Manager.UserControls.Tabs {
     /// <summary>
     /// Interaction logic for CelebrityWordsQuizTab.xaml
     /// </summary>
     public partial class CelebrityWordsQuizTab : UserControl {
-
         private ContentStore _contentStore { get; }
         public CelebrityWordsQuizTab() {
             InitializeComponent();
             DataContext = this;
 
             _contentStore = App.AppHost!.Services.GetRequiredService<ContentStore>();
-            //_contentStore.SelectedSegmentChanged += _contentStore_SegmentChanged;
-
-            spQuizList.Children.Add(new CwQmControl());
+            _contentStore.SelectedSegmentChanged += _contentStore_SegmentChanged;
         }
 
         private void btnPreview_Click(object sender, RoutedEventArgs e) {
@@ -41,16 +31,19 @@ namespace Content_Manager.UserControls.Tabs {
 
         }
 
-        //private void _contentStore_SegmentChanged(Segment selectedSegment) {
-        //    spQuizList.Children.Clear();
+        private void _contentStore_SegmentChanged(Segment selectedSegment) {
+            //var cwq = _contentStore.UpdateItem
+            //spQuizList.Children.Clear();
 
-        //    if (selectedSegment == null) return;
+            if (selectedSegment == null) return;
 
-        //    foreach (var material in ) {
-        //        spQuizList.Children.Add(new CwQmControl(material));
-        //    }
+            var quizId = selectedSegment.CelebrityWodsQuiz!.Id!;
 
-        //    spQuizList.Children.Add(new CwQmControl());
-        //}
+            foreach (var kvpToId in selectedSegment.CelebrityWodsQuiz.Data) {
+                spQuizList.Children.Add(new CwQmControl(quizId, kvpToId.Key, kvpToId.Value.Key, kvpToId.Value.Value));
+            }
+
+            spQuizList.Children.Add(new CwQmControl(quizId));
+        }
     }
 }

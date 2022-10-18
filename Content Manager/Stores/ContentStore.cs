@@ -60,6 +60,11 @@ namespace Content_Manager.Stores {
                 StoredSegments.Add(segment);
             }
         }
+        internal TModel GetItemById<TModel>(string id) where TModel : IModelBase {
+            // Add to DB
+            return _contentModel.GetById<TModel>(id);
+        }
+
         internal void UpdateItem<TModel>(IModelBase item) where TModel : IModelBase {
             // Update in runtime collection
             var index = StoredSegments.ToList().FindIndex(d => d.Id == item.Id);

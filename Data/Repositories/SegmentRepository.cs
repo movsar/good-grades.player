@@ -1,15 +1,56 @@
 ﻿using Data.Entities;
+using Data.Interfaces;
+using Data.Models;
 using Realms;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Data.Repositories
-{
-    public class SegmentRepository : GeneralRepository<SegmentEntity>
-    {
-        public SegmentRepository(Realm realmInstance) : base(realmInstance) { }
+namespace Data.Repositories {
+    public class SegmentRepository : GeneralRepository<SegmentEntity> {
+        private Realm _realmInstance;
+        public SegmentRepository(Realm realmInstance) : base(realmInstance) {
+            _realmInstance = realmInstance;
+        }
+
+        public override void Add<TModel>(TModel model) {
+            base.Add(model);
+
+            var segment = model as Segment;
+
+            segment!.ReadingMaterials = new();
+            segment!.ListeningMaterials = new();
+
+            // Add and attach to the newsegment a new celebrity words quiz entity 
+            var cwq = new CelebrityWordsQuiz(segment.Id!);
+            var cwqRepository = new CwqRepository(_realmInstance);
+            cwqRepository.Add<ICelebrityWordsQuiz>(cwq);
+            segment!.CelebrityWodsQuiz = cwq;
+        }
+
+        public override void Delete<TModel>(TModel model) {
+            var cwqRepository = new CwqRepository(_realmInstance);
+            cwqRepository.DeleteBySegmentId(model.Id);
+
+            base.Delete(model);
+        }
+
+        public override IEnumerable<TModel> GetAll<TModel>() {
+            var allSegments = base.GetAll<Segment>();
+
+            // Associate CelebrityWordsQuiz objects with Segment objects
+            var cwqRepository = new CwqRepository(_realmInstance);
+            var allCwqs = cwqRepository.GetAll<CelebrityWordsQuiz>();
+
+            var segmentsWithCwqs = allSegments.Select(segment => {
+                segment.CelebrityWodsQuiz = allCwqs.First(cwq => cwq.SegmentId == segment.Id);
+                return segment;
+            });
+
+            return (IEnumerable<TModel>)segmentsWithCwqs;
+        }
     }
 }

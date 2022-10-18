@@ -8,63 +8,44 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Content_Manager.Models
-{
-    public class ContentModel
-    {
+namespace Content_Manager.Models {
+    public class ContentModel {
         private readonly Storage _storage;
-        public ContentModel(Storage storage)
-        {
+        public ContentModel(Storage storage) {
             _storage = storage;
-            _storage.SegmentsRepository.ItemAdded += SegmentsRepository_ItemAdded;
-            _storage.SegmentsRepository.ItemUpdated += SegmentsRepository_ItemUpdated;
         }
 
-        private void SegmentsRepository_ItemUpdated(SegmentEntity dbEntity, IModelBase model)
-        {
-            dynamic segmentEntity = dbEntity;
-            var segment = model as Segment;
-            segment!.ReadingMaterials = _storage.SegmentsRepository.EntitiesToModels<ReadingMaterialEntity, ReadingMaterial>(segmentEntity.ReadingMaterials);
-        }
-
-        private void SegmentsRepository_ItemAdded(SegmentEntity dbEntity, IModelBase model)
-        {
-            var segment = model as Segment;
-            segment!.Id = dbEntity.Id;
-            segment!.ReadingMaterials = new();
-            segment!.ListeningMaterials = new();
-        }
-
-        private IGeneralRepository SelectRepository<TModel>()
-        {
+        private IGeneralRepository SelectRepository<TModel>() {
             var t = typeof(TModel);
-            switch (t)
-            {
+            switch (t) {
                 case var _ when t.IsAssignableTo(typeof(ISegment)):
                 case var _ when t.IsAssignableFrom(typeof(ISegment)):
                     return _storage.SegmentsRepository;
+                case var _ when t.IsAssignableTo(typeof(ICelebrityWordsQuiz)):
+                case var _ when t.IsAssignableFrom(typeof(ICelebrityWordsQuiz)):
+                    return _storage.CwqRepository;
 
                 default:
                     throw new Exception();
             }
         }
-        public void DeleteItem<TModel>(IModelBase item) where TModel : IModelBase
-        {
+        public void DeleteItem<TModel>(IModelBase item) where TModel : IModelBase {
             SelectRepository<TModel>().Delete(item);
         }
 
-        public void UpdateItem<TModel>(IModelBase item) where TModel : IModelBase
-        {
+        public void UpdateItem<TModel>(IModelBase item) where TModel : IModelBase {
             SelectRepository<TModel>().Update(item);
         }
 
-        public void AddItem<TModel>(IModelBase item) where TModel : IModelBase
-        {
+        public void AddItem<TModel>(IModelBase item) where TModel : IModelBase {
             SelectRepository<TModel>().Add(item);
         }
 
-        public IEnumerable<TModel> GetAll<TModel>() where TModel : IModelBase
-        {
+        public TModel GetById<TModel>(string id) where TModel : IModelBase {
+            return SelectRepository<TModel>().GetById<TModel>(id);
+        }
+
+        public IEnumerable<TModel> GetAll<TModel>() where TModel : IModelBase {
             return SelectRepository<TModel>().GetAll<TModel>();
         }
     }

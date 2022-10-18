@@ -6,25 +6,11 @@
         xmlns:local="clr-namespace:Content_Manager.Windows"
         mc:Ignorable="d"
         Title="ListeningPreviewWindow" Height="450" Width="800">
-    <Window.Resources>
-        <Style x:Key="GreenButtonStyle" TargetType="{x:Type Button}">
-            <Setter Property="Button.Margin" Value="0 0 2 0"/>
-            <Setter Property="Button.Width" Value="120"/>
-            <Setter Property="Button.Height" Value="30"/>
-            <Setter Property="Button.FontFamily" Value="Verdana"/>
-            <Setter Property="Button.FontSize" Value="14"/>
-            <Setter Property="Button.FontWeight" Value="Normal"/>
-            <Setter Property="Button.Foreground" Value="Black"/>
-            <Setter Property="Button.Background" Value="Cornsilk"/>
-            <Setter Property="Button.BorderBrush" Value="Black"/>
-        </Style>
-    </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="7*"></ColumnDefinition>
             <ColumnDefinition Width="4*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-
 
         <Image x:Name="imgMain" Grid.Column="0" HorizontalAlignment="Stretch"/>
 
@@ -34,17 +20,17 @@
                      AcceptsTab="True" IsReadOnly="True"/>
 
         <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="5">
-            <Button Style="{StaticResource GreenButtonStyle}" 
+            <Button 
                     x:Name="btnStop" 
                     FontFamily="Segoe MDL2 Assets" Content="&#xE71A;"
                     Click="btnStop_Click"/>
 
-            <Button Style="{StaticResource GreenButtonStyle}" 
+            <Button 
                     x:Name="btnPause" 
                     FontFamily="Segoe MDL2 Assets" Content="&#xE769;" 
                     Click="btnPause_Click"/>
 
-            <Button Style="{StaticResource GreenButtonStyle}" 
+            <Button  
                     x:Name="btnPlay" 
                     FontFamily="Segoe MDL2 Assets" Content="&#xE102;" 
                     Click="btnPlay_Click"/>

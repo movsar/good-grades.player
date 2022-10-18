@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Content_Manager.Models {
+    // A nice way to capture the progress of completion for simple forms
     public class FormCompletionInfo {
         public event Action<bool> StatusChanged;
         public bool IsReady => _stats.Where(s => s.Value == true).Count() == _stats.Count();

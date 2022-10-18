@@ -11,23 +11,35 @@
                     Orientation="Horizontal" 
                     Height="30"
                     Background="AliceBlue">
-            
-            <Image x:Name="imgPortrait"
-                   Margin="10 0 0 0"
-                   Width="30"
-                   Height="30">
-            </Image>
-            <TextBox x:Name="txtTitle"
+
+            <Button x:Name="btnChooseImage"
+                    Margin="10 0 0 0"
+                    Width="30"
+                    Height="30"
+                    Click="btnChooseImage_Click"
+                    FontFamily="Segoe MDL2 Assets" Content="&#xE77B;" 
+                >
+            </Button>
+
+            <TextBox x:Name="txtWordsCollection"
                      Margin="10 0 0 0" 
                      Padding="5 0 0 0"
                      Width="250" 
-                     Text="{Binding Path=CwQmTitle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                     Text="{Binding Path=CwQmWordsCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                      TextAlignment="Left"
                      VerticalContentAlignment="Center"
-                     GotFocus="txtTitle_GotFocus"
-                     LostFocus="txtTitle_LostFocus"
-                     TextChanged="txtTitle_TextChanged"
+                     GotFocus="txtWordsCollection_GotFocus"
+                     LostFocus="txtWordsCollection_LostFocus"
+                     TextChanged="txtWordsCollection_TextChanged"
                      />
+
+            <Button x:Name="btnSave" 
+                    Background="LightSeaGreen"
+                    Margin="10 0 0 0" Padding="7 0 7 0" 
+                    Cursor="Hand"
+                    FontFamily="Segoe MDL2 Assets" Content="&#xE74E;" 
+                    Click="btnSave_Click"/>
+
             <Button x:Name="btnDelete" 
                     Background="IndianRed"
                     Margin="10 0 0 0" Padding="7 0 7 0" 

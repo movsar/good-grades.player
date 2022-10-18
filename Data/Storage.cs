@@ -1,4 +1,7 @@
-﻿using Data.Repositories;
+﻿using Data.Entities;
+using Data.Interfaces;
+using Data.Models;
+using Data.Repositories;
 using Realms;
 
 namespace Data
@@ -7,6 +10,7 @@ namespace Data
     {
         private readonly Realm _realmInstance;
         public SegmentRepository SegmentsRepository { get; }
+        public CwqRepository CwqRepository { get; }
         public Storage(bool cleanStart = false, string databasePath = "content.sgb")
         {
             RealmConfiguration DbConfiguration = new(databasePath);
@@ -19,6 +23,8 @@ namespace Data
             _realmInstance = Realm.GetInstance(DbConfiguration);
 
             SegmentsRepository = new SegmentRepository(_realmInstance);
+            CwqRepository = new CwqRepository(_realmInstance);
+
         }
 
         public void DropDatabase(string dbPath)

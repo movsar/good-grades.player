@@ -3,7 +3,11 @@ using MongoDB.Bson;
 using Realms;
 
 namespace Data.Entities {
-    internal class CelebrityWordsQuizEntity : RealmObject, IEntityBase, ICelebrityWordsQuiz {
+    public class CelebrityWordsQuizEntity : RealmObject, IEntityBase, ICelebrityWordsQuiz {
+        public CelebrityWordsQuizEntity() {}
+        public CelebrityWordsQuizEntity(string segmentId) {
+            SegmentId = segmentId;
+        }
 
         #region Properties
         [Required]
@@ -37,8 +41,8 @@ namespace Data.Entities {
         #endregion
 
         #region Fields
-        private Dictionary<string, byte[]> _optionsImageToId = new();
-        private Dictionary<string, string> _optionsTextToId = new();
+        public Dictionary<string, byte[]> _optionsImageToId = new();
+        public Dictionary<string, string> _optionsTextToId = new();
         #endregion
 
         #region HelperMethods
@@ -56,12 +60,14 @@ namespace Data.Entities {
         public KeyValuePair<byte[], string> GetOption(string id) {
             return new KeyValuePair<byte[], string>(_optionsImageToId[id], _optionsTextToId[id]);
         }
-        #endregion
-
         public void SetFromModel(IModelBase model) {
             var celebrityWordsQuiz = model as ICelebrityWordsQuiz;
+            SegmentId = celebrityWordsQuiz!.SegmentId;
             Data = celebrityWordsQuiz.Data;
         }
+
+        #endregion
+
 
     }
 }
