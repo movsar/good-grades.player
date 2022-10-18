@@ -32,18 +32,15 @@ namespace Content_Manager.UserControls.Tabs {
         }
 
         private void _contentStore_SegmentChanged(Segment selectedSegment) {
-            //var cwq = _contentStore.UpdateItem
-            //spQuizList.Children.Clear();
-
             if (selectedSegment == null) return;
-
-            var quizId = selectedSegment.CelebrityWodsQuiz!.Id!;
-
+            
+            spQuizList.Children.Clear();
+            
             foreach (var kvpToId in selectedSegment.CelebrityWodsQuiz.Data) {
-                spQuizList.Children.Add(new CwQmControl(quizId, kvpToId.Key, kvpToId.Value.Key, kvpToId.Value.Value));
+                spQuizList.Children.Add(new CwQmControl(kvpToId.Key, kvpToId.Value.Key, kvpToId.Value.Value));
             }
 
-            spQuizList.Children.Add(new CwQmControl(quizId));
+            spQuizList.Children.Add(new CwQmControl());
         }
     }
 }

@@ -23,7 +23,6 @@ namespace Content_Manager.UserControls {
         #region Properties
         ContentStore ContentStore => App.AppHost!.Services.GetRequiredService<ContentStore>();
         StylingService StylingService => App.AppHost!.Services.GetRequiredService<StylingService>();
-
         public string CwQmWordsCollection {
             get { return (string)GetValue(CwQmWordsCollectionProperty); }
             set { SetValue(CwQmWordsCollectionProperty, value); }
@@ -31,7 +30,7 @@ namespace Content_Manager.UserControls {
         public static readonly DependencyProperty CwQmWordsCollectionProperty =
             DependencyProperty.Register("CwQmWordsCollection", typeof(string), typeof(CwQmControl), new PropertyMetadata(""));
 
-        private string _quizId;
+        private string? QuizId => ContentStore.SelectedSegment?.CelebrityWodsQuiz.Id;
         public string CwQmId { get; }
         private byte[] CwQmImage { get; set; }
 
@@ -80,18 +79,14 @@ namespace Content_Manager.UserControls {
             _formCompletionInfo = new FormCompletionInfo(propertiesToWatch, isExistingMaterial);
             _formCompletionInfo.StatusChanged += OnFormStatusChanged;
         }
-        public CwQmControl(string quizId) {
-            _quizId = quizId;
-           
+        public CwQmControl() {
             SharedInitialization();
             SetUiForNewMaterial();
 
             CwQmWordsCollection = WordsCollectionHintText;
         }
 
-        public CwQmControl(string quizId, string optionId, byte[] image, string wordsCollection) {
-            _quizId = quizId;
-            
+        public CwQmControl(string optionId, byte[] image, string wordsCollection) {
             SharedInitialization(true);
             SetUiForExistingMaterial();
 
@@ -143,8 +138,8 @@ namespace Content_Manager.UserControls {
         private void btnSave_Click(object sender, RoutedEventArgs e) {
             if (string.IsNullOrEmpty(CwQmId)) {
 
-                //ContentStore.SelectedSegment?.CelebrityWodsQuiz.
-                    //.Add(new ReadingMaterial(RmTitle, RmText));
+                ContentStore.SelectedSegment?.CelebrityWodsQuiz.Data.Add()
+                    .Add(new ReadingMaterial(RmTitle, RmText));
             } else {
                 //var rm = ContentStore.GetReadingMaterialById(RmId);
                 //rm.Title = RmTitle;
