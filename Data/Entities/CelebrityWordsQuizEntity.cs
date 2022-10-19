@@ -48,6 +48,8 @@ namespace Data.Entities {
                     var newOption = new CwqOptionEntity();
                     newOption.SetFromModel(option);
                     Options?.Add(newOption);
+
+                    option.Id = newOption.Id;
                 }
             }
         }

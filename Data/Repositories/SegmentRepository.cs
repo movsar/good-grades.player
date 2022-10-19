@@ -9,25 +9,12 @@ namespace Data.Repositories {
         public SegmentRepository(Realm realmInstance) : base(realmInstance) {
             _realmInstance = realmInstance;
         }
-
-        public override void Add<TModel>(TModel model) {
-            base.Add(model);
-
-            var segment = model as Segment;
-
-            // Add and attach to the newsegment a new celebrity words quiz entity 
-            //var cwqRepository = new CwqRepository(_realmInstance);
-            //cwqRepository.Add<ICelebrityWordsQuiz>(cwq);
-            //segment!.CelebrityWodsQuiz = cwq;
-        }
-
         public override void Delete<TModel>(TModel model) {
             var cwqRepository = new CwqRepository(_realmInstance);
             cwqRepository.DeleteBySegmentId(model.Id);
 
             base.Delete(model);
         }
-
         public override IEnumerable<TModel> GetAll<TModel>() {
             var allSegments = base.GetAll<Segment>();
 

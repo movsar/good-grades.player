@@ -17,9 +17,6 @@ namespace Data.Repositories {
             _realmInstance = realm;
         }
 
-        public event Action<SegmentEntity, IModelBase>? ItemAdded;
-        public event Action<SegmentEntity, IModelBase>? ItemUpdated;
-
         #region Generic CRUD
 
         public virtual void Add<TModel>(TModel model) where TModel : IModelBase {
@@ -31,8 +28,6 @@ namespace Data.Repositories {
             });
 
             model!.Id = entity.Id;
-
-            ItemAdded?.Invoke(entity, model);
         }
 
         public virtual void Update<TModel>(TModel model) where TModel : IModelBase {
@@ -40,8 +35,7 @@ namespace Data.Repositories {
             _realmInstance.Write(() => {
                 entity.SetFromModel(model);
             });
-
-            ItemUpdated?.Invoke(entity, model);
+            model = entity.AsModel();
         }
 
         public virtual void Delete<TModel>(TModel model) where TModel : IModelBase {
@@ -74,7 +68,6 @@ namespace Data.Repositories {
         }
         #endregion
 
-        #region EntitiesToModels
         public IEnumerable<TTarget> EntitiesToModels<TSource, TTarget>(IEnumerable<TSource> realmObjects) {
             var collection = (IEnumerable<IEntityBase>)realmObjects;
 
@@ -82,7 +75,5 @@ namespace Data.Repositories {
                 yield return (TTarget)item.AsModel();
             }
         }
-        #endregion
-
     }
 }
