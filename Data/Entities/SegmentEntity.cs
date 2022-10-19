@@ -2,6 +2,7 @@
 using Data.Models;
 using MongoDB.Bson;
 using Realms;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Data.Entities {
     public class SegmentEntity : RealmObject, ISegment, IEntityBase {
@@ -12,6 +13,7 @@ namespace Data.Entities {
         public string Description { get; set; }
         public IList<ReadingMaterialEntity> ReadingMaterials { get; }
         public IList<ListeningMaterialEntity> ListeningMaterials { get; }
+        public CelebrityWordsQuizEntity CelebrityWordsQuiz { get; set; }
         public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.Now;
         public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;
         public void SetFromModel(IModelBase model) {
@@ -26,6 +28,7 @@ namespace Data.Entities {
             // repositories.
             SetReadingMaterialsFromModel(segment);
             SetListeningMaterialsFromModel(segment);
+            CelebrityWordsQuiz = new CelebrityWordsQuizEntity() { SegmentId = Id};
         }
 
         private void SetListeningMaterialsFromModel(Segment segment) {

@@ -1,4 +1,5 @@
-﻿using Data.Interfaces;
+﻿using Data.Entities;
+using Data.Interfaces;
 using MongoDB.Bson;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,15 @@ namespace Data.Models {
         }
 
         public CwqOption() {
+        }
+
+        public CwqOption(CwqOptionEntity optionEntity) {
+            Id = optionEntity.Id;
+            CreatedAt = optionEntity.CreatedAt;
+            ModifiedAt = optionEntity.ModifiedAt;
+
+            Image = optionEntity.Image;
+            WordsCollection = optionEntity.WordsCollection;
         }
     }
 }

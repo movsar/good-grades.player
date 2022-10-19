@@ -1,4 +1,5 @@
-﻿using Data.Interfaces;
+﻿using Data.Entities;
+using Data.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,17 @@ namespace Data.Models {
             Text = text;
             Audio = audio;
             Image = image;
+        }
+
+        public ListeningMaterial(ListeningMaterialEntity lmEntity) {
+            Id = lmEntity.Id;
+            CreatedAt = lmEntity.CreatedAt;
+            ModifiedAt = lmEntity.ModifiedAt;
+
+            Title = lmEntity.Title;
+            Text = lmEntity.Text;
+            Audio = lmEntity.Audio;
+            Image = lmEntity.Image;
         }
     }
 }

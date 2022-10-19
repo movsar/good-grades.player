@@ -75,7 +75,6 @@ namespace Data.Repositories {
         #endregion
 
         #region EntitiesToModels
-
         // These method takes RealmObjects and turns them into plain model objects, works only for retrieval
 
         public IEnumerable<TTarget> EntitiesToModels<TSource, TTarget>(IEnumerable<TSource> realmObjects) {
@@ -84,6 +83,8 @@ namespace Data.Repositories {
                 throw new IndexOutOfRangeException();
             }
 
+            var o = new JsonSerializerOptions();
+            
             return JsonSerializer.Deserialize<IEnumerable<TTarget>>(jsonString);
         }
         public TTarget EntityToModel<TSource, TTarget>(TSource realmObject) {
@@ -94,7 +95,6 @@ namespace Data.Repositories {
 
             return JsonSerializer.Deserialize<TTarget>(jsonString);
         }
-
         #endregion
 
     }

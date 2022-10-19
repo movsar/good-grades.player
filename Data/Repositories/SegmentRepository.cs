@@ -19,7 +19,7 @@ namespace Data.Repositories {
             segment!.ListeningMaterials = new();
 
             // Add and attach to the newsegment a new celebrity words quiz entity 
-            var cwq = new CelebrityWordsQuiz(segment.Id!);
+            var cwq = new CelebrityWordsQuiz() { SegmentId = segment.Id! };
             var cwqRepository = new CwqRepository(_realmInstance);
             cwqRepository.Add<ICelebrityWordsQuiz>(cwq);
             segment!.CelebrityWodsQuiz = cwq;

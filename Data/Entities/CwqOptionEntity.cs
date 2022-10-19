@@ -22,5 +22,17 @@ namespace Data.Entities {
             Image = cwqOption!.Image;
             WordsCollection = cwqOption!.WordsCollection;
         }
+
+        public void SetToModel(IModelBase model) {
+            var cwqOption = model as CwqOption;
+            if (cwqOption == null) return;
+
+            cwqOption.Id = Id;
+            cwqOption.CreatedAt = CreatedAt;
+            cwqOption.ModifiedAt = ModifiedAt;
+
+            cwqOption.Image = Image;
+            cwqOption.WordsCollection = WordsCollection;
+        }
     }
 }

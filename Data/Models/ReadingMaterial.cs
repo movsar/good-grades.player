@@ -1,4 +1,5 @@
-﻿using Data.Interfaces;
+﻿using Data.Entities;
+using Data.Interfaces;
 
 namespace Data.Models {
     public class ReadingMaterial : ModelBase, IReadingMaterial {
@@ -8,6 +9,16 @@ namespace Data.Models {
         public ReadingMaterial(string title, string text) {
             Title = title;
             Text = text;
+        }
+        public ReadingMaterial() { }
+
+        public ReadingMaterial(ReadingMaterialEntity rmEntity) {
+            Id = rmEntity.Id;
+            CreatedAt = rmEntity.CreatedAt;
+            ModifiedAt = rmEntity.ModifiedAt;
+
+            Text = rmEntity.Text;
+            Title = rmEntity.Title;
         }
     }
 }

@@ -5,11 +5,6 @@ using Realms;
 
 namespace Data.Entities {
     public class CelebrityWordsQuizEntity : RealmObject, IEntityBase, ICelebrityWordsQuiz {
-        public CelebrityWordsQuizEntity() { }
-        public CelebrityWordsQuizEntity(string segmentId) {
-            SegmentId = segmentId;
-        }
-
         #region Properties
         [Required]
         [PrimaryKey]
