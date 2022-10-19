@@ -13,7 +13,7 @@ namespace Content_Manager.UserControls {
     /// <summary>
     /// Interaction logic for CwQmControl.xaml
     /// </summary>
-    public partial class CwQmControl : UserControl {
+    public partial class CwqOptionControl : UserControl {
 
         #region Fields
         private const string WordsCollectionHintText = "Введите описание материала";
@@ -28,7 +28,7 @@ namespace Content_Manager.UserControls {
             set { SetValue(CwQmWordsCollectionProperty, value); }
         }
         public static readonly DependencyProperty CwQmWordsCollectionProperty =
-            DependencyProperty.Register("CwQmWordsCollection", typeof(string), typeof(CwQmControl), new PropertyMetadata(""));
+            DependencyProperty.Register("CwQmWordsCollection", typeof(string), typeof(CwqOptionControl), new PropertyMetadata(""));
 
         private string? QuizId => ContentStore.SelectedSegment?.CelebrityWodsQuiz.Id;
         public string CwQmId { get; }
@@ -79,14 +79,14 @@ namespace Content_Manager.UserControls {
             _formCompletionInfo = new FormCompletionInfo(propertiesToWatch, isExistingMaterial);
             _formCompletionInfo.StatusChanged += OnFormStatusChanged;
         }
-        public CwQmControl() {
+        public CwqOptionControl() {
             SharedInitialization();
             SetUiForNewMaterial();
 
             CwQmWordsCollection = WordsCollectionHintText;
         }
 
-        public CwQmControl(string optionId, byte[] image, string wordsCollection) {
+        public CwqOptionControl(string optionId, byte[] image, string wordsCollection) {
             SharedInitialization(true);
             SetUiForExistingMaterial();
 

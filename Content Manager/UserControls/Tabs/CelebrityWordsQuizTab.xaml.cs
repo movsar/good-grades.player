@@ -37,10 +37,10 @@ namespace Content_Manager.UserControls.Tabs {
             spQuizList.Children.Clear();
 
             foreach (var option in selectedSegment.CelebrityWodsQuiz.Options) {
-                spQuizList.Children.Add(new CwQmControl(option.Id, option.Image, option.WordsCollection));
+                spQuizList.Children.Add(new CwqOptionControl(option.Id, option.Image, option.WordsCollection));
             }
 
-            spQuizList.Children.Add(new CwQmControl());
+            spQuizList.Children.Add(new CwqOptionControl());
         }
     }
 }

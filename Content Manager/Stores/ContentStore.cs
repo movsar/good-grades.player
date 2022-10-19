@@ -13,10 +13,9 @@ using System.Threading.Tasks;
 
 namespace Content_Manager.Stores {
     public class ContentStore {
+
+        #region Properties
         public List<ISegment> StoredSegments = new();
-
-        private readonly ContentModel _contentModel;
-
         private Segment? _selectedSegment;
         public Segment? SelectedSegment {
             get {
@@ -27,16 +26,27 @@ namespace Content_Manager.Stores {
                 SelectedSegmentChanged?.Invoke(value);
             }
         }
+        #endregion
+
+        #region Fields
+        private readonly ContentModel _contentModel;
+        #endregion
+
+        #region Events
         public event Action<Segment>? SelectedSegmentChanged;
+        public event Action<string, IModelBase>? ItemAdded;
+        public event Action<string, IModelBase>? ItemUpdated;
+        public event Action<string, IModelBase>? ItemDeleted;
+        #endregion
+
+        #region Initialization
         public ContentStore(ContentModel contentModel) {
             _contentModel = contentModel;
             LoadAllSegments();
         }
+        #endregion
 
-        public event Action<string, IModelBase>? ItemAdded;
-        public event Action<string, IModelBase>? ItemUpdated;
-        public event Action<string, IModelBase>? ItemDeleted;
-
+        #region SegmentHandlers
         private void LoadAllSegments() {
             // Load from DB
             IEnumerable<ISegment> segmentsFromDb = _contentModel.GetAll<Segment>();
@@ -47,16 +57,6 @@ namespace Content_Manager.Stores {
                 StoredSegments.Add(segment);
             }
         }
-        internal TModel GetItemById<TModel>(string id) where TModel : IModelBase {
-            // Add to DB
-            return _contentModel.GetById<TModel>(id);
-        }
-
-        internal void UpdateCelebrityQuiz(ICelebrityWordsQuiz quiz) {
-            // Save to DB
-            _contentModel.UpdateItem<ICelebrityWordsQuiz>(quiz);
-        }
-
         internal void UpdateSegment(ISegment segment) {
             // Update in runtime collection
             var index = StoredSegments.ToList().FindIndex(d => d.Id == segment.Id);
@@ -68,7 +68,6 @@ namespace Content_Manager.Stores {
             // Let everybody know
             ItemUpdated?.Invoke(nameof(ISegment), segment);
         }
-
         internal void AddSegment(ISegment item) {
             // Add to DB
             _contentModel.AddItem<ISegment>(item);
@@ -79,7 +78,6 @@ namespace Content_Manager.Stores {
             // Let everybody know
             ItemAdded?.Invoke(nameof(ISegment), item);
         }
-
         public void DeleteSegment(ISegment item) {
             // Remove from DB
             _contentModel.DeleteItem<ISegment>(item);
@@ -91,16 +89,19 @@ namespace Content_Manager.Stores {
             // Let everybody know
             ItemDeleted?.Invoke(nameof(ISegment), item);
         }
-
         internal ISegment? FindSegmentByTitle(string segmentTitle) {
             return StoredSegments.Find(segment => segment.Title == segmentTitle);
         }
-
         public void DeleteSegments(IEnumerable<ISegment> itemsToDelete) {
             var immutableItems = itemsToDelete.ToList();
             foreach (var item in immutableItems) {
                 DeleteSegment(item);
             }
+        }
+        #endregion
+
+        internal void UpdateCelebrityQuiz(ICelebrityWordsQuiz quiz) {
+            _contentModel.UpdateItem<ICelebrityWordsQuiz>(quiz);
         }
 
         internal ReadingMaterial GetReadingMaterialById(string id) {

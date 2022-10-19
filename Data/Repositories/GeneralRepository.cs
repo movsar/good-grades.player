@@ -10,7 +10,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Data.Repositories {
-    public class GeneralRepository<TEntity> : IGeneralRepository where TEntity : IEntityBase, new() {
+    public abstract class GeneralRepository<TEntity> : IGeneralRepository where TEntity : IEntityBase, new() {
         private readonly Realm _realmInstance;
 
         internal GeneralRepository(Realm realm) {

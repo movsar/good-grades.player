@@ -34,14 +34,14 @@ namespace Data.Entities {
                 return;
             }
 
-            // Commit removed materials
+            // Commit removed options
             var currentOptionIds = cwq.Options.Select(x => x.Id).ToList();
             var optionsToRemove = Options.Where(rm => !currentOptionIds.Contains(rm.Id));
             foreach (var option in optionsToRemove) {
                 Options.Remove(option);
             }
 
-            // Add or update materials
+            // Add or update options
             foreach (var option in cwq.Options) {
                 var existingOption = Options?.FirstOrDefault((rm => rm.Id == option.Id));
                 if (existingOption != null) {
