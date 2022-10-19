@@ -11,7 +11,7 @@ namespace Data.Models
         public List<ReadingMaterial> ReadingMaterials { get;} 
         public List<ListeningMaterial> ListeningMaterials { get; }
         public CelebrityWordsQuiz CelebrityWodsQuiz { get; set; }
-
+        public Segment() { }
         public Segment(SegmentEntity segmentEntity) {
             Id = segmentEntity.Id;
             CreatedAt = segmentEntity.CreatedAt;

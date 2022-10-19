@@ -17,6 +17,9 @@ namespace Data.Entities {
         #endregion
 
         #region HelperMethods
+        public IModelBase AsModel() {
+            return new CelebrityWordsQuiz(this);
+        }
         public void SetFromModel(IModelBase model) {
             var celebrityWordsQuiz = model as CelebrityWordsQuiz;
             SegmentId = celebrityWordsQuiz!.SegmentId;

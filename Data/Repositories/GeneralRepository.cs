@@ -61,7 +61,7 @@ namespace Data.Repositories {
 
         public TModel GetById<TModel>(string id) {
             var result = _realmInstance.Find<TEntity>(id);
-            return EntityToModel<TEntity, TModel>(result);
+            return (TModel)result.AsModel();
         }
 
         public virtual IEnumerable<TModel> GetByIds<TModel>(string[] ids) where TModel : IModelBase {
@@ -75,25 +75,12 @@ namespace Data.Repositories {
         #endregion
 
         #region EntitiesToModels
-        // These method takes RealmObjects and turns them into plain model objects, works only for retrieval
-
         public IEnumerable<TTarget> EntitiesToModels<TSource, TTarget>(IEnumerable<TSource> realmObjects) {
-            string jsonString = JsonSerializer.Serialize(realmObjects);
-            if (realmObjects != null && string.IsNullOrEmpty(jsonString)) {
-                throw new IndexOutOfRangeException();
-            }
+            var collection = (IEnumerable<IEntityBase>)realmObjects;
 
-            var o = new JsonSerializerOptions();
-            
-            return JsonSerializer.Deserialize<IEnumerable<TTarget>>(jsonString);
-        }
-        public TTarget EntityToModel<TSource, TTarget>(TSource realmObject) {
-            string jsonString = JsonSerializer.Serialize(realmObject);
-            if (realmObject != null && string.IsNullOrEmpty(jsonString)) {
-                throw new IndexOutOfRangeException();
+            foreach (var item in collection) {
+                yield return (TTarget)item.AsModel();
             }
-
-            return JsonSerializer.Deserialize<TTarget>(jsonString);
         }
         #endregion
 

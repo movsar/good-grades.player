@@ -16,6 +16,9 @@ namespace Data.Entities {
         public CelebrityWordsQuizEntity CelebrityWordsQuiz { get; set; }
         public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.Now;
         public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;
+        public IModelBase AsModel() {
+            return new Segment(this);
+        }
         public void SetFromModel(IModelBase model) {
             // Set segment info, stuff that happens prior committing data from the Segment model
             var segment = model as Segment;
@@ -28,7 +31,7 @@ namespace Data.Entities {
             // repositories.
             SetReadingMaterialsFromModel(segment);
             SetListeningMaterialsFromModel(segment);
-            CelebrityWordsQuiz = new CelebrityWordsQuizEntity() { SegmentId = Id};
+            CelebrityWordsQuiz = new CelebrityWordsQuizEntity() { SegmentId = Id };
         }
 
         private void SetListeningMaterialsFromModel(Segment segment) {

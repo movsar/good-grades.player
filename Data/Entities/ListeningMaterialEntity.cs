@@ -22,6 +22,11 @@ namespace Data.Entities
         public byte[] Image { get; set; }
         public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.Now;
         public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;
+
+        public IModelBase AsModel() {
+            return new ListeningMaterial(this);
+        }
+        
         public void SetFromModel(IModelBase model)
         {
             var o = model as IListeningMaterial;
