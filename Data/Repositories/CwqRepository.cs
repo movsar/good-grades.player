@@ -12,6 +12,8 @@ namespace Data.Repositories
         internal CwqRepository(Realm realm) : base(realm) {
             _realmInstance = realm;
         }
+        
+
 
         public IEnumerable<CelebrityWordsQuiz> GetBySegmentId(string segmentId) {
             var entries = _realmInstance.All<CelebrityWordsQuizEntity>().Where(cwq => cwq.SegmentId == segmentId);

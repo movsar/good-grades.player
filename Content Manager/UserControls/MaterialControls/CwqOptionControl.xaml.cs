@@ -91,8 +91,12 @@ namespace Content_Manager.UserControls {
             SetUiForExistingMaterial();
 
             CwQmId = optionId;
+
             CwQmImage = image;
+            OnImageSet(true);
+
             CwQmWordsCollection = wordsCollection;
+            OnWordsCollectionSet(true);
         }
         #endregion
 
@@ -143,8 +147,9 @@ namespace Content_Manager.UserControls {
         private void btnSave_Click(object sender, RoutedEventArgs e) {
             if (string.IsNullOrEmpty(CwQmId)) {
 
+                var newOption = new CwqOption(CwQmImage, CwQmWordsCollection);
                 ContentStore.SelectedSegment?.CelebrityWodsQuiz.Options
-                    .Add(new CwqOption(CwQmImage, CwQmWordsCollection));
+                    .Add(newOption);
 
             } else {
                 var option = ContentStore.GetOptionById(CwQmId);
@@ -153,6 +158,7 @@ namespace Content_Manager.UserControls {
             }
 
             ContentStore.UpdateCelebrityQuiz(ContentStore!.SelectedSegment!.CelebrityWodsQuiz);
+            ContentStore.SelectedSegment = ContentStore.SelectedSegment;
         }
         #endregion
 
