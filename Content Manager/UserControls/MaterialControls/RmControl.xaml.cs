@@ -142,12 +142,12 @@ namespace Content_Manager.UserControls {
                 rm.Text = RmText;
             }
 
-            ContentStore.UpdateItem<Segment>(ContentStore!.SelectedSegment!);
+            ContentStore.UpdateSegment(ContentStore!.SelectedSegment!);
         }
 
         private void btnDelete_Click(object sender, RoutedEventArgs e) {
             ContentStore.SelectedSegment!.ReadingMaterials.Remove(ContentStore.GetReadingMaterialById(RmId));
-            ContentStore.UpdateItem<Segment>(ContentStore.SelectedSegment);
+            ContentStore.UpdateSegment(ContentStore.SelectedSegment);
             ContentStore.SelectedSegment = ContentStore.SelectedSegment;
         }
         #endregion

@@ -33,11 +33,11 @@ namespace Content_Manager.UserControls.Tabs {
 
         private void _contentStore_SegmentChanged(Segment selectedSegment) {
             if (selectedSegment == null) return;
-            
+
             spQuizList.Children.Clear();
-            
-            foreach (var kvpToId in selectedSegment.CelebrityWodsQuiz.Data) {
-                spQuizList.Children.Add(new CwQmControl(kvpToId.Key, kvpToId.Value.Key, kvpToId.Value.Value));
+
+            foreach (var option in selectedSegment.CelebrityWodsQuiz.Options) {
+                spQuizList.Children.Add(new CwQmControl(option.Id, option.Image, option.WordsCollection));
             }
 
             spQuizList.Children.Add(new CwQmControl());

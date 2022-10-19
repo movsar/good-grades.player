@@ -133,20 +133,26 @@ namespace Content_Manager.UserControls {
         }
 
         private void btnDelete_Click(object sender, RoutedEventArgs e) {
+            ContentStore.SelectedSegment!.CelebrityWodsQuiz
+                .Options.Remove(ContentStore.GetOptionById(CwQmId));
 
+            ContentStore.UpdateCelebrityQuiz(ContentStore.SelectedSegment.CelebrityWodsQuiz);
+
+            ContentStore.SelectedSegment = ContentStore.SelectedSegment;
         }
         private void btnSave_Click(object sender, RoutedEventArgs e) {
             if (string.IsNullOrEmpty(CwQmId)) {
 
-                ContentStore.SelectedSegment?.CelebrityWodsQuiz.Data.Add()
-                    .Add(new ReadingMaterial(RmTitle, RmText));
+                ContentStore.SelectedSegment?.CelebrityWodsQuiz.Options
+                    .Add(new CwqOption(CwQmImage, CwQmWordsCollection));
+
             } else {
-                //var rm = ContentStore.GetReadingMaterialById(RmId);
-                //rm.Title = RmTitle;
-                //rm.Text = RmText;
+                var option = ContentStore.GetOptionById(CwQmId);
+                option.Image = CwQmImage;
+                option.WordsCollection = CwQmWordsCollection;
             }
 
-            ContentStore.UpdateItem<Segment>(ContentStore!.SelectedSegment!);
+            ContentStore.UpdateCelebrityQuiz(ContentStore!.SelectedSegment!.CelebrityWodsQuiz);
         }
         #endregion
 

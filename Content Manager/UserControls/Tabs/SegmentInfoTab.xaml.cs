@@ -19,7 +19,7 @@ namespace Content_Manager.UserControls {
         }
 
         private void btnSave_Click(object sender, RoutedEventArgs e) {
-            ContentStore.UpdateItem<Segment>(ContentStore.SelectedSegment!);
+            ContentStore.UpdateSegment(ContentStore.SelectedSegment!);
             ContentStore.SelectedSegment = ContentStore.SelectedSegment;
         }
     }

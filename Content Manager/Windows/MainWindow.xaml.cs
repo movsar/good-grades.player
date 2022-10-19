@@ -89,7 +89,7 @@ namespace Content_Manager {
         private void BtnNewSection_Click(object sender, RoutedEventArgs e) {
             ISegment segment = new Segment() { Title = "Керла дакъа" };
 
-            _contentStore.AddItem<ISegment>(segment);
+            _contentStore.AddSegment(segment);
         }
 
         private void lvSegments_SelectionChanged(object sender, SelectionChangedEventArgs e) {

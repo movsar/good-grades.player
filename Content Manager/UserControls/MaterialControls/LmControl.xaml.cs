@@ -188,12 +188,12 @@ namespace Content_Manager.UserControls {
                 lm.Audio = LmAudio;
             }
 
-            ContentStore.UpdateItem<Segment>(ContentStore!.SelectedSegment!);
+            ContentStore.UpdateSegment(ContentStore!.SelectedSegment!);
         }
 
         private void btnDelete_Click(object sender, RoutedEventArgs e) {
             ContentStore.SelectedSegment!.ListeningMaterials.Remove(ContentStore.GetListeningMaterialById(LmId));
-            ContentStore.UpdateItem<Segment>(ContentStore.SelectedSegment);
+            ContentStore.UpdateSegment(ContentStore.SelectedSegment);
             ContentStore.SelectedSegment = ContentStore.SelectedSegment;
         }
         #endregion

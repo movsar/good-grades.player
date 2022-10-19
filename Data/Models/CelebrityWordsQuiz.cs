@@ -3,7 +3,7 @@
 namespace Data.Models {
     public class CelebrityWordsQuiz : ModelBase, ICelebrityWordsQuiz {
         public string SegmentId { get; set; }
-        public Dictionary<string, KeyValuePair<byte[], string>> Data { get; set; } = new();
+        public IList<CwqOption> Options { get; set; } = new List<CwqOption>();
         public CelebrityWordsQuiz(string segmentId) {
             SegmentId = segmentId;
         }

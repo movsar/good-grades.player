@@ -45,12 +45,11 @@ namespace Data.Repositories {
             var cwqRepository = new CwqRepository(_realmInstance);
             var allCwqs = cwqRepository.GetAll<CelebrityWordsQuiz>();
 
-            var segmentsWithCwqs = allSegments.Select(segment => {
+            foreach (var segment in allSegments) {
                 segment.CelebrityWodsQuiz = allCwqs.First(cwq => cwq.SegmentId == segment.Id);
-                return segment;
-            });
+            }
 
-            return (IEnumerable<TModel>)segmentsWithCwqs;
+            return (IEnumerable<TModel>)allSegments;
         }
     }
 }

@@ -65,31 +65,37 @@ namespace Content_Manager.Stores {
             return _contentModel.GetById<TModel>(id);
         }
 
-        internal void UpdateItem<TModel>(IModelBase item) where TModel : IModelBase {
+        internal void UpdateCelebrityQuiz(ICelebrityWordsQuiz quiz) {
+            // Save to DB
+            _contentModel.UpdateItem<ICelebrityWordsQuiz>(quiz);
+        }
+
+        internal void UpdateSegment(ISegment segment) {
             // Update in runtime collection
-            var index = StoredSegments.ToList().FindIndex(d => d.Id == item.Id);
-            StoredSegments[index] = (ISegment)item;
+            var index = StoredSegments.ToList().FindIndex(d => d.Id == segment.Id);
+            StoredSegments[index] = segment;
 
             // Save to DB
-            _contentModel.UpdateItem<TModel>(item);
+            _contentModel.UpdateItem<ISegment>(segment);
 
             // Let everybody know
-            OnItemUpdated(item);
+            OnItemUpdated(segment);
         }
-        internal void AddItem<TModel>(IModelBase item) where TModel : IModelBase {
+
+        internal void AddSegment(ISegment item) {
             // Add to DB
-            _contentModel.AddItem<TModel>(item);
+            _contentModel.AddItem<ISegment>(item);
 
             // Add to collection
-            StoredSegments.Add((ISegment)item);
+            StoredSegments.Add(item);
 
             // Let everybody know
             OnItemAdded(item);
         }
 
-        public void DeleteItem<TModel>(TModel item) where TModel : IModelBase {
+        public void DeleteSegment(ISegment item) {
             // Remove from DB
-            _contentModel.DeleteItem<TModel>(item);
+            _contentModel.DeleteItem<ISegment>(item);
 
             // Remove from collection
             var index = StoredSegments.ToList().FindIndex(d => d.Id == item.Id);
@@ -103,19 +109,23 @@ namespace Content_Manager.Stores {
             return StoredSegments.Find(segment => segment.Title == segmentTitle);
         }
 
-        public void DeleteItems<TModel>(IEnumerable<TModel> itemsToDelete) where TModel : IModelBase {
+        public void DeleteSegments(IEnumerable<ISegment> itemsToDelete) {
             var immutableItems = itemsToDelete.ToList();
             foreach (var item in immutableItems) {
-                DeleteItem(item);
+                DeleteSegment(item);
             }
         }
 
         internal ReadingMaterial GetReadingMaterialById(string id) {
-            return SelectedSegment!.ReadingMaterials.Where(rm => rm.Id == id).First();
+            return SelectedSegment!.ReadingMaterials.Where(o => o.Id == id).First();
         }
 
         internal ListeningMaterial GetListeningMaterialById(string id) {
-            return SelectedSegment!.ListeningMaterials.Where(rm => rm.Id == id).First();
+            return SelectedSegment!.ListeningMaterials.Where(o => o.Id == id).First();
+        }
+
+        internal CwqOption GetOptionById(string id) {
+            return SelectedSegment!.CelebrityWodsQuiz.Options.Where(o => o.Id == id).First();
         }
     }
 }

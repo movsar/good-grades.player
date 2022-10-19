@@ -1,10 +1,11 @@
 ﻿using Data.Interfaces;
+using Data.Models;
 using MongoDB.Bson;
 using Realms;
 
 namespace Data.Entities {
     public class CelebrityWordsQuizEntity : RealmObject, IEntityBase, ICelebrityWordsQuiz {
-        public CelebrityWordsQuizEntity() {}
+        public CelebrityWordsQuizEntity() { }
         public CelebrityWordsQuizEntity(string segmentId) {
             SegmentId = segmentId;
         }
@@ -17,57 +18,41 @@ namespace Data.Entities {
         public string SegmentId { get; set; }
         public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.Now;
         public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;
-
-        [Ignored]
-        public Dictionary<string, KeyValuePair<byte[], string>> Data {
-            get {
-                var outputData = new Dictionary<string, KeyValuePair<byte[], string>>();
-
-                var ids = _optionsImageToId.Keys;
-                foreach (var id in ids) {
-                    outputData.Add(id, GetOption(id));
-                }
-                return outputData;
-            }
-
-            set {
-                _optionsImageToId.Clear();
-                _optionsTextToId.Clear();
-                foreach (var kvp in value) {
-                    AddOption(kvp.Value);
-                }
-            }
-        }
-        #endregion
-
-        #region Fields
-        public Dictionary<string, byte[]> _optionsImageToId = new();
-        public Dictionary<string, string> _optionsTextToId = new();
+        public IList<CwqOptionEntity> Options { get; }
         #endregion
 
         #region HelperMethods
-        public void AddOption(KeyValuePair<byte[], string> kvp) {
-            var id = ObjectId.GenerateNewId().ToString();
-            _optionsImageToId.Add(id, kvp.Key);
-            _optionsTextToId.Add(id, kvp.Value);
-        }
-
-        public void UpdateOption(string id, KeyValuePair<byte[], string> kvp) {
-            _optionsImageToId[id] = kvp.Key;
-            _optionsTextToId[id] = kvp.Value;
-        }
-
-        public KeyValuePair<byte[], string> GetOption(string id) {
-            return new KeyValuePair<byte[], string>(_optionsImageToId[id], _optionsTextToId[id]);
-        }
         public void SetFromModel(IModelBase model) {
-            var celebrityWordsQuiz = model as ICelebrityWordsQuiz;
+            var celebrityWordsQuiz = model as CelebrityWordsQuiz;
             SegmentId = celebrityWordsQuiz!.SegmentId;
-            Data = celebrityWordsQuiz.Data;
+            
+            SetCwqOptions(celebrityWordsQuiz);
         }
 
+        private void SetCwqOptions(CelebrityWordsQuiz cwq) {
+            if (cwq.Options == null) {
+                return;
+            }
+
+            // Commit removed materials
+            var currentOptionIds = cwq.Options.Select(x => x.Id).ToList();
+            var optionsToRemove = Options.Where(rm => !currentOptionIds.Contains(rm.Id));
+            foreach (var option in optionsToRemove) {
+                Options.Remove(option);
+            }
+
+            // Add or update materials
+            foreach (var option in cwq.Options) {
+                var existingOption = Options?.FirstOrDefault((rm => rm.Id == option.Id));
+                if (existingOption != null) {
+                    existingOption.SetFromModel(option);
+                } else {
+                    var newOption = new CwqOptionEntity();
+                    newOption.SetFromModel(option);
+                    Options?.Add(newOption);
+                }
+            }
+        }
         #endregion
-
-
     }
 }

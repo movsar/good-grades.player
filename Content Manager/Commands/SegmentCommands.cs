@@ -24,7 +24,7 @@ namespace Content_Manager.Commands
 
                 var segmentsToRemove = contentStore.StoredSegments.Where(segment => selectedSegments.Select(s => s.Id).Contains(segment.Id));
 
-                contentStore.DeleteItems(segmentsToRemove);
+                contentStore.DeleteSegments(segmentsToRemove);
             }
         }
         internal class DeleteSegment : CommandBase
