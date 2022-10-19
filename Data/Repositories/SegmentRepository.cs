@@ -9,6 +9,11 @@ namespace Data.Repositories {
         public SegmentRepository(Realm realmInstance) : base(realmInstance) {
             _realmInstance = realmInstance;
         }
+
+        public override void Add<TModel>(TModel model) {
+            base.Add(model);
+        }
+
         public override void Delete<TModel>(TModel model) {
             var cwqRepository = new CwqRepository(_realmInstance);
             cwqRepository.DeleteBySegmentId(model.Id);

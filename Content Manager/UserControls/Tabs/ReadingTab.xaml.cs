@@ -33,7 +33,7 @@ namespace Content_Manager.UserControls {
         private void _contentStore_SegmentChanged(Segment selectedSegment) {
             spReadingMaterialControls.Children.Clear();
 
-            if (selectedSegment == null) return;
+            if (selectedSegment?.ReadingMaterials == null) return;
 
             foreach (var material in selectedSegment.ReadingMaterials) {
                 spReadingMaterialControls.Children.Add(new ReadingMaterialControl(material));
