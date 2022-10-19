@@ -17,7 +17,7 @@ namespace Data.Entities {
         public CelebrityWordsQuizEntity CelebrityWordsQuiz { get; set; }
         public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.Now;
         public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;
-        public IModelBase AsModel() {
+        public IModelBase ToModel() {
             return new Segment(this);
         }
         public void SetFromModel(IModelBase model) {
@@ -27,21 +27,20 @@ namespace Data.Entities {
             Description = segment.Description;
             ModifiedAt = DateTime.Now;
 
-            // These two methods include all the changes made in reading and listening materials
+            // These two method calls include all the changes made in reading and listening materials
             // while saving a Segment. Instead, it would be better to save them thorugh their own
             // repositories.
             Utils.SyncLists(ListeningMaterials, segment.ListeningMaterials);
             Utils.SyncLists(ReadingMaterials, segment.ReadingMaterials);
 
-            if (segment.CelebrityWodsQuiz == null) {
-                segment.CelebrityWodsQuiz = new CelebrityWordsQuiz(CelebrityWordsQuiz);
+            if (segment.Id == null) {
+                // Initialize a new segment
+                CelebrityWordsQuiz = new() { SegmentId = Id };
+                //    segment.Id = Id;
+                //    segment.CreatedAt = CreatedAt;
+                //    segment.ModifiedAt = ModifiedAt;
+                //    segment.CelebrityWodsQuiz = new CelebrityWordsQuiz(CelebrityWordsQuiz);
             }
-        }
-
-        public SegmentEntity() {
-            ReadingMaterials = new List<ReadingMaterialEntity>();
-            ListeningMaterials = new List<ListeningMaterialEntity>();
-            CelebrityWordsQuiz = new() { SegmentId = Id };
         }
     }
 }

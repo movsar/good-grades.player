@@ -20,7 +20,7 @@ namespace Data.Entities
         public string Text { get; set; }
         public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.Now;
         public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;
-        public IModelBase AsModel() {
+        public IModelBase ToModel() {
             return new ReadingMaterial(this);
         }
         public void SetFromModel(IModelBase model)

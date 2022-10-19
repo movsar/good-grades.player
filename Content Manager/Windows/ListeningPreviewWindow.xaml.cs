@@ -52,6 +52,8 @@ namespace Content_Manager.Windows {
 
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e) {
             //do my stuff before closing
+            CrossSimpleAudioPlayer.Current.Stop();
+            CrossSimpleAudioPlayer.Current.Dispose();
             PurgeAudioFiles();
             base.OnClosing(e);
         }

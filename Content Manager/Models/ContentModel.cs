@@ -37,8 +37,8 @@ namespace Content_Manager.Models {
             SelectRepository<TModel>().Update(item);
         }
 
-        public void AddItem<TModel>(IModelBase item) where TModel : IModelBase {
-            SelectRepository<TModel>().Add(item);
+        public void AddItem<TModel>(ref IModelBase item) where TModel : IModelBase {
+            SelectRepository<TModel>().Add(ref item);
         }
 
         public TModel GetById<TModel>(string id) where TModel : IModelBase {

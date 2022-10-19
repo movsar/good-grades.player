@@ -19,7 +19,7 @@ namespace Data.Entities {
         #endregion
 
         #region HelperMethods
-        public IModelBase AsModel() {
+        public IModelBase ToModel() {
             return new CelebrityWordsQuiz(this);
         }
         public void SetFromModel(IModelBase model) {

@@ -19,7 +19,7 @@ namespace Data.Repositories {
 
         #region Generic CRUD
 
-        public virtual void Add<TModel>(TModel model) where TModel : IModelBase {
+        public virtual void Add<TModel>(ref TModel model) where TModel : IModelBase {
             dynamic entity = new TEntity();
             entity.SetFromModel(model);
 
@@ -27,7 +27,7 @@ namespace Data.Repositories {
                 _realmInstance.Add(entity);
             });
 
-            model!.Id = entity.Id;
+            model = entity.ToModel();
         }
 
         public virtual void Update<TModel>(TModel model) where TModel : IModelBase {
@@ -35,7 +35,8 @@ namespace Data.Repositories {
             _realmInstance.Write(() => {
                 entity.SetFromModel(model);
             });
-            model = entity.AsModel();
+
+            model = entity.ToModel();
         }
 
         public virtual void Delete<TModel>(TModel model) where TModel : IModelBase {
@@ -55,7 +56,7 @@ namespace Data.Repositories {
 
         public TModel GetById<TModel>(string id) {
             var result = _realmInstance.Find<TEntity>(id);
-            return (TModel)result.AsModel();
+            return (TModel)result.ToModel();
         }
 
         public virtual IEnumerable<TModel> GetByIds<TModel>(string[] ids) where TModel : IModelBase {
@@ -72,7 +73,7 @@ namespace Data.Repositories {
             var collection = (IEnumerable<IEntityBase>)realmObjects;
 
             foreach (var item in collection) {
-                yield return (TTarget)item.AsModel();
+                yield return (TTarget)item.ToModel();
             }
         }
     }

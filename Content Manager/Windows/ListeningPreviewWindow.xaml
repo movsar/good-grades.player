@@ -12,7 +12,7 @@
             <ColumnDefinition Width="4*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        <Image x:Name="imgMain" Grid.Column="0" HorizontalAlignment="Stretch"/>
+        <Image x:Name="imgMain" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="Fill"/>
 
         <TextBox Grid.Column="1" x:Name="txtMain" TextWrapping="Wrap" 
                      AcceptsReturn="True" FontSize="18"
@@ -20,17 +20,17 @@
                      AcceptsTab="True" IsReadOnly="True"/>
 
         <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="5">
-            <Button 
+            <Button Width="30" Height="30"
                     x:Name="btnStop" 
                     FontFamily="Segoe MDL2 Assets" Content="&#xE71A;"
                     Click="btnStop_Click"/>
 
-            <Button 
+            <Button Width="30" Height="30"
                     x:Name="btnPause" 
                     FontFamily="Segoe MDL2 Assets" Content="&#xE769;" 
                     Click="btnPause_Click"/>
 
-            <Button  
+            <Button  Width="30" Height="30"
                     x:Name="btnPlay" 
                     FontFamily="Segoe MDL2 Assets" Content="&#xE102;" 
                     Click="btnPlay_Click"/>

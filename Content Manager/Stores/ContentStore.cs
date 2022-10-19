@@ -68,12 +68,12 @@ namespace Content_Manager.Stores {
             // Let everybody know
             ItemUpdated?.Invoke(nameof(ISegment), segment);
         }
-        internal void AddSegment(ISegment item) {
+        internal void AddSegment(IModelBase item) {
             // Add to DB
-            _contentModel.AddItem<ISegment>(item);
+            _contentModel.AddItem<ISegment>(ref item);
 
             // Add to collection
-            StoredSegments.Add(item);
+            StoredSegments.Add(item as ISegment);
 
             // Let everybody know
             ItemAdded?.Invoke(nameof(ISegment), item);

@@ -18,7 +18,7 @@ namespace Data.Entities {
         public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.Now;
         public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;
 
-        public IModelBase AsModel() {
+        public IModelBase ToModel() {
             return new CwqOption(this);
         }
 

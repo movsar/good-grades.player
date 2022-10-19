@@ -105,6 +105,7 @@ namespace Content_Manager.UserControls {
 
             LmId = material.Id;
             LmTitle = material.Title;
+            LmText = material.Text;
             LmAudio = material.Audio;
             LmImage = material.Image;
         }
@@ -138,7 +139,7 @@ namespace Content_Manager.UserControls {
             if (string.IsNullOrEmpty(filePath)) return;
 
             // Read, load contents to the object and add to collection
-            var content = File.ReadAllText(filePath);
+            var content = File.ReadAllText(filePath, System.Text.Encoding.UTF8);
             if (string.IsNullOrEmpty(filePath)) return;
 
             LmText = content;
