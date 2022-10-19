@@ -36,9 +36,9 @@ namespace Content_Manager {
             }
 
             // Set events
-            _contentStore.ItemAdded += OnSegmentAdded;
-            _contentStore.ItemDeleted += OnSegmentDeleted;
-            _contentStore.ItemUpdated += OnSegmentUpdated;
+            _contentStore.ItemAdded += OnItemAdded;
+            _contentStore.ItemDeleted += OnItemDeleted;
+            _contentStore.ItemUpdated += OnItemUpdated;
 
             // Initialize commands
             DeleteSelectedSegment = new SegmentCommands.DeleteSegment(_contentStore, this);
@@ -48,35 +48,25 @@ namespace Content_Manager {
 
             tbcMain.Visibility = Visibility.Hidden;
         }
-
-        private void OnSegmentAdded(IModelBase model) {
-            if (model.GetType().IsAssignableTo(typeof(ISegment)) == false) return;
-
-            var segment = model as Segment;
+    
+        private void OnSegmentAdded(Segment? segment) {
             Segments.Add(segment!);
-            CurrentSegment = segment!;
+            CurrentSegment = segment;
             tbcMain.Visibility = Visibility.Visible;
         }
-
-        private void OnSegmentUpdated(IModelBase model) {
-            if (model.GetType().IsAssignableTo(typeof(ISegment)) == false) return;
-
-            var segment = model as Segment;
+        private void OnSegmentUpdated(Segment? segment) {
             var index = Segments.ToList().FindIndex(s => s.Id == segment!.Id);
 
             // Refresh UI
             lvSegments.Items.Refresh();
-            
+
             // Force Segment's refresh
             if (_contentStore.SelectedSegment!.Id == segment!.Id) {
                 _contentStore.SelectedSegment = segment;
             }
         }
 
-        private void OnSegmentDeleted(IModelBase model) {
-            if (model.GetType().IsAssignableTo(typeof(ISegment)) == false) return;
-
-            var segment = model as ISegment;
+        private void OnSegmentDeleted(Segment? segment) {
             var index = Segments.ToList().FindIndex(s => s.Id == segment!.Id);
             Segments.RemoveAt(index);
 
@@ -98,6 +88,23 @@ namespace Content_Manager {
 
             CurrentSegment = segment;
             tbcMain.Visibility = Visibility.Visible;
+        }
+        private void OnItemAdded(string modelType, IModelBase model) {
+            if (modelType.Equals(nameof(ISegment))) {
+                OnSegmentAdded(model as Segment);
+            }
+        }
+
+        private void OnItemUpdated(string modelType, IModelBase model) {
+            if (modelType.Equals(nameof(ISegment))) {
+                OnSegmentUpdated(model as Segment);
+            }
+        }
+
+        private void OnItemDeleted(string modelType, IModelBase model) {
+            if (modelType.Equals(nameof(ISegment))) {
+                OnSegmentDeleted(model as Segment);
+            }
         }
     }
 }

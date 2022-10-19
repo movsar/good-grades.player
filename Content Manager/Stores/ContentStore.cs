@@ -24,7 +24,7 @@ namespace Content_Manager.Stores {
             }
             internal set {
                 _selectedSegment = value;
-                OnSegmentChange(value);
+                SelectedSegmentChanged?.Invoke(value);
             }
         }
         public event Action<Segment>? SelectedSegmentChanged;
@@ -33,22 +33,9 @@ namespace Content_Manager.Stores {
             LoadAllSegments();
         }
 
-        public event Action<IModelBase>? ItemAdded;
-        public event Action<IModelBase>? ItemUpdated;
-        public event Action<IModelBase>? ItemDeleted;
-
-        private void OnSegmentChange(Segment segment) {
-            SelectedSegmentChanged?.Invoke(segment);
-        }
-        private void OnItemAdded(IModelBase item) {
-            ItemAdded?.Invoke(item);
-        }
-        private void OnItemUpdated(IModelBase item) {
-            ItemUpdated?.Invoke(item);
-        }
-        private void OnItemDeleted(IModelBase item) {
-            ItemDeleted?.Invoke(item);
-        }
+        public event Action<string, IModelBase>? ItemAdded;
+        public event Action<string, IModelBase>? ItemUpdated;
+        public event Action<string, IModelBase>? ItemDeleted;
 
         private void LoadAllSegments() {
             // Load from DB
@@ -79,7 +66,7 @@ namespace Content_Manager.Stores {
             _contentModel.UpdateItem<ISegment>(segment);
 
             // Let everybody know
-            OnItemUpdated(segment);
+            ItemUpdated?.Invoke(nameof(ISegment), segment);
         }
 
         internal void AddSegment(ISegment item) {
@@ -90,7 +77,7 @@ namespace Content_Manager.Stores {
             StoredSegments.Add(item);
 
             // Let everybody know
-            OnItemAdded(item);
+            ItemAdded?.Invoke(nameof(ISegment), item);
         }
 
         public void DeleteSegment(ISegment item) {
@@ -102,7 +89,7 @@ namespace Content_Manager.Stores {
             StoredSegments.RemoveAt(index);
 
             // Let everybody know
-            OnItemDeleted(item);
+            ItemDeleted?.Invoke(nameof(ISegment), item);
         }
 
         internal ISegment? FindSegmentByTitle(string segmentTitle) {
@@ -119,8 +106,7 @@ namespace Content_Manager.Stores {
         internal ReadingMaterial GetReadingMaterialById(string id) {
             return SelectedSegment!.ReadingMaterials.Where(o => o.Id == id).First();
         }
-
-        internal ListeningMaterial GetListeningMaterialById(string id) {
+        internal ListeningMaterial GetListeningMaterialById(string id) {
             return SelectedSegment!.ListeningMaterials.Where(o => o.Id == id).First();
         }
 
