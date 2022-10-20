@@ -8,10 +8,10 @@
         Title="RtbPreviewWindow" Height="450" Width="800"
         x:Name="wRtbPreviewWindow">
     <Grid>
-       
-        <!--<RichTextBox x:Name="rtbMain" IsReadOnly="True" VerticalScrollBarVisibility="Visible">
-           
 
-        </RichTextBox>-->
+        <FlowDocumentPageViewer>
+            <FlowDocument x:Name="flowDocument"></FlowDocument>
+        </FlowDocumentPageViewer>
+
     </Grid>
 </Window>
