@@ -8,8 +8,10 @@
         Title="RtbPreviewWindow" Height="450" Width="800"
         x:Name="wRtbPreviewWindow">
     <Grid>
-        <RichTextBox x:Name="rtbMain" IsReadOnly="True">
+       
+        <!--<RichTextBox x:Name="rtbMain" IsReadOnly="True" VerticalScrollBarVisibility="Visible">
+           
 
-        </RichTextBox>
+        </RichTextBox>-->
     </Grid>
 </Window>
