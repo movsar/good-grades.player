@@ -135,7 +135,7 @@ namespace Content_Manager.UserControls {
 
         #region ButtonHandlers
         private void btnChooseText_Click(object sender, RoutedEventArgs e) {
-            string filePath = FileService.SelectFilePath("Файлы с текстом (.txt) | *.txt;");
+            string filePath = FileService.SelectFilePath("Файлы с RTF текстом (.rtf) | *.rtf;");
             if (string.IsNullOrEmpty(filePath)) return;
 
             // Read, load contents to the object and add to collection
