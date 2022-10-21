@@ -10,12 +10,14 @@
     <Grid>
         <FlowDocumentPageViewer>
             <FlowDocument>
-                <Paragraph x:Name="flowParagraph">
+                <Paragraph>
                     <Figure>
                         <BlockUIContainer>
                             <Image x:Name="imgMain" />
                         </BlockUIContainer>
                     </Figure>
+                </Paragraph>
+                <Paragraph x:Name="flowParagraph">
                 </Paragraph>
             </FlowDocument>
         </FlowDocumentPageViewer>

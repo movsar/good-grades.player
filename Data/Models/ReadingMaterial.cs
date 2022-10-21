@@ -5,10 +5,12 @@ namespace Data.Models {
     public class ReadingMaterial : ModelBase, IReadingMaterial {
         public string Text { get; set; }
         public string Title { get; set; }
-
-        public ReadingMaterial(string title, string text) {
+        public byte[] Image { get; set; }
+        public ReadingMaterial(string title, string text, byte[] image)
+        {
             Title = title;
             Text = text;
+            Image = image;
         }
         public ReadingMaterial() { }
 
@@ -19,6 +21,7 @@ namespace Data.Models {
 
             Text = rmEntity.Text;
             Title = rmEntity.Title;
+            Image = rmEntity.Image;
         }
     }
 }

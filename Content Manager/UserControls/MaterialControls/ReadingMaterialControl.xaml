@@ -25,13 +25,18 @@
                     Cursor="Hand"
                     Content="Текст" Click="btnUploadFromFile_Click"/>
 
+            <Button x:Name="btnChooseImage"
+                    Margin="10 0 0 0" Padding="7 0 7 0" 
+                    Cursor="Hand"
+                    Content="Изображение" Click="btnChooseImage_Click"/>
+
             <Button x:Name="btnPreview"
                     Background="LightSeaGreen"
                     Margin="10 0 0 0" Padding="7 0 7 0" 
                     Cursor="Hand"
                     FontFamily="Segoe MDL2 Assets" Content="&#xE8FF;" 
                     Click="btnPreview_Click"/>
-            
+
             <Button x:Name="btnSave" 
                     Background="LightSeaGreen"
                     Margin="10 0 0 0" Padding="7 0 7 0" 

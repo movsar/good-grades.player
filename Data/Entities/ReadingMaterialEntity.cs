@@ -18,17 +18,20 @@ namespace Data.Entities
         [Required]
         public string Title { get; set; }
         public string Text { get; set; }
+        public byte[] Image { get; set; }
         public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.Now;
         public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;
-        public IModelBase ToModel() {
+        public IModelBase ToModel()
+        {
             return new ReadingMaterial(this);
         }
         public void SetFromModel(IModelBase model)
         {
             var o = model as IReadingMaterial;
-            
+
             Title = o.Title;
             Text = o.Text;
+            Image = o.Image;
             ModifiedAt = DateTime.Now;
         }
     }

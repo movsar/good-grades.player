@@ -22,7 +22,7 @@ namespace Content_Manager.Models {
         }
 
         public void Update(string propertyTitle, bool isSet) {
-            if (_stats[propertyTitle] == isSet) {
+            if (!_stats.ContainsKey(propertyTitle) || _stats[propertyTitle] == isSet) {
                 return;
             }
 

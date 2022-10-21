@@ -10,5 +10,6 @@ namespace Data.Interfaces
     {
         string Title { get; set; }
         string Text { get; set; }
+        byte[] Image { get; set; }
     }
 }
