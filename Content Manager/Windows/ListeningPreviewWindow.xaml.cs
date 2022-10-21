@@ -36,7 +36,8 @@ namespace Content_Manager.Windows {
             logo.EndInit();
 
             imgMain.Source = logo;
-            txtMain.Text = _lmText;
+            flowParagraph.Inlines.Add(_lmText);
+            //txtMain.Text = _lmText;
         }
 
         private void PurgeAudioFiles() {

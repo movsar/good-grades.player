@@ -7,19 +7,20 @@
         mc:Ignorable="d"
         Title="ListeningPreviewWindow" Height="450" Width="800">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="7*"></ColumnDefinition>
-            <ColumnDefinition Width="4*"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
 
-        <Image x:Name="imgMain" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="Fill"/>
+        <FlowDocumentPageViewer>
+            <FlowDocument>
+                <Paragraph x:Name="flowParagraph">
+                    <Figure>
+                        <BlockUIContainer>
+                            <Image x:Name="imgMain" />
+                        </BlockUIContainer>
+                    </Figure>
+                </Paragraph>
+            </FlowDocument>
+        </FlowDocumentPageViewer>
 
-        <TextBox Grid.Column="1" x:Name="txtMain" TextWrapping="Wrap" 
-                     AcceptsReturn="True" FontSize="18"
-                     HorizontalAlignment="Stretch"
-                     AcceptsTab="True" IsReadOnly="True"/>
-
-        <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="5">
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="5">
             <Button Width="30" Height="30"
                     x:Name="btnStop" 
                     FontFamily="Segoe MDL2 Assets" Content="&#xE71A;"

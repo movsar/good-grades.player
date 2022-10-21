@@ -8,10 +8,16 @@
         Title="RtbPreviewWindow" Height="450" Width="800"
         x:Name="wRtbPreviewWindow">
     <Grid>
-        <RichTextBox x:Name="rtbMain"></RichTextBox>
-        <!--<FlowDocumentPageViewer>
-            <FlowDocument x:Name="flowDocument"></FlowDocument>
-        </FlowDocumentPageViewer>-->
-
+        <FlowDocumentPageViewer>
+            <FlowDocument>
+                <Paragraph x:Name="flowParagraph">
+                    <Figure>
+                        <BlockUIContainer>
+                            <Image x:Name="imgMain" />
+                        </BlockUIContainer>
+                    </Figure>
+                </Paragraph>
+            </FlowDocument>
+        </FlowDocumentPageViewer>
     </Grid>
 </Window>
