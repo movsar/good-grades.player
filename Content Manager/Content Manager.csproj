@@ -9,8 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FreeSpire.DocViewer" Version="7.6.0" />
-    <PackageReference Include="FreeSpire.Office" Version="7.7.1" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
     <PackageReference Include="MicrosoftExpressionInteractions" Version="3.0.40218" />
@@ -19,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Data\Data.csproj" />
+    <ProjectReference Include="..\SharedControls\Shared.csproj" />
   </ItemGroup>
 
 </Project>

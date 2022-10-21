@@ -1,9 +1,9 @@
 ﻿using Content_Manager.Models;
 using Content_Manager.Services;
 using Content_Manager.Stores;
-using Content_Manager.Windows;
 using Data.Models;
 using Microsoft.Extensions.DependencyInjection;
+using Shared.Controls;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;

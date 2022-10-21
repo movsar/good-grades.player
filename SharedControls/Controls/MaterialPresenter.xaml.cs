@@ -1,17 +1,13 @@
-﻿using Data.Interfaces;
-using Data.Models;
-using Plugin.SimpleAudioPlayer;
+﻿using Plugin.SimpleAudioPlayer;
 using System;
 using System.IO;
 using System.Linq;
-using System.Numerics;
-using System.Reflection;
 using System.Text;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media.Imaging;
 
-namespace Content_Manager.Windows
+namespace Shared.Controls
 {
     public partial class MaterialPresenter : Window
     {

@@ -14,6 +14,8 @@ namespace Data
 
         public Storage(bool cleanStart = false, string databasePath = "content.sgb")
         {
+            var sameDirPath = Path.Combine(Environment.CurrentDirectory, databasePath);
+
             RealmConfiguration DbConfiguration = new(databasePath);
 
             if (cleanStart)

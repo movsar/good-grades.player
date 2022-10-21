@@ -13,7 +13,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.IO;
-using Content_Manager.Windows;
 using Data.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Content_Manager.Stores;
