@@ -74,8 +74,6 @@ namespace Content_Manager.UserControls
             btnPreview.Visibility = Visibility.Collapsed;
             btnDelete.Visibility = Visibility.Collapsed;
             btnSave.Visibility = Visibility.Collapsed;
-
-            btnPreview.Background = StylingService.StagedBrush;
         }
         private void SetUiForExistingMaterial()
         {
@@ -165,7 +163,7 @@ namespace Content_Manager.UserControls
         }
         private void btnPreview_Click(object sender, RoutedEventArgs e)
         {
-            var rtbPreviewWindow = new RtbPreviewWindow(RmTitle, RmText, RmImage);
+            var rtbPreviewWindow = new MaterialPresenter(RmTitle, RmText, RmImage);
             rtbPreviewWindow.ShowDialog();
         }
 

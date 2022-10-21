@@ -80,14 +80,13 @@ namespace Content_Manager.UserControls {
             btnChooseText.Background = StylingService.ReadyBrush;
             btnChooseAudio.Background = StylingService.ReadyBrush;
             btnChooseImage.Background = StylingService.ReadyBrush;
-
         }
         private void SharedInitialization(bool isExistingMaterial = false) {
             InitializeComponent();
             DataContext = this;
 
             var propertiesToWatch = new string[] {
-                nameof(LmTitle), nameof(LmText), nameof(LmAudio), nameof(LmImage)
+                nameof(LmTitle), nameof(LmText), nameof(LmAudio)
             };
             _formCompletionInfo = new FormCompletionInfo(propertiesToWatch, isExistingMaterial);
             _formCompletionInfo.StatusChanged += OnFormStatusChanged;
@@ -172,7 +171,7 @@ namespace Content_Manager.UserControls {
         }
 
         private void btnPreview_Click(object sender, RoutedEventArgs e) {
-            var listeningPreviewWindow = new ListeningPreviewWindow(LmTitle, LmText, LmImage, LmAudio);
+            var listeningPreviewWindow = new MaterialPresenter(LmTitle, LmText, LmImage, LmAudio);
             listeningPreviewWindow.ShowDialog();
         }
         private void btnSave_Click(object sender, RoutedEventArgs e) {
