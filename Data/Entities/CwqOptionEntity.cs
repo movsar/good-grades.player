@@ -14,7 +14,7 @@ namespace Data.Entities {
         [PrimaryKey]
         public string Id { get; set; } = ObjectId.GenerateNewId().ToString();
         public byte[] Image { get; set; }
-        public string WordsCollection { get; set; }
+        public string Text { get; set; }
         public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.Now;
         public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;
 
@@ -25,7 +25,7 @@ namespace Data.Entities {
         public void SetFromModel(IModelBase model) {
             var cwqOption = model as CwqOption;
             Image = cwqOption!.Image;
-            WordsCollection = cwqOption!.WordsCollection;
+            Text = cwqOption!.Text;
         }
     }
 }

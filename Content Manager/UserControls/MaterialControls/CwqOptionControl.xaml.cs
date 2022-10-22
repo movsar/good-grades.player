@@ -154,7 +154,7 @@ namespace Content_Manager.UserControls {
             } else {
                 var option = ContentStore.GetOptionById(CwQmId);
                 option.Image = CwQmImage;
-                option.WordsCollection = CwQmWordsCollection;
+                option.Text = CwQmWordsCollection;
             }
 
             ContentStore.UpdateCelebrityQuiz(ContentStore!.SelectedSegment!.CelebrityWodsQuiz);

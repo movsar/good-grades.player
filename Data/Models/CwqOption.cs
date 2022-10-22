@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 namespace Data.Models {
     public class CwqOption : ModelBase, ICwqOption {
         public byte[] Image { get; set; }
-        public string WordsCollection { get; set; }
+        public string Text { get; set; }
 
         public CwqOption(byte[] image, string wordsCollection) {
             Image = image;
-            WordsCollection = wordsCollection;
+            Text = wordsCollection;
         }
 
         public CwqOption() {
@@ -26,7 +26,7 @@ namespace Data.Models {
             ModifiedAt = optionEntity.ModifiedAt;
 
             Image = optionEntity.Image;
-            WordsCollection = optionEntity.WordsCollection;
+            Text = optionEntity.Text;
         }
     }
 }

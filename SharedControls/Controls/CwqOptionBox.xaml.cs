@@ -41,7 +41,7 @@ namespace Shared.Controls
         {
             DataContext = this;
             InitializeComponent();
-            WordsCollection = option.WordsCollection;
+            WordsCollection = option.Text;
         }
     }
 }

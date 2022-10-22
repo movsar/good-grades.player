@@ -7,6 +7,6 @@ using System.Threading.Tasks;
 namespace Data.Interfaces {
     public interface ICwqOption : IModelBase {
         public byte[] Image { get; set; }
-        public string WordsCollection { get; set; }
+        public string Text { get; set; }
     }
 }

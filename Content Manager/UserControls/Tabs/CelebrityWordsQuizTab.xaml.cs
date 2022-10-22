@@ -52,7 +52,7 @@ namespace Content_Manager.UserControls.Tabs
 
             foreach (var option in selectedSegment.CelebrityWodsQuiz.Options)
             {
-                spQuizList.Children.Add(new CwqOptionControl(option.Id, option.Image, option.WordsCollection));
+                spQuizList.Children.Add(new CwqOptionControl(option.Id, option.Image, option.Text));
             }
 
             spQuizList.Children.Add(new CwqOptionControl());
