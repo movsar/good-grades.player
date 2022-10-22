@@ -15,7 +15,8 @@ namespace Data.Entities
         public string Id { get; set; } = ObjectId.GenerateNewId().ToString();
         public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.Now;
         public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;
-        public IList<QuizItemEntity> Options { get; }
+        public IList<QuizItemEntity> QuizItems { get; }
+        public string CorrectProverbId { get; set; }
         #endregion
 
         #region HelperMethods
@@ -26,7 +27,8 @@ namespace Data.Entities
         public void SetFromModel(IModelBase model)
         {
             var ProverbSelectionQuiz = model as ProverbSelectionQuiz;
-            Utils.SyncLists(Options, ProverbSelectionQuiz.QuizItems);
+            CorrectProverbId = ProverbSelectionQuiz!.CorrectProverbId;
+            Utils.SyncLists(QuizItems, ProverbSelectionQuiz.QuizItems);
         }
         #endregion
     }

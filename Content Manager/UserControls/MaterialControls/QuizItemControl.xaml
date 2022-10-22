@@ -12,6 +12,18 @@
                     Height="30"
                     Background="AliceBlue">
 
+            <Button x:Name="btnSetAsCorrect"
+                    Visibility="Collapsed"
+                    Margin="10 0 0 0"
+                    Width="30"
+                    Height="30"
+                    Click="btnSetAsDefault_Click"
+                    FontFamily="Segoe MDL2 Assets"
+                    FontWeight="Bold"
+                    Cursor="Hand"
+                >
+            </Button>
+
             <Button x:Name="btnChooseImage"
                     Visibility="Collapsed"
                     Margin="10 0 0 0"

@@ -2,12 +2,14 @@
 using Content_Manager.Services;
 using Content_Manager.Stores;
 using Data.Enums;
+using Data.Interfaces;
 using Data.Models;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Image = System.Windows.Controls.Image;
 
@@ -39,6 +41,7 @@ namespace Content_Manager.UserControls
         #endregion
 
         #region Reactions
+
         private void OnFormStatusChanged(bool isReady)
         {
             if (isReady)
@@ -81,7 +84,7 @@ namespace Content_Manager.UserControls
         {
             btnDelete.Visibility = Visibility.Visible;
         }
-        private void SharedInitialization(QuizTypes quizType, bool isExistingMaterial = false)
+        private void SharedInitialization(QuizTypes quizType, bool isExistingMaterial, bool isSelected)
         {
             InitializeComponent();
             DataContext = this;
@@ -92,30 +95,44 @@ namespace Content_Manager.UserControls
             switch (quizType)
             {
                 case QuizTypes.CelebrityWords:
-                    propertiesToWatch.Add(nameof(ItemImage));
-
                     btnChooseImage.Visibility = Visibility.Visible;
-                    break;
 
+                    propertiesToWatch.Add(nameof(ItemImage));
+                    break;
                 case QuizTypes.ProverbSelection:
+                    btnSetAsCorrect.Visibility = Visibility.Visible;
+
+                    if (isSelected)
+                    {
+                        btnSetAsCorrect.Content = "\uE73A";
+                        btnSetAsCorrect.Foreground = Brushes.DarkGreen;
+                    }
+                    else
+                    {
+                        btnSetAsCorrect.Content = "\uE739";
+                    }
+
+                    break;
+                default:
                     break;
             }
-
 
             _formCompletionInfo = new FormCompletionInfo(propertiesToWatch, isExistingMaterial);
             _formCompletionInfo.StatusChanged += OnFormStatusChanged;
         }
         public QuizItemControl(QuizTypes quizType)
         {
-            SharedInitialization(quizType);
+            SharedInitialization(quizType, false, false);
             SetUiForNewMaterial();
 
             ItemText = Hint;
         }
 
-        public QuizItemControl(QuizTypes quizType, string itemId, byte[] image, string text)
+        public QuizItemControl(QuizTypes quizType, string itemId, byte[] image, string text, bool isSelected = false)
         {
-            SharedInitialization(quizType, true);
+            // Constructor for celebrity words quiz
+
+            SharedInitialization(quizType, true, isSelected);
             SetUiForExistingMaterial();
 
             ItemId = itemId;
@@ -205,5 +222,15 @@ namespace Content_Manager.UserControls
         }
         #endregion
 
+        private void btnSetAsDefault_Click(object sender, RoutedEventArgs e)
+        {
+            if (_quizType == QuizTypes.ProverbSelection)
+            {
+                ContentStore!.SelectedSegment!.ProverbSelectionQuiz!.CorrectProverbId = ItemId;
+                ContentStore.UpdateQuiz(_quizType);
+             
+                ContentStore.SelectedSegment = ContentStore.SelectedSegment;
+            }
+        }
     }
 }

@@ -47,9 +47,9 @@ namespace Content_Manager.UserControls.Tabs
 
             spItems.Children.Clear();
 
-            foreach (var option in selectedSegment.ProverbSelectionQuiz.QuizItems)
+            foreach (var quizItem in selectedSegment.ProverbSelectionQuiz.QuizItems)
             {
-                spItems.Children.Add(new QuizItemControl(Data.Enums.QuizTypes.ProverbSelection, option.Id, option.Image, option.Text));
+                spItems.Children.Add(new QuizItemControl(Data.Enums.QuizTypes.ProverbSelection, quizItem.Id!, quizItem!.Image, quizItem.Text, selectedSegment.ProverbSelectionQuiz.CorrectProverbId == quizItem.Id));
             }
 
             spItems.Children.Add(new QuizItemControl(Data.Enums.QuizTypes.ProverbSelection));
