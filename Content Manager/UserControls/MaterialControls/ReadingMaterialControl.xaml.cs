@@ -5,6 +5,7 @@ using Data.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Shared.Controls;
 using Shared.Viewers;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -94,7 +95,7 @@ namespace Content_Manager.UserControls
             InitializeComponent();
             DataContext = this;
 
-            var propertiesToWatch = new string[] { nameof(RmTitle), nameof(RmText) };
+            var propertiesToWatch = new List<string>() { nameof(RmTitle), nameof(RmText) };
             _formCompletionInfo = new FormCompletionInfo(propertiesToWatch, isExistingMaterial);
             _formCompletionInfo.StatusChanged += OnFormStatusChanged;
         }

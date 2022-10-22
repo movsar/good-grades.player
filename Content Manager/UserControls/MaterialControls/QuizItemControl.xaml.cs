@@ -4,6 +4,7 @@ using Content_Manager.Stores;
 using Data.Enums;
 using Data.Models;
 using Microsoft.Extensions.DependencyInjection;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -80,39 +81,56 @@ namespace Content_Manager.UserControls
         {
             btnDelete.Visibility = Visibility.Visible;
         }
-        private void SharedInitialization(bool isExistingMaterial = false)
+        private void SharedInitialization(QuizTypes quizType, bool isExistingMaterial = false)
         {
             InitializeComponent();
             DataContext = this;
 
-            var propertiesToWatch = new string[] { nameof(ItemImage), nameof(ItemText) };
+            _quizType = quizType;
+            var propertiesToWatch = new List<string>() { nameof(ItemText) };
+
+            switch (quizType)
+            {
+                case QuizTypes.CelebrityWords:
+                    propertiesToWatch.Add(nameof(ItemImage));
+
+                    btnChooseImage.Visibility = Visibility.Visible;
+                    break;
+
+                case QuizTypes.ProverbSelection:
+                    break;
+            }
+
+
             _formCompletionInfo = new FormCompletionInfo(propertiesToWatch, isExistingMaterial);
             _formCompletionInfo.StatusChanged += OnFormStatusChanged;
         }
         public QuizItemControl(QuizTypes quizType)
         {
-            _quizType = quizType;
-
-            SharedInitialization();
+            SharedInitialization(quizType);
             SetUiForNewMaterial();
 
             ItemText = Hint;
         }
 
-        public QuizItemControl(QuizTypes quizType, string optionId, byte[] image, string text)
+        public QuizItemControl(QuizTypes quizType, string itemId, byte[] image, string text)
         {
-            _quizType = quizType;
-
-            SharedInitialization(true);
+            SharedInitialization(quizType, true);
             SetUiForExistingMaterial();
 
-            ItemId = optionId;
+            ItemId = itemId;
 
-            ItemImage = image;
-            OnImageSet(true);
+            if (image != null)
+            {
+                ItemImage = image;
+                OnImageSet(true);
+            }
 
-            ItemText = text;
-            OnTextSet(true);
+            if (text != null)
+            {
+                ItemText = text;
+                OnTextSet(true);
+            }
         }
         #endregion
 

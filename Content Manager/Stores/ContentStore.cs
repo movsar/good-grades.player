@@ -129,7 +129,10 @@ namespace Content_Manager.Stores
         #region QuizItem Handlers
         internal QuizItem GetQuizItem(string id)
         {
-            return SelectedSegment!.CelebrityWodsQuiz.QuizItems.Where(o => o.Id == id).First();
+            var allQuizItems = SelectedSegment!.CelebrityWodsQuiz.QuizItems
+                .Union(SelectedSegment!.ProverbSelectionQuiz.QuizItems);
+
+            return allQuizItems.Where(o => o.Id == id).First();
         }
 
         internal void AddQuizItem(QuizTypes quizType, QuizItem newOption)
@@ -183,6 +186,6 @@ namespace Content_Manager.Stores
             }
         }
         #endregion
-    
+
     }
 }

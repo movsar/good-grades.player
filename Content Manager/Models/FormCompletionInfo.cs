@@ -4,25 +4,31 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Content_Manager.Models {
+namespace Content_Manager.Models
+{
     // A nice way to capture the progress of completion for simple forms
-    public class FormCompletionInfo {
+    public class FormCompletionInfo
+    {
         public event Action<bool> StatusChanged;
         public bool IsReady => _stats.Where(s => s.Value == true).Count() == _stats.Count();
 
         private readonly Dictionary<string, bool> _stats = new Dictionary<string, bool>();
-        string[] _propertiesToWatch;
-        public FormCompletionInfo(string[] propertiesToWatch, bool existingElement) {
+        List<string> _propertiesToWatch;
+        public FormCompletionInfo(List<string> propertiesToWatch, bool existingElement)
+        {
             _propertiesToWatch = propertiesToWatch;
 
             // Initialize the dictionary
-            foreach (var v in _propertiesToWatch) {
+            foreach (var v in _propertiesToWatch)
+            {
                 _stats.Add(v, existingElement);
             }
         }
 
-        public void Update(string propertyTitle, bool isSet) {
-            if (!_stats.ContainsKey(propertyTitle) || _stats[propertyTitle] == isSet) {
+        public void Update(string propertyTitle, bool isSet)
+        {
+            if (!_stats.ContainsKey(propertyTitle) || _stats[propertyTitle] == isSet)
+            {
                 return;
             }
 

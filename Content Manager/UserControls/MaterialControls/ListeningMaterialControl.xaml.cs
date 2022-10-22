@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Realms;
 using Shared.Controls;
 using Shared.Viewers;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -86,7 +87,7 @@ namespace Content_Manager.UserControls {
             InitializeComponent();
             DataContext = this;
 
-            var propertiesToWatch = new string[] {
+            var propertiesToWatch = new List<string> {
                 nameof(LmTitle), nameof(LmText), nameof(LmAudio)
             };
             _formCompletionInfo = new FormCompletionInfo(propertiesToWatch, isExistingMaterial);
