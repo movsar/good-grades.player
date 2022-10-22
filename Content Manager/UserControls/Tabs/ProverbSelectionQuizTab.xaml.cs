@@ -47,7 +47,7 @@ namespace Content_Manager.UserControls.Tabs
 
             spItems.Children.Clear();
 
-            foreach (var option in selectedSegment.CelebrityWodsQuiz.QuizItems)
+            foreach (var option in selectedSegment.ProverbSelectionQuiz.QuizItems)
             {
                 spItems.Children.Add(new QuizItemControl(Data.Enums.QuizTypes.ProverbSelection, option.Id, option.Image, option.Text));
             }

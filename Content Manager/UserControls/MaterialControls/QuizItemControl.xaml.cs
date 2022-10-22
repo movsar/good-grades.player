@@ -2,11 +2,8 @@
 using Content_Manager.Services;
 using Content_Manager.Stores;
 using Data.Enums;
-using Data.Interfaces;
 using Data.Models;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,7 +18,6 @@ namespace Content_Manager.UserControls
         #region Fields
         private const string Hint = "Введите описание";
         private FormCompletionInfo _formCompletionInfo;
-        private string _quizId;
         private QuizTypes _quizType;
         #endregion
 
@@ -180,7 +176,7 @@ namespace Content_Manager.UserControls
             }
             else
             {
-                var quizItem = ContentStore.GetOptionById(ItemId);
+                var quizItem = ContentStore.GetQuizItem(ItemId);
                 quizItem.Image = ItemImage;
                 quizItem.Text = ItemText;
 

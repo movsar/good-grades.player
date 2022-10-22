@@ -126,7 +126,8 @@ namespace Content_Manager.Stores
             return SelectedSegment!.ListeningMaterials.Where(o => o.Id == id).First();
         }
 
-        internal QuizItem GetOptionById(string id)
+        #region QuizItem Handlers
+        internal QuizItem GetQuizItem(string id)
         {
             return SelectedSegment!.CelebrityWodsQuiz.QuizItems.Where(o => o.Id == id).First();
         }
@@ -163,7 +164,7 @@ namespace Content_Manager.Stores
 
         internal void DeleteQuizItem(QuizTypes quizType, string itemId)
         {
-            var quizItem = GetOptionById(itemId);
+            var quizItem = GetQuizItem(itemId);
 
             switch (quizType)
             {
@@ -180,7 +181,8 @@ namespace Content_Manager.Stores
 
                     break;
             }
-
         }
+        #endregion
+    
     }
 }

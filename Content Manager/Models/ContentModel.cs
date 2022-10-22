@@ -24,7 +24,9 @@ namespace Content_Manager.Models {
                 case var _ when t.IsAssignableTo(typeof(ICelebrityWordsQuiz)):
                 case var _ when t.IsAssignableFrom(typeof(ICelebrityWordsQuiz)):
                     return _storage.CwqRepository;
-
+                case var _ when t.IsAssignableTo(typeof(IProverbSelectionQuiz)):
+                case var _ when t.IsAssignableFrom(typeof(IProverbSelectionQuiz)):
+                    return _storage.PsqRepository;
                 default:
                     throw new Exception();
             }
