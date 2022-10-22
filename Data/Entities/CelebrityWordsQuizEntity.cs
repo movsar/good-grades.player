@@ -5,8 +5,10 @@ using MongoDB.Bson;
 using Realms;
 using System.Collections.Generic;
 
-namespace Data.Entities {
-    public class CelebrityWordsQuizEntity : RealmObject, IEntityBase, ICelebrityWordsQuiz {
+namespace Data.Entities
+{
+    public class CelebrityWordsQuizEntity : RealmObject, IEntityBase, ICelebrityWordsQuiz
+    {
         #region Properties
         [Required]
         [PrimaryKey]
@@ -17,10 +19,12 @@ namespace Data.Entities {
         #endregion
 
         #region HelperMethods
-        public IModelBase ToModel() {
+        public IModelBase ToModel()
+        {
             return new CelebrityWordsQuiz(this);
         }
-        public void SetFromModel(IModelBase model) {
+        public void SetFromModel(IModelBase model)
+        {
             var celebrityWordsQuiz = model as CelebrityWordsQuiz;
             Utils.SyncLists(Options, celebrityWordsQuiz.Options);
         }
