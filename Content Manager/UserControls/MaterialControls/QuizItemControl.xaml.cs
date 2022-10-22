@@ -224,6 +224,11 @@ namespace Content_Manager.UserControls
 
         private void btnSetAsDefault_Click(object sender, RoutedEventArgs e)
         {
+            if (ItemId == null)
+            {
+                return;
+            }
+
             if (_quizType == QuizTypes.ProverbSelection)
             {
                 ContentStore!.SelectedSegment!.ProverbSelectionQuiz!.CorrectProverbId = ItemId;

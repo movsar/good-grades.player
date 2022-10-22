@@ -37,7 +37,7 @@
             </ListView.ContextMenu>
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding Title}" Background="AliceBlue" Width="180px" />
+                    <TextBlock Text="{Binding Title}" Width="180px" />
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>

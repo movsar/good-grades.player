@@ -11,7 +11,7 @@
             <TabItem Header="Слова и люди">
                 <local:CelebrityWordsQuizTab/>
             </TabItem>
-            <TabItem Header="Пословица о рассказе">
+            <TabItem Header="Пословицы">
                 <local:ProverbSelectionQuizTab/>
             </TabItem>
         </TabControl>
