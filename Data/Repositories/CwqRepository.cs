@@ -12,19 +12,13 @@ namespace Data.Repositories
         internal CwqRepository(Realm realm) : base(realm) {
             _realmInstance = realm;
         }
-        
-        public IEnumerable<CelebrityWordsQuiz> GetBySegmentId(string segmentId) {
-            var entries = _realmInstance.All<CelebrityWordsQuizEntity>().Where(cwq => cwq.SegmentId == segmentId);
-            var models = EntitiesToModels<CelebrityWordsQuizEntity, CelebrityWordsQuiz>(entries);
-            return models;
-        }
 
         public override void Update<TModel>(TModel model) {
             base.Update(model);
         }
 
         internal void DeleteBySegmentId(string segmentId) {
-            var entries = _realmInstance.All<CelebrityWordsQuizEntity>().Where(cwq => cwq.SegmentId == segmentId).First();
+            var entries = _realmInstance.All<CelebrityWordsQuizEntity>().First();
             _realmInstance.Write(() => {
                 _realmInstance.Remove(entries);
             });

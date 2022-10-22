@@ -11,8 +11,6 @@ namespace Data.Entities {
         [Required]
         [PrimaryKey]
         public string Id { get; set; } = ObjectId.GenerateNewId().ToString();
-        [Required]
-        public string SegmentId { get; set; }
         public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.Now;
         public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;
         public IList<CwqOptionEntity> Options { get; }
@@ -24,8 +22,6 @@ namespace Data.Entities {
         }
         public void SetFromModel(IModelBase model) {
             var celebrityWordsQuiz = model as CelebrityWordsQuiz;
-            SegmentId = celebrityWordsQuiz!.SegmentId;
-
             Utils.SyncLists(Options, celebrityWordsQuiz.Options);
         }
         #endregion

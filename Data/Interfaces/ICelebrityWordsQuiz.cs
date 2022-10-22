@@ -7,6 +7,5 @@ using System.Threading.Tasks;
 
 namespace Data.Interfaces {
     public interface ICelebrityWordsQuiz : IModelBase {
-        string SegmentId { get; set; }
     }
 }

@@ -35,7 +35,7 @@ namespace Data.Entities {
 
             if (segment.Id == null) {
                 // Initialize a new segment
-                CelebrityWordsQuiz = new() { SegmentId = Id };
+                CelebrityWordsQuiz = new();
                 //    segment.Id = Id;
                 //    segment.CreatedAt = CreatedAt;
                 //    segment.ModifiedAt = ModifiedAt;

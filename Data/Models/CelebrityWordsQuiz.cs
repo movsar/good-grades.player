@@ -8,14 +8,12 @@ namespace Data.Models {
             CreatedAt = celebrityWordsQuiz.CreatedAt;
             ModifiedAt = celebrityWordsQuiz.ModifiedAt;
 
-            SegmentId = celebrityWordsQuiz.SegmentId;
             Options = new();
             foreach (var optionEntity in celebrityWordsQuiz.Options) {
                 Options.Add(new CwqOption(optionEntity));
             }
         }
 
-        public string SegmentId { get; set; }
         public List<CwqOption> Options { get; set; }
     }
 }
