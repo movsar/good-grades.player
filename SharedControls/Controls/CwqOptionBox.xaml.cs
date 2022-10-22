@@ -37,7 +37,7 @@ namespace Shared.Controls
             InitializeComponent();
         }
 
-        public CwqOptionBox(CwqOption option)
+        public CwqOptionBox(QuizItem option)
         {
             DataContext = this;
             InitializeComponent();

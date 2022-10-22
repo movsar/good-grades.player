@@ -18,10 +18,10 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace Shared.Controls
 {
-    public partial class CwqOptionChallenge : UserControl
+    public partial class CwqChallenge : UserControl
     {
         public enum State { Empty, Success, Failure }
-        public CwqOptionChallenge(CwqOption option)
+        public CwqChallenge(QuizItem option)
         {
             InitializeComponent();
 

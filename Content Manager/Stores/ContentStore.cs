@@ -11,17 +11,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Content_Manager.Stores {
-    public class ContentStore {
+namespace Content_Manager.Stores
+{
+    public class ContentStore
+    {
 
         #region Properties
         public List<ISegment> StoredSegments = new();
         private Segment? _selectedSegment;
-        public Segment? SelectedSegment {
-            get {
+        public Segment? SelectedSegment
+        {
+            get
+            {
                 return _selectedSegment;
             }
-            internal set {
+            internal set
+            {
                 _selectedSegment = value;
                 SelectedSegmentChanged?.Invoke(value);
             }
@@ -40,24 +45,28 @@ namespace Content_Manager.Stores {
         #endregion
 
         #region Initialization
-        public ContentStore(ContentModel contentModel) {
+        public ContentStore(ContentModel contentModel)
+        {
             _contentModel = contentModel;
             LoadAllSegments();
         }
         #endregion
 
         #region SegmentHandlers
-        private void LoadAllSegments() {
+        private void LoadAllSegments()
+        {
             // Load from DB
             IEnumerable<ISegment> segmentsFromDb = _contentModel.GetAll<Segment>();
 
             // Refresh collection
             StoredSegments.Clear();
-            foreach (ISegment segment in segmentsFromDb) {
+            foreach (ISegment segment in segmentsFromDb)
+            {
                 StoredSegments.Add(segment);
             }
         }
-        internal void UpdateSegment(ISegment segment) {
+        internal void UpdateSegment(ISegment segment)
+        {
             // Update in runtime collection
             var index = StoredSegments.ToList().FindIndex(d => d.Id == segment.Id);
             StoredSegments[index] = segment;
@@ -68,7 +77,8 @@ namespace Content_Manager.Stores {
             // Let everybody know
             ItemUpdated?.Invoke(nameof(ISegment), segment);
         }
-        internal void AddSegment(IModelBase item) {
+        internal void AddSegment(IModelBase item)
+        {
             // Add to DB
             _contentModel.AddItem<ISegment>(ref item);
 
@@ -78,7 +88,8 @@ namespace Content_Manager.Stores {
             // Let everybody know
             ItemAdded?.Invoke(nameof(ISegment), item);
         }
-        public void DeleteSegment(ISegment item) {
+        public void DeleteSegment(ISegment item)
+        {
             // Remove from DB
             _contentModel.DeleteItem<ISegment>(item);
 
@@ -89,29 +100,37 @@ namespace Content_Manager.Stores {
             // Let everybody know
             ItemDeleted?.Invoke(nameof(ISegment), item);
         }
-        internal ISegment? FindSegmentByTitle(string segmentTitle) {
+        internal ISegment? FindSegmentByTitle(string segmentTitle)
+        {
             return StoredSegments.Find(segment => segment.Title == segmentTitle);
         }
-        public void DeleteSegments(IEnumerable<ISegment> itemsToDelete) {
+        public void DeleteSegments(IEnumerable<ISegment> itemsToDelete)
+        {
             var immutableItems = itemsToDelete.ToList();
-            foreach (var item in immutableItems) {
+            foreach (var item in immutableItems)
+            {
                 DeleteSegment(item);
             }
         }
         #endregion
 
-        internal void UpdateCelebrityQuiz(ICelebrityWordsQuiz quiz) {
+        internal void UpdateCelebrityQuiz(ICelebrityWordsQuiz quiz)
+        {
             _contentModel.UpdateItem<ICelebrityWordsQuiz>(quiz);
         }
 
-        internal ReadingMaterial GetReadingMaterialById(string id) {
+        internal ReadingMaterial GetReadingMaterialById(string id)
+        {
             return SelectedSegment!.ReadingMaterials.Where(o => o.Id == id).First();
         }
-        internal ListeningMaterial GetListeningMaterialById(string id) {
+
+        internal ListeningMaterial GetListeningMaterialById(string id)
+        {
             return SelectedSegment!.ListeningMaterials.Where(o => o.Id == id).First();
         }
 
-        internal CwqOption GetOptionById(string id) {
+        internal QuizItem GetOptionById(string id)
+        {
             return SelectedSegment!.CelebrityWodsQuiz.Options.Where(o => o.Id == id).First();
         }
     }

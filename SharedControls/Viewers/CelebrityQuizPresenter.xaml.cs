@@ -11,7 +11,7 @@ namespace Shared.Viewers
             InitializeComponent();
             foreach (var option in celebrityWordsQuiz.Options)
             {
-                spChallenges.Children.Add(new CwqOptionChallenge(option));
+                spChallenges.Children.Add(new CwqChallenge(option));
             }
 
             foreach (var option in celebrityWordsQuiz.Options)

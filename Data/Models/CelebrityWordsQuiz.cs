@@ -14,10 +14,10 @@ namespace Data.Models
             Options = new();
             foreach (var optionEntity in celebrityWordsQuiz.Options)
             {
-                Options.Add(new CwqOption(optionEntity));
+                Options.Add(new QuizItem(optionEntity));
             }
         }
 
-        public List<CwqOption> Options { get; set; }
+        public List<QuizItem> Options { get; set; }
     }
 }

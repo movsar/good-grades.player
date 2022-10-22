@@ -5,8 +5,10 @@ using MongoDB.Bson;
 using Realms;
 using static System.Net.Mime.MediaTypeNames;
 
-namespace Data.Entities {
-    public class SegmentEntity : RealmObject, ISegment, IEntityBase {
+namespace Data.Entities
+{
+    public class SegmentEntity : RealmObject, ISegment, IEntityBase
+    {
         [PrimaryKey]
         public string Id { get; set; } = ObjectId.GenerateNewId().ToString();
         [Required]
@@ -15,12 +17,15 @@ namespace Data.Entities {
         public IList<ReadingMaterialEntity> ReadingMaterials { get; }
         public IList<ListeningMaterialEntity> ListeningMaterials { get; }
         public CelebrityWordsQuizEntity CelebrityWordsQuiz { get; set; }
+        public ProverbSelectionQuizEntity ProverbSelectionQuiz { get; set; }
         public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.Now;
         public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;
-        public IModelBase ToModel() {
+        public IModelBase ToModel()
+        {
             return new Segment(this);
         }
-        public void SetFromModel(IModelBase model) {
+        public void SetFromModel(IModelBase model)
+        {
             // Set segment info, stuff that happens prior committing data from the Segment model
             var segment = model as Segment;
             Title = segment!.Title;
@@ -33,9 +38,11 @@ namespace Data.Entities {
             Utils.SyncLists(ListeningMaterials, segment.ListeningMaterials);
             Utils.SyncLists(ReadingMaterials, segment.ReadingMaterials);
 
-            if (segment.Id == null) {
+            if (segment.Id == null)
+            {
                 // Initialize a new segment
                 CelebrityWordsQuiz = new();
+                ProverbSelectionQuiz = new();
                 //    segment.Id = Id;
                 //    segment.CreatedAt = CreatedAt;
                 //    segment.ModifiedAt = ModifiedAt;

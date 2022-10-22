@@ -10,10 +10,7 @@ using System.Windows.Media.Imaging;
 using Image = System.Windows.Controls.Image;
 
 namespace Content_Manager.UserControls {
-    /// <summary>
-    /// Interaction logic for CwQmControl.xaml
-    /// </summary>
-    public partial class CwqOptionControl : UserControl {
+    public partial class QuizItemControl : UserControl {
 
         #region Fields
         private const string WordsCollectionHintText = "Введите описание материала";
@@ -28,7 +25,7 @@ namespace Content_Manager.UserControls {
             set { SetValue(CwQmWordsCollectionProperty, value); }
         }
         public static readonly DependencyProperty CwQmWordsCollectionProperty =
-            DependencyProperty.Register("CwQmWordsCollection", typeof(string), typeof(CwqOptionControl), new PropertyMetadata(""));
+            DependencyProperty.Register("CwQmWordsCollection", typeof(string), typeof(QuizItemControl), new PropertyMetadata(""));
 
         private string? QuizId => ContentStore.SelectedSegment?.CelebrityWodsQuiz.Id;
         public string CwQmId { get; }
@@ -79,14 +76,14 @@ namespace Content_Manager.UserControls {
             _formCompletionInfo = new FormCompletionInfo(propertiesToWatch, isExistingMaterial);
             _formCompletionInfo.StatusChanged += OnFormStatusChanged;
         }
-        public CwqOptionControl() {
+        public QuizItemControl() {
             SharedInitialization();
             SetUiForNewMaterial();
 
             CwQmWordsCollection = WordsCollectionHintText;
         }
 
-        public CwqOptionControl(string optionId, byte[] image, string wordsCollection) {
+        public QuizItemControl(string optionId, byte[] image, string wordsCollection) {
             SharedInitialization(true);
             SetUiForExistingMaterial();
 
@@ -147,7 +144,7 @@ namespace Content_Manager.UserControls {
         private void btnSave_Click(object sender, RoutedEventArgs e) {
             if (string.IsNullOrEmpty(CwQmId)) {
 
-                var newOption = new CwqOption(CwQmImage, CwQmWordsCollection);
+                var newOption = new QuizItem(CwQmImage, CwQmWordsCollection);
                 ContentStore.SelectedSegment?.CelebrityWodsQuiz.Options
                     .Add(newOption);
 

@@ -8,19 +8,19 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Data.Models {
-    public class CwqOption : ModelBase, ICwqOption {
+    public class QuizItem : ModelBase, IQuizItem {
         public byte[] Image { get; set; }
         public string Text { get; set; }
 
-        public CwqOption(byte[] image, string wordsCollection) {
+        public QuizItem(byte[] image, string wordsCollection) {
             Image = image;
             Text = wordsCollection;
         }
 
-        public CwqOption() {
+        public QuizItem() {
         }
 
-        public CwqOption(CwqOptionEntity optionEntity) {
+        public QuizItem(QuizItemEntity optionEntity) {
             Id = optionEntity.Id;
             CreatedAt = optionEntity.CreatedAt;
             ModifiedAt = optionEntity.ModifiedAt;

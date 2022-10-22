@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Data.Entities {
-    public class CwqOptionEntity : RealmObject, ICwqOption, IEntityBase {
+    public class QuizItemEntity : RealmObject, IQuizItem, IEntityBase {
         [Required]
         [PrimaryKey]
         public string Id { get; set; } = ObjectId.GenerateNewId().ToString();
@@ -19,11 +19,11 @@ namespace Data.Entities {
         public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;
 
         public IModelBase ToModel() {
-            return new CwqOption(this);
+            return new QuizItem(this);
         }
 
         public void SetFromModel(IModelBase model) {
-            var cwqOption = model as CwqOption;
+            var cwqOption = model as QuizItem;
             Image = cwqOption!.Image;
             Text = cwqOption!.Text;
         }

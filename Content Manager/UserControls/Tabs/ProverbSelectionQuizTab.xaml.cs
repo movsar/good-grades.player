@@ -1,7 +1,6 @@
 ﻿using Content_Manager.Stores;
 using Data.Models;
 using Microsoft.Extensions.DependencyInjection;
-using Shared.Controls;
 using Shared.Viewers;
 using System;
 using System.Collections.Generic;
@@ -10,17 +9,23 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using static System.Net.Mime.MediaTypeNames;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
 
 namespace Content_Manager.UserControls.Tabs
 {
     /// <summary>
-    /// Interaction logic for CelebrityWordsQuizTab.xaml
+    /// Interaction logic for ProverbSelectionQuizTab.xaml
     /// </summary>
-    public partial class CelebrityWordsQuizTab : UserControl
+    public partial class ProverbSelectionQuizTab : UserControl
     {
         private ContentStore _contentStore { get; }
-        public CelebrityWordsQuizTab()
+        public ProverbSelectionQuizTab()
         {
             InitializeComponent();
             DataContext = this;
@@ -31,12 +36,12 @@ namespace Content_Manager.UserControls.Tabs
 
         private void btnPreview_Click(object sender, RoutedEventArgs e)
         {
-            if (_contentStore?.SelectedSegment?.CelebrityWodsQuiz == null)
+            if (_contentStore?.SelectedSegment?.ProverbSelectionQuiz == null)
             {
                 return;
             }
-            var previewWindow = new CelebrityQuizPresenter(_contentStore.SelectedSegment.CelebrityWodsQuiz);
-            previewWindow.ShowDialog();
+            //var previewWindow = new ProverbSelectionQuizViewer(_contentStore.SelectedSegment.ProverbSelectionQuiz);
+            //previewWindow.ShowDialog();
         }
 
         private void _contentStore_SegmentChanged(Segment selectedSegment)

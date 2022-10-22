@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace Data.Entities
 {
-    public class CelebrityWordsQuizEntity : RealmObject, IEntityBase, ICelebrityWordsQuiz
+    public class ProverbSelectionQuizEntity : RealmObject, IEntityBase, IProverbSelectionQuiz
     {
         #region Properties
         [Required]
@@ -21,12 +21,12 @@ namespace Data.Entities
         #region HelperMethods
         public IModelBase ToModel()
         {
-            return new CelebrityWordsQuiz(this);
+            return new ProverbSelectionQuiz(this);
         }
         public void SetFromModel(IModelBase model)
         {
-            var celebrityWordsQuiz = model as CelebrityWordsQuiz;
-            Utils.SyncLists(Options, celebrityWordsQuiz.Options);
+            var ProverbSelectionQuiz = model as ProverbSelectionQuiz;
+            Utils.SyncLists(Options, ProverbSelectionQuiz.Options);
         }
         #endregion
     }
