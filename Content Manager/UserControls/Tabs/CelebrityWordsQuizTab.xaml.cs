@@ -2,6 +2,7 @@
 using Data.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Shared.Controls;
+using Shared.Viewers;
 using System;
 using System.Collections.Generic;
 using System.Linq;

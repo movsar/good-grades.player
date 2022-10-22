@@ -7,7 +7,7 @@ using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media.Imaging;
 
-namespace Shared.Controls
+namespace Shared.Viewers
 {
     public partial class MaterialPresenter : Window
     {

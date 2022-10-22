@@ -4,6 +4,7 @@ using Content_Manager.Stores;
 using Data.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Shared.Controls;
+using Shared.Viewers;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;

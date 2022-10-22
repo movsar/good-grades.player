@@ -5,6 +5,7 @@ using Data.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Realms;
 using Shared.Controls;
+using Shared.Viewers;
 using System.IO;
 using System.Linq;
 using System.Threading;

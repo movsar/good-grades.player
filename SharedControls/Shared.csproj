@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Page Update="Controls\MaterialPresenter.xaml">
+    <Page Update="Viewers\MaterialPresenter.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
   </ItemGroup>
