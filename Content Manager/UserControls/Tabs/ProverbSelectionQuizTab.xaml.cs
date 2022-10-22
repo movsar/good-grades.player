@@ -19,9 +19,6 @@ using System.Windows.Shapes;
 
 namespace Content_Manager.UserControls.Tabs
 {
-    /// <summary>
-    /// Interaction logic for ProverbSelectionQuizTab.xaml
-    /// </summary>
     public partial class ProverbSelectionQuizTab : UserControl
     {
         private ContentStore _contentStore { get; }
@@ -50,12 +47,12 @@ namespace Content_Manager.UserControls.Tabs
 
             spItems.Children.Clear();
 
-            foreach (var option in selectedSegment.CelebrityWodsQuiz.Options)
+            foreach (var option in selectedSegment.CelebrityWodsQuiz.QuizItems)
             {
-                spItems.Children.Add(new QuizItemControl(option.Id, option.Image, option.Text));
+                spItems.Children.Add(new QuizItemControl(Data.Enums.QuizTypes.ProverbSelection, option.Id, option.Image, option.Text));
             }
 
-            spItems.Children.Add(new QuizItemControl());
+            spItems.Children.Add(new QuizItemControl(Data.Enums.QuizTypes.ProverbSelection));
         }
     }
 }

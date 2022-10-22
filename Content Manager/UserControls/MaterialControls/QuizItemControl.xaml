@@ -21,16 +21,16 @@
                 >
             </Button>
 
-            <TextBox x:Name="txtWordsCollection"
+            <TextBox x:Name="txtItemText"
                      Margin="10 0 0 0" 
                      Padding="5 0 0 0"
                      Width="250" 
-                     Text="{Binding Path=CwQmWordsCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                     Text="{Binding Path=ItemText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                      TextAlignment="Left"
                      VerticalContentAlignment="Center"
-                     GotFocus="txtWordsCollection_GotFocus"
-                     LostFocus="txtWordsCollection_LostFocus"
-                     TextChanged="txtWordsCollection_TextChanged"
+                     GotFocus="txtItemText_GotFocus"
+                     LostFocus="txtItemText_LostFocus"
+                     TextChanged="txtItemText_TextChanged"
                      />
 
             <Button x:Name="btnSave" 

@@ -26,7 +26,7 @@ namespace Data.Entities
         public void SetFromModel(IModelBase model)
         {
             var celebrityWordsQuiz = model as CelebrityWordsQuiz;
-            Utils.SyncLists(Options, celebrityWordsQuiz.Options);
+            Utils.SyncLists(Options, celebrityWordsQuiz!.QuizItems);
         }
         #endregion
     }

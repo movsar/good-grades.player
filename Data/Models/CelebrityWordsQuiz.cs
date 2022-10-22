@@ -3,7 +3,7 @@ using Data.Interfaces;
 
 namespace Data.Models
 {
-    public class CelebrityWordsQuiz : ModelBase, ICelebrityWordsQuiz
+    public class CelebrityWordsQuiz : ModelBase, IQuiz, ICelebrityWordsQuiz
     {
         public CelebrityWordsQuiz(CelebrityWordsQuizEntity celebrityWordsQuiz)
         {
@@ -11,13 +11,13 @@ namespace Data.Models
             CreatedAt = celebrityWordsQuiz.CreatedAt;
             ModifiedAt = celebrityWordsQuiz.ModifiedAt;
 
-            Options = new();
+            QuizItems = new();
             foreach (var optionEntity in celebrityWordsQuiz.Options)
             {
-                Options.Add(new QuizItem(optionEntity));
+                QuizItems.Add(new QuizItem(optionEntity));
             }
         }
 
-        public List<QuizItem> Options { get; set; }
+        public List<QuizItem> QuizItems { get; set; }
     }
 }

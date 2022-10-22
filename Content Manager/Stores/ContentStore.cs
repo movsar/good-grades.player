@@ -1,5 +1,6 @@
 ﻿using Content_Manager.Models;
 using Data;
+using Data.Enums;
 using Data.Interfaces;
 using Data.Models;
 using Data.Repositories;
@@ -114,10 +115,6 @@ namespace Content_Manager.Stores
         }
         #endregion
 
-        internal void UpdateCelebrityQuiz(ICelebrityWordsQuiz quiz)
-        {
-            _contentModel.UpdateItem<ICelebrityWordsQuiz>(quiz);
-        }
 
         internal ReadingMaterial GetReadingMaterialById(string id)
         {
@@ -131,7 +128,59 @@ namespace Content_Manager.Stores
 
         internal QuizItem GetOptionById(string id)
         {
-            return SelectedSegment!.CelebrityWodsQuiz.Options.Where(o => o.Id == id).First();
+            return SelectedSegment!.CelebrityWodsQuiz.QuizItems.Where(o => o.Id == id).First();
+        }
+
+        internal void AddQuizItem(QuizTypes quizType, QuizItem newOption)
+        {
+            switch (quizType)
+            {
+                case QuizTypes.CelebrityWords:
+                    SelectedSegment?.CelebrityWodsQuiz.QuizItems.Add(newOption);
+                    _contentModel.UpdateItem<ICelebrityWordsQuiz>(SelectedSegment!.CelebrityWodsQuiz);
+                    break;
+                case QuizTypes.ProverbSelection:
+                    SelectedSegment?.ProverbSelectionQuiz.QuizItems.Add(newOption);
+                    _contentModel.UpdateItem<IProverbSelectionQuiz>(SelectedSegment!.ProverbSelectionQuiz);
+                    break;
+            }
+        }
+
+        internal void UpdateQuiz(QuizTypes quizType)
+        {
+            switch (quizType)
+            {
+                case QuizTypes.CelebrityWords:
+                    _contentModel.UpdateItem<ICelebrityWordsQuiz>(SelectedSegment!.CelebrityWodsQuiz);
+
+                    break;
+                case QuizTypes.ProverbSelection:
+                    _contentModel.UpdateItem<IProverbSelectionQuiz>(SelectedSegment!.ProverbSelectionQuiz);
+
+                    break;
+            }
+        }
+
+        internal void DeleteQuizItem(QuizTypes quizType, string itemId)
+        {
+            var quizItem = GetOptionById(itemId);
+
+            switch (quizType)
+            {
+                case QuizTypes.CelebrityWords:
+                    SelectedSegment!.CelebrityWodsQuiz.QuizItems.Remove(quizItem);
+
+                    _contentModel.UpdateItem<ICelebrityWordsQuiz>(SelectedSegment!.CelebrityWodsQuiz);
+
+                    break;
+                case QuizTypes.ProverbSelection:
+                    SelectedSegment!.ProverbSelectionQuiz.QuizItems.Remove(quizItem);
+
+                    _contentModel.UpdateItem<IProverbSelectionQuiz>(SelectedSegment!.ProverbSelectionQuiz);
+
+                    break;
+            }
+
         }
     }
 }

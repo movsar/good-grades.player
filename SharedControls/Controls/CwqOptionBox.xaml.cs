@@ -1,4 +1,5 @@
-﻿using Data.Models;
+﻿using Data.Interfaces;
+using Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,14 +31,14 @@ namespace Shared.Controls
         // Using a DependencyProperty as the backing store for Content.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ContentProperty =
             DependencyProperty.Register("WordsCollection", typeof(string), typeof(CwqOptionBox), new PropertyMetadata(string.Empty));
-        
+
         public CwqOptionBox()
         {
             DataContext = this;
             InitializeComponent();
         }
 
-        public CwqOptionBox(QuizItem option)
+        public CwqOptionBox(IQuizItem option)
         {
             DataContext = this;
             InitializeComponent();

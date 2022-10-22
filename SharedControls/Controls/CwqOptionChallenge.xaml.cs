@@ -1,4 +1,5 @@
-﻿using Data.Models;
+﻿using Data.Interfaces;
+using Data.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -21,7 +22,7 @@ namespace Shared.Controls
     public partial class CwqChallenge : UserControl
     {
         public enum State { Empty, Success, Failure }
-        public CwqChallenge(QuizItem option)
+        public CwqChallenge(IQuizItem option)
         {
             InitializeComponent();
 

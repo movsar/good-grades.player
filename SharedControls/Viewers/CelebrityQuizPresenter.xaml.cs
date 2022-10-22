@@ -9,12 +9,12 @@ namespace Shared.Viewers
         public CelebrityQuizPresenter(CelebrityWordsQuiz celebrityWordsQuiz)
         {
             InitializeComponent();
-            foreach (var option in celebrityWordsQuiz.Options)
+            foreach (var option in celebrityWordsQuiz.QuizItems)
             {
                 spChallenges.Children.Add(new CwqChallenge(option));
             }
 
-            foreach (var option in celebrityWordsQuiz.Options)
+            foreach (var option in celebrityWordsQuiz.QuizItems)
             {
                 spOptions.Children.Add(new CwqOptionBox(option));
             }

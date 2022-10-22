@@ -1,5 +1,4 @@
-﻿using Data.Entities;
-using Data.Models;
+﻿using Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace Data.Interfaces
 {
-    public interface ICelebrityWordsQuiz : IModelBase
+    public interface IQuiz
     {
-
+        List<QuizItem> QuizItems { get; }
     }
 }
