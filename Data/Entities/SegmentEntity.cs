@@ -18,6 +18,7 @@ namespace Data.Entities
         public IList<ListeningMaterialEntity> ListeningMaterials { get; }
         public CelebrityWordsQuizEntity CelebrityWordsQuiz { get; set; }
         public ProverbSelectionQuizEntity ProverbSelectionQuiz { get; set; }
+        public ProverbBuilderQuizEntity ProverbBuilderQuiz { get; set; }
         public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.Now;
         public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;
         public IModelBase ToModel()
@@ -43,10 +44,7 @@ namespace Data.Entities
                 // Initialize a new segment
                 CelebrityWordsQuiz = new();
                 ProverbSelectionQuiz = new();
-                //    segment.Id = Id;
-                //    segment.CreatedAt = CreatedAt;
-                //    segment.ModifiedAt = ModifiedAt;
-                //    segment.CelebrityWodsQuiz = new CelebrityWordsQuiz(CelebrityWordsQuiz);
+                ProverbBuilderQuiz = new();
             }
         }
     }

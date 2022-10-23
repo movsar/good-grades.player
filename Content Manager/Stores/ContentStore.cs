@@ -147,6 +147,10 @@ namespace Content_Manager.Stores
                     SelectedSegment?.ProverbSelectionQuiz.QuizItems.Add(newOption);
                     _contentModel.UpdateItem<IProverbSelectionQuiz>(SelectedSegment!.ProverbSelectionQuiz);
                     break;
+                case QuizTypes.ProverbBuilder:
+                    SelectedSegment?.ProverbBuilderQuiz.QuizItems.Add(newOption);
+                    _contentModel.UpdateItem<IProverbBuilderQuiz>(SelectedSegment!.ProverbBuilderQuiz);
+                    break;
             }
         }
 
@@ -156,11 +160,14 @@ namespace Content_Manager.Stores
             {
                 case QuizTypes.CelebrityWords:
                     _contentModel.UpdateItem<ICelebrityWordsQuiz>(SelectedSegment!.CelebrityWodsQuiz);
-
                     break;
+
                 case QuizTypes.ProverbSelection:
                     _contentModel.UpdateItem<IProverbSelectionQuiz>(SelectedSegment!.ProverbSelectionQuiz);
+                    break;
 
+                case QuizTypes.ProverbBuilder:
+                    _contentModel.UpdateItem<IProverbBuilderQuiz>(SelectedSegment!.ProverbBuilderQuiz);
                     break;
             }
         }
@@ -173,15 +180,27 @@ namespace Content_Manager.Stores
             {
                 case QuizTypes.CelebrityWords:
                     SelectedSegment!.CelebrityWodsQuiz.QuizItems.Remove(quizItem);
-
                     _contentModel.UpdateItem<ICelebrityWordsQuiz>(SelectedSegment!.CelebrityWodsQuiz);
-
                     break;
+
                 case QuizTypes.ProverbSelection:
                     SelectedSegment!.ProverbSelectionQuiz.QuizItems.Remove(quizItem);
-
                     _contentModel.UpdateItem<IProverbSelectionQuiz>(SelectedSegment!.ProverbSelectionQuiz);
+                    break;
 
+                case QuizTypes.ProverbBuilder:
+                    SelectedSegment!.ProverbBuilderQuiz.QuizItems.Remove(quizItem);
+                    _contentModel.UpdateItem<IProverbBuilderQuiz>(SelectedSegment!.ProverbBuilderQuiz);
+                    break;
+            }
+        }
+
+        internal void SetQuizItemAsDefault(QuizTypes quizType, string itemId)
+        {
+            switch (quizType)
+            {
+                case QuizTypes.ProverbSelection:
+                    SelectedSegment!.ProverbSelectionQuiz!.CorrectProverbId = itemId;
                     break;
             }
         }

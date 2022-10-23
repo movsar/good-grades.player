@@ -1,0 +1,12 @@
+For a new quiz:
+
+1. Add new quiz interface
+2. Add new quiz entity and model
+3. Add the quiz to Segment entity and Segment model
+4. Add new repository
+5. Add repository to the Storage as a property
+6. Add new QuizType for the quiz
+7. Add condition to SelectRepository in ContentModel
+8. Add conditions to AddQuizItem, UpdateQuizItem and DeleteQuizItem
+9. Add new Tab
+10. Add tab to the QuizTabs as a new item

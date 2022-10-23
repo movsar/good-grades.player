@@ -4,12 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Data.Enums
+namespace Data.Interfaces
 {
-    public enum QuizTypes
+    public interface IProverbBuilderQuiz : IModelBase
     {
-        CelebrityWords,
-        ProverbSelection,
-        ProverbBuilder
     }
 }

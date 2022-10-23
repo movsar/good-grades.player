@@ -8,16 +8,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Content_Manager.Models {
-    public class ContentModel {
+namespace Content_Manager.Models
+{
+    public class ContentModel
+    {
         private readonly Storage _storage;
-        public ContentModel(Storage storage) {
+        public ContentModel(Storage storage)
+        {
             _storage = storage;
         }
 
-        private IGeneralRepository SelectRepository<TModel>() {
+        private IGeneralRepository SelectRepository<TModel>()
+        {
             var t = typeof(TModel);
-            switch (t) {
+            switch (t)
+            {
                 case var _ when t.IsAssignableTo(typeof(ISegment)):
                 case var _ when t.IsAssignableFrom(typeof(ISegment)):
                     return _storage.SegmentsRepository;
@@ -27,27 +32,35 @@ namespace Content_Manager.Models {
                 case var _ when t.IsAssignableTo(typeof(IProverbSelectionQuiz)):
                 case var _ when t.IsAssignableFrom(typeof(IProverbSelectionQuiz)):
                     return _storage.PsqRepository;
+                case var _ when t.IsAssignableTo(typeof(IProverbBuilderQuiz)):
+                case var _ when t.IsAssignableFrom(typeof(IProverbBuilderQuiz)):
+                    return _storage.PbqRepository;
                 default:
                     throw new Exception();
             }
         }
-        public void DeleteItem<TModel>(IModelBase item) where TModel : IModelBase {
+        public void DeleteItem<TModel>(IModelBase item) where TModel : IModelBase
+        {
             SelectRepository<TModel>().Delete(item);
         }
 
-        public void UpdateItem<TModel>(IModelBase item) where TModel : IModelBase {
+        public void UpdateItem<TModel>(IModelBase item) where TModel : IModelBase
+        {
             SelectRepository<TModel>().Update(item);
         }
 
-        public void AddItem<TModel>(ref IModelBase item) where TModel : IModelBase {
+        public void AddItem<TModel>(ref IModelBase item) where TModel : IModelBase
+        {
             SelectRepository<TModel>().Add(ref item);
         }
 
-        public TModel GetById<TModel>(string id) where TModel : IModelBase {
+        public TModel GetById<TModel>(string id) where TModel : IModelBase
+        {
             return SelectRepository<TModel>().GetById<TModel>(id);
         }
 
-        public IEnumerable<TModel> GetAll<TModel>() where TModel : IModelBase {
+        public IEnumerable<TModel> GetAll<TModel>() where TModel : IModelBase
+        {
             return SelectRepository<TModel>().GetAll<TModel>();
         }
     }

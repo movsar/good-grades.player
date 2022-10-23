@@ -12,6 +12,7 @@ namespace Data.Models
         public List<ListeningMaterial> ListeningMaterials { get; }
         public CelebrityWordsQuiz CelebrityWodsQuiz { get; set; }
         public ProverbSelectionQuiz ProverbSelectionQuiz { get; set; }
+        public ProverbBuilderQuiz ProverbBuilderQuiz { get; set; }
         public Segment() { }
         public Segment(SegmentEntity segmentEntity)
         {
@@ -36,6 +37,7 @@ namespace Data.Models
 
             CelebrityWodsQuiz = new(segmentEntity.CelebrityWordsQuiz);
             ProverbSelectionQuiz = new(segmentEntity.ProverbSelectionQuiz);
+            ProverbBuilderQuiz = new(segmentEntity.ProverbBuilderQuiz);
         }
     }
 }

@@ -12,6 +12,7 @@ namespace Data
         public SegmentRepository SegmentsRepository { get; }
         public CwqRepository CwqRepository { get; }
         public PsqRepository PsqRepository { get; }
+        public PbqRepository PbqRepository { get; }
 
         public Storage(bool cleanStart = false, string databasePath = "content.sgb")
         {
@@ -29,6 +30,7 @@ namespace Data
             SegmentsRepository = new SegmentRepository(_realmInstance);
             CwqRepository = new CwqRepository(_realmInstance);
             PsqRepository = new PsqRepository(_realmInstance);
+            PbqRepository = new PbqRepository(_realmInstance);
         }
 
         public void DropDatabase(string dbPath)

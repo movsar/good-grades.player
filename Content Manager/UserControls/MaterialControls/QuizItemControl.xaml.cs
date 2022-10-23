@@ -6,6 +6,7 @@ using Data.Interfaces;
 using Data.Models;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -71,7 +72,10 @@ namespace Content_Manager.UserControls
 
             _formCompletionInfo.Update(nameof(ItemImage), isSet);
         }
-
+        private void RefreshUI()
+        {
+            ContentStore.SelectedSegment = ContentStore.SelectedSegment;
+        }
         #endregion
 
         #region Initialization
@@ -89,9 +93,10 @@ namespace Content_Manager.UserControls
             InitializeComponent();
             DataContext = this;
 
-            _quizType = quizType;
             var propertiesToWatch = new List<string>() { nameof(ItemText) };
 
+            // Decide what controls to make available
+            _quizType = quizType;
             switch (quizType)
             {
                 case QuizTypes.CelebrityWords:
@@ -200,7 +205,7 @@ namespace Content_Manager.UserControls
         {
             ContentStore.DeleteQuizItem(_quizType, ItemId);
 
-            ContentStore.SelectedSegment = ContentStore.SelectedSegment;
+            RefreshUI();
         }
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
@@ -218,7 +223,7 @@ namespace Content_Manager.UserControls
                 ContentStore.UpdateQuiz(_quizType);
             }
 
-            ContentStore.SelectedSegment = ContentStore.SelectedSegment;
+            RefreshUI();
         }
         #endregion
 
@@ -229,13 +234,8 @@ namespace Content_Manager.UserControls
                 return;
             }
 
-            if (_quizType == QuizTypes.ProverbSelection)
-            {
-                ContentStore!.SelectedSegment!.ProverbSelectionQuiz!.CorrectProverbId = ItemId;
-                ContentStore.UpdateQuiz(_quizType);
-             
-                ContentStore.SelectedSegment = ContentStore.SelectedSegment;
-            }
+            ContentStore.SetQuizItemAsDefault(_quizType, ItemId);
+            RefreshUI();
         }
     }
 }
