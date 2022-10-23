@@ -5,9 +5,12 @@ using Data.Enums;
 using Data.Interfaces;
 using Data.Models;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -209,6 +212,16 @@ namespace Content_Manager.UserControls
         }
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                ValidateInput();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return;
+            }
+
             if (string.IsNullOrEmpty(ItemId))
             {
                 var newOption = new QuizItem(ItemImage, ItemText);
@@ -224,6 +237,30 @@ namespace Content_Manager.UserControls
             }
 
             RefreshUI();
+        }
+
+        private void ValidateInput()
+        {
+            switch (_quizType)
+            {
+                case QuizTypes.GapFiller:
+                    var gapOpeners = Regex.Matches(ItemText, @"\{");
+                    var gapClosers = Regex.Matches(ItemText, @"\}");
+                    var gappedWords = Regex.Matches(ItemText, @"\{\W*\w+.*?\}");
+
+                    if (gapOpeners.Count != gapClosers.Count || gapOpeners.Count != gappedWords.Count)
+                    {
+                        throw new Exception("Неправильное форматирование");
+                    }
+
+
+                    if (gappedWords.Count == 0)
+                    {
+                        throw new Exception("Необходимо указать хотя бы одно слово для пропуска");
+                    }
+
+                    break;
+            }
         }
         #endregion
 

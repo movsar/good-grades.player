@@ -26,15 +26,22 @@ namespace Content_Manager.Models
                 case var _ when t.IsAssignableTo(typeof(ISegment)):
                 case var _ when t.IsAssignableFrom(typeof(ISegment)):
                     return _storage.SegmentsRepository;
+
                 case var _ when t.IsAssignableTo(typeof(ICelebrityWordsQuiz)):
                 case var _ when t.IsAssignableFrom(typeof(ICelebrityWordsQuiz)):
                     return _storage.CwqRepository;
+
                 case var _ when t.IsAssignableTo(typeof(IProverbSelectionQuiz)):
                 case var _ when t.IsAssignableFrom(typeof(IProverbSelectionQuiz)):
                     return _storage.PsqRepository;
+
                 case var _ when t.IsAssignableTo(typeof(IProverbBuilderQuiz)):
                 case var _ when t.IsAssignableFrom(typeof(IProverbBuilderQuiz)):
                     return _storage.PbqRepository;
+
+                case var _ when t.IsAssignableTo(typeof(IGapFillerQuiz)):
+                case var _ when t.IsAssignableFrom(typeof(IGapFillerQuiz)):
+                    return _storage.GfqRepository;
                 default:
                     throw new Exception();
             }

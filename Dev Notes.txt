@@ -8,5 +8,6 @@ For a new quiz:
 6. Add new QuizType for the quiz
 7. Add condition to SelectRepository in ContentModel
 8. Add conditions to AddQuizItem, UpdateQuizItem and DeleteQuizItem
-9. Add new Tab
-10. Add tab to the QuizTabs as a new item
+9. Update GetQuizItem
+10. Add new Tab
+11. Add tab to the QuizTabs as a new item

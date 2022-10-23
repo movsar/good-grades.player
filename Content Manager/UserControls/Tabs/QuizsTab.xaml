@@ -17,6 +17,9 @@
             <TabItem Header="Пословицы из слов">
                 <local:ProverbBuilderQuizTab/>
             </TabItem>
+            <TabItem Header="Пробелы">
+                <local:GapFillerQuizTab/>
+            </TabItem>
         </TabControl>
     </Grid>
 </UserControl>

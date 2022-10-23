@@ -20,4 +20,17 @@
     <ProjectReference Include="..\SharedControls\Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="UserControls\Tabs\GapFillerQuizTab.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="UserControls\Tabs\GapFillerQuizTab.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+
 </Project>

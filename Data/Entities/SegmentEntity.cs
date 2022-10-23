@@ -19,6 +19,7 @@ namespace Data.Entities
         public CelebrityWordsQuizEntity CelebrityWordsQuiz { get; set; }
         public ProverbSelectionQuizEntity ProverbSelectionQuiz { get; set; }
         public ProverbBuilderQuizEntity ProverbBuilderQuiz { get; set; }
+        public GapFillerQuizEntity GapFillerQuiz { get; set; }
         public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.Now;
         public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;
         public IModelBase ToModel()
@@ -45,6 +46,7 @@ namespace Data.Entities
                 CelebrityWordsQuiz = new();
                 ProverbSelectionQuiz = new();
                 ProverbBuilderQuiz = new();
+                GapFillerQuiz = new();
             }
         }
     }

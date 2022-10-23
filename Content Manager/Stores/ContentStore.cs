@@ -130,7 +130,9 @@ namespace Content_Manager.Stores
         internal QuizItem GetQuizItem(string id)
         {
             var allQuizItems = SelectedSegment!.CelebrityWodsQuiz.QuizItems
-                .Union(SelectedSegment!.ProverbSelectionQuiz.QuizItems);
+                .Union(SelectedSegment!.ProverbSelectionQuiz.QuizItems)
+                .Union(SelectedSegment!.ProverbBuilderQuiz.QuizItems)
+                .Union(SelectedSegment!.GapFillerQuiz.QuizItems);
 
             return allQuizItems.Where(o => o.Id == id).First();
         }
@@ -143,13 +145,20 @@ namespace Content_Manager.Stores
                     SelectedSegment?.CelebrityWodsQuiz.QuizItems.Add(newOption);
                     _contentModel.UpdateItem<ICelebrityWordsQuiz>(SelectedSegment!.CelebrityWodsQuiz);
                     break;
+
                 case QuizTypes.ProverbSelection:
                     SelectedSegment?.ProverbSelectionQuiz.QuizItems.Add(newOption);
                     _contentModel.UpdateItem<IProverbSelectionQuiz>(SelectedSegment!.ProverbSelectionQuiz);
                     break;
+
                 case QuizTypes.ProverbBuilder:
                     SelectedSegment?.ProverbBuilderQuiz.QuizItems.Add(newOption);
                     _contentModel.UpdateItem<IProverbBuilderQuiz>(SelectedSegment!.ProverbBuilderQuiz);
+                    break;
+
+                case QuizTypes.GapFiller:
+                    SelectedSegment?.GapFillerQuiz.QuizItems.Add(newOption);
+                    _contentModel.UpdateItem<IGapFillerQuiz>(SelectedSegment!.GapFillerQuiz);
                     break;
             }
         }
@@ -168,6 +177,10 @@ namespace Content_Manager.Stores
 
                 case QuizTypes.ProverbBuilder:
                     _contentModel.UpdateItem<IProverbBuilderQuiz>(SelectedSegment!.ProverbBuilderQuiz);
+                    break;
+
+                case QuizTypes.GapFiller:
+                    _contentModel.UpdateItem<IGapFillerQuiz>(SelectedSegment!.GapFillerQuiz);
                     break;
             }
         }
@@ -191,6 +204,11 @@ namespace Content_Manager.Stores
                 case QuizTypes.ProverbBuilder:
                     SelectedSegment!.ProverbBuilderQuiz.QuizItems.Remove(quizItem);
                     _contentModel.UpdateItem<IProverbBuilderQuiz>(SelectedSegment!.ProverbBuilderQuiz);
+                    break;
+
+                case QuizTypes.GapFiller:
+                    SelectedSegment!.GapFillerQuiz.QuizItems.Remove(quizItem);
+                    _contentModel.UpdateItem<IGapFillerQuiz>(SelectedSegment!.GapFillerQuiz);
                     break;
             }
         }

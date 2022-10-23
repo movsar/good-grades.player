@@ -10,6 +10,7 @@ namespace Data.Enums
     {
         CelebrityWords,
         ProverbSelection,
-        ProverbBuilder
+        ProverbBuilder,
+        GapFiller,
     }
 }
