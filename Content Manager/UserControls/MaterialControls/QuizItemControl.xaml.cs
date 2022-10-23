@@ -45,7 +45,6 @@ namespace Content_Manager.UserControls
         #endregion
 
         #region Reactions
-
         private void OnFormStatusChanged(bool isReady)
         {
             if (isReady)
@@ -229,7 +228,7 @@ namespace Content_Manager.UserControls
             if (string.IsNullOrEmpty(ItemId))
             {
                 var newOption = new QuizItem(ItemImage, ItemText);
-                ContentStore.AddQuizItem(_quizType, newOption);
+                ContentStore.AddToQuiz(_quizType, newOption);
             }
             else
             {

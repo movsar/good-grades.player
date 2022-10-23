@@ -18,11 +18,18 @@ namespace Data.Models
                 QuizItems.Add(new QuizItem(optionEntity));
             }
 
-            Question = questionEntity.Question;
+            QuestionText = questionEntity.Question;
             AnswerId = questionEntity.AnswerId;
         }
-        public string Question { get; set; }
+
+        public TestingQuestion(string text, List<QuizItem> quizItems)
+        {
+            QuestionText = text;
+            QuizItems = quizItems;
+        }
+
+        public string QuestionText { get; set; }
         public string AnswerId { get; set; }
-        public List<QuizItem> QuizItems { get; set; }
+        public List<QuizItem> QuizItems { get; set; } = new List<QuizItem>();
     }
 }

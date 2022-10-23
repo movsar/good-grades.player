@@ -137,29 +137,30 @@ namespace Content_Manager.Stores
             return allQuizItems.Where(o => o.Id == id).First();
         }
 
-        internal void AddQuizItem(QuizTypes quizType, QuizItem newOption)
+        internal void AddToQuiz(QuizTypes quizType, QuizItem quizItem)
         {
             switch (quizType)
             {
                 case QuizTypes.CelebrityWords:
-                    SelectedSegment?.CelebrityWodsQuiz.QuizItems.Add(newOption);
+                    SelectedSegment?.CelebrityWodsQuiz.QuizItems.Add(quizItem);
                     _contentModel.UpdateItem<ICelebrityWordsQuiz>(SelectedSegment!.CelebrityWodsQuiz);
                     break;
 
                 case QuizTypes.ProverbSelection:
-                    SelectedSegment?.ProverbSelectionQuiz.QuizItems.Add(newOption);
+                    SelectedSegment?.ProverbSelectionQuiz.QuizItems.Add(quizItem);
                     _contentModel.UpdateItem<IProverbSelectionQuiz>(SelectedSegment!.ProverbSelectionQuiz);
                     break;
 
                 case QuizTypes.ProverbBuilder:
-                    SelectedSegment?.ProverbBuilderQuiz.QuizItems.Add(newOption);
+                    SelectedSegment?.ProverbBuilderQuiz.QuizItems.Add(quizItem);
                     _contentModel.UpdateItem<IProverbBuilderQuiz>(SelectedSegment!.ProverbBuilderQuiz);
                     break;
 
                 case QuizTypes.GapFiller:
-                    SelectedSegment?.GapFillerQuiz.QuizItems.Add(newOption);
+                    SelectedSegment?.GapFillerQuiz.QuizItems.Add(quizItem);
                     _contentModel.UpdateItem<IGapFillerQuiz>(SelectedSegment!.GapFillerQuiz);
                     break;
+
             }
         }
 
@@ -221,6 +222,26 @@ namespace Content_Manager.Stores
                     SelectedSegment!.ProverbSelectionQuiz!.CorrectProverbId = itemId;
                     break;
             }
+        }
+
+        internal TestingQuestion GetQuestionById(string id)
+        {
+            var question = SelectedSegment!.TestingQuiz!.Questions.Find(q => q.Id == id);
+            return question!;
+        }
+        internal void DeleteQuestion(string questionId)
+        {
+            SelectedSegment!.TestingQuiz!.Questions.Remove(GetQuestionById(questionId));
+            _contentModel.UpdateItem<ITestingQuiz>(SelectedSegment!.TestingQuiz);
+        }
+        internal void AddQuestion(TestingQuestion newOption)
+        {
+            SelectedSegment?.TestingQuiz.Questions.Add(newOption);
+            _contentModel.UpdateItem<ITestingQuiz>(SelectedSegment!.TestingQuiz);
+        }
+        internal void UpdateTestingQuiz()
+        {
+            _contentModel.UpdateItem<ITestingQuiz>(SelectedSegment!.TestingQuiz);
         }
         #endregion
 

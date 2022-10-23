@@ -33,6 +33,7 @@ namespace Content_Manager.UserControls.MaterialControls
         #region Properties
         ContentStore ContentStore => App.AppHost!.Services.GetRequiredService<ContentStore>();
         StylingService StylingService => App.AppHost!.Services.GetRequiredService<StylingService>();
+        private List<QuizItem> QuizItems { get; set; } = new List<QuizItem>();
         public string QuestionText
         {
             get { return (string)GetValue(ItemTextProperty); }
@@ -102,13 +103,15 @@ namespace Content_Manager.UserControls.MaterialControls
             SetUiForExistingMaterial();
 
             QuestionId = testingQuestion.Id!;
-            QuestionText = testingQuestion.Question;
+            QuestionText = testingQuestion.QuestionText;
 
             foreach (var quizItem in testingQuestion.QuizItems)
             {
-                var questionControl = new QuizItemControl(QuizTypes.Testing, quizItem);
-                spItems.Children.Add(questionControl);
+                var quizItemControl = new QuizItemControl(QuizTypes.Testing, quizItem);
+                spItems.Children.Add(quizItemControl);
             }
+            spItems.Children.Add(new QuizItemControl(QuizTypes.Testing));
+
 
             OnTextSet(true);
         }
@@ -147,12 +150,27 @@ namespace Content_Manager.UserControls.MaterialControls
 
         private void btnSaveQuestion_Click(object sender, RoutedEventArgs e)
         {
+            if (string.IsNullOrEmpty(QuestionId))
+            {
+                var newOption = new TestingQuestion(QuestionText, QuizItems);
+                ContentStore.AddQuestion(newOption);
+            }
+            else
+            {
+                var question = ContentStore.GetQuestionById(QuestionId);
+                question.QuestionText = QuestionText;
+                question.QuizItems = QuizItems;
 
+                ContentStore.UpdateTestingQuiz();
+            }
+
+            RefreshUI();
         }
 
         private void btnDeleteQuestion_Click(object sender, RoutedEventArgs e)
         {
-
+            ContentStore.DeleteQuestion(QuestionId);
+            RefreshUI();
         }
 
         //private void _contentStore_SegmentChanged(Segment selectedSegment)

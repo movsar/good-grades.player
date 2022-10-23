@@ -28,7 +28,7 @@ namespace Data.Entities
         public void SetFromModel(IModelBase model)
         {
             var testingQuestion = model as TestingQuestion;
-            Question = testingQuestion.Question;
+            Question = testingQuestion.QuestionText;
             AnswerId = testingQuestion.AnswerId;
             Utils.SyncLists(QuizItems, testingQuestion.QuizItems);
         }
