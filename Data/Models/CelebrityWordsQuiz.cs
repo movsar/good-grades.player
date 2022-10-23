@@ -3,7 +3,7 @@ using Data.Interfaces;
 
 namespace Data.Models
 {
-    public class CelebrityWordsQuiz : ModelBase, IQuiz, ICelebrityWordsQuiz
+    public class CelebrityWordsQuiz : ModelBase, ICelebrityWordsQuiz
     {
         public CelebrityWordsQuiz(CelebrityWordsQuizEntity celebrityWordsQuiz)
         {

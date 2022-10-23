@@ -3,7 +3,7 @@ using Data.Interfaces;
 
 namespace Data.Models
 {
-    public class ProverbBuilderQuiz : ModelBase, IQuiz, IProverbBuilderQuiz
+    public class ProverbBuilderQuiz : ModelBase, IProverbBuilderQuiz
     {
         public ProverbBuilderQuiz(ProverbBuilderQuizEntity proverbBuilderQuizEntity)
         {

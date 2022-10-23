@@ -14,6 +14,7 @@ namespace Data.Models
         public ProverbSelectionQuiz ProverbSelectionQuiz { get; set; }
         public ProverbBuilderQuiz ProverbBuilderQuiz { get; set; }
         public GapFillerQuiz GapFillerQuiz { get; set; }
+        public TestingQuiz TestingQuiz { get; set; }
         public Segment() { }
         public Segment(SegmentEntity segmentEntity)
         {
@@ -40,6 +41,7 @@ namespace Data.Models
             ProverbSelectionQuiz = new(segmentEntity.ProverbSelectionQuiz);
             ProverbBuilderQuiz = new(segmentEntity.ProverbBuilderQuiz);
             GapFillerQuiz = new(segmentEntity.GapFillerQuiz);
+            TestingQuiz = new(segmentEntity.TestingQuiz);
         }
     }
 }

@@ -12,5 +12,6 @@ namespace Data.Enums
         ProverbSelection,
         ProverbBuilder,
         GapFiller,
+        Testing,
     }
 }

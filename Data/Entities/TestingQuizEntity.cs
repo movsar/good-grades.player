@@ -1,38 +1,33 @@
 ﻿using Data.Interfaces;
 using Data.Models;
+using Data.Services;
 using MongoDB.Bson;
 using Realms;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Data.Entities
 {
-    public class TestingQuizItemEntity : RealmObject, ITestingQuizItem, IEntityBase
+    public class TestingQuizEntity : RealmObject, IEntityBase, ITestingQuiz
     {
+        #region Properties
         [Required]
         [PrimaryKey]
         public string Id { get; set; } = ObjectId.GenerateNewId().ToString();
-
-        public string Question { get; set; }
-        public string Answer { get; set; }
-        public IList<string> Options { get; set; }
         public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.Now;
         public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;
+        public IList<TestingQuestionEntity> Questions { get; }
+        #endregion
 
+        #region HelperMethods
         public IModelBase ToModel()
         {
-            return new TestingQuizItem(this);
+            return new TestingQuiz(this);
         }
-
         public void SetFromModel(IModelBase model)
         {
-            var quizItem = model as TestingQuizItem;
-            Question = quizItem.Question;
-            Answer = quizItem.Answer;
-            Options = quizItem.Options;
+            var testingQuestion = model as TestingQuiz;
+            Utils.SyncLists(Questions, testingQuestion.Questions);
         }
+        #endregion
     }
 }

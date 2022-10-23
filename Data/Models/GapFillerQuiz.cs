@@ -3,7 +3,7 @@ using Data.Interfaces;
 
 namespace Data.Models
 {
-    public class GapFillerQuiz : ModelBase, IQuiz, IGapFillerQuiz
+    public class GapFillerQuiz : ModelBase, IGapFillerQuiz
     {
         public GapFillerQuiz(GapFillerQuizEntity gapFillerQuizEntity)
         {

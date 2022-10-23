@@ -42,6 +42,10 @@ namespace Content_Manager.Models
                 case var _ when t.IsAssignableTo(typeof(IGapFillerQuiz)):
                 case var _ when t.IsAssignableFrom(typeof(IGapFillerQuiz)):
                     return _storage.GfqRepository;
+
+                case var _ when t.IsAssignableTo(typeof(ITestingQuiz)):
+                case var _ when t.IsAssignableFrom(typeof(ITestingQuiz)):
+                    return _storage.TsqRepository;
                 default:
                     throw new Exception();
             }
