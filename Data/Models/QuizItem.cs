@@ -7,26 +7,31 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Data.Models {
-    public class QuizItem : ModelBase, IQuizItem {
-        public byte[] Image { get; set; }
+namespace Data.Models
+{
+    public class QuizItem : ModelBase, IQuizItem
+    {
         public string Text { get; set; }
+        public byte[] Image { get; set; }
 
-        public QuizItem(byte[] image, string wordsCollection) {
-            Image = image;
+        public QuizItem(string wordsCollection, byte[] image)
+        {
             Text = wordsCollection;
+            Image = image;
         }
 
-        public QuizItem() {
+        public QuizItem()
+        {
         }
 
-        public QuizItem(QuizItemEntity optionEntity) {
+        public QuizItem(QuizItemEntity optionEntity)
+        {
             Id = optionEntity.Id;
             CreatedAt = optionEntity.CreatedAt;
             ModifiedAt = optionEntity.ModifiedAt;
 
-            Image = optionEntity.Image;
             Text = optionEntity.Text;
+            Image = optionEntity.Image;
         }
     }
 }

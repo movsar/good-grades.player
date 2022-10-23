@@ -22,6 +22,10 @@ namespace Content_Manager.UserControls
     public partial class QuizItemControl : UserControl
     {
 
+        public event Action<QuizItem> Add;
+        public event Action<QuizItem> Save;
+        public event Action<string> Delete;
+
         #region Fields
         private const string Hint = "Введите описание";
         private FormCompletionInfo _formCompletionInfo;
@@ -209,7 +213,8 @@ namespace Content_Manager.UserControls
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-            ContentStore.DeleteQuizItem(_quizType, ItemId);
+            // ContentStore.DeleteQuizItem(_quizType, ItemId);
+            Delete?.Invoke(ItemId);
 
             RefreshUI();
         }
@@ -227,8 +232,9 @@ namespace Content_Manager.UserControls
 
             if (string.IsNullOrEmpty(ItemId))
             {
-                var newOption = new QuizItem(ItemImage, ItemText);
-                ContentStore.AddToQuiz(_quizType, newOption);
+                var quizItem = new QuizItem(ItemText, ItemImage);
+
+                Add?.Invoke(quizItem);
             }
             else
             {
@@ -236,8 +242,22 @@ namespace Content_Manager.UserControls
                 quizItem.Image = ItemImage;
                 quizItem.Text = ItemText;
 
-                ContentStore.UpdateQuiz(_quizType);
+                Save?.Invoke(quizItem);
             }
+
+            //if (string.IsNullOrEmpty(ItemId))
+            //{
+            //    var newOption = new QuizItem(ItemImage, ItemText);
+            //    ContentStore.AddToQuiz(_quizType, newOption);
+            //}
+            //else
+            //{
+            //    var quizItem = ContentStore.GetQuizItem(ItemId);
+            //    quizItem.Image = ItemImage;
+            //    quizItem.Text = ItemText;
+
+            //    ContentStore.UpdateQuiz(_quizType);
+            //}
 
             RefreshUI();
         }

@@ -2,6 +2,7 @@
 using Content_Manager.Services;
 using Content_Manager.Stores;
 using Data.Enums;
+using Data.Interfaces;
 using Data.Models;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -104,16 +105,40 @@ namespace Content_Manager.UserControls.MaterialControls
 
             QuestionId = testingQuestion.Id!;
             QuestionText = testingQuestion.QuestionText;
+            QuizItems = testingQuestion.QuizItems;
 
-            foreach (var quizItem in testingQuestion.QuizItems)
+            foreach (var quizItem in QuizItems)
             {
                 var quizItemControl = new QuizItemControl(QuizTypes.Testing, quizItem);
+                quizItemControl.Add += QuizItemControl_Add;
+                quizItemControl.Save += QuizItemControl_Save;
+                quizItemControl.Delete += QuizItemControl_Delete;
                 spItems.Children.Add(quizItemControl);
             }
-            spItems.Children.Add(new QuizItemControl(QuizTypes.Testing));
 
+            var newQuizItemControl = new QuizItemControl(QuizTypes.Testing);
+            newQuizItemControl.Add += QuizItemControl_Add;
+            newQuizItemControl.Save += QuizItemControl_Save;
+            newQuizItemControl.Delete += QuizItemControl_Delete;
+
+            spItems.Children.Add(newQuizItemControl);
 
             OnTextSet(true);
+        }
+        private void QuizItemControl_Add(QuizItem quizItem)
+        {
+            QuizItems.Add(quizItem);
+            ContentStore.UpdateTestingQuiz();
+        }
+        private void QuizItemControl_Save(QuizItem quizItem)
+        {
+            ContentStore.UpdateTestingQuiz();
+        }
+        private void QuizItemControl_Delete(string itemId)
+        {
+            var itemToRemove = QuizItems.Where(qi => qi.Id == itemId).First();
+            QuizItems.Remove(itemToRemove);
+            ContentStore.UpdateTestingQuiz();
         }
 
         #endregion
@@ -172,20 +197,5 @@ namespace Content_Manager.UserControls.MaterialControls
             ContentStore.DeleteQuestion(QuestionId);
             RefreshUI();
         }
-
-        //private void _contentStore_SegmentChanged(Segment selectedSegment)
-        //{
-        //    if (selectedSegment == null) return;
-
-        //    spItems.Children.Clear();
-
-        //    foreach (var question in selectedSegment.TestingQuiz.Questions)
-        //    {
-        //        var questionControl = new QuestionControl(question);
-        //        spItems.Children.Add(questionControl);
-        //    }
-
-        //    spItems.Children.Add(new QuestionControl());
-        //}
     }
 }

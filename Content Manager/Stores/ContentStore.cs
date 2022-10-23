@@ -126,13 +126,13 @@ namespace Content_Manager.Stores
             return SelectedSegment!.ListeningMaterials.Where(o => o.Id == id).First();
         }
 
-        #region QuizItem Handlers
         internal QuizItem GetQuizItem(string id)
         {
             var allQuizItems = SelectedSegment!.CelebrityWodsQuiz.QuizItems
                 .Union(SelectedSegment!.ProverbSelectionQuiz.QuizItems)
                 .Union(SelectedSegment!.ProverbBuilderQuiz.QuizItems)
-                .Union(SelectedSegment!.GapFillerQuiz.QuizItems);
+                .Union(SelectedSegment!.GapFillerQuiz.QuizItems)
+                .Union(SelectedSegment!.TestingQuiz.Questions.SelectMany(q => q.QuizItems));
 
             return allQuizItems.Where(o => o.Id == id).First();
         }
@@ -224,15 +224,11 @@ namespace Content_Manager.Stores
             }
         }
 
+        #region TestingQuizHandlers
         internal TestingQuestion GetQuestionById(string id)
         {
             var question = SelectedSegment!.TestingQuiz!.Questions.Find(q => q.Id == id);
             return question!;
-        }
-        internal void DeleteQuestion(string questionId)
-        {
-            SelectedSegment!.TestingQuiz!.Questions.Remove(GetQuestionById(questionId));
-            _contentModel.UpdateItem<ITestingQuiz>(SelectedSegment!.TestingQuiz);
         }
         internal void AddQuestion(TestingQuestion newOption)
         {
@@ -241,6 +237,11 @@ namespace Content_Manager.Stores
         }
         internal void UpdateTestingQuiz()
         {
+            _contentModel.UpdateItem<ITestingQuiz>(SelectedSegment!.TestingQuiz);
+        }
+        internal void DeleteQuestion(string questionId)
+        {
+            SelectedSegment!.TestingQuiz!.Questions.Remove(GetQuestionById(questionId));
             _contentModel.UpdateItem<ITestingQuiz>(SelectedSegment!.TestingQuiz);
         }
         #endregion
