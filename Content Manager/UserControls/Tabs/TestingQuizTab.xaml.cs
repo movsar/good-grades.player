@@ -1,5 +1,7 @@
 ﻿using Content_Manager.Stores;
 using Content_Manager.UserControls.MaterialControls;
+using Data.Enums;
+using Data.Interfaces;
 using Data.Models;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -21,7 +23,7 @@ namespace Content_Manager.UserControls.Tabs
 {
     public partial class TestingQuizTab : UserControl
     {
-        private ContentStore _contentStore { get; }
+        private readonly ContentStore _contentStore;
         public TestingQuizTab()
         {
             InitializeComponent();
@@ -40,10 +42,43 @@ namespace Content_Manager.UserControls.Tabs
             foreach (var question in selectedSegment.TestingQuiz.Questions)
             {
                 var questionControl = new QuestionControl(question);
-                spItems.Children.Add(questionControl);
-            }
+                questionControl.Add += QuestionControl_Add;
+                questionControl.Save += QuestionControl_Save;
+                questionControl.Delete += QuestionControl_Delete;
 
-            spItems.Children.Add(new QuestionControl());
+                spItems.Children.Add(questionControl);
+
+            }
+            var newQuestion = new QuestionControl();
+            spItems.Children.Add(newQuestion);
+            newQuestion.Add += QuestionControl_Add;
+            newQuestion.Save += QuestionControl_Save;
+            newQuestion.Delete += QuestionControl_Delete; ;
+        }
+
+        private void UpdateQuiz()
+        {
+            _contentStore.UpdateQuiz(QuizTypes.Testing);
+        }
+
+        private void QuestionControl_Add(TestingQuestion testingQuestion)
+        {
+            _contentStore.SelectedSegment?.TestingQuiz.Questions.Add(testingQuestion);
+
+            UpdateQuiz();
+        }
+
+        private void QuestionControl_Delete(string questionId)
+        {
+            var itemToRemove = _contentStore.SelectedSegment?.TestingQuiz.Questions.Where(qi => qi.Id == questionId).First();
+            _contentStore.SelectedSegment?.TestingQuiz.Questions.Remove(itemToRemove!);
+
+            UpdateQuiz();
+        }
+
+        private void QuestionControl_Save()
+        {
+            UpdateQuiz();
         }
     }
 }

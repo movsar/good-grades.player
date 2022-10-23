@@ -23,7 +23,7 @@ namespace Content_Manager.UserControls
     {
 
         public event Action<QuizItem> Add;
-        public event Action<QuizItem> Save;
+        public event Action Save;
         public event Action<string> Delete;
 
         #region Fields
@@ -242,24 +242,8 @@ namespace Content_Manager.UserControls
                 quizItem.Image = ItemImage;
                 quizItem.Text = ItemText;
 
-                Save?.Invoke(quizItem);
+                Save?.Invoke();
             }
-
-            //if (string.IsNullOrEmpty(ItemId))
-            //{
-            //    var newOption = new QuizItem(ItemImage, ItemText);
-            //    ContentStore.AddToQuiz(_quizType, newOption);
-            //}
-            //else
-            //{
-            //    var quizItem = ContentStore.GetQuizItem(ItemId);
-            //    quizItem.Image = ItemImage;
-            //    quizItem.Text = ItemText;
-
-            //    ContentStore.UpdateQuiz(_quizType);
-            //}
-
-            RefreshUI();
         }
 
         private void ValidateInput()

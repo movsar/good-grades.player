@@ -1,4 +1,6 @@
 ﻿using Content_Manager.Stores;
+using Data.Enums;
+using Data.Interfaces;
 using Data.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Shared.Controls;
@@ -45,12 +47,49 @@ namespace Content_Manager.UserControls.Tabs
 
             spItems.Children.Clear();
 
-            foreach (var option in selectedSegment.CelebrityWodsQuiz.QuizItems)
+            foreach (var quizItem in selectedSegment.CelebrityWodsQuiz.QuizItems)
             {
-                spItems.Children.Add(new QuizItemControl(Data.Enums.QuizTypes.CelebrityWords, option));
+                var existingQuizItem = new QuizItemControl(QuizTypes.CelebrityWords, quizItem);
+                existingQuizItem.Add += QuizItem_Add;
+                existingQuizItem.Save += QuizItem_Save;
+                existingQuizItem.Delete += QuizItem_Delete;
+
+                spItems.Children.Add(existingQuizItem);
             }
 
-            spItems.Children.Add(new QuizItemControl(Data.Enums.QuizTypes.CelebrityWords));
+            var newQuizItem = new QuizItemControl(QuizTypes.CelebrityWords);
+            newQuizItem.Add += QuizItem_Add;
+            newQuizItem.Save += QuizItem_Save;
+            newQuizItem.Delete += QuizItem_Delete;
+            spItems.Children.Add(newQuizItem);
         }
+
+
+        #region Event Handlers
+        private void UpdateQuiz()
+        {
+            _contentStore.UpdateQuiz(QuizTypes.CelebrityWords);
+        }
+
+        private void QuizItem_Delete(string itemId)
+        {
+            var itemToRemove = _contentStore.SelectedSegment?.CelebrityWodsQuiz.QuizItems.Where(qi => qi.Id == itemId).First();
+            _contentStore.SelectedSegment?.CelebrityWodsQuiz.QuizItems.Remove(itemToRemove!);
+
+            UpdateQuiz();
+        }
+
+        private void QuizItem_Save()
+        {
+            UpdateQuiz();
+        }
+
+        private void QuizItem_Add(QuizItem quizItem)
+        {
+            _contentStore.SelectedSegment?.CelebrityWodsQuiz.QuizItems.Add(quizItem);
+
+            UpdateQuiz();
+        }
+        #endregion
     }
 }

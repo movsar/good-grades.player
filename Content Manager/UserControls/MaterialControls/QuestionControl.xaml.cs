@@ -25,6 +25,12 @@ namespace Content_Manager.UserControls.MaterialControls
 {
     public partial class QuestionControl : UserControl
     {
+        #region Events
+        public event Action<TestingQuestion> Add;
+        public event Action Save;
+        public event Action<string> Delete;
+        #endregion
+
         #region Fields
         private const string Hint = "Введите описание";
         private FormCompletionInfo _formCompletionInfo;
@@ -62,11 +68,6 @@ namespace Content_Manager.UserControls.MaterialControls
         private void OnTextSet(bool isSet)
         {
             _formCompletionInfo.Update(nameof(QuestionText), isSet);
-        }
-
-        private void RefreshUI()
-        {
-            ContentStore.SelectedSegment = ContentStore.SelectedSegment;
         }
         #endregion
 
@@ -125,22 +126,24 @@ namespace Content_Manager.UserControls.MaterialControls
 
             OnTextSet(true);
         }
+        #endregion
+
+        #region Event Handlers
+        private void QuizItemControl_Save()
+        {
+            Save?.Invoke();
+        }
         private void QuizItemControl_Add(QuizItem quizItem)
         {
             QuizItems.Add(quizItem);
-            ContentStore.UpdateTestingQuiz();
-        }
-        private void QuizItemControl_Save(QuizItem quizItem)
-        {
-            ContentStore.UpdateTestingQuiz();
+            Save?.Invoke();
         }
         private void QuizItemControl_Delete(string itemId)
         {
             var itemToRemove = QuizItems.Where(qi => qi.Id == itemId).First();
             QuizItems.Remove(itemToRemove);
-            ContentStore.UpdateTestingQuiz();
+            Save?.Invoke();
         }
-
         #endregion
 
         #region TextHandlers
@@ -173,12 +176,14 @@ namespace Content_Manager.UserControls.MaterialControls
         }
         #endregion
 
+        #region Button Handlers
         private void btnSaveQuestion_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrEmpty(QuestionId))
             {
-                var newOption = new TestingQuestion(QuestionText, QuizItems);
-                ContentStore.AddQuestion(newOption);
+                var newQuestion = new TestingQuestion(QuestionText, QuizItems);
+
+                Add?.Invoke(newQuestion);
             }
             else
             {
@@ -186,16 +191,14 @@ namespace Content_Manager.UserControls.MaterialControls
                 question.QuestionText = QuestionText;
                 question.QuizItems = QuizItems;
 
-                ContentStore.UpdateTestingQuiz();
+                Save?.Invoke();
             }
-
-            RefreshUI();
         }
 
         private void btnDeleteQuestion_Click(object sender, RoutedEventArgs e)
         {
-            ContentStore.DeleteQuestion(QuestionId);
-            RefreshUI();
+            Delete?.Invoke(QuestionId);
         }
+        #endregion
     }
 }

@@ -183,7 +183,13 @@ namespace Content_Manager.Stores
                 case QuizTypes.GapFiller:
                     _contentModel.UpdateItem<IGapFillerQuiz>(SelectedSegment!.GapFillerQuiz);
                     break;
+
+                case QuizTypes.Testing:
+                    _contentModel.UpdateItem<ITestingQuiz>(SelectedSegment!.TestingQuiz);
+                    break;
             }
+
+            SelectedSegment = SelectedSegment;
         }
 
         internal void DeleteQuizItem(QuizTypes quizType, string itemId)
@@ -235,10 +241,7 @@ namespace Content_Manager.Stores
             SelectedSegment?.TestingQuiz.Questions.Add(newOption);
             _contentModel.UpdateItem<ITestingQuiz>(SelectedSegment!.TestingQuiz);
         }
-        internal void UpdateTestingQuiz()
-        {
-            _contentModel.UpdateItem<ITestingQuiz>(SelectedSegment!.TestingQuiz);
-        }
+
         internal void DeleteQuestion(string questionId)
         {
             SelectedSegment!.TestingQuiz!.Questions.Remove(GetQuestionById(questionId));

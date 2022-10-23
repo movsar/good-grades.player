@@ -1,4 +1,5 @@
 ﻿using Content_Manager.Stores;
+using Data.Enums;
 using Data.Models;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -23,7 +24,7 @@ namespace Content_Manager.UserControls.Tabs
     /// </summary>
     public partial class ProverbBuilderQuizTab : UserControl
     {
-        private ContentStore _contentStore { get; }
+        private readonly ContentStore _contentStore;
         public ProverbBuilderQuizTab()
         {
             InitializeComponent();
@@ -51,10 +52,46 @@ namespace Content_Manager.UserControls.Tabs
 
             foreach (var quizItem in selectedSegment.ProverbBuilderQuiz.QuizItems)
             {
-                spItems.Children.Add(new QuizItemControl(Data.Enums.QuizTypes.ProverbBuilder, quizItem));
+                var existingQuizItem = new QuizItemControl(QuizTypes.ProverbBuilder, quizItem);
+                existingQuizItem.Add += QuizItem_Add;
+                existingQuizItem.Save += QuizItem_Save;
+                existingQuizItem.Delete += QuizItem_Delete;
+
+                spItems.Children.Add(existingQuizItem);
             }
 
-            spItems.Children.Add(new QuizItemControl(Data.Enums.QuizTypes.ProverbBuilder));
+            var newQuizItem = new QuizItemControl(QuizTypes.ProverbBuilder);
+            newQuizItem.Add += QuizItem_Add;
+            newQuizItem.Save += QuizItem_Save;
+            newQuizItem.Delete += QuizItem_Delete;
+            spItems.Children.Add(newQuizItem);
         }
+
+        #region Event Handlers
+        private void UpdateQuiz()
+        {
+            _contentStore.UpdateQuiz(QuizTypes.ProverbBuilder);
+        }
+
+        private void QuizItem_Delete(string itemId)
+        {
+            var itemToRemove = _contentStore.SelectedSegment?.ProverbBuilderQuiz.QuizItems.Where(qi => qi.Id == itemId).First();
+            _contentStore.SelectedSegment?.ProverbBuilderQuiz.QuizItems.Remove(itemToRemove!);
+
+            UpdateQuiz();
+        }
+
+        private void QuizItem_Save()
+        {
+            UpdateQuiz();
+        }
+
+        private void QuizItem_Add(QuizItem quizItem)
+        {
+            _contentStore.SelectedSegment?.ProverbBuilderQuiz.QuizItems.Add(quizItem);
+
+            UpdateQuiz();
+        }
+        #endregion
     }
 }
