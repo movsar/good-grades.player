@@ -7,27 +7,40 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
+        <StackPanel>
+            <StackPanel Margin="0 0 0 0" 
+                    Orientation="Horizontal" 
+                    Height="30">
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="30"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-        </Grid.RowDefinitions>
+                <TextBox x:Name="txtQuestion"
+                     Margin="10 0 0 0" 
+                     Padding="5 0 0 0"
+                     Width="250" 
+                     Text="{Binding Path=QuestionText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                     TextAlignment="Left"
+                     VerticalContentAlignment="Center"
+                     GotFocus="txtQuestionText_GotFocus"
+                     LostFocus="txtQuestionText_LostFocus"
+                     TextChanged="txtQuestionText_TextChanged"
+                     />
 
-        <TextBlock Margin="10 5 10 0"
-                   FontWeight="Bold">Заполните опции:</TextBlock>
+                <Button x:Name="btnSaveQuestion" 
+                    Background="LightSeaGreen"
+                    Margin="10 0 0 0" Padding="7 0 7 0" 
+                    Cursor="Hand"
+                    FontFamily="Segoe MDL2 Assets" Content="&#xE74E;" 
+                    Click="btnSaveQuestion_Click"/>
 
-        <Button Grid.Row="0" x:Name="btnPreview"
-                Visibility="Collapsed"
-                HorizontalAlignment="Right"
-                Background="LightSeaGreen"
-                Margin="10 0 0 0" Padding="7 0 7 0" 
-                Cursor="Hand"
-                FontFamily="Segoe MDL2 Assets" Content="&#xE8FF;" 
-                Click="btnPreview_Click"/>
+                <Button x:Name="btnDeleteQuestion" 
+                    Background="IndianRed"
+                    Margin="10 0 0 0" Padding="7 0 7 0" 
+                    Cursor="Hand"
+                    FontFamily="Segoe MDL2 Assets" Content="&#xE74D;" 
+                    Click="btnDeleteQuestion_Click"/>
+            </StackPanel>
 
-        <ScrollViewer Grid.Row="1">
-            <StackPanel x:Name="spItems"></StackPanel>
-        </ScrollViewer>
-        
+            <StackPanel x:Name="spItems" Margin="30 0 0 0"></StackPanel>
+        </StackPanel>
+
     </Grid>
 </UserControl>

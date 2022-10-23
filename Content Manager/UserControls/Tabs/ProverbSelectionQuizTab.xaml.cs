@@ -49,7 +49,7 @@ namespace Content_Manager.UserControls.Tabs
 
             foreach (var quizItem in selectedSegment.ProverbSelectionQuiz.QuizItems)
             {
-                spItems.Children.Add(new QuizItemControl(Data.Enums.QuizTypes.ProverbSelection, quizItem.Id!, quizItem!.Image, quizItem.Text, selectedSegment.ProverbSelectionQuiz.CorrectProverbId == quizItem.Id));
+                spItems.Children.Add(new QuizItemControl(Data.Enums.QuizTypes.ProverbSelection, quizItem));
             }
 
             spItems.Children.Add(new QuizItemControl(Data.Enums.QuizTypes.ProverbSelection));

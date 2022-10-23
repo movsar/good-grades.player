@@ -47,7 +47,7 @@ namespace Content_Manager.UserControls.Tabs
 
             foreach (var option in selectedSegment.CelebrityWodsQuiz.QuizItems)
             {
-                spItems.Children.Add(new QuizItemControl(Data.Enums.QuizTypes.CelebrityWords, option.Id, option.Image, option.Text));
+                spItems.Children.Add(new QuizItemControl(Data.Enums.QuizTypes.CelebrityWords, option));
             }
 
             spItems.Children.Add(new QuizItemControl(Data.Enums.QuizTypes.CelebrityWords));

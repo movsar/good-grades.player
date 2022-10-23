@@ -20,6 +20,9 @@
             <TabItem Header="Пробелы">
                 <local:GapFillerQuizTab/>
             </TabItem>
+            <TabItem Header="Тест">
+                <local:TestingQuizTab/>
+            </TabItem>
         </TabControl>
     </Grid>
 </UserControl>

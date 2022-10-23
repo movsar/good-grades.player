@@ -48,7 +48,7 @@ namespace Content_Manager.UserControls.Tabs
 
             foreach (var quizItem in selectedSegment.GapFillerQuiz.QuizItems)
             {
-                spItems.Children.Add(new QuizItemControl(Data.Enums.QuizTypes.GapFiller, quizItem.Id!, quizItem!.Image, quizItem.Text));
+                spItems.Children.Add(new QuizItemControl(Data.Enums.QuizTypes.GapFiller, quizItem));
             }
 
             spItems.Children.Add(new QuizItemControl(Data.Enums.QuizTypes.GapFiller));

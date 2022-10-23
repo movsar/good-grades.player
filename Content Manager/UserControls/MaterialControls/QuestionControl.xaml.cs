@@ -1,8 +1,12 @@
-﻿using Content_Manager.Stores;
+﻿using Content_Manager.Models;
+using Content_Manager.Services;
+using Content_Manager.Stores;
+using Data.Enums;
 using Data.Models;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,34 +24,150 @@ namespace Content_Manager.UserControls.MaterialControls
 {
     public partial class QuestionControl : UserControl
     {
-        private ContentStore _contentStore { get; }
-        public QuestionControl()
+        #region Fields
+        private const string Hint = "Введите описание";
+        private FormCompletionInfo _formCompletionInfo;
+        private QuizTypes _quizType;
+        #endregion
+
+        #region Properties
+        ContentStore ContentStore => App.AppHost!.Services.GetRequiredService<ContentStore>();
+        StylingService StylingService => App.AppHost!.Services.GetRequiredService<StylingService>();
+        public string QuestionText
+        {
+            get { return (string)GetValue(ItemTextProperty); }
+            set { SetValue(ItemTextProperty, value); }
+        }
+        public static readonly DependencyProperty ItemTextProperty =
+            DependencyProperty.Register("QuestionText", typeof(string), typeof(QuestionControl), new PropertyMetadata(""));
+
+        public string QuestionId { get; }
+
+        #endregion
+
+        #region Reactions
+        private void OnFormStatusChanged(bool isReady)
+        {
+            if (isReady)
+            {
+                btnSaveQuestion.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                btnSaveQuestion.Visibility = Visibility.Collapsed;
+            }
+        }
+        private void OnTextSet(bool isSet)
+        {
+            _formCompletionInfo.Update(nameof(QuestionText), isSet);
+        }
+
+        private void RefreshUI()
+        {
+            ContentStore.SelectedSegment = ContentStore.SelectedSegment;
+        }
+        #endregion
+
+        #region Initialization
+        private void SetUiForNewMaterial()
+        {
+            btnDeleteQuestion.Visibility = Visibility.Collapsed;
+            btnSaveQuestion.Visibility = Visibility.Collapsed;
+        }
+        private void SetUiForExistingMaterial()
+        {
+            btnDeleteQuestion.Visibility = Visibility.Visible;
+        }
+        private void SharedInitialization(bool isExistingMaterial)
         {
             InitializeComponent();
             DataContext = this;
 
-            _contentStore = App.AppHost!.Services.GetRequiredService<ContentStore>();
-            _contentStore.SelectedSegmentChanged += _contentStore_SegmentChanged;
+            var propertiesToWatch = new List<string>() { nameof(QuestionText) };
+
+            _formCompletionInfo = new FormCompletionInfo(propertiesToWatch, isExistingMaterial);
+            _formCompletionInfo.StatusChanged += OnFormStatusChanged;
+        }
+        public QuestionControl()
+        {
+            SharedInitialization(false);
+            SetUiForNewMaterial();
+
+            QuestionText = Hint;
         }
 
-        public QuestionControl(TestingQuestion question)
+        public QuestionControl(TestingQuestion testingQuestion)
         {
-            
-        }
+            SharedInitialization(true);
+            SetUiForExistingMaterial();
 
-        private void _contentStore_SegmentChanged(Segment selectedSegment)
-        {
-            if (selectedSegment == null) return;
+            QuestionId = testingQuestion.Id!;
+            QuestionText = testingQuestion.Question;
 
-            spItems.Children.Clear();
-
-            foreach (var question in selectedSegment.TestingQuiz.Questions)
+            foreach (var quizItem in testingQuestion.QuizItems)
             {
-                var questionControl = new QuestionControl(question);
+                var questionControl = new QuizItemControl(QuizTypes.Testing, quizItem);
                 spItems.Children.Add(questionControl);
             }
 
-            spItems.Children.Add(new QuestionControl());
+            OnTextSet(true);
         }
+
+        #endregion
+
+        #region TextHandlers
+        private void txtQuestionText_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (QuestionText == Hint)
+            {
+                QuestionText = "";
+            }
+        }
+
+        private void txtQuestionText_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(QuestionText))
+            {
+                QuestionText = Hint;
+            }
+        }
+
+        private void txtQuestionText_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(txtQuestion.Text) || txtQuestion.Text.Equals(Hint))
+            {
+                OnTextSet(false);
+            }
+            else
+            {
+                OnTextSet(true);
+            }
+        }
+        #endregion
+
+        private void btnSaveQuestion_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnDeleteQuestion_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        //private void _contentStore_SegmentChanged(Segment selectedSegment)
+        //{
+        //    if (selectedSegment == null) return;
+
+        //    spItems.Children.Clear();
+
+        //    foreach (var question in selectedSegment.TestingQuiz.Questions)
+        //    {
+        //        var questionControl = new QuestionControl(question);
+        //        spItems.Children.Add(questionControl);
+        //    }
+
+        //    spItems.Children.Add(new QuestionControl());
+        //}
     }
 }

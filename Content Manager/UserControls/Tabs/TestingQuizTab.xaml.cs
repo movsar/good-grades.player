@@ -1,4 +1,5 @@
 ﻿using Content_Manager.Stores;
+using Content_Manager.UserControls.MaterialControls;
 using Data.Models;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -18,13 +19,10 @@ using System.Windows.Shapes;
 
 namespace Content_Manager.UserControls.Tabs
 {
-    /// <summary>
-    /// Interaction logic for ProverbsBuilderQuizTab.xaml
-    /// </summary>
-    public partial class ProverbBuilderQuizTab : UserControl
+    public partial class TestingQuizTab : UserControl
     {
         private ContentStore _contentStore { get; }
-        public ProverbBuilderQuizTab()
+        public TestingQuizTab()
         {
             InitializeComponent();
             DataContext = this;
@@ -33,28 +31,19 @@ namespace Content_Manager.UserControls.Tabs
             _contentStore.SelectedSegmentChanged += _contentStore_SegmentChanged;
         }
 
-        private void btnPreview_Click(object sender, RoutedEventArgs e)
-        {
-            if (_contentStore?.SelectedSegment?.ProverbBuilderQuiz == null)
-            {
-                return;
-            }
-            //var previewWindow = new ProverbSelectionQuizViewer(_contentStore.SelectedSegment.ProverbSelectionQuiz);
-            //previewWindow.ShowDialog();
-        }
-
         private void _contentStore_SegmentChanged(Segment selectedSegment)
         {
             if (selectedSegment == null) return;
 
             spItems.Children.Clear();
 
-            foreach (var quizItem in selectedSegment.ProverbBuilderQuiz.QuizItems)
+            foreach (var question in selectedSegment.TestingQuiz.Questions)
             {
-                spItems.Children.Add(new QuizItemControl(Data.Enums.QuizTypes.ProverbBuilder, quizItem));
+                var questionControl = new QuestionControl(question);
+                spItems.Children.Add(questionControl);
             }
 
-            spItems.Children.Add(new QuizItemControl(Data.Enums.QuizTypes.ProverbBuilder));
+            spItems.Children.Add(new QuestionControl());
         }
     }
 }

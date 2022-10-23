@@ -136,24 +136,28 @@ namespace Content_Manager.UserControls
             ItemText = Hint;
         }
 
-        public QuizItemControl(QuizTypes quizType, string itemId, byte[] image, string text, bool isSelected = false)
+        public QuizItemControl(QuizTypes quizType, QuizItem quizItem)
         {
-            // Constructor for celebrity words quiz
+            var isSelected = false;
+            if (quizType == QuizTypes.ProverbSelection)
+            {
+                isSelected = ContentStore.SelectedSegment?.ProverbSelectionQuiz.CorrectProverbId == quizItem.Id;
+            }
 
             SharedInitialization(quizType, true, isSelected);
             SetUiForExistingMaterial();
 
-            ItemId = itemId;
+            ItemId = quizItem.Id!;
 
-            if (image != null)
+            if (quizItem.Image != null)
             {
-                ItemImage = image;
+                ItemImage = quizItem.Image;
                 OnImageSet(true);
             }
 
-            if (text != null)
+            if (quizItem.Text != null)
             {
-                ItemText = text;
+                ItemText = quizItem.Text;
                 OnTextSet(true);
             }
         }
