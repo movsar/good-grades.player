@@ -137,32 +137,6 @@ namespace Content_Manager.Stores
             return allQuizItems.Where(o => o.Id == id).First();
         }
 
-        internal void AddToQuiz(QuizTypes quizType, QuizItem quizItem)
-        {
-            switch (quizType)
-            {
-                case QuizTypes.CelebrityWords:
-                    SelectedSegment?.CelebrityWodsQuiz.QuizItems.Add(quizItem);
-                    _contentModel.UpdateItem<ICelebrityWordsQuiz>(SelectedSegment!.CelebrityWodsQuiz);
-                    break;
-
-                case QuizTypes.ProverbSelection:
-                    SelectedSegment?.ProverbSelectionQuiz.QuizItems.Add(quizItem);
-                    _contentModel.UpdateItem<IProverbSelectionQuiz>(SelectedSegment!.ProverbSelectionQuiz);
-                    break;
-
-                case QuizTypes.ProverbBuilder:
-                    SelectedSegment?.ProverbBuilderQuiz.QuizItems.Add(quizItem);
-                    _contentModel.UpdateItem<IProverbBuilderQuiz>(SelectedSegment!.ProverbBuilderQuiz);
-                    break;
-
-                case QuizTypes.GapFiller:
-                    SelectedSegment?.GapFillerQuiz.QuizItems.Add(quizItem);
-                    _contentModel.UpdateItem<IGapFillerQuiz>(SelectedSegment!.GapFillerQuiz);
-                    break;
-
-            }
-        }
 
         internal void UpdateQuiz(QuizTypes quizType)
         {
@@ -192,34 +166,6 @@ namespace Content_Manager.Stores
             SelectedSegment = SelectedSegment;
         }
 
-        internal void DeleteQuizItem(QuizTypes quizType, string itemId)
-        {
-            var quizItem = GetQuizItem(itemId);
-
-            switch (quizType)
-            {
-                case QuizTypes.CelebrityWords:
-                    SelectedSegment!.CelebrityWodsQuiz.QuizItems.Remove(quizItem);
-                    _contentModel.UpdateItem<ICelebrityWordsQuiz>(SelectedSegment!.CelebrityWodsQuiz);
-                    break;
-
-                case QuizTypes.ProverbSelection:
-                    SelectedSegment!.ProverbSelectionQuiz.QuizItems.Remove(quizItem);
-                    _contentModel.UpdateItem<IProverbSelectionQuiz>(SelectedSegment!.ProverbSelectionQuiz);
-                    break;
-
-                case QuizTypes.ProverbBuilder:
-                    SelectedSegment!.ProverbBuilderQuiz.QuizItems.Remove(quizItem);
-                    _contentModel.UpdateItem<IProverbBuilderQuiz>(SelectedSegment!.ProverbBuilderQuiz);
-                    break;
-
-                case QuizTypes.GapFiller:
-                    SelectedSegment!.GapFillerQuiz.QuizItems.Remove(quizItem);
-                    _contentModel.UpdateItem<IGapFillerQuiz>(SelectedSegment!.GapFillerQuiz);
-                    break;
-            }
-        }
-
         internal void SetQuizItemAsDefault(QuizTypes quizType, string itemId)
         {
             switch (quizType)
@@ -230,24 +176,11 @@ namespace Content_Manager.Stores
             }
         }
 
-        #region TestingQuizHandlers
         internal TestingQuestion GetQuestionById(string id)
         {
             var question = SelectedSegment!.TestingQuiz!.Questions.Find(q => q.Id == id);
             return question!;
         }
-        internal void AddQuestion(TestingQuestion newOption)
-        {
-            SelectedSegment?.TestingQuiz.Questions.Add(newOption);
-            _contentModel.UpdateItem<ITestingQuiz>(SelectedSegment!.TestingQuiz);
-        }
-
-        internal void DeleteQuestion(string questionId)
-        {
-            SelectedSegment!.TestingQuiz!.Questions.Remove(GetQuestionById(questionId));
-            _contentModel.UpdateItem<ITestingQuiz>(SelectedSegment!.TestingQuiz);
-        }
-        #endregion
 
     }
 }
