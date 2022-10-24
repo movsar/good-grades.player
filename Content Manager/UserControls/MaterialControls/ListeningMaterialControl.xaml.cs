@@ -163,7 +163,7 @@ namespace Content_Manager.UserControls
         #region ButtonHandlers
         private void btnChooseText_Click(object sender, RoutedEventArgs e)
         {
-            string filePath = FileService.SelectFilePath("Файлы с RTF текстом (.rtf) | *.rtf;");
+            string filePath = FileService.OpenFilePath("Файлы с RTF текстом (.rtf) | *.rtf;");
             if (string.IsNullOrEmpty(filePath)) return;
 
             // Read, load contents to the object and add to collection
@@ -176,7 +176,7 @@ namespace Content_Manager.UserControls
 
         private void btnChooseImage_Click(object sender, RoutedEventArgs e)
         {
-            string filePath = FileService.SelectFilePath("Файлы изображений (.png) | *.png; *.jpg; *.jpeg; *.tiff");
+            string filePath = FileService.OpenFilePath("Файлы изображений (.png) | *.png; *.jpg; *.jpeg; *.tiff");
             if (string.IsNullOrEmpty(filePath)) return;
 
             // Read, load contents to the object and add to collection
@@ -190,7 +190,7 @@ namespace Content_Manager.UserControls
         private void btnChooseAudio_Click(object sender, RoutedEventArgs e)
         {
             // Read the rtf file
-            string filePath = FileService.SelectFilePath("MP3 Файлы (.mp3) | *.mp3");
+            string filePath = FileService.OpenFilePath("MP3 Файлы (.mp3) | *.mp3");
             if (string.IsNullOrEmpty(filePath)) return;
 
             // Read, load contents to the object and add to collection

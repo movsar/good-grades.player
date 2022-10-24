@@ -10,7 +10,7 @@
     <DockPanel>
         <Menu DockPanel.Dock="Top" Height="21">
             <MenuItem Header="_База Данных">
-                <MenuItem Header="_Создать">
+                <MenuItem Header="_Создать" Click="mnuCreateDatabase_Click">
                     <MenuItem.Icon>
                         <TextBlock
                             HorizontalAlignment="Center" 

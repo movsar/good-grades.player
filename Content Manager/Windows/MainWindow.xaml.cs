@@ -65,8 +65,10 @@ namespace Content_Manager
                 lvSegments.Items.Add(segment);
             }
 
+            lblChooseDb.Visibility = Visibility.Collapsed;
             BtnNewSection.Visibility = Visibility.Visible;
             lvSegments.Visibility = Visibility.Visible;
+            lblChooseSegment.Visibility = Visibility.Visible;
         }
 
         private void OnSegmentAdded(Segment? segment)
@@ -142,7 +144,15 @@ namespace Content_Manager
 
         private void mnuOpenDatabase_Click(object sender, RoutedEventArgs e)
         {
-            string filePath = FileService.SelectFilePath("Файлы Баз Данных (.sgb) | *.sgb;");
+            string filePath = FileService.OpenFilePath("Файлы Баз Данных (.sgb) | *.sgb;");
+            if (string.IsNullOrEmpty(filePath)) return;
+
+            _contentStore.LoadDatabase(filePath);
+        }
+
+        private void mnuCreateDatabase_Click(object sender, RoutedEventArgs e)
+        {
+            string filePath = FileService.SaveFilePath("Файлы Баз Данных (.sgb) | *.sgb;");
             if (string.IsNullOrEmpty(filePath)) return;
 
             _contentStore.LoadDatabase(filePath);

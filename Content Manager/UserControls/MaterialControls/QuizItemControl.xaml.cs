@@ -202,7 +202,7 @@ namespace Content_Manager.UserControls
         #region ButtonHandlers
         private void btnChooseImage_Click(object sender, RoutedEventArgs e)
         {
-            string filePath = FileService.SelectFilePath("Файлы изображений (.png) | *.png; *.jpg; *.jpeg; *.tiff");
+            string filePath = FileService.OpenFilePath("Файлы изображений (.png) | *.png; *.jpg; *.jpeg; *.tiff");
             if (string.IsNullOrEmpty(filePath)) return;
 
             // Read, load contents to the object and add to collection
