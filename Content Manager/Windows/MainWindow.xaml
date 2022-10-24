@@ -20,7 +20,7 @@
                         </TextBlock>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="_Открыть">
+                <MenuItem Header="_Открыть" Click="mnuOpenDatabase_Click">
                     <MenuItem.Icon>
                         <TextBlock
                             HorizontalAlignment="Center" 
@@ -71,8 +71,8 @@
             <ListView x:Name="lvSegments" 
                   Grid.Column="0" 
                   Grid.Row="0"
-                  ItemsSource="{Binding Path=Segments}"
                   SelectionMode="Single"
+                  Visibility="Collapsed"    
                   SelectionChanged="lvSegments_SelectionChanged">
 
                 <ListView.ContextMenu>
@@ -90,17 +90,28 @@
                 </ListView.ItemTemplate>
             </ListView>
 
-            <Label Grid.Column="1" Grid.Row="0" x:Name="lblWelcome" 
-               Content="Выберите раздел с которым хотите работать"
-               HorizontalAlignment="Center"
-               VerticalAlignment="Center"               
-               BorderThickness="1"
+            <Label Grid.Column="1" Grid.Row="0" x:Name="lblChooseSegment" 
+                   Content="Выберите раздел с которым хотите работать"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center" 
+                   BorderThickness="1"
+                   Visibility="Hidden" 
                />
 
-            <!--<usercontrols:DbInformation  Grid.Column="1" Grid.Row="0"
-                                      HorizontalAlignment="Left"
-               VerticalAlignment="Top"
-               BorderThickness="1" />-->
+            <Label Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" x:Name="lblChooseDb" 
+                   Content="Откройте или создайте Базу Данных"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"               
+                   BorderThickness="1"
+               />
+
+            <!--<usercontrols:DbInformation 
+                Grid.Column="1" Grid.Row="0"
+                x:Name="ucDbInformation"
+                Visibility="Collapsed"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                BorderThickness="1" />-->
 
             <TabControl Grid.Column="1" Grid.Row="0" x:Name="tbcMain">
                 <TabItem Header="Информация о Разделе">
@@ -119,6 +130,7 @@
 
             <Button Grid.Column="0"
                 Grid.Row="1"
+                Visibility="Collapsed"
                 Content="Добавить раздел"
                 Name="BtnNewSection"
                 Click="BtnNewSection_Click"

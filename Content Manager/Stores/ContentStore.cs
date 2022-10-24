@@ -16,6 +16,7 @@ namespace Content_Manager.Stores
 {
     public class ContentStore
     {
+        public event Action ContentStoreInitialized;
 
         #region Properties
         public List<ISegment> StoredSegments = new();
@@ -49,12 +50,17 @@ namespace Content_Manager.Stores
         public ContentStore(ContentModel contentModel)
         {
             _contentModel = contentModel;
-            LoadAllSegments();
+            _contentModel.ContentModelInitialized += ContentModelInitialized;
+        }
+
+        private void ContentModelInitialized()
+        {
+            ContentStoreInitialized?.Invoke();
         }
         #endregion
 
         #region SegmentHandlers
-        private void LoadAllSegments()
+        public void LoadAllSegments()
         {
             // Load from DB
             IEnumerable<ISegment> segmentsFromDb = _contentModel.GetAll<Segment>();
@@ -184,6 +190,18 @@ namespace Content_Manager.Stores
             dbMeta.Description = description;
 
             _contentModel.UpdateItem<DbMeta>(dbMeta);
+        }
+
+        internal void LoadDatabase(string filePath)
+        {
+            if (File.Exists(filePath))
+            {
+                _contentModel.OpenDatabase(filePath);
+            }
+            else
+            {
+                _contentModel.CreateDatabase(filePath);
+            }
         }
     }
 }

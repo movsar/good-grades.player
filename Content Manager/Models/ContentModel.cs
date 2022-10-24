@@ -12,10 +12,18 @@ namespace Content_Manager.Models
 {
     public class ContentModel
     {
-        private readonly Storage _storage;
+        public event Action ContentModelInitialized;
+        private Storage _storage;
+
         public ContentModel(Storage storage)
         {
             _storage = storage;
+            _storage.DatabaseInitialized += DatabaseInitialized;
+        }
+
+        public void DatabaseInitialized()
+        {
+            ContentModelInitialized?.Invoke();
         }
 
         private IGeneralRepository SelectRepository<TModel>()
@@ -26,7 +34,7 @@ namespace Content_Manager.Models
                 case var _ when t.IsAssignableTo(typeof(IDbMeta)):
                 case var _ when t.IsAssignableFrom(typeof(IDbMeta)):
                     return _storage.DbMetaRepository;
-                
+
                 case var _ when t.IsAssignableTo(typeof(ISegment)):
                 case var _ when t.IsAssignableFrom(typeof(ISegment)):
                     return _storage.SegmentsRepository;
@@ -77,6 +85,16 @@ namespace Content_Manager.Models
         public IEnumerable<TModel> GetAll<TModel>() where TModel : IModelBase
         {
             return SelectRepository<TModel>().GetAll<TModel>();
+        }
+
+        internal void CreateDatabase(string filePath)
+        {
+            _storage.CreateDatabase(filePath);
+        }
+
+        internal void OpenDatabase(string filePath)
+        {
+            _storage.OpenDatabase(filePath);
         }
     }
 }

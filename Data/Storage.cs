@@ -8,35 +8,45 @@ namespace Data
 {
     public class Storage
     {
-        private readonly Realm _realmInstance;
-        private readonly bool _firstStart = false;
-        public SegmentRepository SegmentsRepository { get; }
-        public CwqRepository CwqRepository { get; }
-        public PsqRepository PsqRepository { get; }
-        public PbqRepository PbqRepository { get; }
-        public GfqRepository GfqRepository { get; }
-        public TsqRepository TsqRepository { get; }
-        public DbMetaRepository DbMetaRepository { get; }
+        public event Action DatabaseInitialized;
 
-        public Storage(bool cleanStart = false, string databasePath = "content.sgb")
+        private Realm _realmInstance;
+        public SegmentRepository SegmentsRepository { get; private set; }
+        public CwqRepository CwqRepository { get; private set; }
+        public PsqRepository PsqRepository { get; private set; }
+        public PbqRepository PbqRepository { get; private set; }
+        public GfqRepository GfqRepository { get; private set; }
+        public TsqRepository TsqRepository { get; private set; }
+        public DbMetaRepository DbMetaRepository { get; private set; }
+        public Storage() { }
+
+        public void OpenDatabase(string databasePath)
         {
-            var sameDirPath = Path.Combine(Environment.CurrentDirectory, databasePath);
+            InitializeDatabase(databasePath);
 
+            DatabaseInitialized?.Invoke();
+        }
+
+        public void CreateDatabase(string databasePath)
+        {
+            InitializeDatabase(databasePath);
+
+            var dbMeta = new DbMeta();
+            DbMetaRepository.Add(ref dbMeta);
+
+            DatabaseInitialized?.Invoke();
+        }
+
+        private void InitializeDatabase(string databasePath)
+        {
             RealmConfiguration DbConfiguration = new(databasePath);
-
-            if (cleanStart)
-            {
-                Realm.DeleteRealm(DbConfiguration);
-            }
-
-            // First start flag
-            if (!File.Exists(DbConfiguration.DatabasePath))
-            {
-                _firstStart = true;
-            }
-
-            // Initialize database and repositories
             _realmInstance = Realm.GetInstance(DbConfiguration);
+
+            InitializeRepositories();
+        }
+
+        private void InitializeRepositories()
+        {
             SegmentsRepository = new SegmentRepository(_realmInstance);
             CwqRepository = new CwqRepository(_realmInstance);
             PsqRepository = new PsqRepository(_realmInstance);
@@ -44,13 +54,6 @@ namespace Data
             GfqRepository = new GfqRepository(_realmInstance);
             TsqRepository = new TsqRepository(_realmInstance);
             DbMetaRepository = new DbMetaRepository(_realmInstance);
-
-            // Add database metadata object on first start
-            if (_firstStart)
-            {
-                var dbMeta = new DbMeta();
-                DbMetaRepository.Add(ref dbMeta);
-            }
         }
 
         public void DropDatabase(string dbPath)

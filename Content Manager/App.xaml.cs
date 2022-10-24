@@ -6,28 +6,26 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Windows;
 
-namespace Content_Manager {
-    public partial class App : Application {
+namespace Content_Manager
+{
+    public partial class App : Application
+    {
         public static IHost? AppHost { get; private set; }
-        public App() {
-            // Initialize DB
-            Storage storage;
-            try {
-                storage = new Storage(false);
-            } catch {
-                storage = new Storage(true);
-            }
-
+        public App()
+        {
             AppHost = Host.CreateDefaultBuilder()
-                .ConfigureServices((hostContext, services) => {
-                    services.AddSingleton(provider => new ContentModel(storage));
+                .ConfigureServices((hostContext, services) =>
+                {
+                    services.AddSingleton<Storage>();
+                    services.AddSingleton<ContentModel>();
                     services.AddSingleton<ContentStore>();
                     services.AddSingleton<MainWindow>();
                     services.AddSingleton<StylingService>();
                 }).Build();
         }
 
-        protected override void OnStartup(StartupEventArgs e) {
+        protected override void OnStartup(StartupEventArgs e)
+        {
             AppHost.Start();
             var startUpForm = AppHost!.Services.GetRequiredService<MainWindow>();
             startUpForm.Show();
@@ -35,7 +33,8 @@ namespace Content_Manager {
             base.OnStartup(e);
         }
 
-        protected override void OnExit(ExitEventArgs e) {
+        protected override void OnExit(ExitEventArgs e)
+        {
             AppHost!.StopAsync();
             base.OnExit(e);
         }
