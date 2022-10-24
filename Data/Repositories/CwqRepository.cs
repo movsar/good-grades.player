@@ -18,10 +18,11 @@ namespace Data.Repositories
         }
 
         internal void DeleteBySegmentId(string segmentId) {
-            var entries = _realmInstance.All<CelebrityWordsQuizEntity>().First();
-            _realmInstance.Write(() => {
-                _realmInstance.Remove(entries);
-            });
+            // Is this really needed?
+            //var entries = _realmInstance.All<CelebrityWordsQuizEntity>().Where(cwq => cwq.SegmentId == segmentId);
+            //_realmInstance.Write(() => {
+            //    _realmInstance.Remove(entries);
+            //});
         }
     }
 }

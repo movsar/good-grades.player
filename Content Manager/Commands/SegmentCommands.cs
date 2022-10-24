@@ -1,4 +1,5 @@
 ﻿using Content_Manager.Stores;
+using Content_Manager.UserControls;
 using Data.Models;
 using System;
 using System.Collections.Generic;
@@ -6,12 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace Content_Manager.Commands
 {
     internal class SegmentCommands
     {
-        private static void DeleteAction(ContentStore contentStore, MainWindow view)
+        private static void DeleteAction(ContentStore contentStore, SegmentList view)
         {
             var result = MessageBox.Show($"Please approva removal of {view.lvSegments.SelectedItems.Count} dream(s)",
                                              "Confirmation",
@@ -30,9 +32,9 @@ namespace Content_Manager.Commands
         internal class DeleteSegment : CommandBase
         {
             private readonly ContentStore _contentStore;
-            private readonly MainWindow _view;
+            private readonly SegmentList _view;
 
-            public DeleteSegment(ContentStore contentStore, MainWindow view)
+            public DeleteSegment(ContentStore contentStore, SegmentList view)
             {
                 _contentStore = contentStore;
                 _view = view;

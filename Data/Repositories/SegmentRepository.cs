@@ -13,26 +13,16 @@ namespace Data.Repositories
             _realmInstance = realmInstance;
         }
 
-        public override void Delete<TModel>(TModel model)
-        {
-            var cwqRepository = new CwqRepository(_realmInstance);
-            cwqRepository.DeleteBySegmentId(model.Id);
+        //public override void Delete<TModel>(TModel model)
+        //{
+        //    var cwqRepository = new CwqRepository(_realmInstance);
+        //    cwqRepository.DeleteBySegmentId(model.Id);
 
-            base.Delete(model);
-        }
+        //    base.Delete(model);
+        //}
         public override IEnumerable<TModel> GetAll<TModel>()
         {
             var allSegments = base.GetAll<Segment>();
-
-            // Associate CelebrityWordsQuiz objects with Segment objects
-            var cwqRepository = new CwqRepository(_realmInstance);
-            var allCwqs = cwqRepository.GetAll<CelebrityWordsQuiz>();
-
-            foreach (var segment in allSegments)
-            {
-                segment.CelebrityWodsQuiz = allCwqs.First();
-            }
-
             return (IEnumerable<TModel>)allSegments;
         }
     }

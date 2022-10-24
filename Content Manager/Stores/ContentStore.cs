@@ -55,6 +55,7 @@ namespace Content_Manager.Stores
 
         private void ContentModelInitialized()
         {
+            LoadAllSegments();
             ContentStoreInitialized?.Invoke();
         }
         #endregion
@@ -192,16 +193,13 @@ namespace Content_Manager.Stores
             _contentModel.UpdateItem<DbMeta>(dbMeta);
         }
 
-        internal void LoadDatabase(string filePath)
+        internal void OpenDatabase(string filePath)
         {
-            if (File.Exists(filePath))
-            {
-                _contentModel.OpenDatabase(filePath);
-            }
-            else
-            {
-                _contentModel.CreateDatabase(filePath);
-            }
+            _contentModel.OpenDatabase(filePath);
+        }
+        internal void CreateDatabase(string filePath)
+        {
+            _contentModel.CreateDatabase(filePath);
         }
     }
 }

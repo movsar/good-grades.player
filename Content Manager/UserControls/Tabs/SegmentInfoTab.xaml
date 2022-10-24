@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Content_Manager.UserControls" xmlns:models="clr-namespace:Data.Models;assembly=Data" d:DataContext="{d:DesignInstance Type=models:Segment}"
+             xmlns:models="clr-namespace:Data.Models;assembly=Data" d:DataContext="{d:DesignInstance Type=models:Segment}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              x:Name="SegmentInfo">
@@ -24,18 +24,15 @@
             <Label Content="Название раздела"/>
             <TextBox Margin="10 0 10 0"
                      VerticalAlignment="Top"
-                     Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor,
-                                                         AncestorType={x:Type Window}},
-                                                         Path=DataContext.CurrentSegment.Title}"/>
+                     Height="21"
+                     Text="{Binding ElementName=SegmentInfo, Path=Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
             <Label Content="Описание"/>
             <TextBox Margin="10 0 10 0"
                      Height="50"
                      AcceptsReturn="True"
                      VerticalAlignment="Top"
-                     Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor,
-                                                         AncestorType={x:Type Window}},
-                                                         Path=DataContext.CurrentSegment.Description, Mode=TwoWay}"/>
+                     Text="{Binding ElementName=SegmentInfo, Path=Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
         </StackPanel>
     </Grid>

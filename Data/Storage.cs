@@ -29,6 +29,11 @@ namespace Data
 
         public void CreateDatabase(string databasePath)
         {
+            if (File.Exists(databasePath))
+            {
+                DropDatabase(databasePath);
+            }
+
             InitializeDatabase(databasePath);
 
             var dbMeta = new DbMeta();
@@ -58,7 +63,15 @@ namespace Data
 
         public void DropDatabase(string dbPath)
         {
-            Realm.DeleteRealm(new RealmConfiguration(dbPath));
+            try
+            {
+                Realm.DeleteRealm(new RealmConfiguration(dbPath));
+                File.Delete(dbPath);
+            }
+            catch (Exception)
+            {
+                // Log error
+            }
         }
     }
 }
