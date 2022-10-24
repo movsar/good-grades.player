@@ -13,15 +13,15 @@ namespace Content_Manager.Models
         public bool IsReady => _states.Where(s => s.Value == true).Count() == _states.Count();
 
         private readonly Dictionary<string, bool> _states = new Dictionary<string, bool>();
-        private readonly Dictionary<string, object> _propertiesToWatch;
-        public FormCompletionInfo(Dictionary<string, object> propertiesToWatch, bool existingElement)
+        private readonly List<string> _propertiesToWatch;
+        public FormCompletionInfo(List<string> propertiesToWatch, bool existingElement)
         {
             _propertiesToWatch = propertiesToWatch;
 
             // Initialize the dictionary
             foreach (var prop in _propertiesToWatch)
             {
-                _states.Add(prop.Key, existingElement);
+                _states.Add(prop, existingElement);
             }
         }
 

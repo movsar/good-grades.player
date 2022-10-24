@@ -8,5 +8,6 @@ namespace Data.Interfaces
 {
     public interface ITestingQuestion : IModelBase
     {
+        public string CorrectQuizId { get; set; }
     }
 }

@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace Data.Entities
 {
-    public class ProverbSelectionQuizEntity : RealmObject, IEntityBase, IProverbSelectionQuiz
+    public class DbMetaEntity : RealmObject, IEntityBase, IDbMeta
     {
         #region Properties
         [Required]
@@ -15,21 +15,22 @@ namespace Data.Entities
         public string Id { get; set; } = ObjectId.GenerateNewId().ToString();
         public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.Now;
         public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;
-        public IList<QuizItemEntity> QuizItems { get; }
-        public string CorrectQuizId { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
         #endregion
 
         #region HelperMethods
         public IModelBase ToModel()
         {
-            return new ProverbSelectionQuiz(this);
+            return new DbMeta(this);
         }
         public void SetFromModel(IModelBase model)
         {
-            var ProverbSelectionQuiz = model as ProverbSelectionQuiz;
-            CorrectQuizId = ProverbSelectionQuiz!.CorrectQuizId;
-            Utils.SyncLists(QuizItems, ProverbSelectionQuiz.QuizItems);
+            var dbMeta = model as DbMeta;
+            Title = dbMeta!.Title;
+            Description = dbMeta.Description;
         }
         #endregion
+
     }
 }

@@ -101,10 +101,10 @@ namespace Content_Manager.UserControls
             InitializeComponent();
             DataContext = this;
 
-            var propertiesToWatch = new Dictionary<string, object>();
-            propertiesToWatch.Add(nameof(LmTitle), LmTitle);
-            propertiesToWatch.Add(nameof(LmText), LmText);
-            propertiesToWatch.Add(nameof(LmAudio), LmAudio);
+            var propertiesToWatch = new List<string>();
+            propertiesToWatch.Add(nameof(LmTitle));
+            propertiesToWatch.Add(nameof(LmText));
+            propertiesToWatch.Add(nameof(LmAudio));
 
             _formCompletionInfo = new FormCompletionInfo(propertiesToWatch, isExistingMaterial);
             _formCompletionInfo.StatusChanged += OnFormStatusChanged;

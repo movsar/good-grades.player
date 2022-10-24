@@ -166,21 +166,24 @@ namespace Content_Manager.Stores
             SelectedSegment = SelectedSegment;
         }
 
-        internal void SetQuizItemAsDefault(QuizTypes quizType, string itemId)
-        {
-            switch (quizType)
-            {
-                case QuizTypes.ProverbSelection:
-                    SelectedSegment!.ProverbSelectionQuiz!.CorrectProverbId = itemId;
-                    break;
-            }
-        }
-
         internal TestingQuestion GetQuestionById(string id)
         {
             var question = SelectedSegment!.TestingQuiz!.Questions.Find(q => q.Id == id);
             return question!;
         }
 
+        internal DbMeta GetDbMeta()
+        {
+            return _contentModel.GetAll<DbMeta>().First();
+        }
+
+        internal void SaveDbMeta(string title, string description)
+        {
+            var dbMeta = GetDbMeta();
+            dbMeta.Title = title;
+            dbMeta.Description = description;
+
+            _contentModel.UpdateItem<DbMeta>(dbMeta);
+        }
     }
 }

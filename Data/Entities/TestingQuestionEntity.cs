@@ -17,7 +17,7 @@ namespace Data.Entities
         public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;
         public IList<QuizItemEntity> QuizItems { get; }
         public string Question { get; set; }
-        public string AnswerId { get; set; }
+        public string CorrectQuizId { get; set; }
         #endregion
 
         #region HelperMethods
@@ -29,7 +29,8 @@ namespace Data.Entities
         {
             var testingQuestion = model as TestingQuestion;
             Question = testingQuestion.QuestionText;
-            AnswerId = testingQuestion.AnswerId;
+            CorrectQuizId = testingQuestion.CorrectQuizId;
+
             Utils.SyncLists(QuizItems, testingQuestion.QuizItems);
         }
         #endregion

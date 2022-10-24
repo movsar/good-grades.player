@@ -11,7 +11,7 @@ namespace Data.Models
             CreatedAt = proverSelectionQuizEntity.CreatedAt;
             ModifiedAt = proverSelectionQuizEntity.ModifiedAt;
             
-            CorrectProverbId = proverSelectionQuizEntity.CorrectProverbId;
+            CorrectQuizId = proverSelectionQuizEntity.CorrectQuizId;
 
             QuizItems = new();
             foreach (var optionEntity in proverSelectionQuizEntity.QuizItems)
@@ -19,7 +19,7 @@ namespace Data.Models
                 QuizItems.Add(new QuizItem(optionEntity));
             }
         }
-        public string CorrectProverbId { get; set; }
+        public string CorrectQuizId { get; set; }
         public List<QuizItem> QuizItems { get; set; }
     }
 }

@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace Data.Interfaces
 {
-    public interface IProverbSelectionQuiz : IModelBase
+    public interface IDbMeta : IModelBase
     {
-        public string CorrectQuizId { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
     }
 }

@@ -19,7 +19,7 @@ namespace Data.Models
             }
 
             QuestionText = questionEntity.Question;
-            AnswerId = questionEntity.AnswerId;
+            CorrectQuizId = questionEntity.CorrectQuizId;
         }
 
         public TestingQuestion(string text, List<QuizItem> quizItems)
@@ -29,7 +29,7 @@ namespace Data.Models
         }
 
         public string QuestionText { get; set; }
-        public string AnswerId { get; set; }
+        public string CorrectQuizId { get; set; }
         public List<QuizItem> QuizItems { get; set; } = new List<QuizItem>();
     }
 }

@@ -95,9 +95,9 @@ namespace Content_Manager.UserControls
             InitializeComponent();
             DataContext = this;
 
-            var propertiesToWatch = new Dictionary<string, object>();
-            propertiesToWatch.Add(nameof(RmTitle), RmTitle);
-            propertiesToWatch.Add(nameof(RmText), RmText);
+            var propertiesToWatch = new List<string>();
+            propertiesToWatch.Add(nameof(RmTitle));
+            propertiesToWatch.Add(nameof(RmText));
 
             _formCompletionInfo = new FormCompletionInfo(propertiesToWatch, isExistingMaterial);
             _formCompletionInfo.StatusChanged += OnFormStatusChanged;

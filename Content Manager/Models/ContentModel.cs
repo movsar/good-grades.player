@@ -23,6 +23,10 @@ namespace Content_Manager.Models
             var t = typeof(TModel);
             switch (t)
             {
+                case var _ when t.IsAssignableTo(typeof(IDbMeta)):
+                case var _ when t.IsAssignableFrom(typeof(IDbMeta)):
+                    return _storage.DbMetaRepository;
+                
                 case var _ when t.IsAssignableTo(typeof(ISegment)):
                 case var _ when t.IsAssignableFrom(typeof(ISegment)):
                     return _storage.SegmentsRepository;

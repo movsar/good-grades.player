@@ -25,6 +25,7 @@ namespace Content_Manager.UserControls
         public event Action<QuizItem> Add;
         public event Action Save;
         public event Action<string> Delete;
+        public event Action<string> SetAsCorrect;
 
         #region Fields
         private const string Hint = "Введите описание";
@@ -87,8 +88,8 @@ namespace Content_Manager.UserControls
         #region Initialization
         private void SetUiForNewMaterial()
         {
-            btnDelete.Visibility = Visibility.Collapsed;
-            btnSave.Visibility = Visibility.Collapsed;
+            btnDelete.Visibility = Visibility.Hidden;
+            btnSave.Visibility = Visibility.Hidden;
         }
         private void SetUiForExistingMaterial()
         {
@@ -99,8 +100,8 @@ namespace Content_Manager.UserControls
             InitializeComponent();
             DataContext = this;
 
-            var propertiesToWatch = new Dictionary<string, object>();
-            propertiesToWatch.Add(nameof(ItemText), ItemText);
+            var propertiesToWatch = new List<string>();
+            propertiesToWatch.Add(nameof(ItemText));
 
             // Decide what controls to make available
             _quizType = quizType;
@@ -109,9 +110,10 @@ namespace Content_Manager.UserControls
                 case QuizTypes.CelebrityWords:
                     btnChooseImage.Visibility = Visibility.Visible;
 
-                    propertiesToWatch.Add(nameof(ItemImage), ItemImage);
-                    
+                    propertiesToWatch.Add(nameof(ItemImage));
+
                     break;
+                case QuizTypes.Testing:
                 case QuizTypes.ProverbSelection:
                     btnSetAsCorrect.Visibility = Visibility.Visible;
 
@@ -123,6 +125,11 @@ namespace Content_Manager.UserControls
                     else
                     {
                         btnSetAsCorrect.Content = "\uE739";
+                    }
+
+                    if (!isExistingMaterial)
+                    {
+                        btnSetAsCorrect.IsEnabled = false;
                     }
 
                     break;
@@ -141,14 +148,8 @@ namespace Content_Manager.UserControls
             ItemText = Hint;
         }
 
-        public QuizItemControl(QuizTypes quizType, QuizItem quizItem)
+        public QuizItemControl(QuizTypes quizType, QuizItem quizItem, bool isSelected = false)
         {
-            var isSelected = false;
-            if (quizType == QuizTypes.ProverbSelection)
-            {
-                isSelected = ContentStore.SelectedSegment?.ProverbSelectionQuiz.CorrectProverbId == quizItem.Id;
-            }
-
             SharedInitialization(quizType, true, isSelected);
             SetUiForExistingMaterial();
 
@@ -280,7 +281,7 @@ namespace Content_Manager.UserControls
                 return;
             }
 
-            ContentStore.SetQuizItemAsDefault(_quizType, ItemId);
+            SetAsCorrect?.Invoke(ItemId);
             RefreshUI();
         }
     }

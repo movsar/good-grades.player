@@ -51,10 +51,13 @@ namespace Content_Manager.UserControls.Tabs
 
             foreach (var quizItem in selectedSegment.ProverbSelectionQuiz.QuizItems)
             {
-                var existingQuizItem = new QuizItemControl(QuizTypes.ProverbSelection, quizItem);
+                var isSelected = selectedSegment.ProverbSelectionQuiz.CorrectQuizId == quizItem.Id;
+
+                var existingQuizItem = new QuizItemControl(QuizTypes.ProverbSelection, quizItem, isSelected);
                 existingQuizItem.Add += QuizItem_Add;
                 existingQuizItem.Save += QuizItem_Save;
                 existingQuizItem.Delete += QuizItem_Delete;
+                existingQuizItem.SetAsCorrect += QuizItem_SetAsCorrect;
 
                 spItems.Children.Add(existingQuizItem);
             }
@@ -65,6 +68,12 @@ namespace Content_Manager.UserControls.Tabs
             newQuizItem.Delete += QuizItem_Delete;
 
             spItems.Children.Add(newQuizItem);
+        }
+
+        private void QuizItem_SetAsCorrect(string itemId)
+        {
+            _contentStore.SelectedSegment!.ProverbSelectionQuiz!.CorrectQuizId = itemId;
+            UpdateQuiz();
         }
 
         #region Event Handlers

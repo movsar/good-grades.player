@@ -74,8 +74,8 @@ namespace Content_Manager.UserControls.MaterialControls
         #region Initialization
         private void SetUiForNewMaterial()
         {
-            btnDeleteQuestion.Visibility = Visibility.Collapsed;
-            btnSaveQuestion.Visibility = Visibility.Collapsed;
+            btnDeleteQuestion.Visibility = Visibility.Hidden;
+            btnSaveQuestion.Visibility = Visibility.Hidden;
         }
         private void SetUiForExistingMaterial()
         {
@@ -86,8 +86,8 @@ namespace Content_Manager.UserControls.MaterialControls
             InitializeComponent();
             DataContext = this;
 
-            var propertiesToWatch = new Dictionary<string, object>();
-            propertiesToWatch.Add(nameof(QuestionText), QuestionText);
+            var propertiesToWatch = new List<string>();
+            propertiesToWatch.Add(nameof(QuestionText));
 
             _formCompletionInfo = new FormCompletionInfo(propertiesToWatch, isExistingMaterial);
             _formCompletionInfo.StatusChanged += OnFormStatusChanged;
@@ -111,10 +111,14 @@ namespace Content_Manager.UserControls.MaterialControls
 
             foreach (var quizItem in QuizItems)
             {
-                var quizItemControl = new QuizItemControl(QuizTypes.Testing, quizItem);
+                var isSelected = ContentStore.SelectedSegment?.TestingQuiz.Questions.Where(q => q.Id == QuestionId).FirstOrDefault()?.CorrectQuizId == quizItem.Id;
+
+                var quizItemControl = new QuizItemControl(QuizTypes.Testing, quizItem, isSelected);
                 quizItemControl.Add += QuizItemControl_Add;
                 quizItemControl.Save += QuizItemControl_Save;
                 quizItemControl.Delete += QuizItemControl_Delete;
+                quizItemControl.SetAsCorrect += QuizItem_SetAsCorrect;
+
                 spItems.Children.Add(quizItemControl);
             }
 
@@ -130,6 +134,12 @@ namespace Content_Manager.UserControls.MaterialControls
         #endregion
 
         #region Event Handlers
+        private void QuizItem_SetAsCorrect(string itemId)
+        {
+            var question = ContentStore.SelectedSegment?.TestingQuiz.Questions.Where(q => q.Id == QuestionId).First();
+            question!.CorrectQuizId = itemId;
+            Save?.Invoke();
+        }
         private void QuizItemControl_Save()
         {
             Save?.Invoke();
