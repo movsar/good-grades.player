@@ -7,69 +7,117 @@
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors" xmlns:usercontrols="clr-namespace:Content_Manager.UserControls" xmlns:tabs="clr-namespace:Content_Manager.UserControls.Tabs"
         x:Name="mainWindow">
 
-    <Grid Margin="5 0 5 5">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="25"></RowDefinition>
-        </Grid.RowDefinitions>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top" Height="21">
+            <MenuItem Header="_База Данных">
+                <MenuItem Header="_Создать">
+                    <MenuItem.Icon>
+                        <TextBlock
+                            HorizontalAlignment="Center" 
+                            VerticalAlignment="Center" 
+                            FontFamily="Segoe MDL2 Assets">
+                            &#xE8F4;
+                        </TextBlock>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="_Открыть">
+                    <MenuItem.Icon>
+                        <TextBlock
+                            HorizontalAlignment="Center" 
+                            VerticalAlignment="Center" 
+                            FontFamily="Segoe MDL2 Assets">
+                            &#xE8E5;
+                        </TextBlock>
+                    </MenuItem.Icon>
+                </MenuItem>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
+                <Separator />
+                <MenuItem Header="_Информация">
+                    <MenuItem.Icon>
+                        <TextBlock
+                            HorizontalAlignment="Center" 
+                            VerticalAlignment="Center" 
+                            FontFamily="Segoe MDL2 Assets">
+                            &#xE946;
+                        </TextBlock>
+                    </MenuItem.Icon>
+                </MenuItem>
+            </MenuItem>
+            <MenuItem Header="_Помощь">
+                <MenuItem Header="_О Программе">
+                    <MenuItem.Icon>
+                        <TextBlock
+                            HorizontalAlignment="Center" 
+                            VerticalAlignment="Center" 
+                            FontFamily="Segoe MDL2 Assets">
+                            &#xF167;
+                        </TextBlock>
+                    </MenuItem.Icon>
+                </MenuItem>
+            </MenuItem>
+        </Menu>
 
+        <Grid Margin="5 0 5 5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="25"></RowDefinition>
+            </Grid.RowDefinitions>
 
-        <ListView x:Name="lvSegments" 
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <ListView x:Name="lvSegments" 
                   Grid.Column="0" 
                   Grid.Row="0"
                   ItemsSource="{Binding Path=Segments}"
                   SelectionMode="Single"
-                  SelectionChanged="lvSegments_SelectionChanged"                  
-                  >
-            <ListView.ContextMenu>
-                <ContextMenu>
-                    <MenuItem 
-                                Header="Delete"
-                                Command="{Binding DeleteSelectedSegment}"
-                                CommandParameter="{Binding}"
-                            />
-                </ContextMenu>
-            </ListView.ContextMenu>
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding Title}" Width="180px" />
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+                  SelectionChanged="lvSegments_SelectionChanged">
 
-        <Label Grid.Column="1" Grid.Row="0" x:Name="lblWelcome" 
+                <ListView.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem 
+                            Header="Delete"
+                            Command="{Binding DeleteSelectedSegment}"
+                            CommandParameter="{Binding}"/>
+                    </ContextMenu>
+                </ListView.ContextMenu>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Title}" Width="180px" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <Label Grid.Column="1" Grid.Row="0" x:Name="lblWelcome" 
                Content="Выберите раздел с которым хотите работать"
                HorizontalAlignment="Center"
                VerticalAlignment="Center"               
                BorderThickness="1"
                />
 
-        <!--<usercontrols:DbInformation  Grid.Column="1" Grid.Row="0"
+            <!--<usercontrols:DbInformation  Grid.Column="1" Grid.Row="0"
                                       HorizontalAlignment="Left"
                VerticalAlignment="Top"
                BorderThickness="1" />-->
 
-        <TabControl Grid.Column="1" Grid.Row="0" x:Name="tbcMain">
-            <TabItem Header="Информация о Разделе">
-                <usercontrols:SegmentInfoTab/>
-            </TabItem>
-            <TabItem Header="Чтение">
-                <usercontrols:ReadingTab/>
-            </TabItem>
-            <TabItem Header="Аудирование">
-                <usercontrols:ListeningTab/>
-            </TabItem>
-            <TabItem Header="Задачи">
-                <tabs:QuizsTab/>
-            </TabItem>
-        </TabControl>
+            <TabControl Grid.Column="1" Grid.Row="0" x:Name="tbcMain">
+                <TabItem Header="Информация о Разделе">
+                    <usercontrols:SegmentInfoTab/>
+                </TabItem>
+                <TabItem Header="Чтение">
+                    <usercontrols:ReadingTab/>
+                </TabItem>
+                <TabItem Header="Аудирование">
+                    <usercontrols:ListeningTab/>
+                </TabItem>
+                <TabItem Header="Задачи">
+                    <tabs:QuizsTab/>
+                </TabItem>
+            </TabControl>
 
-        <Button Grid.Column="0"
+            <Button Grid.Column="0"
                 Grid.Row="1"
                 Content="Добавить раздел"
                 Name="BtnNewSection"
@@ -79,5 +127,7 @@
                 Height="23"
                 />
 
-    </Grid>
+        </Grid>
+    </DockPanel>
+
 </Window>
