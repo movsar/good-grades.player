@@ -16,8 +16,10 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 
-namespace Content_Manager.UserControls {
-    public partial class ListeningMaterialControl : UserControl {
+namespace Content_Manager.UserControls
+{
+    public partial class ListeningMaterialControl : UserControl
+    {
 
         #region Fields
         private FormCompletionInfo _formCompletionInfo;
@@ -28,7 +30,8 @@ namespace Content_Manager.UserControls {
         ContentStore ContentStore => App.AppHost!.Services.GetRequiredService<ContentStore>();
         StylingService StylingService => App.AppHost!.Services.GetRequiredService<StylingService>();
 
-        public string LmTitle {
+        public string LmTitle
+        {
             get { return (string)GetValue(TitleProperty); }
             set { SetValue(TitleProperty, value); }
         }
@@ -42,29 +45,37 @@ namespace Content_Manager.UserControls {
         #endregion
 
         #region Reactions
-        private void OnFormStatusChanged(bool isReady) {
-            if (isReady) {
+        private void OnFormStatusChanged(bool isReady)
+        {
+            if (isReady)
+            {
                 btnSave.Visibility = Visibility.Visible;
                 btnPreview.Visibility = Visibility.Visible;
-            } else {
+            }
+            else
+            {
                 btnSave.Visibility = Visibility.Collapsed;
                 btnPreview.Visibility = Visibility.Collapsed;
             }
         }
-        private void OnTitleSet(bool isSet) {
+        private void OnTitleSet(bool isSet)
+        {
             _formCompletionInfo.Update(nameof(LmTitle), isSet);
         }
-        private void OnTextSet(bool isSet = true) {
+        private void OnTextSet(bool isSet = true)
+        {
             btnChooseText.Background = StylingService.StagedBrush;
 
             _formCompletionInfo.Update(nameof(LmText), isSet);
         }
-        private void OnImageSet(bool isSet = true) {
+        private void OnImageSet(bool isSet = true)
+        {
             btnChooseImage.Background = StylingService.StagedBrush;
 
             _formCompletionInfo.Update(nameof(LmImage), isSet);
         }
-        private void OnAudioSet(bool isSet = true) {
+        private void OnAudioSet(bool isSet = true)
+        {
             btnChooseAudio.Background = StylingService.StagedBrush;
 
             _formCompletionInfo.Update(nameof(LmAudio), isSet);
@@ -72,35 +83,42 @@ namespace Content_Manager.UserControls {
         #endregion
 
         #region Initialization
-        private void SetUiForNewMaterial() {
+        private void SetUiForNewMaterial()
+        {
             btnPreview.Visibility = Visibility.Collapsed;
             btnDelete.Visibility = Visibility.Collapsed;
             btnSave.Visibility = Visibility.Collapsed;
         }
-        private void SetUiForExistingMaterial() {
+        private void SetUiForExistingMaterial()
+        {
             btnDelete.Visibility = Visibility.Visible;
             btnChooseText.Background = StylingService.ReadyBrush;
             btnChooseAudio.Background = StylingService.ReadyBrush;
             btnChooseImage.Background = StylingService.ReadyBrush;
         }
-        private void SharedInitialization(bool isExistingMaterial = false) {
+        private void SharedInitialization(bool isExistingMaterial = false)
+        {
             InitializeComponent();
             DataContext = this;
 
-            var propertiesToWatch = new List<string> {
-                nameof(LmTitle), nameof(LmText), nameof(LmAudio)
-            };
+            var propertiesToWatch = new Dictionary<string, object>();
+            propertiesToWatch.Add(nameof(LmTitle), LmTitle);
+            propertiesToWatch.Add(nameof(LmText), LmText);
+            propertiesToWatch.Add(nameof(LmAudio), LmAudio);
+
             _formCompletionInfo = new FormCompletionInfo(propertiesToWatch, isExistingMaterial);
             _formCompletionInfo.StatusChanged += OnFormStatusChanged;
         }
-        public ListeningMaterialControl() {
+        public ListeningMaterialControl()
+        {
             SharedInitialization();
             SetUiForNewMaterial();
 
             LmTitle = TitleHintText;
         }
 
-        public ListeningMaterialControl(ListeningMaterial material) {
+        public ListeningMaterialControl(ListeningMaterial material)
+        {
             SharedInitialization(true);
             SetUiForExistingMaterial();
 
@@ -113,29 +131,38 @@ namespace Content_Manager.UserControls {
         #endregion
 
         #region TitleHandlers
-        private void txtTitle_GotFocus(object sender, RoutedEventArgs e) {
-            if (LmTitle == TitleHintText) {
+        private void txtTitle_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (LmTitle == TitleHintText)
+            {
                 LmTitle = "";
             }
         }
 
-        private void txtTitle_LostFocus(object sender, RoutedEventArgs e) {
-            if (string.IsNullOrEmpty(LmTitle)) {
+        private void txtTitle_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(LmTitle))
+            {
                 LmTitle = TitleHintText;
             }
         }
 
-        private void txtTitle_TextChanged(object sender, TextChangedEventArgs e) {
-            if (string.IsNullOrEmpty(txtTitle.Text) || txtTitle.Text.Equals(TitleHintText)) {
+        private void txtTitle_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(txtTitle.Text) || txtTitle.Text.Equals(TitleHintText))
+            {
                 OnTitleSet(false);
-            } else {
+            }
+            else
+            {
                 OnTitleSet(true);
             }
         }
         #endregion
 
         #region ButtonHandlers
-        private void btnChooseText_Click(object sender, RoutedEventArgs e) {
+        private void btnChooseText_Click(object sender, RoutedEventArgs e)
+        {
             string filePath = FileService.SelectFilePath("Файлы с RTF текстом (.rtf) | *.rtf;");
             if (string.IsNullOrEmpty(filePath)) return;
 
@@ -147,7 +174,8 @@ namespace Content_Manager.UserControls {
             OnTextSet(true);
         }
 
-        private void btnChooseImage_Click(object sender, RoutedEventArgs e) {
+        private void btnChooseImage_Click(object sender, RoutedEventArgs e)
+        {
             string filePath = FileService.SelectFilePath("Файлы изображений (.png) | *.png; *.jpg; *.jpeg; *.tiff");
             if (string.IsNullOrEmpty(filePath)) return;
 
@@ -159,7 +187,8 @@ namespace Content_Manager.UserControls {
             OnImageSet(true);
         }
 
-        private void btnChooseAudio_Click(object sender, RoutedEventArgs e) {
+        private void btnChooseAudio_Click(object sender, RoutedEventArgs e)
+        {
             // Read the rtf file
             string filePath = FileService.SelectFilePath("MP3 Файлы (.mp3) | *.mp3");
             if (string.IsNullOrEmpty(filePath)) return;
@@ -172,17 +201,22 @@ namespace Content_Manager.UserControls {
             OnAudioSet(true);
         }
 
-        private void btnPreview_Click(object sender, RoutedEventArgs e) {
+        private void btnPreview_Click(object sender, RoutedEventArgs e)
+        {
             var listeningPreviewWindow = new MaterialPresenter(LmTitle, LmText, LmImage, LmAudio);
             listeningPreviewWindow.ShowDialog();
         }
-        private void btnSave_Click(object sender, RoutedEventArgs e) {
+        private void btnSave_Click(object sender, RoutedEventArgs e)
+        {
             //MessageBox.Show("Укажите все необходимые данные для материала");
 
-            if (string.IsNullOrEmpty(LmId)) {
+            if (string.IsNullOrEmpty(LmId))
+            {
                 ContentStore.SelectedSegment?.ListeningMaterials
                     .Add(new ListeningMaterial(LmTitle, LmText, audio: LmAudio, image: LmImage));
-            } else {
+            }
+            else
+            {
                 var lm = ContentStore.GetListeningMaterialById(LmId);
                 lm.Title = LmTitle;
                 lm.Text = LmText;
@@ -193,7 +227,8 @@ namespace Content_Manager.UserControls {
             ContentStore.UpdateSegment(ContentStore!.SelectedSegment!);
         }
 
-        private void btnDelete_Click(object sender, RoutedEventArgs e) {
+        private void btnDelete_Click(object sender, RoutedEventArgs e)
+        {
             ContentStore.SelectedSegment!.ListeningMaterials.Remove(ContentStore.GetListeningMaterialById(LmId));
             ContentStore.UpdateSegment(ContentStore.SelectedSegment);
             ContentStore.SelectedSegment = ContentStore.SelectedSegment;

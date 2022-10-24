@@ -80,7 +80,7 @@ namespace Content_Manager.UserControls
         private void SetUiForExistingMaterial()
         {
             btnUploadFromFile.Background = StylingService.ReadyBrush;
-            
+
             if (RmImage != null)
             {
                 btnChooseImage.Background = StylingService.ReadyBrush;
@@ -95,10 +95,14 @@ namespace Content_Manager.UserControls
             InitializeComponent();
             DataContext = this;
 
-            var propertiesToWatch = new List<string>() { nameof(RmTitle), nameof(RmText) };
+            var propertiesToWatch = new Dictionary<string, object>();
+            propertiesToWatch.Add(nameof(RmTitle), RmTitle);
+            propertiesToWatch.Add(nameof(RmText), RmText);
+
             _formCompletionInfo = new FormCompletionInfo(propertiesToWatch, isExistingMaterial);
             _formCompletionInfo.StatusChanged += OnFormStatusChanged;
         }
+
         public ReadingMaterialControl()
         {
             SharedInitialization();
@@ -115,7 +119,7 @@ namespace Content_Manager.UserControls
             RmTitle = material.Title;
             RmText = material.Text;
             RmImage = material.Image;
-           
+
             SetUiForExistingMaterial();
         }
         #endregion

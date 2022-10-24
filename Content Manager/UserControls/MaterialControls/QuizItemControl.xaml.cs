@@ -99,7 +99,8 @@ namespace Content_Manager.UserControls
             InitializeComponent();
             DataContext = this;
 
-            var propertiesToWatch = new List<string>() { nameof(ItemText) };
+            var propertiesToWatch = new Dictionary<string, object>();
+            propertiesToWatch.Add(nameof(ItemText), ItemText);
 
             // Decide what controls to make available
             _quizType = quizType;
@@ -108,7 +109,8 @@ namespace Content_Manager.UserControls
                 case QuizTypes.CelebrityWords:
                     btnChooseImage.Visibility = Visibility.Visible;
 
-                    propertiesToWatch.Add(nameof(ItemImage));
+                    propertiesToWatch.Add(nameof(ItemImage), ItemImage);
+                    
                     break;
                 case QuizTypes.ProverbSelection:
                     btnSetAsCorrect.Visibility = Visibility.Visible;

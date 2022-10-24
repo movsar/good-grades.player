@@ -10,29 +10,29 @@ namespace Content_Manager.Models
     public class FormCompletionInfo
     {
         public event Action<bool> StatusChanged;
-        public bool IsReady => _stats.Where(s => s.Value == true).Count() == _stats.Count();
+        public bool IsReady => _states.Where(s => s.Value == true).Count() == _states.Count();
 
-        private readonly Dictionary<string, bool> _stats = new Dictionary<string, bool>();
-        List<string> _propertiesToWatch;
-        public FormCompletionInfo(List<string> propertiesToWatch, bool existingElement)
+        private readonly Dictionary<string, bool> _states = new Dictionary<string, bool>();
+        private readonly Dictionary<string, object> _propertiesToWatch;
+        public FormCompletionInfo(Dictionary<string, object> propertiesToWatch, bool existingElement)
         {
             _propertiesToWatch = propertiesToWatch;
 
             // Initialize the dictionary
-            foreach (var v in _propertiesToWatch)
+            foreach (var prop in _propertiesToWatch)
             {
-                _stats.Add(v, existingElement);
+                _states.Add(prop.Key, existingElement);
             }
         }
 
         public void Update(string propertyTitle, bool isSet)
         {
-            if (!_stats.ContainsKey(propertyTitle) || _stats[propertyTitle] == isSet)
+            if (!_states.ContainsKey(propertyTitle) || _states[propertyTitle] == isSet)
             {
                 return;
             }
 
-            _stats[propertyTitle] = isSet;
+            _states[propertyTitle] = isSet;
 
             StatusChanged?.Invoke(IsReady);
         }

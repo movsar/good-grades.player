@@ -86,7 +86,8 @@ namespace Content_Manager.UserControls.MaterialControls
             InitializeComponent();
             DataContext = this;
 
-            var propertiesToWatch = new List<string>() { nameof(QuestionText) };
+            var propertiesToWatch = new Dictionary<string, object>();
+            propertiesToWatch.Add(nameof(QuestionText), QuestionText);
 
             _formCompletionInfo = new FormCompletionInfo(propertiesToWatch, isExistingMaterial);
             _formCompletionInfo.StatusChanged += OnFormStatusChanged;
