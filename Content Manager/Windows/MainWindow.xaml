@@ -32,7 +32,10 @@
                 </MenuItem>
 
                 <Separator />
-                <MenuItem Header="_Информация">
+                <MenuItem Header="_Информация" 
+                          x:Name="mnuDatabaseInfo" 
+                          Click="mnuDatabaseInfo_Click"
+                          IsEnabled="False">
                     <MenuItem.Icon>
                         <TextBlock
                             HorizontalAlignment="Center" 
@@ -69,38 +72,26 @@
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center" 
                    BorderThickness="1"
-                   Visibility="Hidden" 
-               />
+                   Visibility="Hidden"/>
 
             <Label Grid.Column="0" Grid.ColumnSpan="2" x:Name="lblChooseDb" 
                    Content="Откройте или создайте Базу Данных"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"               
-                   BorderThickness="1"
-               />
+                   BorderThickness="1"/>
 
             <usercontrols:SegmentList 
                 Grid.Column="0"
                 x:Name="ucSegmentList"
-                Visibility="Collapsed"
-                >
+                Visibility="Collapsed">
 
             </usercontrols:SegmentList>
 
             <usercontrols:SegmentControl
                 Grid.Column="1"
                 x:Name="ucSegmentControl"
-                Visibility="Collapsed"
-                >
-
+                Visibility="Collapsed">
             </usercontrols:SegmentControl>
-            <!--<usercontrols:DbInformation 
-                Grid.Column="1" Grid.Row="0"
-                x:Name="ucDbInformation"
-                Visibility="Collapsed"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                BorderThickness="1" />-->
 
         </Grid>
     </DockPanel>

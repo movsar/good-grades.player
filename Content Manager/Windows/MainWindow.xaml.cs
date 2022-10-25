@@ -1,5 +1,6 @@
 ﻿using Content_Manager.Services;
 using Content_Manager.Stores;
+using Content_Manager.Windows;
 using System.Windows;
 
 namespace Content_Manager
@@ -27,6 +28,7 @@ namespace Content_Manager
             lblChooseDb.Visibility = Visibility.Collapsed;
             lblChooseSegment.Visibility = Visibility.Visible;
             ucSegmentList.Visibility = Visibility.Visible;
+            mnuDatabaseInfo.IsEnabled = true;
         }
 
         private void mnuOpenDatabase_Click(object sender, RoutedEventArgs e)
@@ -44,5 +46,11 @@ namespace Content_Manager
 
             _contentStore.CreateDatabase(filePath);
         }
+        private void mnuDatabaseInfo_Click(object sender, RoutedEventArgs e)
+        {
+            var dbInfoWindow = new DbInfoWindow();
+            dbInfoWindow.ShowDialog();
+        }
+
     }
 }

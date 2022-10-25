@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Channels;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,17 +21,17 @@ namespace Content_Manager.UserControls
 {
     public partial class DbInformation : UserControl
     {
-        ContentStore ContentStore => App.AppHost!.Services.GetRequiredService<ContentStore>();
-        private readonly DbMeta _dbMeta;
+        private readonly ContentStore _contentStore = App.AppHost!.Services.GetRequiredService<ContentStore>();
+        public event Action Saved;
         public DbInformation()
         {
             InitializeComponent();
             DataContext = this;
 
-            _dbMeta = ContentStore.GetDbMeta();
-            txtDbName.Text = _dbMeta.Title;
-            txtDbCreatedAt.Text = _dbMeta.CreatedAt.ToString("R");
-            txtDescription.Text = _dbMeta.Description;
+            var dbMeta = _contentStore.GetDbMeta();
+            txtDbName.Text = dbMeta.Title;
+            txtDbCreatedAt.Text = dbMeta.CreatedAt.ToString("R");
+            txtDescription.Text = dbMeta.Description;
         }
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
@@ -38,7 +39,8 @@ namespace Content_Manager.UserControls
             var newName = txtDbName.Text;
             var newDescription = txtDescription.Text;
 
-            ContentStore.SaveDbMeta(newName, newDescription);
+            _contentStore.SaveDbMeta(newName, newDescription);
+            Saved?.Invoke();
         }
 
     }

@@ -15,17 +15,18 @@
                     Cursor="Hand"
                     FontFamily="Segoe MDL2 Assets" Content="&#xE74E;" 
                     Click="btnSave_Click"/>
-        
+
         <TextBlock Margin="20 15 0 0"
-                   FontWeight="Bold">
-            Информация о Базе Данных и статистика
+                   FontWeight="Bold"
+                   Width="200">
+            Информация о Базе Данных
         </TextBlock>
 
         <StackPanel Margin="10 40 0 0"
                     Width="400"
                     HorizontalAlignment="Left">
 
-            <Label Content="Название БД: "/>
+            <Label Content="Название: "/>
             <TextBox Margin="0 0 10 0"
                      x:Name="txtDbName"
                      VerticalAlignment="Top" />
@@ -39,8 +40,8 @@
 
             <Label Content="Дата создания БД: "/>
             <TextBox Margin="0 0 10 0"
+                     IsEnabled="false"
                      x:Name="txtDbCreatedAt"
-                     IsReadOnly="True"
                      VerticalAlignment="Top" />
         </StackPanel>
 
