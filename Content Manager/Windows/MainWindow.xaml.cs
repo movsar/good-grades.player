@@ -1,5 +1,6 @@
 ﻿using Content_Manager.Services;
 using Content_Manager.Stores;
+using Content_Manager.UserControls;
 using Content_Manager.Windows;
 using System.Windows;
 
@@ -8,6 +9,7 @@ namespace Content_Manager
     public partial class MainWindow : Window
     {
         private readonly ContentStore _contentStore;
+        private SegmentControl _segmentControl;
         public MainWindow(ContentStore contentStore)
         {
             InitializeComponent();
@@ -19,8 +21,19 @@ namespace Content_Manager
 
         private void SelectedSegmentChanged(Data.Models.Segment obj)
         {
-            lblChooseSegment.Visibility = Visibility.Visible;
-            ucSegmentControl.Visibility = Visibility.Visible;
+
+            if (obj != null)
+            {
+                lblChooseSegment.Visibility = Visibility.Hidden;
+
+                ucSegmentControlParent.Children.Clear();
+                ucSegmentControlParent.Children.Add(new SegmentControl());
+            }
+            else
+            {
+                ucSegmentControlParent.Children.Clear();
+                lblChooseSegment.Visibility = Visibility.Visible;
+            }
         }
 
         private void ContentStoreInitialized()

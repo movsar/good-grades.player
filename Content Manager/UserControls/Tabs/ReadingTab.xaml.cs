@@ -19,26 +19,22 @@ using Content_Manager.Stores;
 
 namespace Content_Manager.UserControls {
     public partial class ReadingTab : UserControl {
-        private ContentStore _contentStore { get; }
+        private readonly ContentStore _contentStore = App.AppHost!.Services.GetRequiredService<ContentStore>();
         public ReadingTab() {
             InitializeComponent();
             DataContext = this;
 
-            _contentStore = App.AppHost!.Services.GetRequiredService<ContentStore>();
-            _contentStore.SelectedSegmentChanged += _contentStore_SegmentChanged;
-
-        }
-
-        private void _contentStore_SegmentChanged(Segment selectedSegment) {
             spReadingMaterialControls.Children.Clear();
 
-            if (selectedSegment?.ReadingMaterials == null) return;
+            if (_contentStore.SelectedSegment!.ReadingMaterials == null) return;
 
-            foreach (var material in selectedSegment.ReadingMaterials) {
+            foreach (var material in _contentStore.SelectedSegment!.ReadingMaterials)
+            {
                 spReadingMaterialControls.Children.Add(new ReadingMaterialControl(material));
             }
 
             spReadingMaterialControls.Children.Add(new ReadingMaterialControl());
         }
+
     }
 }

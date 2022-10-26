@@ -20,24 +20,17 @@ namespace Content_Manager.UserControls
 {
     public partial class ListeningTab : UserControl
     {
-        private ContentStore _contentStore { get; }
+        private readonly ContentStore _contentStore = App.AppHost!.Services.GetRequiredService<ContentStore>();
         public ListeningTab()
         {
             InitializeComponent();
             DataContext = this;
 
-            _contentStore = App.AppHost!.Services.GetRequiredService<ContentStore>();
-            _contentStore.SelectedSegmentChanged += _contentStore_SegmentChanged;
-        }
-
-        private void _contentStore_SegmentChanged(Segment selectedSegment)
-        {
             spListeningMaterialControls.Children.Clear();
 
+            if (_contentStore.SelectedSegment!.ListeningMaterials == null) return;
 
-            if (selectedSegment == null || selectedSegment.ListeningMaterials == null) return;
-
-            foreach (var material in selectedSegment.ListeningMaterials)
+            foreach (var material in _contentStore.SelectedSegment!.ListeningMaterials)
             {
                 spListeningMaterialControls.Children.Add(new ListeningMaterialControl(material));
             }

@@ -39,6 +39,7 @@ namespace Content_Manager.UserControls
 
             if (selectedSegmentId == null)
             {
+                _contentStore.SelectedSegment = null;
                 return;
             }
 

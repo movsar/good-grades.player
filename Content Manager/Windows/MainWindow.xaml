@@ -87,11 +87,10 @@
 
             </usercontrols:SegmentList>
 
-            <usercontrols:SegmentControl
+            <DockPanel
                 Grid.Column="1"
-                x:Name="ucSegmentControl"
-                Visibility="Collapsed">
-            </usercontrols:SegmentControl>
+                x:Name="ucSegmentControlParent">
+            </DockPanel>
 
         </Grid>
     </DockPanel>

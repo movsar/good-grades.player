@@ -19,38 +19,15 @@ using System.Windows.Shapes;
 
 namespace Content_Manager.UserControls.Tabs
 {
-    /// <summary>
-    /// Interaction logic for ProverbsBuilderQuizTab.xaml
-    /// </summary>
     public partial class ProverbBuilderQuizTab : UserControl
     {
-        private readonly ContentStore _contentStore;
+        private readonly ContentStore _contentStore = App.AppHost!.Services.GetRequiredService<ContentStore>();
         public ProverbBuilderQuizTab()
         {
             InitializeComponent();
             DataContext = this;
 
-            _contentStore = App.AppHost!.Services.GetRequiredService<ContentStore>();
-            _contentStore.SelectedSegmentChanged += _contentStore_SegmentChanged;
-        }
-
-        private void btnPreview_Click(object sender, RoutedEventArgs e)
-        {
-            if (_contentStore?.SelectedSegment?.ProverbBuilderQuiz == null)
-            {
-                return;
-            }
-            //var previewWindow = new ProverbSelectionQuizViewer(_contentStore.SelectedSegment.ProverbSelectionQuiz);
-            //previewWindow.ShowDialog();
-        }
-
-        private void _contentStore_SegmentChanged(Segment selectedSegment)
-        {
-            if (selectedSegment == null) return;
-
-            spItems.Children.Clear();
-
-            foreach (var quizItem in selectedSegment.ProverbBuilderQuiz.QuizItems)
+            foreach (var quizItem in _contentStore.SelectedSegment!.ProverbBuilderQuiz.QuizItems)
             {
                 var existingQuizItem = new QuizItemControl(QuizTypes.ProverbBuilder, quizItem);
                 existingQuizItem.Add += QuizItem_Add;
@@ -65,6 +42,16 @@ namespace Content_Manager.UserControls.Tabs
             newQuizItem.Save += QuizItem_Save;
             newQuizItem.Delete += QuizItem_Delete;
             spItems.Children.Add(newQuizItem);
+        }
+
+        private void btnPreview_Click(object sender, RoutedEventArgs e)
+        {
+            if (_contentStore?.SelectedSegment?.ProverbBuilderQuiz == null)
+            {
+                return;
+            }
+            //var previewWindow = new ProverbSelectionQuizViewer(_contentStore.SelectedSegment.ProverbSelectionQuiz);
+            //previewWindow.ShowDialog();
         }
 
         #region Event Handlers

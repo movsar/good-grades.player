@@ -23,23 +23,13 @@ namespace Content_Manager.UserControls.Tabs
 {
     public partial class TestingQuizTab : UserControl
     {
-        private readonly ContentStore _contentStore;
+        private readonly ContentStore _contentStore = App.AppHost!.Services.GetRequiredService<ContentStore>();
         public TestingQuizTab()
         {
             InitializeComponent();
             DataContext = this;
 
-            _contentStore = App.AppHost!.Services.GetRequiredService<ContentStore>();
-            _contentStore.SelectedSegmentChanged += _contentStore_SegmentChanged;
-        }
-
-        private void _contentStore_SegmentChanged(Segment selectedSegment)
-        {
-            if (selectedSegment == null) return;
-
-            spItems.Children.Clear();
-
-            foreach (var question in selectedSegment.TestingQuiz.Questions)
+            foreach (var question in _contentStore.SelectedSegment!.TestingQuiz.Questions)
             {
                 var questionControl = new QuestionControl(question);
                 questionControl.Add += QuestionControl_Add;
@@ -53,8 +43,9 @@ namespace Content_Manager.UserControls.Tabs
             spItems.Children.Add(newQuestion);
             newQuestion.Add += QuestionControl_Add;
             newQuestion.Save += QuestionControl_Save;
-            newQuestion.Delete += QuestionControl_Delete; ;
+            newQuestion.Delete += QuestionControl_Delete;
         }
+
 
         private void UpdateQuiz()
         {

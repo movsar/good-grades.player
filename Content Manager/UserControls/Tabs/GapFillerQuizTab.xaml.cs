@@ -21,33 +21,13 @@ namespace Content_Manager.UserControls.Tabs
 {
     public partial class GapFillerQuizTab : UserControl
     {
-        private ContentStore _contentStore { get; }
+        private readonly ContentStore _contentStore = App.AppHost!.Services.GetRequiredService<ContentStore>();
         public GapFillerQuizTab()
         {
             InitializeComponent();
             DataContext = this;
 
-            _contentStore = App.AppHost!.Services.GetRequiredService<ContentStore>();
-            _contentStore.SelectedSegmentChanged += _contentStore_SegmentChanged;
-        }
-
-        private void btnPreview_Click(object sender, RoutedEventArgs e)
-        {
-            if (_contentStore?.SelectedSegment?.GapFillerQuiz == null)
-            {
-                return;
-            }
-            //var previewWindow = new ProverbSelectionQuizViewer(_contentStore.SelectedSegment.ProverbSelectionQuiz);
-            //previewWindow.ShowDialog();
-        }
-
-        private void _contentStore_SegmentChanged(Segment selectedSegment)
-        {
-            if (selectedSegment == null) return;
-
-            spItems.Children.Clear();
-
-            foreach (var quizItem in selectedSegment.GapFillerQuiz.QuizItems)
+            foreach (var quizItem in _contentStore.SelectedSegment!.GapFillerQuiz.QuizItems)
             {
                 var existingQuizItem = new QuizItemControl(QuizTypes.GapFiller, quizItem);
                 existingQuizItem.Add += QuizItem_Add;
@@ -62,6 +42,16 @@ namespace Content_Manager.UserControls.Tabs
             newQuizItem.Save += QuizItem_Save;
             newQuizItem.Delete += QuizItem_Delete;
             spItems.Children.Add(newQuizItem);
+        }
+
+        private void btnPreview_Click(object sender, RoutedEventArgs e)
+        {
+            if (_contentStore?.SelectedSegment?.GapFillerQuiz == null)
+            {
+                return;
+            }
+            //var previewWindow = new ProverbSelectionQuizViewer(_contentStore.SelectedSegment.ProverbSelectionQuiz);
+            //previewWindow.ShowDialog();
         }
 
         #region Event Handlers

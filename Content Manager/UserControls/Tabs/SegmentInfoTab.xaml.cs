@@ -31,19 +31,13 @@ namespace Content_Manager.UserControls
         #endregion
 
         private readonly ContentStore _contentStore = App.AppHost!.Services.GetRequiredService<ContentStore>();
-
         public SegmentInfoTab()
         {
             InitializeComponent();
             DataContext = this;
 
-            _contentStore.SelectedSegmentChanged += SelectedSegmentChanged;
-        }
-
-        private void SelectedSegmentChanged(Segment segment)
-        {
-            Title = segment.Title;
-            Description = segment.Description;
+            Title = _contentStore.SelectedSegment!.Title;
+            Description = _contentStore.SelectedSegment!.Description;
         }
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
