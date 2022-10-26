@@ -62,6 +62,7 @@ namespace Content_Manager.UserControls
             var segment = ((Segment)lvSegments.SelectedItem);
             if (segment == null) return;
 
+            if (_contentStore.SelectedSegment?.Id == segment.Id) return;
             _contentStore.SelectedSegment = segment;
         }
 

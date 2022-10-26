@@ -170,7 +170,7 @@ namespace Content_Manager.Stores
                     break;
             }
 
-            SelectedSegment = SelectedSegment;
+            //SelectedSegment = SelectedSegment;
         }
 
         internal TestingQuestion GetQuestionById(string id)

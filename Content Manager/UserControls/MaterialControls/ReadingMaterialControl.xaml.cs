@@ -204,13 +204,13 @@ namespace Content_Manager.UserControls
             }
 
             ContentStore.UpdateSegment(ContentStore!.SelectedSegment!);
+            
         }
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
             ContentStore.SelectedSegment!.ReadingMaterials.Remove(ContentStore.GetReadingMaterialById(RmId));
             ContentStore.UpdateSegment(ContentStore.SelectedSegment);
-            ContentStore.SelectedSegment = ContentStore.SelectedSegment;
         }
         #endregion
 
