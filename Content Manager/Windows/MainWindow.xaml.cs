@@ -2,21 +2,34 @@
 using Content_Manager.Stores;
 using Content_Manager.UserControls;
 using Content_Manager.Windows;
+using System.Collections;
+using System.IO;
+using System.Resources;
 using System.Windows;
+using System.Windows.Input;
 
 namespace Content_Manager
 {
     public partial class MainWindow : Window
     {
         private readonly ContentStore _contentStore;
-        private SegmentControl _segmentControl;
-        public MainWindow(ContentStore contentStore)
+        private readonly FileService _fileService;
+        public MainWindow(ContentStore contentStore, FileService fileService)
         {
             InitializeComponent();
             DataContext = this;
             _contentStore = contentStore;
+            _fileService = fileService;
+
             _contentStore.ContentStoreInitialized += ContentStoreInitialized;
             _contentStore.SelectedSegmentChanged += SelectedSegmentChanged;
+
+            // Open last opened database
+            var lastOpenedDatabasePath = _fileService.ReadResourceString("lastOpenedDatabasePath");
+            if (string.IsNullOrEmpty(lastOpenedDatabasePath)){
+                return;
+            }
+            _contentStore.OpenDatabase(lastOpenedDatabasePath);
         }
 
         private void SelectedSegmentChanged(Data.Models.Segment obj)

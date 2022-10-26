@@ -8,7 +8,7 @@ namespace Data
 {
     public class Storage
     {
-        public event Action DatabaseInitialized;
+        public event Action<string> DatabaseInitialized;
 
         private Realm _realmInstance;
         public SegmentRepository SegmentsRepository { get; private set; }
@@ -24,7 +24,7 @@ namespace Data
         {
             InitializeDatabase(databasePath);
 
-            DatabaseInitialized?.Invoke();
+            DatabaseInitialized?.Invoke(databasePath);
         }
 
         public void CreateDatabase(string databasePath)
@@ -39,7 +39,7 @@ namespace Data
             var dbMeta = new DbMeta();
             DbMetaRepository.Add(ref dbMeta);
 
-            DatabaseInitialized?.Invoke();
+            DatabaseInitialized?.Invoke(databasePath);
         }
 
         private void InitializeDatabase(string databasePath)

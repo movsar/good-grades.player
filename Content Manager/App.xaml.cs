@@ -16,6 +16,7 @@ namespace Content_Manager
             AppHost = Host.CreateDefaultBuilder()
                 .ConfigureServices((hostContext, services) =>
                 {
+                    services.AddTransient<FileService>();
                     services.AddSingleton<Storage>();
                     services.AddSingleton<ContentModel>();
                     services.AddSingleton<ContentStore>();

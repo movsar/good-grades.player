@@ -1,10 +1,15 @@
-﻿using Data;
+﻿using Content_Manager.Services;
+using Content_Manager.Stores;
+using Data;
 using Data.Entities;
 using Data.Interfaces;
 using Data.Models;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,15 +19,19 @@ namespace Content_Manager.Models
     {
         public event Action ContentModelInitialized;
         private Storage _storage;
+        private readonly FileService _fileService;
 
-        public ContentModel(Storage storage)
+        public ContentModel(Storage storage, FileService fileService)
         {
             _storage = storage;
+            _fileService = fileService;
             _storage.DatabaseInitialized += DatabaseInitialized;
         }
 
-        public void DatabaseInitialized()
+        public void DatabaseInitialized(string databasePath)
         {
+            _fileService.SetResourceString("lastOpenedDatabasePath", databasePath);
+
             ContentModelInitialized?.Invoke();
         }
 
