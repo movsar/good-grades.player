@@ -191,6 +191,9 @@ namespace Content_Manager.Stores
             dbMeta.Description = description;
 
             _contentModel.UpdateItem<DbMeta>(dbMeta);
+
+            // Let everybody know
+            ItemUpdated?.Invoke(nameof(IDbMeta), dbMeta);
         }
 
         internal void OpenDatabase(string filePath)

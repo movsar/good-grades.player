@@ -17,7 +17,7 @@
                     FontFamily="Segoe MDL2 Assets" Content="&#xE74E;" 
                     Click="btnSave_Click"/>
 
-        <StackPanel Margin="10 30 0 0"
+        <StackPanel Margin="10 0 0 0"
                     HorizontalAlignment="Left"
                     Width="400">
 

@@ -7,6 +7,10 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <StackPanel x:Name="spListeningMaterialControls"></StackPanel>
+
+        <TextBlock Margin="10 5 10 0"
+                   FontWeight="Bold">Напишите название материала, выберите текст и аудио</TextBlock>
+
+        <StackPanel Margin="0 20 0 0" x:Name="spListeningMaterialControls"></StackPanel>
     </Grid>
 </UserControl>

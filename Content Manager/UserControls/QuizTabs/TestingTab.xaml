@@ -12,7 +12,7 @@
         </Grid.RowDefinitions>
 
         <TextBlock Margin="10 5 10 0"
-                   FontWeight="Bold">Заполните опции:</TextBlock>
+                   FontWeight="Bold">Добавьте вопросы, варианты и выберите правильные</TextBlock>
 
         <!--<Button Grid.Row="0" x:Name="btnPreview"
                 Visibility="Collapsed"

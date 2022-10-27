@@ -2,6 +2,7 @@
 using Content_Manager.Stores;
 using Content_Manager.UserControls;
 using Content_Manager.Windows;
+using Data.Interfaces;
 using System.Collections;
 using System.IO;
 using System.Resources;
@@ -23,18 +24,31 @@ namespace Content_Manager
 
             _contentStore.ContentStoreInitialized += ContentStoreInitialized;
             _contentStore.SelectedSegmentChanged += SelectedSegmentChanged;
+            _contentStore.ItemUpdated += _contentStore_ItemUpdated;
 
             // Open last opened database
             var lastOpenedDatabasePath = _fileService.ReadResourceString("lastOpenedDatabasePath");
-            if (string.IsNullOrEmpty(lastOpenedDatabasePath)){
+            if (string.IsNullOrEmpty(lastOpenedDatabasePath))
+            {
                 return;
             }
             _contentStore.OpenDatabase(lastOpenedDatabasePath);
         }
 
+        private void _contentStore_ItemUpdated(string interfaceName, IModelBase model)
+        {
+            if (!interfaceName.Equals(nameof(IDbMeta)))
+            {
+                return;
+            }
+
+            var dbMeta = model as IDbMeta;
+
+            SetTitle(dbMeta!.Title);
+        }
+
         private void SelectedSegmentChanged(Data.Models.Segment obj)
         {
-
             if (obj != null)
             {
                 lblChooseSegment.Visibility = Visibility.Hidden;
@@ -55,6 +69,13 @@ namespace Content_Manager
             lblChooseSegment.Visibility = Visibility.Visible;
             ucSegmentList.Visibility = Visibility.Visible;
             mnuDatabaseInfo.IsEnabled = true;
+
+            SetTitle();
+        }
+
+        private void SetTitle(string? title = null)
+        {
+            Title = $"Good Grades | {title ?? _contentStore.GetDbMeta().Title}";
         }
 
         private void mnuOpenDatabase_Click(object sender, RoutedEventArgs e)

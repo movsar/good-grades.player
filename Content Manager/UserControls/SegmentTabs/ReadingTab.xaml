@@ -8,11 +8,11 @@
              d:DesignHeight="450" d:DesignWidth="800"
              x:Name="ucReading">
     <Grid>
-        <!--<Label Content="{Binding RelativeSource={RelativeSource Mode=FindAncestor,
-                                                         AncestorType={x:Type Window}},
-                                                         Path=DataContext.CurrentSegment.Title}"/>-->
+        <TextBlock Margin="10 5 10 0"
+                   FontWeight="Bold">Напишите название материала и выберите текст</TextBlock>
+        
         <ScrollViewer>
-            <StackPanel x:Name="spReadingMaterialControls"></StackPanel>
+            <StackPanel Margin="0 20 0 0" x:Name="spReadingMaterialControls"></StackPanel>
         </ScrollViewer>
 
     </Grid>
