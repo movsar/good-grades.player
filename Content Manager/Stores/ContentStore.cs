@@ -100,6 +100,12 @@ namespace Content_Manager.Stores
         {
             // Remove from DB
             _contentModel.DeleteItem<ISegment>(item);
+            _contentModel.DeleteItem<ISegment>(item);
+            _contentModel.DeleteItem<ISegment>(item);
+            _contentModel.DeleteItem<ISegment>(item);
+            _contentModel.DeleteItem<ISegment>(item);
+
+            _contentModel.DeleteItem<ISegment>(item);
 
             // Remove from collection
             var index = StoredSegments.ToList().FindIndex(d => d.Id == item.Id);
@@ -147,7 +153,7 @@ namespace Content_Manager.Stores
 
         internal QuizItem GetQuizItem(string id)
         {
-            var allQuizItems = SelectedSegment!.CelebrityWodsQuiz.QuizItems
+            var allQuizItems = SelectedSegment!.CelebrityWordsQuiz.QuizItems
                 .Union(SelectedSegment!.ProverbSelectionQuiz.QuizItems)
                 .Union(SelectedSegment!.ProverbBuilderQuiz.QuizItems)
                 .Union(SelectedSegment!.GapFillerQuiz.QuizItems)
@@ -162,7 +168,7 @@ namespace Content_Manager.Stores
             switch (quizType)
             {
                 case QuizTypes.CelebrityWords:
-                    _contentModel.UpdateItem<ICelebrityWordsQuiz>(SelectedSegment!.CelebrityWodsQuiz);
+                    _contentModel.UpdateItem<ICelebrityWordsQuiz>(SelectedSegment!.CelebrityWordsQuiz);
                     break;
 
                 case QuizTypes.ProverbSelection:
@@ -216,7 +222,6 @@ namespace Content_Manager.Stores
         {
             _contentModel.CreateDatabase(filePath);
         }
-
         internal void SaveCurrentSegment()
         {
             UpdateSegment(SelectedSegment!);
@@ -250,6 +255,22 @@ namespace Content_Manager.Stores
             }
 
             _contentModel?.DeleteItem<QuizItem>(quizItemToRemove);
+        }
+
+        internal void DeleteListeningMaterial(string id)
+        {
+            var listeningMaterial = GetListeningMaterialById(id);
+            SelectedSegment!.ListeningMaterials.Remove(listeningMaterial);
+            _contentModel!.DeleteItem<ListeningMaterial>(listeningMaterial);
+            SaveCurrentSegment();
+        }
+
+        internal void DeleteReadingMaterial(string id)
+        {
+            var readingMaterial = GetReadingMaterialById(id);
+            SelectedSegment!.ReadingMaterials.Remove(readingMaterial);
+            _contentModel!.DeleteItem<ReadingMaterial>(readingMaterial);
+            SaveCurrentSegment();
         }
     }
 }

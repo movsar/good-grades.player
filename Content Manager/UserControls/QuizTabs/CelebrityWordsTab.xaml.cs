@@ -28,11 +28,11 @@ namespace Content_Manager.UserControls.QuizTabs
 
         private void btnPreview_Click(object sender, RoutedEventArgs e)
         {
-            if (_contentStore?.SelectedSegment?.CelebrityWodsQuiz == null)
+            if (_contentStore?.SelectedSegment?.CelebrityWordsQuiz == null)
             {
                 return;
             }
-            var previewWindow = new CelebrityQuizPresenter(_contentStore.SelectedSegment.CelebrityWodsQuiz);
+            var previewWindow = new CelebrityQuizPresenter(_contentStore.SelectedSegment.CelebrityWordsQuiz);
             previewWindow.ShowDialog();
         }
 
@@ -46,8 +46,8 @@ namespace Content_Manager.UserControls.QuizTabs
 
         private void QuizItem_Delete(string itemId)
         {
-            var itemToRemove = _contentStore.SelectedSegment?.CelebrityWodsQuiz.QuizItems.Where(qi => qi.Id == itemId).First();
-            _contentStore.SelectedSegment?.CelebrityWodsQuiz.QuizItems.Remove(itemToRemove!);
+            var itemToRemove = _contentStore.SelectedSegment?.CelebrityWordsQuiz.QuizItems.Where(qi => qi.Id == itemId).First();
+            _contentStore.SelectedSegment?.CelebrityWordsQuiz.QuizItems.Remove(itemToRemove!);
 
             UpdateQuiz();
         }
@@ -62,7 +62,7 @@ namespace Content_Manager.UserControls.QuizTabs
         public void RedrawUi()
         {
             spItems.Children.Clear();
-            foreach (var quizItem in _contentStore.SelectedSegment!.CelebrityWodsQuiz.QuizItems)
+            foreach (var quizItem in _contentStore.SelectedSegment!.CelebrityWordsQuiz.QuizItems)
             {
                 var existingQuizItemControl = new QuizItemControl(QuizTypes.CelebrityWords, quizItem);
                 existingQuizItemControl.Update += QuizItem_Save;
@@ -78,7 +78,7 @@ namespace Content_Manager.UserControls.QuizTabs
 
         private void QuizItem_Create(IModelBase model)
         {
-            _contentStore.SelectedSegment?.CelebrityWodsQuiz.QuizItems.Add(model as QuizItem);
+            _contentStore.SelectedSegment?.CelebrityWordsQuiz.QuizItems.Add(model as QuizItem);
             UpdateQuiz();
         }
     }

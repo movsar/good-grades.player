@@ -51,8 +51,7 @@ namespace Content_Manager.UserControls.SegmentTabs
 
         private void ReadingMaterialControl_Delete(string id)
         {
-            _contentStore.SelectedSegment!.ReadingMaterials.Remove(_contentStore.GetReadingMaterialById(id));
-            _contentStore.SaveCurrentSegment();
+            _contentStore.DeleteReadingMaterial(id);
             RedrawUi();
         }
 

@@ -56,8 +56,7 @@ namespace Content_Manager.UserControls.SegmentTabs
 
         private void ExistingMaterial_Delete(string id)
         {
-            _contentStore.SelectedSegment!.ListeningMaterials.Remove(_contentStore.GetListeningMaterialById(id));
-            _contentStore.SaveCurrentSegment();
+            _contentStore.DeleteListeningMaterial(id);
             RedrawUi();
         }
 
