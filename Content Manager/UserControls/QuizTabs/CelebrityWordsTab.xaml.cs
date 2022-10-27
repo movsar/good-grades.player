@@ -54,13 +54,11 @@ namespace Content_Manager.UserControls.QuizTabs
 
         private void QuizItem_Save(string? id, IModelBase model)
         {
-            if (id == null)
-            {
-                _contentStore.SelectedSegment?.CelebrityWodsQuiz.QuizItems.Add(model as QuizItem);
-            }
             UpdateQuiz();
         }
 
+
+        #endregion
         public void RedrawUi()
         {
             spItems.Children.Clear();
@@ -74,10 +72,14 @@ namespace Content_Manager.UserControls.QuizTabs
             }
 
             var newQuizItemControl = new QuizItemControl(QuizTypes.CelebrityWords);
-            newQuizItemControl.Update += QuizItem_Save;
-            newQuizItemControl.Delete += QuizItem_Delete;
+            newQuizItemControl.Create += QuizItem_Create;
             spItems.Children.Add(newQuizItemControl);
         }
-        #endregion
+
+        private void QuizItem_Create(IModelBase model)
+        {
+            _contentStore.SelectedSegment?.CelebrityWodsQuiz.QuizItems.Add(model as QuizItem);
+            UpdateQuiz();
+        }
     }
 }

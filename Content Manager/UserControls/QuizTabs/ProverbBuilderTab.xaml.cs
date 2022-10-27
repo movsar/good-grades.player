@@ -4,20 +4,9 @@ using Data.Enums;
 using Data.Interfaces;
 using Data.Models;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Content_Manager.UserControls.QuizTabs
 {
@@ -29,6 +18,29 @@ namespace Content_Manager.UserControls.QuizTabs
             InitializeComponent();
             DataContext = this;
             RedrawUi();
+        }
+        public void RedrawUi()
+        {
+            spItems.Children.Clear();
+            foreach (var quizItem in _contentStore.SelectedSegment!.ProverbBuilderQuiz.QuizItems)
+            {
+                var existingQuizItem = new QuizItemControl(QuizTypes.ProverbBuilder, quizItem);
+                existingQuizItem.Update += QuizItem_Save;
+                existingQuizItem.Delete += QuizItem_Delete;
+
+                spItems.Children.Add(existingQuizItem);
+            }
+
+            var newQuizItem = new QuizItemControl(QuizTypes.ProverbBuilder);
+            newQuizItem.Create += QuizItem_Create;
+            spItems.Children.Add(newQuizItem);
+        }
+
+        private void QuizItem_Create(IModelBase model)
+        {
+            _contentStore.SelectedSegment?.ProverbBuilderQuiz.QuizItems.Add(model as QuizItem);
+         
+            UpdateQuiz();
         }
 
         private void btnPreview_Click(object sender, RoutedEventArgs e)
@@ -58,30 +70,10 @@ namespace Content_Manager.UserControls.QuizTabs
 
         private void QuizItem_Save(string? id, IModelBase model)
         {
-            if (id == null)
-            {
-                _contentStore.SelectedSegment?.ProverbBuilderQuiz.QuizItems.Add(model as QuizItem);
-            }
             UpdateQuiz();
         }
 
-        public void RedrawUi()
-        {
-            spItems.Children.Clear();
-            foreach (var quizItem in _contentStore.SelectedSegment!.ProverbBuilderQuiz.QuizItems)
-            {
-                var existingQuizItem = new QuizItemControl(QuizTypes.ProverbBuilder, quizItem);
-                existingQuizItem.Update += QuizItem_Save;
-                existingQuizItem.Delete += QuizItem_Delete;
 
-                spItems.Children.Add(existingQuizItem);
-            }
-
-            var newQuizItem = new QuizItemControl(QuizTypes.ProverbBuilder);
-            newQuizItem.Update += QuizItem_Save;
-            newQuizItem.Delete += QuizItem_Delete;
-            spItems.Children.Add(newQuizItem);
-        }
         #endregion
     }
 }

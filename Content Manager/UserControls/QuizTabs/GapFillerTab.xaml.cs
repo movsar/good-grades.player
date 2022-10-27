@@ -32,6 +32,29 @@ namespace Content_Manager.UserControls.QuizTabs
             RedrawUi();
         }
 
+        public void RedrawUi()
+        {
+            spItems.Children.Clear();
+            foreach (var quizItem in _contentStore.SelectedSegment!.GapFillerQuiz.QuizItems)
+            {
+                var existingQuizItem = new QuizItemControl(QuizTypes.GapFiller, quizItem);
+                existingQuizItem.Update += QuizItem_Save;
+                existingQuizItem.Delete += QuizItem_Delete;
+
+                spItems.Children.Add(existingQuizItem);
+            }
+
+            var newQuizItem = new QuizItemControl(QuizTypes.GapFiller);
+            newQuizItem.Create += QuizItem_Create; ;
+            spItems.Children.Add(newQuizItem);
+        }
+
+        private void QuizItem_Create(IModelBase model)
+        {
+            _contentStore.SelectedSegment?.GapFillerQuiz.QuizItems.Add(model as QuizItem);
+            UpdateQuiz();
+        }
+
         private void btnPreview_Click(object sender, RoutedEventArgs e)
         {
             if (_contentStore?.SelectedSegment?.GapFillerQuiz == null)
@@ -47,7 +70,6 @@ namespace Content_Manager.UserControls.QuizTabs
         {
             _contentStore.UpdateQuiz(QuizTypes.GapFiller);
             RedrawUi();
-
         }
 
         private void QuizItem_Delete(string itemId)
@@ -60,30 +82,9 @@ namespace Content_Manager.UserControls.QuizTabs
 
         private void QuizItem_Save(string? id, IModelBase model)
         {
-            if (id == null)
-            {
-                _contentStore.SelectedSegment?.GapFillerQuiz.QuizItems.Add(model as QuizItem);
-            }
             UpdateQuiz();
         }
 
-        public void RedrawUi()
-        {
-            spItems.Children.Clear();
-            foreach (var quizItem in _contentStore.SelectedSegment!.GapFillerQuiz.QuizItems)
-            {
-                var existingQuizItem = new QuizItemControl(QuizTypes.GapFiller, quizItem);
-                existingQuizItem.Update += QuizItem_Save;
-                existingQuizItem.Delete += QuizItem_Delete;
-
-                spItems.Children.Add(existingQuizItem);
-            }
-
-            var newQuizItem = new QuizItemControl(QuizTypes.GapFiller);
-            newQuizItem.Update += QuizItem_Save;
-            newQuizItem.Delete += QuizItem_Delete;
-            spItems.Children.Add(newQuizItem);
-        }
         #endregion
     }
 }

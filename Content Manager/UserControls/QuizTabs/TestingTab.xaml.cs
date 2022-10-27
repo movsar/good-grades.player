@@ -5,20 +5,8 @@ using Data.Enums;
 using Data.Interfaces;
 using Data.Models;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Content_Manager.UserControls.QuizTabs
 {
@@ -44,11 +32,12 @@ namespace Content_Manager.UserControls.QuizTabs
                 questionControl.Delete += QuestionControl_Delete;
 
                 spItems.Children.Add(questionControl);
-
             }
+
             var newQuestion = new QuestionControl();
+            newQuestion.Create += Question_Create;
+
             spItems.Children.Add(newQuestion);
-            newQuestion.Create += Question_Create; ;
         }
         private void UpdateQuiz()
         {
