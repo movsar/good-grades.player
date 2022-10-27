@@ -48,6 +48,22 @@ namespace Content_Manager.Models
                 case var _ when t.IsAssignableFrom(typeof(ISegment)):
                     return _storage.SegmentsRepository;
 
+                case var _ when t.IsAssignableTo(typeof(IReadingMaterial)):
+                case var _ when t.IsAssignableFrom(typeof(IReadingMaterial)):
+                    return _storage.ReadingMaterialsRepository;
+
+                case var _ when t.IsAssignableTo(typeof(IListeningMaterial)):
+                case var _ when t.IsAssignableFrom(typeof(IListeningMaterial)):
+                    return _storage.ListeningMaterialsRepository;
+
+                case var _ when t.IsAssignableTo(typeof(ITestingQuestion)):
+                case var _ when t.IsAssignableFrom(typeof(ITestingQuestion)):
+                    return _storage.QuestionsRepository;
+
+                case var _ when t.IsAssignableTo(typeof(IQuizItem)):
+                case var _ when t.IsAssignableFrom(typeof(IQuizItem)):
+                    return _storage.QuizItemsRepository;
+
                 case var _ when t.IsAssignableTo(typeof(ICelebrityWordsQuiz)):
                 case var _ when t.IsAssignableFrom(typeof(ICelebrityWordsQuiz)):
                     return _storage.CwqRepository;
@@ -67,8 +83,18 @@ namespace Content_Manager.Models
                 case var _ when t.IsAssignableTo(typeof(ITestingQuiz)):
                 case var _ when t.IsAssignableFrom(typeof(ITestingQuiz)):
                     return _storage.TsqRepository;
+
+
                 default:
                     throw new Exception();
+            }
+        }
+        public void DeleteItems<TModel>(IEnumerable<IModelBase> items) where TModel : IModelBase
+        {
+            var repository = SelectRepository<TModel>();
+            foreach (var item in items)
+            {
+                repository.Delete(item);
             }
         }
         public void DeleteItem<TModel>(IModelBase item) where TModel : IModelBase

@@ -53,9 +53,7 @@ namespace Content_Manager.UserControls.QuizTabs
         }
         private void QuestionControl_Delete(string questionId)
         {
-            var itemToRemove = _contentStore.SelectedSegment?.TestingQuiz.Questions.Where(qi => qi.Id == questionId).First();
-            _contentStore.SelectedSegment?.TestingQuiz.Questions.Remove(itemToRemove!);
-
+            _contentStore.DeleteQuestion(questionId);
             UpdateQuiz();
         }
         private void QuestionControl_Save(string? id, IModelBase model)

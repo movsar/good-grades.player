@@ -1,4 +1,5 @@
 To do:
+Ensure that deleted items are really deleted from database
 Fix content update reactions - move a level up and recreate
 Add Recent Files menu items (https://www.codeproject.com/Articles/23731/RecentFileList-a-WPF-MRU#heading0006)
 

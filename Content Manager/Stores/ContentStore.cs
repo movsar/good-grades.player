@@ -221,5 +221,35 @@ namespace Content_Manager.Stores
         {
             UpdateSegment(SelectedSegment!);
         }
+
+        internal void DeleteQuestion(string questionId)
+        {
+            var itemToRemove = SelectedSegment?.TestingQuiz.Questions.Where(qi => qi.Id == questionId).First();
+            SelectedSegment?.TestingQuiz.Questions.Remove(itemToRemove!);
+
+            _contentModel.DeleteItems<QuizItem>(itemToRemove.QuizItems);
+            _contentModel.DeleteItem<TestingQuestion>(itemToRemove!);
+        }
+
+        internal void DeleteQuestionQuizItem(string quizItemId, TestingQuestion question)
+        {
+            // Deletes a quiz item associated with a testing question, checks if it was the correct one
+            // and deals with that if so.
+
+            var quizItemToRemove = question.QuizItems.Where(qi => qi.Id == quizItemId).First();
+            question.QuizItems.Remove(quizItemToRemove);
+
+            // If it's the only quiz item, make it correct by default 
+            if (question.QuizItems.Count == 1 || (question.QuizItems.Count >= 1 && question.CorrectQuizId == quizItemId))
+            {
+                question.CorrectQuizId = question.QuizItems[0].Id;
+            }
+            else if (question.QuizItems.Count == 0)
+            {
+                question.CorrectQuizId = null;
+            }
+
+            _contentModel?.DeleteItem<QuizItem>(quizItemToRemove);
+        }
     }
 }

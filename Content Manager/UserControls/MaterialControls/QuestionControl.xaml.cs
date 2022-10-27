@@ -151,21 +151,10 @@ namespace Content_Manager.UserControls.MaterialControls
         }
         private void Question_QuizItem_Delete(string itemId)
         {
-            var itemToRemove = QuizItems.Where(qi => qi.Id == itemId).First();
-            QuizItems.Remove(itemToRemove);
-
             var question = _contentStore.GetQuestionById(QuestionId);
 
-            // If it's the only quiz item, make it correct by default 
-            if (QuizItems.Count == 1 || question.CorrectQuizId == itemId)
-            {
-                question.CorrectQuizId = QuizItems[0].Id;
-            }
-            else if (QuizItems.Count == 0)
-            {
-                question.CorrectQuizId = null;
-            }
-
+            _contentStore.DeleteQuestionQuizItem(itemId, question);
+          
             Update?.Invoke(QuestionId, question);
         }
         #endregion
