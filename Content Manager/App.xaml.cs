@@ -9,6 +9,7 @@ using System;
 using System.Windows;
 using Microsoft.Extensions.Logging;
 using Serilog;
+using System.IO;
 
 namespace Content_Manager
 {
@@ -17,21 +18,23 @@ namespace Content_Manager
         public static IHost? AppHost { get; private set; }
         public App()
         {
+            string logPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "GoodGrades", "logs.txt");
+
             AppHost = Host.CreateDefaultBuilder()
-                .UseSerilog((_, loggerConfiguration) =>
-                {
-                    loggerConfiguration.WriteTo
-                        .File("logs.txt", rollingInterval: RollingInterval.Day).MinimumLevel.Error();
-                })
-                .ConfigureServices((hostContext, services) =>
-                {
-                    services.AddTransient<FileService>();
-                    services.AddSingleton<Storage>();
-                    services.AddSingleton<ContentModel>();
-                    services.AddSingleton<ContentStore>();
-                    services.AddSingleton<MainWindow>();
-                    services.AddSingleton<StylingService>();
-                }).Build();
+                    .UseSerilog((host, loggerConfiguration) =>
+                    {
+                        loggerConfiguration.WriteTo
+                            .File(logPath, rollingInterval: RollingInterval.Day).MinimumLevel.Error();
+                    })
+                    .ConfigureServices((hostContext, services) =>
+                    {
+                        services.AddTransient<FileService>();
+                        services.AddSingleton<Storage>();
+                        services.AddSingleton<ContentModel>();
+                        services.AddSingleton<ContentStore>();
+                        services.AddSingleton<MainWindow>();
+                        services.AddSingleton<StylingService>();
+                    }).Build();
         }
 
         protected override void OnStartup(StartupEventArgs e)

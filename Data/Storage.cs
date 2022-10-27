@@ -26,7 +26,10 @@ namespace Data
 
         public void OpenDatabase(string databasePath)
         {
-            InitializeDatabase(databasePath);
+            if (!InitializeDatabase(databasePath))
+            {
+                return;
+            };
 
             DatabaseInitialized?.Invoke(databasePath);
         }
@@ -38,7 +41,9 @@ namespace Data
                 DropDatabase(databasePath);
             }
 
-            InitializeDatabase(databasePath);
+            if (!InitializeDatabase(databasePath)) {
+                return;
+            };
 
             var dbMeta = new DbMeta();
             DbMetaRepository.Add(ref dbMeta);
@@ -46,7 +51,7 @@ namespace Data
             DatabaseInitialized?.Invoke(databasePath);
         }
 
-        private void InitializeDatabase(string databasePath)
+        private bool InitializeDatabase(string databasePath)
         {
             // Compacts the database if its size exceedes 30 MiB
             var dbConfig = new RealmConfiguration(databasePath)
@@ -62,10 +67,12 @@ namespace Data
                 _realmInstance = Realm.GetInstance(dbConfig);
             }catch (Exception ex)
             {
-                _logger.LogCritical(ex.Message, ex.Source, ex.StackTrace);
-                return;
+                _logger.LogCritical(ex.Message, ex.Source, ex.StackTrace, ex.InnerException);
+                return false;
             }
             InitializeRepositories();
+
+            return true;
         }
 
         private void InitializeRepositories()
