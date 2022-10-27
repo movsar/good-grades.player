@@ -5,6 +5,7 @@ using Data.Entities;
 using Data.Interfaces;
 using Data.Models;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -20,11 +21,13 @@ namespace Content_Manager.Models
         public event Action ContentModelInitialized;
         private Storage _storage;
         private readonly FileService _fileService;
+        private readonly ILogger<ContentModel> _logger;
 
-        public ContentModel(Storage storage, FileService fileService)
+        public ContentModel(Storage storage, FileService fileService, ILogger<ContentModel> logger)
         {
             _storage = storage;
             _fileService = fileService;
+            _logger = logger;
             _storage.DatabaseInitialized += DatabaseInitialized;
         }
 
@@ -84,7 +87,6 @@ namespace Content_Manager.Models
                 case var _ when t.IsAssignableFrom(typeof(ITestingQuiz)):
                     return _storage.TsqRepository;
 
-
                 default:
                     throw new Exception();
             }
@@ -99,37 +101,90 @@ namespace Content_Manager.Models
         }
         public void DeleteItem<TModel>(IModelBase item) where TModel : IModelBase
         {
-            SelectRepository<TModel>().Delete(item);
+            try
+            {
+                SelectRepository<TModel>().Delete(item);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex.StackTrace, ex.InnerException);
+            }
         }
 
         public void UpdateItem<TModel>(IModelBase item) where TModel : IModelBase
         {
-            SelectRepository<TModel>().Update(item);
+            try
+            {
+                SelectRepository<TModel>().Update(item);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex.StackTrace, ex.InnerException);
+            }
         }
 
         public void AddItem<TModel>(ref IModelBase item) where TModel : IModelBase
         {
-            SelectRepository<TModel>().Add(ref item);
+            try
+            {
+
+
+                SelectRepository<TModel>().Add(ref item);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex.StackTrace, ex.InnerException);
+            }
         }
 
         public TModel GetById<TModel>(string id) where TModel : IModelBase
         {
-            return SelectRepository<TModel>().GetById<TModel>(id);
+            try
+            {
+                return SelectRepository<TModel>().GetById<TModel>(id);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex.StackTrace, ex.InnerException);
+                throw;
+            }
         }
 
         public IEnumerable<TModel> GetAll<TModel>() where TModel : IModelBase
         {
-            return SelectRepository<TModel>().GetAll<TModel>();
+            try
+            {
+                return SelectRepository<TModel>().GetAll<TModel>();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex.StackTrace, ex.InnerException);
+                return Enumerable.Empty<TModel>();
+            }
         }
 
         internal void CreateDatabase(string filePath)
         {
-            _storage.CreateDatabase(filePath);
+            try
+            {
+                _storage.CreateDatabase(filePath);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex.StackTrace, ex.InnerException);
+            }
         }
 
         internal void OpenDatabase(string filePath)
         {
-            _storage.OpenDatabase(filePath);
+            try
+            {
+                _storage.OpenDatabase(filePath);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex.StackTrace, ex.InnerException);
+            }
         }
     }
 }

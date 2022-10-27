@@ -96,15 +96,35 @@ namespace Content_Manager.Stores
             // Let everybody know
             ItemAdded?.Invoke(nameof(ISegment), item);
         }
+        public void DeleteQuiz(Segment segment, QuizTypes quizType)
+        {
+
+        }
         public void DeleteSegment(ISegment item)
         {
-            // Remove from DB
-            _contentModel.DeleteItem<ISegment>(item);
-            _contentModel.DeleteItem<ISegment>(item);
-            _contentModel.DeleteItem<ISegment>(item);
-            _contentModel.DeleteItem<ISegment>(item);
-            _contentModel.DeleteItem<ISegment>(item);
+            var segment = item as Segment;
 
+            // Remove from DB
+
+            // Delete related quiz items
+            var quizItems = GetQuizItemsBySegment(segment);
+            _contentModel.DeleteItems<IQuizItem>(quizItems);
+
+            // Delete related test questions
+            _contentModel.DeleteItems<ITestingQuestion>(segment.TestingQuiz.Questions);
+
+            // Delete related quizes
+            _contentModel.DeleteItem<ICelebrityWordsQuiz>(segment!.CelebrityWordsQuiz);
+            _contentModel.DeleteItem<IProverbSelectionQuiz>(segment!.ProverbSelectionQuiz);
+            _contentModel.DeleteItem<IProverbBuilderQuiz>(segment!.ProverbBuilderQuiz);
+            _contentModel.DeleteItem<IGapFillerQuiz>(segment!.GapFillerQuiz);
+            _contentModel.DeleteItem<ITestingQuiz>(segment!.TestingQuiz);
+
+            // Delete related reading and listening materials
+            _contentModel.DeleteItems<IReadingMaterial>(segment.ReadingMaterials);
+            _contentModel.DeleteItems<IListeningMaterial>(segment.ListeningMaterials);
+
+            // Delete the segment
             _contentModel.DeleteItem<ISegment>(item);
 
             // Remove from collection
@@ -128,7 +148,6 @@ namespace Content_Manager.Stores
         }
         #endregion
 
-
         internal ReadingMaterial GetReadingMaterialById(string id)
         {
             return SelectedSegment!.ReadingMaterials.Where(o => o.Id == id).First();
@@ -151,17 +170,21 @@ namespace Content_Manager.Stores
             return null;
         }
 
-        internal QuizItem GetQuizItem(string id)
+        internal IEnumerable<QuizItem> GetQuizItemsBySegment(Segment segment)
         {
-            var allQuizItems = SelectedSegment!.CelebrityWordsQuiz.QuizItems
-                .Union(SelectedSegment!.ProverbSelectionQuiz.QuizItems)
-                .Union(SelectedSegment!.ProverbBuilderQuiz.QuizItems)
-                .Union(SelectedSegment!.GapFillerQuiz.QuizItems)
-                .Union(SelectedSegment!.TestingQuiz.Questions.SelectMany(q => q.QuizItems));
+            var allQuizItems = segment.CelebrityWordsQuiz.QuizItems
+                .Union(segment.ProverbSelectionQuiz.QuizItems)
+                .Union(segment.ProverbBuilderQuiz.QuizItems)
+                .Union(segment.GapFillerQuiz.QuizItems)
+                .Union(segment.TestingQuiz.Questions.SelectMany(q => q.QuizItems));
 
-            return allQuizItems.Where(o => o.Id == id).First();
+            return allQuizItems;
         }
 
+        internal QuizItem GetQuizItem(string id)
+        {
+            return GetQuizItemsBySegment(SelectedSegment!).Where(o => o.Id == id).First();
+        }
 
         internal void UpdateQuiz(QuizTypes quizType)
         {
