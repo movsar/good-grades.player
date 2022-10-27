@@ -2,6 +2,7 @@
 using Data.Interfaces;
 using Data.Models;
 using Data.Repositories;
+using Microsoft.Extensions.Logging;
 using Realms;
 
 namespace Data
@@ -11,6 +12,7 @@ namespace Data
         public event Action<string> DatabaseInitialized;
 
         private Realm _realmInstance;
+        private ILogger _logger;
         public SegmentRepository SegmentsRepository { get; private set; }
         public CwqRepository CwqRepository { get; private set; }
         public PsqRepository PsqRepository { get; private set; }
@@ -18,7 +20,9 @@ namespace Data
         public GfqRepository GfqRepository { get; private set; }
         public TsqRepository TsqRepository { get; private set; }
         public DbMetaRepository DbMetaRepository { get; private set; }
-        public Storage() { }
+        public Storage(ILogger<Storage> logger) {
+            _logger = logger;
+        }
 
         public void OpenDatabase(string databasePath)
         {
@@ -53,8 +57,14 @@ namespace Data
                     return totalBytes > edgeSize && usedBytes / totalBytes < 0.5;
                 }
             };
-
-            _realmInstance = Realm.GetInstance(dbConfig);
+            try
+            {
+                _realmInstance = Realm.GetInstance(dbConfig);
+            }catch (Exception ex)
+            {
+                _logger.LogCritical(ex.Message, ex.Source, ex.StackTrace);
+                return;
+            }
             InitializeRepositories();
         }
 

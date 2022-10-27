@@ -4,7 +4,11 @@ using Content_Manager.Stores;
 using Data;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Threading.Tasks;
+using System;
 using System.Windows;
+using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace Content_Manager
 {
@@ -14,6 +18,11 @@ namespace Content_Manager
         public App()
         {
             AppHost = Host.CreateDefaultBuilder()
+                .UseSerilog((_, loggerConfiguration) =>
+                {
+                    loggerConfiguration.WriteTo
+                        .File("logs.txt", rollingInterval: RollingInterval.Day).MinimumLevel.Error();
+                })
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.AddTransient<FileService>();

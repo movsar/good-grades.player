@@ -4,6 +4,7 @@ using Data.Services;
 using MongoDB.Bson;
 using Realms;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace Data.Entities
 {
@@ -17,6 +18,7 @@ namespace Data.Entities
         public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;
         public string Title { get; set; }
         public string Description { get; set; }
+        public string AppVersion { get; set; }
         #endregion
 
         #region HelperMethods
@@ -29,6 +31,7 @@ namespace Data.Entities
             var dbMeta = model as DbMeta;
             Title = dbMeta!.Title;
             Description = dbMeta.Description;
+            AppVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
         }
         #endregion
 

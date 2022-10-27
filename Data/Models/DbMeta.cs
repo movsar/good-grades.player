@@ -14,16 +14,9 @@ namespace Data.Models
     {
         public string Title { get; set; }
         public string Description { get; set; }
+        public string AppVersion { get; set; }
 
-        public DbMeta(string title, string description)
-        {
-            Title = title;
-            Description = description;
-        }
-
-        public DbMeta()
-        {
-        }
+        public DbMeta() { }
 
         public DbMeta(DbMetaEntity optionEntity)
         {
@@ -33,6 +26,7 @@ namespace Data.Models
 
             Title = optionEntity.Title;
             Description = optionEntity.Description;
+            AppVersion = optionEntity.AppVersion;
         }
     }
 }
