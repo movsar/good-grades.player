@@ -44,9 +44,17 @@ namespace Data
 
         private void InitializeDatabase(string databasePath)
         {
-            RealmConfiguration DbConfiguration = new(databasePath);
-            _realmInstance = Realm.GetInstance(DbConfiguration);
+            // Compacts the database if its size exceedes 30 MiB
+            var dbConfig = new RealmConfiguration(databasePath)
+            {
+                ShouldCompactOnLaunch = (totalBytes, usedBytes) =>
+                {
+                    ulong edgeSize = 30 * 1024 * 1024;
+                    return totalBytes > edgeSize && usedBytes / totalBytes < 0.5;
+                }
+            };
 
+            _realmInstance = Realm.GetInstance(dbConfig);
             InitializeRepositories();
         }
 

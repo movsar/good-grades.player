@@ -17,7 +17,7 @@
             <ListView.ContextMenu>
                 <ContextMenu>
                     <MenuItem
-                            Header="Delete"
+                            Header="Удалить"
                             Command="{Binding DeleteSelectedSegment}"
                             CommandParameter="{Binding}"/>
                 </ContextMenu>

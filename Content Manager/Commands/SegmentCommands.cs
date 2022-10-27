@@ -15,16 +15,17 @@ namespace Content_Manager.Commands
     {
         private static void DeleteAction(ContentStore contentStore, SegmentList view)
         {
-            var result = MessageBox.Show($"Please approva removal of {view.lvSegments.SelectedItems.Count} dream(s)",
-                                             "Confirmation",
+            var selectedSegments = view.lvSegments.SelectedItems.Cast<Segment>();
+            var segmentsToRemove = contentStore.StoredSegments.Where(segment => selectedSegments.Select(s => s.Id).Contains(segment.Id));
+
+            var result = MessageBox.Show($"Подтвердите удаление раздела \"{segmentsToRemove.First().Title}\"",
+                                             "Good Grades",
                                              MessageBoxButton.YesNo,
                                              MessageBoxImage.Question);
 
             if (result == MessageBoxResult.Yes)
             {
-                var selectedSegments = view.lvSegments.SelectedItems.Cast<Segment>();
 
-                var segmentsToRemove = contentStore.StoredSegments.Where(segment => selectedSegments.Select(s => s.Id).Contains(segment.Id));
 
                 contentStore.DeleteSegments(segmentsToRemove);
             }

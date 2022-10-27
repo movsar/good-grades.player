@@ -32,7 +32,7 @@
                 </MenuItem>
 
                 <Separator />
-                <MenuItem Header="_Информация" 
+                <MenuItem Header="_Информация"
                           x:Name="mnuDatabaseInfo" 
                           Click="mnuDatabaseInfo_Click"
                           IsEnabled="False">
@@ -47,7 +47,7 @@
                 </MenuItem>
             </MenuItem>
             <MenuItem Header="_Помощь">
-                <MenuItem Header="_О Программе">
+                <MenuItem Header="_О Программе" Click="mnuAbout_Click">
                     <MenuItem.Icon>
                         <TextBlock
                             HorizontalAlignment="Center" 

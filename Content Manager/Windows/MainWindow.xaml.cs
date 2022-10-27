@@ -77,6 +77,11 @@ namespace Content_Manager
             var dbInfoWindow = new DbInfoWindow();
             dbInfoWindow.ShowDialog();
         }
+        private void mnuAbout_Click(object sender, RoutedEventArgs e)
+        {
+            var aboutWindow = new AboutWindow();
+            aboutWindow.ShowDialog();
+        }
 
     }
 }
