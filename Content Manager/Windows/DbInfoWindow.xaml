@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Content_Manager.Windows" xmlns:usercontrols="clr-namespace:Content_Manager.UserControls"
         mc:Ignorable="d"
-        Title="База Данных" Height="270" Width="430" ResizeMode="NoResize">
+        Title="База Данных" Height="300" Width="430" ResizeMode="NoResize">
     <Grid>
 
         <usercontrols:DbInformation 

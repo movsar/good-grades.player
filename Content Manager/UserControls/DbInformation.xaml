@@ -38,10 +38,16 @@
                      x:Name="txtDescription"
                      VerticalAlignment="Top" />
 
-            <Label Content="Дата создания БД: "/>
+            <Label Content="Дата создания: "/>
             <TextBox Margin="0 0 10 0"
                      IsEnabled="false"
                      x:Name="txtDbCreatedAt"
+                     VerticalAlignment="Top" />
+
+            <Label Content="Версия программы: "/>
+            <TextBox Margin="0 0 10 0"
+                     IsEnabled="false"
+                     x:Name="txtAppVersion"
                      VerticalAlignment="Top" />
         </StackPanel>
 

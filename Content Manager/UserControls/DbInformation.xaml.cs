@@ -32,6 +32,7 @@ namespace Content_Manager.UserControls
             txtDbName.Text = dbMeta.Title;
             txtDbCreatedAt.Text = dbMeta.CreatedAt.ToString("R");
             txtDescription.Text = dbMeta.Description;
+            txtAppVersion.Text = dbMeta.AppVersion;
         }
 
         private void btnSave_Click(object sender, RoutedEventArgs e)

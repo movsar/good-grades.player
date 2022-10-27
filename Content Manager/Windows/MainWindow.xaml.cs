@@ -6,6 +6,7 @@ using Data.Interfaces;
 using System.Collections;
 using System.IO;
 using System.Resources;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
@@ -92,6 +93,10 @@ namespace Content_Manager
             if (string.IsNullOrEmpty(filePath)) return;
 
             _contentStore.CreateDatabase(filePath);
+
+            Task.Delay(200);
+            var dbInfo = new DbInfoWindow();
+            dbInfo.ShowDialog();
         }
         private void mnuDatabaseInfo_Click(object sender, RoutedEventArgs e)
         {
