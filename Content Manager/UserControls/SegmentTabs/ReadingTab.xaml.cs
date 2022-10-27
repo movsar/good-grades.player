@@ -31,16 +31,22 @@ namespace Content_Manager.UserControls.SegmentTabs
             foreach (var material in _contentStore.SelectedSegment!.ReadingMaterials)
             {
                 var rmcExisting = new ReadingMaterialControl(material);
-                rmcExisting.Save += ReadingMaterialControl_Save;
+                rmcExisting.Update += ReadingMaterialControl_Save;
                 rmcExisting.Delete += ReadingMaterialControl_Delete;
 
                 spReadingMaterialControls.Children.Add(rmcExisting);
             }
 
             var rmcNew = new ReadingMaterialControl();
-            rmcNew.Save += ReadingMaterialControl_Save;
+            rmcNew.Create += RmcNew_Create;
 
             spReadingMaterialControls.Children.Add(rmcNew);
+        }
+
+        private void RmcNew_Create(IModelBase obj)
+        {
+            _contentStore.SaveCurrentSegment();
+            RedrawUi();
         }
 
         private void ReadingMaterialControl_Delete(string id)

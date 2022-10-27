@@ -73,14 +73,14 @@ namespace Content_Manager.UserControls.QuizTabs
             foreach (var quizItem in _contentStore.SelectedSegment!.GapFillerQuiz.QuizItems)
             {
                 var existingQuizItem = new QuizItemControl(QuizTypes.GapFiller, quizItem);
-                existingQuizItem.Save += QuizItem_Save;
+                existingQuizItem.Update += QuizItem_Save;
                 existingQuizItem.Delete += QuizItem_Delete;
 
                 spItems.Children.Add(existingQuizItem);
             }
 
             var newQuizItem = new QuizItemControl(QuizTypes.GapFiller);
-            newQuizItem.Save += QuizItem_Save;
+            newQuizItem.Update += QuizItem_Save;
             newQuizItem.Delete += QuizItem_Delete;
             spItems.Children.Add(newQuizItem);
         }

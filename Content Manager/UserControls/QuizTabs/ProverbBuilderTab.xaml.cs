@@ -71,14 +71,14 @@ namespace Content_Manager.UserControls.QuizTabs
             foreach (var quizItem in _contentStore.SelectedSegment!.ProverbBuilderQuiz.QuizItems)
             {
                 var existingQuizItem = new QuizItemControl(QuizTypes.ProverbBuilder, quizItem);
-                existingQuizItem.Save += QuizItem_Save;
+                existingQuizItem.Update += QuizItem_Save;
                 existingQuizItem.Delete += QuizItem_Delete;
 
                 spItems.Children.Add(existingQuizItem);
             }
 
             var newQuizItem = new QuizItemControl(QuizTypes.ProverbBuilder);
-            newQuizItem.Save += QuizItem_Save;
+            newQuizItem.Update += QuizItem_Save;
             newQuizItem.Delete += QuizItem_Delete;
             spItems.Children.Add(newQuizItem);
         }

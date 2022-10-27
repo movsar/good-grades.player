@@ -28,7 +28,6 @@ namespace Content_Manager.UserControls.SegmentTabs
             DataContext = this;
             RedrawUi();
         }
-
         public void RedrawUi()
         {
             spListeningMaterialControls.Children.Clear();
@@ -38,15 +37,21 @@ namespace Content_Manager.UserControls.SegmentTabs
             foreach (var material in _contentStore.SelectedSegment!.ListeningMaterials)
             {
                 var existingMaterial = new ListeningMaterialControl(material);
-                existingMaterial.Save += ExistingMaterial_Save;
+                existingMaterial.Update += ExistingMaterial_Save;
                 existingMaterial.Delete += ExistingMaterial_Delete;
                 spListeningMaterialControls.Children.Add(existingMaterial);
             }
 
             var newMaterial = new ListeningMaterialControl();
-            newMaterial.Save += ExistingMaterial_Save;
+            newMaterial.Create += NewMaterial_Create; ;
 
             spListeningMaterialControls.Children.Add(newMaterial);
+        }
+
+        private void NewMaterial_Create(Data.Interfaces.IModelBase obj)
+        {
+            _contentStore.SaveCurrentSegment();
+            RedrawUi();
         }
 
         private void ExistingMaterial_Delete(string id)

@@ -27,7 +27,8 @@ namespace Content_Manager.UserControls.MaterialControls
     public partial class QuestionControl : UserControl, IMaterialControl
     {
         #region Events
-        public event Action<string?, IModelBase> Save;
+        public event Action<IModelBase> Create;
+        public event Action<string?, IModelBase> Update;
         public event Action<string> Delete;
         #endregion
 
@@ -115,45 +116,67 @@ namespace Content_Manager.UserControls.MaterialControls
                 var isSelected = _contentStore.SelectedSegment?.TestingQuiz.Questions.Where(q => q.Id == QuestionId).FirstOrDefault()?.CorrectQuizId == quizItem.Id;
 
                 var existingQuizItemControl = new QuizItemControl(QuizTypes.Testing, quizItem, isSelected);
-                existingQuizItemControl.Save += QuizItemControl_Save;
-                existingQuizItemControl.Delete += QuizItemControl_Delete;
-                existingQuizItemControl.SetAsCorrect += QuizItem_SetAsCorrect;
+                existingQuizItemControl.Update += Question_QuizItem_Save;
+                existingQuizItemControl.Delete += Question_QuizItem_Delete;
+                existingQuizItemControl.SetAsCorrect += Question_QuizItem_SetAsCorrect;
 
                 spItems.Children.Add(existingQuizItemControl);
             }
 
             var newQuizItemControl = new QuizItemControl(QuizTypes.Testing);
-            newQuizItemControl.Save += QuizItemControl_Save;
-            newQuizItemControl.Delete += QuizItemControl_Delete;
+            newQuizItemControl.Create += Question_QuizItemControl_Create;
 
             spItems.Children.Add(newQuizItemControl);
 
             OnTextSet(true);
         }
+
+        private void Question_QuizItemControl_Create(IModelBase model)
+        {
+            var quizItem = model as QuizItem;
+            var question = _contentStore.GetQuestionById(QuestionId);
+
+            QuizItems.Add(quizItem);
+            Update?.Invoke(QuestionId, question);
+
+            // If it's the only quiz item, make it correct by default 
+            if (QuizItems.Count == 1)
+            {
+                question.CorrectQuizId = quizItem.Id;
+            }
+            Update?.Invoke(QuestionId, question);
+        }
         #endregion
 
         #region Event Handlers
-        private void QuizItem_SetAsCorrect(string itemId)
+        private void Question_QuizItem_SetAsCorrect(string itemId)
         {
             var question = _contentStore.SelectedSegment?.TestingQuiz.Questions.Where(q => q.Id == QuestionId).First();
             question!.CorrectQuizId = itemId;
-            Save?.Invoke(QuestionId, question);
+            Update?.Invoke(QuestionId, question);
         }
-        private void QuizItemControl_Save(string? id, IModelBase model)
+        private void Question_QuizItem_Save(string? id, IModelBase model)
         {
-            if (id == null)
-            {
-                QuizItems.Add(model as QuizItem);
-            }
-
-            Save?.Invoke(QuestionId, model);
+            Update?.Invoke(QuestionId, _contentStore.GetQuestionById(QuestionId));
         }
-        private void QuizItemControl_Delete(string itemId)
+        private void Question_QuizItem_Delete(string itemId)
         {
             var itemToRemove = QuizItems.Where(qi => qi.Id == itemId).First();
             QuizItems.Remove(itemToRemove);
 
-            Save?.Invoke(QuestionId, _contentStore.GetQuestionById(QuestionId));
+            var question = _contentStore.GetQuestionById(QuestionId);
+
+            // If it's the only quiz item, make it correct by default 
+            if (QuizItems.Count == 1)
+            {
+                question.CorrectQuizId = QuizItems[0].Id;
+            }
+            else if (QuizItems.Count == 0)
+            {
+                question.CorrectQuizId = null;
+            }
+
+            Update?.Invoke(QuestionId, question);
         }
         #endregion
 
@@ -192,9 +215,7 @@ namespace Content_Manager.UserControls.MaterialControls
         {
             if (string.IsNullOrEmpty(QuestionId))
             {
-                var newQuestion = new TestingQuestion(QuestionText, QuizItems);
-
-                Save?.Invoke(null, newQuestion);
+                Create?.Invoke(new TestingQuestion(QuestionText, QuizItems));
             }
             else
             {
@@ -202,7 +223,7 @@ namespace Content_Manager.UserControls.MaterialControls
                 question.QuestionText = QuestionText;
                 question.QuizItems = QuizItems;
 
-                Save?.Invoke(QuestionId, question);
+                Update?.Invoke(QuestionId, question);
             }
         }
 

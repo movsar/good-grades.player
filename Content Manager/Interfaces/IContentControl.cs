@@ -9,7 +9,8 @@ namespace Content_Manager.Interfaces
 {
     internal interface IMaterialControl
     {
-        public event Action<string?, IModelBase> Save;
+        public event Action<IModelBase> Create;
+        public event Action<string?, IModelBase> Update;
         public event Action<string> Delete;
     }
 }

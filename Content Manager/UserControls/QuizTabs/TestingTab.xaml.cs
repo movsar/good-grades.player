@@ -40,7 +40,7 @@ namespace Content_Manager.UserControls.QuizTabs
             foreach (var question in _contentStore.SelectedSegment!.TestingQuiz.Questions)
             {
                 var questionControl = new QuestionControl(question);
-                questionControl.Save += QuestionControl_Save;
+                questionControl.Update += QuestionControl_Save;
                 questionControl.Delete += QuestionControl_Delete;
 
                 spItems.Children.Add(questionControl);
@@ -48,16 +48,20 @@ namespace Content_Manager.UserControls.QuizTabs
             }
             var newQuestion = new QuestionControl();
             spItems.Children.Add(newQuestion);
-            newQuestion.Save += QuestionControl_Save;
-            newQuestion.Delete += QuestionControl_Delete;
+            newQuestion.Create += Question_Create; ;
         }
-
         private void UpdateQuiz()
         {
             _contentStore.UpdateQuiz(QuizTypes.Testing);
             RedrawUi();
         }
 
+        private void Question_Create(IModelBase model)
+        {
+            _contentStore.SelectedSegment?.TestingQuiz.Questions.Add(model as TestingQuestion);
+
+            UpdateQuiz();
+        }
         private void QuestionControl_Delete(string questionId)
         {
             var itemToRemove = _contentStore.SelectedSegment?.TestingQuiz.Questions.Where(qi => qi.Id == questionId).First();
@@ -65,13 +69,8 @@ namespace Content_Manager.UserControls.QuizTabs
 
             UpdateQuiz();
         }
-
         private void QuestionControl_Save(string? id, IModelBase model)
         {
-            if (id == null)
-            {
-                _contentStore.SelectedSegment?.TestingQuiz.Questions.Add(model as TestingQuestion);
-            }
             UpdateQuiz();
         }
     }

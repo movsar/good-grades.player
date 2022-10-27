@@ -17,7 +17,8 @@ namespace Content_Manager.UserControls
 {
     public partial class ReadingMaterialControl : UserControl, IMaterialControl
     {
-        public event Action<string?, IModelBase> Save;
+        public event Action<IModelBase> Create;
+        public event Action<string?, IModelBase> Update;
         public event Action<string> Delete;
 
         #region Fields
@@ -200,7 +201,7 @@ namespace Content_Manager.UserControls
                 var newRm = new ReadingMaterial(RmTitle, RmText, RmImage);
                 ContentStore.SelectedSegment?.ReadingMaterials.Add(newRm);
 
-                Save?.Invoke(null, newRm);
+                Create?.Invoke(newRm);
             }
             else
             {
@@ -209,7 +210,7 @@ namespace Content_Manager.UserControls
                 rm.Text = RmText;
                 rm.Image = RmImage;
 
-                Save?.Invoke(RmId, rm);
+                Update?.Invoke(RmId, rm);
             }
         }
 

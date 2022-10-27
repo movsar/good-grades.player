@@ -29,7 +29,7 @@ namespace Data.Models
         }
 
         public string QuestionText { get; set; }
-        public string CorrectQuizId { get; set; }
+        public string? CorrectQuizId { get; set; }
         public List<QuizItem> QuizItems { get; set; } = new List<QuizItem>();
     }
 }

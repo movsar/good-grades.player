@@ -80,7 +80,7 @@ namespace Content_Manager.UserControls.QuizTabs
                 var isSelected = _contentStore.SelectedSegment!.ProverbSelectionQuiz.CorrectQuizId == quizItem.Id;
 
                 var existingQuizItem = new QuizItemControl(QuizTypes.ProverbSelection, quizItem, isSelected);
-                existingQuizItem.Save += QuizItem_Save;
+                existingQuizItem.Update += QuizItem_Save;
                 existingQuizItem.Delete += QuizItem_Delete;
                 existingQuizItem.SetAsCorrect += QuizItem_SetAsCorrect;
 
@@ -88,7 +88,7 @@ namespace Content_Manager.UserControls.QuizTabs
             }
 
             var newQuizItem = new QuizItemControl(QuizTypes.ProverbSelection);
-            newQuizItem.Save += QuizItem_Save;
+            newQuizItem.Update += QuizItem_Save;
             newQuizItem.Delete += QuizItem_Delete;
 
             spItems.Children.Add(newQuizItem);

@@ -67,14 +67,14 @@ namespace Content_Manager.UserControls.QuizTabs
             foreach (var quizItem in _contentStore.SelectedSegment!.CelebrityWodsQuiz.QuizItems)
             {
                 var existingQuizItemControl = new QuizItemControl(QuizTypes.CelebrityWords, quizItem);
-                existingQuizItemControl.Save += QuizItem_Save;
+                existingQuizItemControl.Update += QuizItem_Save;
                 existingQuizItemControl.Delete += QuizItem_Delete;
 
                 spItems.Children.Add(existingQuizItemControl);
             }
 
             var newQuizItemControl = new QuizItemControl(QuizTypes.CelebrityWords);
-            newQuizItemControl.Save += QuizItem_Save;
+            newQuizItemControl.Update += QuizItem_Save;
             newQuizItemControl.Delete += QuizItem_Delete;
             spItems.Children.Add(newQuizItemControl);
         }

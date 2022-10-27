@@ -22,7 +22,8 @@ namespace Content_Manager.UserControls
 {
     public partial class QuizItemControl : UserControl, IMaterialControl
     {
-        public event Action<string?, IModelBase> Save;
+        public event Action<IModelBase> Create;
+        public event Action<string?, IModelBase> Update;
         public event Action<string> Delete;
         public event Action<string> SetAsCorrect;
 
@@ -211,7 +212,6 @@ namespace Content_Manager.UserControls
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-            // ContentStore.DeleteQuizItem(_quizType, ItemId);
             Delete?.Invoke(ItemId);
         }
         private void btnSave_Click(object sender, RoutedEventArgs e)
@@ -230,7 +230,7 @@ namespace Content_Manager.UserControls
             {
                 var quizItem = new QuizItem(ItemText, ItemImage);
 
-                Save?.Invoke(null, quizItem);
+                Create?.Invoke(quizItem);
             }
             else
             {
@@ -238,7 +238,7 @@ namespace Content_Manager.UserControls
                 quizItem.Image = ItemImage;
                 quizItem.Text = ItemText;
 
-                Save?.Invoke(ItemId, quizItem);
+                Update?.Invoke(ItemId, quizItem);
             }
         }
 

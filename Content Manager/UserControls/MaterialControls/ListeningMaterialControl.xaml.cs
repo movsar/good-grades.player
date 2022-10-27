@@ -23,7 +23,8 @@ namespace Content_Manager.UserControls
 {
     public partial class ListeningMaterialControl : UserControl, IMaterialControl
     {
-        public event Action<string?, IModelBase> Save;
+        public event Action<IModelBase> Create;
+        public event Action<string?, IModelBase> Update;
         public event Action<string> Delete;
 
         #region Fields
@@ -220,7 +221,7 @@ namespace Content_Manager.UserControls
                 var lm = new ListeningMaterial(LmTitle, LmText, audio: LmAudio, image: LmImage);
                 ContentStore.SelectedSegment?.ListeningMaterials.Add(lm);
 
-                Save?.Invoke(null, lm);
+                Create?.Invoke(lm);
             }
             else
             {
@@ -230,7 +231,7 @@ namespace Content_Manager.UserControls
                 lm.Image = LmImage;
                 lm.Audio = LmAudio;
 
-                Save?.Invoke(LmId, lm);
+                Update?.Invoke(LmId, lm);
             }
         }
 

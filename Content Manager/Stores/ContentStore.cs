@@ -133,6 +133,18 @@ namespace Content_Manager.Stores
             return SelectedSegment!.ListeningMaterials.Where(o => o.Id == id).First();
         }
 
+        internal TestingQuestion? GetTestingQuestionByQuizItemId(string quizItemId)
+        {
+            foreach (var question in SelectedSegment!.TestingQuiz.Questions)
+            {
+                if (question.QuizItems.Any(qi => qi.Id == quizItemId))
+                {
+                    return question;
+                }
+            }
+            return null;
+        }
+
         internal QuizItem GetQuizItem(string id)
         {
             var allQuizItems = SelectedSegment!.CelebrityWodsQuiz.QuizItems
