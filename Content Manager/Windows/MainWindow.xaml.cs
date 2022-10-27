@@ -29,7 +29,7 @@ namespace Content_Manager
 
             // Open last opened database
             var lastOpenedDatabasePath = _fileService.ReadResourceString("lastOpenedDatabasePath");
-            if (string.IsNullOrEmpty(lastOpenedDatabasePath))
+            if (string.IsNullOrEmpty(lastOpenedDatabasePath) || !File.Exists(lastOpenedDatabasePath))
             {
                 return;
             }

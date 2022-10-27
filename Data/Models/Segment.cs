@@ -10,7 +10,7 @@ namespace Data.Models
         public string Description { get; set; }
         public List<ReadingMaterial> ReadingMaterials { get; }
         public List<ListeningMaterial> ListeningMaterials { get; }
-        public ICelebrityWordsQuiz CelebrityWordsQuiz { get; set; }
+        public CelebrityWordsQuiz CelebrityWordsQuiz { get; set; }
         public ProverbSelectionQuiz ProverbSelectionQuiz { get; set; }
         public ProverbBuilderQuiz ProverbBuilderQuiz { get; set; }
         public GapFillerQuiz GapFillerQuiz { get; set; }
