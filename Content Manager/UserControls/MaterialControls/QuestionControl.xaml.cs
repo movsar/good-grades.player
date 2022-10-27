@@ -1,4 +1,5 @@
-﻿using Content_Manager.Models;
+﻿using Content_Manager.Interfaces;
+using Content_Manager.Models;
 using Content_Manager.Services;
 using Content_Manager.Stores;
 using Data.Enums;
@@ -23,11 +24,10 @@ using System.Windows.Shapes;
 
 namespace Content_Manager.UserControls.MaterialControls
 {
-    public partial class QuestionControl : UserControl
+    public partial class QuestionControl : UserControl, IMaterialControl
     {
         #region Events
-        public event Action<TestingQuestion> Add;
-        public event Action Save;
+        public event Action<string?, IModelBase> Save;
         public event Action<string> Delete;
         #endregion
 
@@ -38,7 +38,7 @@ namespace Content_Manager.UserControls.MaterialControls
         #endregion
 
         #region Properties
-        ContentStore ContentStore => App.AppHost!.Services.GetRequiredService<ContentStore>();
+        private readonly ContentStore _contentStore = App.AppHost!.Services.GetRequiredService<ContentStore>();
         StylingService StylingService => App.AppHost!.Services.GetRequiredService<StylingService>();
         private List<QuizItem> QuizItems { get; set; } = new List<QuizItem>();
         public string QuestionText
@@ -48,6 +48,7 @@ namespace Content_Manager.UserControls.MaterialControls
         }
         public static readonly DependencyProperty ItemTextProperty =
             DependencyProperty.Register("QuestionText", typeof(string), typeof(QuestionControl), new PropertyMetadata(""));
+
 
         public string QuestionId { get; }
 
@@ -111,19 +112,17 @@ namespace Content_Manager.UserControls.MaterialControls
 
             foreach (var quizItem in QuizItems)
             {
-                var isSelected = ContentStore.SelectedSegment?.TestingQuiz.Questions.Where(q => q.Id == QuestionId).FirstOrDefault()?.CorrectQuizId == quizItem.Id;
+                var isSelected = _contentStore.SelectedSegment?.TestingQuiz.Questions.Where(q => q.Id == QuestionId).FirstOrDefault()?.CorrectQuizId == quizItem.Id;
 
-                var quizItemControl = new QuizItemControl(QuizTypes.Testing, quizItem, isSelected);
-                quizItemControl.Add += QuizItemControl_Add;
-                quizItemControl.Save += QuizItemControl_Save;
-                quizItemControl.Delete += QuizItemControl_Delete;
-                quizItemControl.SetAsCorrect += QuizItem_SetAsCorrect;
+                var existingQuizItemControl = new QuizItemControl(QuizTypes.Testing, quizItem, isSelected);
+                existingQuizItemControl.Save += QuizItemControl_Save;
+                existingQuizItemControl.Delete += QuizItemControl_Delete;
+                existingQuizItemControl.SetAsCorrect += QuizItem_SetAsCorrect;
 
-                spItems.Children.Add(quizItemControl);
+                spItems.Children.Add(existingQuizItemControl);
             }
 
             var newQuizItemControl = new QuizItemControl(QuizTypes.Testing);
-            newQuizItemControl.Add += QuizItemControl_Add;
             newQuizItemControl.Save += QuizItemControl_Save;
             newQuizItemControl.Delete += QuizItemControl_Delete;
 
@@ -136,24 +135,25 @@ namespace Content_Manager.UserControls.MaterialControls
         #region Event Handlers
         private void QuizItem_SetAsCorrect(string itemId)
         {
-            var question = ContentStore.SelectedSegment?.TestingQuiz.Questions.Where(q => q.Id == QuestionId).First();
+            var question = _contentStore.SelectedSegment?.TestingQuiz.Questions.Where(q => q.Id == QuestionId).First();
             question!.CorrectQuizId = itemId;
-            Save?.Invoke();
+            Save?.Invoke(QuestionId, question);
         }
-        private void QuizItemControl_Save()
+        private void QuizItemControl_Save(string? id, IModelBase model)
         {
-            Save?.Invoke();
-        }
-        private void QuizItemControl_Add(QuizItem quizItem)
-        {
-            QuizItems.Add(quizItem);
-            Save?.Invoke();
+            if (id == null)
+            {
+                QuizItems.Add(model as QuizItem);
+            }
+
+            Save?.Invoke(QuestionId, model);
         }
         private void QuizItemControl_Delete(string itemId)
         {
             var itemToRemove = QuizItems.Where(qi => qi.Id == itemId).First();
             QuizItems.Remove(itemToRemove);
-            Save?.Invoke();
+
+            Save?.Invoke(QuestionId, _contentStore.GetQuestionById(QuestionId));
         }
         #endregion
 
@@ -194,15 +194,15 @@ namespace Content_Manager.UserControls.MaterialControls
             {
                 var newQuestion = new TestingQuestion(QuestionText, QuizItems);
 
-                Add?.Invoke(newQuestion);
+                Save?.Invoke(null, newQuestion);
             }
             else
             {
-                var question = ContentStore.GetQuestionById(QuestionId);
+                var question = _contentStore.GetQuestionById(QuestionId);
                 question.QuestionText = QuestionText;
                 question.QuizItems = QuizItems;
 
-                Save?.Invoke();
+                Save?.Invoke(QuestionId, question);
             }
         }
 

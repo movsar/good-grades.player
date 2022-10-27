@@ -201,5 +201,10 @@ namespace Content_Manager.Stores
         {
             _contentModel.CreateDatabase(filePath);
         }
+
+        internal void SaveCurrentSegment()
+        {
+            UpdateSegment(SelectedSegment!);
+        }
     }
 }

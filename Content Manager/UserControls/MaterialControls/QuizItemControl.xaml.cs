@@ -1,4 +1,5 @@
-﻿using Content_Manager.Models;
+﻿using Content_Manager.Interfaces;
+using Content_Manager.Models;
 using Content_Manager.Services;
 using Content_Manager.Stores;
 using Data.Enums;
@@ -19,11 +20,9 @@ using Image = System.Windows.Controls.Image;
 
 namespace Content_Manager.UserControls
 {
-    public partial class QuizItemControl : UserControl
+    public partial class QuizItemControl : UserControl, IMaterialControl
     {
-
-        public event Action<QuizItem> Add;
-        public event Action Save;
+        public event Action<string?, IModelBase> Save;
         public event Action<string> Delete;
         public event Action<string> SetAsCorrect;
 
@@ -78,10 +77,6 @@ namespace Content_Manager.UserControls
             btnChooseImage.Content = imgControl;
 
             _formCompletionInfo.Update(nameof(ItemImage), isSet);
-        }
-        private void RefreshUI()
-        {
-            ContentStore.SelectedSegment = ContentStore.SelectedSegment;
         }
         #endregion
 
@@ -218,8 +213,6 @@ namespace Content_Manager.UserControls
         {
             // ContentStore.DeleteQuizItem(_quizType, ItemId);
             Delete?.Invoke(ItemId);
-
-            RefreshUI();
         }
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
@@ -237,7 +230,7 @@ namespace Content_Manager.UserControls
             {
                 var quizItem = new QuizItem(ItemText, ItemImage);
 
-                Add?.Invoke(quizItem);
+                Save?.Invoke(null, quizItem);
             }
             else
             {
@@ -245,7 +238,7 @@ namespace Content_Manager.UserControls
                 quizItem.Image = ItemImage;
                 quizItem.Text = ItemText;
 
-                Save?.Invoke();
+                Save?.Invoke(ItemId, quizItem);
             }
         }
 
@@ -282,7 +275,6 @@ namespace Content_Manager.UserControls
             }
 
             SetAsCorrect?.Invoke(ItemId);
-            RefreshUI();
         }
     }
 }

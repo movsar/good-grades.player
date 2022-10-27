@@ -26,7 +26,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Update="UserControls\Tabs\GapFillerQuizTab.xaml.cs">
+    <Compile Update="UserControls\QuizTabs\GapFillerTab.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
@@ -39,7 +39,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Page Update="UserControls\Tabs\GapFillerQuizTab.xaml">
+    <Page Update="UserControls\QuizTabs\GapFillerTab.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

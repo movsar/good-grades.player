@@ -13,12 +13,12 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Content_Manager.UserControls.Tabs {
-    /// <summary>
-    /// Interaction logic for QuizsTab.xaml
-    /// </summary>
-    public partial class QuizsTab : UserControl {
-        public QuizsTab() {
+namespace Content_Manager.UserControls.SegmentTabs
+{
+    public partial class QuizsTab : UserControl
+    {
+        public QuizsTab()
+        {
             InitializeComponent();
         }
     }

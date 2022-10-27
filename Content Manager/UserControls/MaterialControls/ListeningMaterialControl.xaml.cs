@@ -1,11 +1,14 @@
-﻿using Content_Manager.Models;
+﻿using Content_Manager.Interfaces;
+using Content_Manager.Models;
 using Content_Manager.Services;
 using Content_Manager.Stores;
+using Data.Interfaces;
 using Data.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Realms;
 using Shared.Controls;
 using Shared.Viewers;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -18,8 +21,10 @@ using System.Windows.Media.Media3D;
 
 namespace Content_Manager.UserControls
 {
-    public partial class ListeningMaterialControl : UserControl
+    public partial class ListeningMaterialControl : UserControl, IMaterialControl
     {
+        public event Action<string?, IModelBase> Save;
+        public event Action<string> Delete;
 
         #region Fields
         private FormCompletionInfo _formCompletionInfo;
@@ -212,8 +217,10 @@ namespace Content_Manager.UserControls
 
             if (string.IsNullOrEmpty(LmId))
             {
-                ContentStore.SelectedSegment?.ListeningMaterials
-                    .Add(new ListeningMaterial(LmTitle, LmText, audio: LmAudio, image: LmImage));
+                var lm = new ListeningMaterial(LmTitle, LmText, audio: LmAudio, image: LmImage);
+                ContentStore.SelectedSegment?.ListeningMaterials.Add(lm);
+
+                Save?.Invoke(null, lm);
             }
             else
             {
@@ -222,16 +229,14 @@ namespace Content_Manager.UserControls
                 lm.Text = LmText;
                 lm.Image = LmImage;
                 lm.Audio = LmAudio;
-            }
 
-            ContentStore.UpdateSegment(ContentStore!.SelectedSegment!);
+                Save?.Invoke(LmId, lm);
+            }
         }
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-            ContentStore.SelectedSegment!.ListeningMaterials.Remove(ContentStore.GetListeningMaterialById(LmId));
-            ContentStore.UpdateSegment(ContentStore.SelectedSegment);
-            ContentStore.SelectedSegment = ContentStore.SelectedSegment;
+            Delete?.Invoke(LmId);
         }
         #endregion
 

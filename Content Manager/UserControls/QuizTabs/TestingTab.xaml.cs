@@ -1,4 +1,5 @@
-﻿using Content_Manager.Stores;
+﻿using Content_Manager.Interfaces;
+using Content_Manager.Stores;
 using Content_Manager.UserControls.MaterialControls;
 using Data.Enums;
 using Data.Interfaces;
@@ -19,20 +20,26 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Content_Manager.UserControls.Tabs
+namespace Content_Manager.UserControls.QuizTabs
 {
-    public partial class TestingQuizTab : UserControl
+    public partial class TestingTab : UserControl, IQuizTabControl
     {
         private readonly ContentStore _contentStore = App.AppHost!.Services.GetRequiredService<ContentStore>();
-        public TestingQuizTab()
+        public TestingTab()
         {
             InitializeComponent();
             DataContext = this;
 
+            RedrawUi();
+        }
+
+        public void RedrawUi()
+        {
+            spItems.Children.Clear();
+
             foreach (var question in _contentStore.SelectedSegment!.TestingQuiz.Questions)
             {
                 var questionControl = new QuestionControl(question);
-                questionControl.Add += QuestionControl_Add;
                 questionControl.Save += QuestionControl_Save;
                 questionControl.Delete += QuestionControl_Delete;
 
@@ -41,22 +48,14 @@ namespace Content_Manager.UserControls.Tabs
             }
             var newQuestion = new QuestionControl();
             spItems.Children.Add(newQuestion);
-            newQuestion.Add += QuestionControl_Add;
             newQuestion.Save += QuestionControl_Save;
             newQuestion.Delete += QuestionControl_Delete;
         }
 
-
         private void UpdateQuiz()
         {
             _contentStore.UpdateQuiz(QuizTypes.Testing);
-        }
-
-        private void QuestionControl_Add(TestingQuestion testingQuestion)
-        {
-            _contentStore.SelectedSegment?.TestingQuiz.Questions.Add(testingQuestion);
-
-            UpdateQuiz();
+            RedrawUi();
         }
 
         private void QuestionControl_Delete(string questionId)
@@ -67,8 +66,12 @@ namespace Content_Manager.UserControls.Tabs
             UpdateQuiz();
         }
 
-        private void QuestionControl_Save()
+        private void QuestionControl_Save(string? id, IModelBase model)
         {
+            if (id == null)
+            {
+                _contentStore.SelectedSegment?.TestingQuiz.Questions.Add(model as TestingQuestion);
+            }
             UpdateQuiz();
         }
     }

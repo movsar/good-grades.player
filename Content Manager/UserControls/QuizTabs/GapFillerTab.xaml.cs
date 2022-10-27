@@ -1,5 +1,7 @@
-﻿using Content_Manager.Stores;
+﻿using Content_Manager.Interfaces;
+using Content_Manager.Stores;
 using Data.Enums;
+using Data.Interfaces;
 using Data.Models;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -17,31 +19,17 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Content_Manager.UserControls.Tabs
+namespace Content_Manager.UserControls.QuizTabs
 {
-    public partial class GapFillerQuizTab : UserControl
+    public partial class GapFillerTab : UserControl, IQuizTabControl
     {
         private readonly ContentStore _contentStore = App.AppHost!.Services.GetRequiredService<ContentStore>();
-        public GapFillerQuizTab()
+        public GapFillerTab()
         {
             InitializeComponent();
             DataContext = this;
 
-            foreach (var quizItem in _contentStore.SelectedSegment!.GapFillerQuiz.QuizItems)
-            {
-                var existingQuizItem = new QuizItemControl(QuizTypes.GapFiller, quizItem);
-                existingQuizItem.Add += QuizItem_Add;
-                existingQuizItem.Save += QuizItem_Save;
-                existingQuizItem.Delete += QuizItem_Delete;
-
-                spItems.Children.Add(existingQuizItem);
-            }
-
-            var newQuizItem = new QuizItemControl(QuizTypes.GapFiller);
-            newQuizItem.Add += QuizItem_Add;
-            newQuizItem.Save += QuizItem_Save;
-            newQuizItem.Delete += QuizItem_Delete;
-            spItems.Children.Add(newQuizItem);
+            RedrawUi();
         }
 
         private void btnPreview_Click(object sender, RoutedEventArgs e)
@@ -58,6 +46,8 @@ namespace Content_Manager.UserControls.Tabs
         private void UpdateQuiz()
         {
             _contentStore.UpdateQuiz(QuizTypes.GapFiller);
+            RedrawUi();
+
         }
 
         private void QuizItem_Delete(string itemId)
@@ -68,16 +58,31 @@ namespace Content_Manager.UserControls.Tabs
             UpdateQuiz();
         }
 
-        private void QuizItem_Save()
+        private void QuizItem_Save(string? id, IModelBase model)
         {
+            if (id == null)
+            {
+                _contentStore.SelectedSegment?.GapFillerQuiz.QuizItems.Add(model as QuizItem);
+            }
             UpdateQuiz();
         }
 
-        private void QuizItem_Add(QuizItem quizItem)
+        public void RedrawUi()
         {
-            _contentStore.SelectedSegment?.GapFillerQuiz.QuizItems.Add(quizItem);
+            spItems.Children.Clear();
+            foreach (var quizItem in _contentStore.SelectedSegment!.GapFillerQuiz.QuizItems)
+            {
+                var existingQuizItem = new QuizItemControl(QuizTypes.GapFiller, quizItem);
+                existingQuizItem.Save += QuizItem_Save;
+                existingQuizItem.Delete += QuizItem_Delete;
 
-            UpdateQuiz();
+                spItems.Children.Add(existingQuizItem);
+            }
+
+            var newQuizItem = new QuizItemControl(QuizTypes.GapFiller);
+            newQuizItem.Save += QuizItem_Save;
+            newQuizItem.Delete += QuizItem_Delete;
+            spItems.Children.Add(newQuizItem);
         }
         #endregion
     }

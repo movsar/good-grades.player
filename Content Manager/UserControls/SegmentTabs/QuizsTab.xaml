@@ -1,27 +1,26 @@
-﻿<UserControl x:Class="Content_Manager.UserControls.Tabs.QuizsTab"
+﻿<UserControl x:Class="Content_Manager.UserControls.SegmentTabs.QuizsTab"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Content_Manager.UserControls.Tabs"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:quiztabs="clr-namespace:Content_Manager.UserControls.QuizTabs"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <TabControl Margin="0 2 0 0">
             <TabItem Header="Слова и люди">
-                <local:CelebrityWordsQuizTab/>
+                <quiztabs:CelebrityWordsTab/>
             </TabItem>
             <TabItem Header="Выбор пословицы">
-                <local:ProverbSelectionQuizTab/>
+                <quiztabs:ProverbSelectionTab/>
             </TabItem>
             <TabItem Header="Пословицы из слов">
-                <local:ProverbBuilderQuizTab/>
+                <quiztabs:ProverbBuilderTab/>
             </TabItem>
             <TabItem Header="Пробелы">
-                <local:GapFillerQuizTab/>
+                <quiztabs:GapFillerTab/>
             </TabItem>
             <TabItem Header="Тест">
-                <local:TestingQuizTab/>
+                <quiztabs:TestingTab/>
             </TabItem>
         </TabControl>
     </Grid>

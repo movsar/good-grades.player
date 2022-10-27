@@ -7,7 +7,7 @@ using System.Diagnostics.Tracing;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace Content_Manager.UserControls
+namespace Content_Manager.UserControls.SegmentTabs
 {
     public partial class SegmentInfoTab : UserControl
     {

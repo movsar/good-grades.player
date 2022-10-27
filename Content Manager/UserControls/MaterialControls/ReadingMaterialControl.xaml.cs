@@ -1,10 +1,13 @@
-﻿using Content_Manager.Models;
+﻿using Content_Manager.Interfaces;
+using Content_Manager.Models;
 using Content_Manager.Services;
 using Content_Manager.Stores;
+using Data.Interfaces;
 using Data.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Shared.Controls;
 using Shared.Viewers;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows;
@@ -12,8 +15,10 @@ using System.Windows.Controls;
 
 namespace Content_Manager.UserControls
 {
-    public partial class ReadingMaterialControl : UserControl
+    public partial class ReadingMaterialControl : UserControl, IMaterialControl
     {
+        public event Action<string?, IModelBase> Save;
+        public event Action<string> Delete;
 
         #region Fields
         private FormCompletionInfo _formCompletionInfo;
@@ -192,8 +197,10 @@ namespace Content_Manager.UserControls
 
             if (string.IsNullOrEmpty(RmId))
             {
-                ContentStore.SelectedSegment?.ReadingMaterials
-                    .Add(new ReadingMaterial(RmTitle, RmText, RmImage));
+                var newRm = new ReadingMaterial(RmTitle, RmText, RmImage);
+                ContentStore.SelectedSegment?.ReadingMaterials.Add(newRm);
+
+                Save?.Invoke(null, newRm);
             }
             else
             {
@@ -201,16 +208,14 @@ namespace Content_Manager.UserControls
                 rm.Title = RmTitle;
                 rm.Text = RmText;
                 rm.Image = RmImage;
-            }
 
-            ContentStore.UpdateSegment(ContentStore!.SelectedSegment!);
-            
+                Save?.Invoke(RmId, rm);
+            }
         }
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-            ContentStore.SelectedSegment!.ReadingMaterials.Remove(ContentStore.GetReadingMaterialById(RmId));
-            ContentStore.UpdateSegment(ContentStore.SelectedSegment);
+            Delete?.Invoke(RmId);
         }
         #endregion
 

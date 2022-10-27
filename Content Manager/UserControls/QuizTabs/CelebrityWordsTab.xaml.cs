@@ -1,4 +1,5 @@
-﻿using Content_Manager.Stores;
+﻿using Content_Manager.Interfaces;
+using Content_Manager.Stores;
 using Data.Enums;
 using Data.Interfaces;
 using Data.Models;
@@ -12,33 +13,17 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using static System.Net.Mime.MediaTypeNames;
 
-namespace Content_Manager.UserControls.Tabs
+namespace Content_Manager.UserControls.QuizTabs
 {
-    public partial class CelebrityWordsQuizTab : UserControl
+    public partial class CelebrityWordsTab : UserControl, IQuizTabControl
     {
         private readonly ContentStore _contentStore = App.AppHost!.Services.GetRequiredService<ContentStore>();
-        public CelebrityWordsQuizTab()
+        public CelebrityWordsTab()
         {
             InitializeComponent();
             DataContext = this;
-
-            foreach (var quizItem in _contentStore.SelectedSegment!.CelebrityWodsQuiz.QuizItems)
-            {
-                var existingQuizItem = new QuizItemControl(QuizTypes.CelebrityWords, quizItem);
-                existingQuizItem.Add += QuizItem_Add;
-                existingQuizItem.Save += QuizItem_Save;
-                existingQuizItem.Delete += QuizItem_Delete;
-
-                spItems.Children.Add(existingQuizItem);
-            }
-
-            var newQuizItem = new QuizItemControl(QuizTypes.CelebrityWords);
-            newQuizItem.Add += QuizItem_Add;
-            newQuizItem.Save += QuizItem_Save;
-            newQuizItem.Delete += QuizItem_Delete;
-            spItems.Children.Add(newQuizItem);
+            RedrawUi();
         }
 
         private void btnPreview_Click(object sender, RoutedEventArgs e)
@@ -56,6 +41,7 @@ namespace Content_Manager.UserControls.Tabs
         private void UpdateQuiz()
         {
             _contentStore.UpdateQuiz(QuizTypes.CelebrityWords);
+            RedrawUi();
         }
 
         private void QuizItem_Delete(string itemId)
@@ -66,16 +52,31 @@ namespace Content_Manager.UserControls.Tabs
             UpdateQuiz();
         }
 
-        private void QuizItem_Save()
+        private void QuizItem_Save(string? id, IModelBase model)
         {
+            if (id == null)
+            {
+                _contentStore.SelectedSegment?.CelebrityWodsQuiz.QuizItems.Add(model as QuizItem);
+            }
             UpdateQuiz();
         }
 
-        private void QuizItem_Add(QuizItem quizItem)
+        public void RedrawUi()
         {
-            _contentStore.SelectedSegment?.CelebrityWodsQuiz.QuizItems.Add(quizItem);
+            spItems.Children.Clear();
+            foreach (var quizItem in _contentStore.SelectedSegment!.CelebrityWodsQuiz.QuizItems)
+            {
+                var existingQuizItemControl = new QuizItemControl(QuizTypes.CelebrityWords, quizItem);
+                existingQuizItemControl.Save += QuizItem_Save;
+                existingQuizItemControl.Delete += QuizItem_Delete;
 
-            UpdateQuiz();
+                spItems.Children.Add(existingQuizItemControl);
+            }
+
+            var newQuizItemControl = new QuizItemControl(QuizTypes.CelebrityWords);
+            newQuizItemControl.Save += QuizItem_Save;
+            newQuizItemControl.Delete += QuizItem_Delete;
+            spItems.Children.Add(newQuizItemControl);
         }
         #endregion
     }

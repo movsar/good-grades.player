@@ -1,4 +1,5 @@
-﻿using Content_Manager.Stores;
+﻿using Content_Manager.Interfaces;
+using Content_Manager.Stores;
 using Data.Enums;
 using Data.Interfaces;
 using Data.Models;
@@ -19,35 +20,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Content_Manager.UserControls.Tabs
+namespace Content_Manager.UserControls.QuizTabs
 {
-    public partial class ProverbSelectionQuizTab : UserControl
+    public partial class ProverbSelectionTab : UserControl, IQuizTabControl
     {
         private readonly ContentStore _contentStore = App.AppHost!.Services.GetRequiredService<ContentStore>();
-        public ProverbSelectionQuizTab()
+        public ProverbSelectionTab()
         {
             InitializeComponent();
             DataContext = this;
-
-            foreach (var quizItem in _contentStore.SelectedSegment!.ProverbSelectionQuiz.QuizItems)
-            {
-                var isSelected = _contentStore.SelectedSegment!.ProverbSelectionQuiz.CorrectQuizId == quizItem.Id;
-
-                var existingQuizItem = new QuizItemControl(QuizTypes.ProverbSelection, quizItem, isSelected);
-                existingQuizItem.Add += QuizItem_Add;
-                existingQuizItem.Save += QuizItem_Save;
-                existingQuizItem.Delete += QuizItem_Delete;
-                existingQuizItem.SetAsCorrect += QuizItem_SetAsCorrect;
-
-                spItems.Children.Add(existingQuizItem);
-            }
-
-            var newQuizItem = new QuizItemControl(QuizTypes.ProverbSelection);
-            newQuizItem.Add += QuizItem_Add;
-            newQuizItem.Save += QuizItem_Save;
-            newQuizItem.Delete += QuizItem_Delete;
-
-            spItems.Children.Add(newQuizItem);
+            RedrawUi();
         }
 
         private void btnPreview_Click(object sender, RoutedEventArgs e)
@@ -70,6 +52,7 @@ namespace Content_Manager.UserControls.Tabs
         private void UpdateQuiz()
         {
             _contentStore.UpdateQuiz(QuizTypes.ProverbSelection);
+            RedrawUi();
         }
 
         private void QuizItem_Delete(string itemId)
@@ -80,17 +63,37 @@ namespace Content_Manager.UserControls.Tabs
             UpdateQuiz();
         }
 
-        private void QuizItem_Save()
+        private void QuizItem_Save(string? id, IModelBase model)
         {
+            if (id == null)
+            {
+                _contentStore.SelectedSegment?.ProverbSelectionQuiz.QuizItems.Add(model as QuizItem);
+            }
             UpdateQuiz();
         }
 
-        private void QuizItem_Add(QuizItem quizItem)
+        public void RedrawUi()
         {
-            _contentStore.SelectedSegment?.ProverbSelectionQuiz.QuizItems.Add(quizItem);
+            spItems.Children.Clear();
+            foreach (var quizItem in _contentStore.SelectedSegment!.ProverbSelectionQuiz.QuizItems)
+            {
+                var isSelected = _contentStore.SelectedSegment!.ProverbSelectionQuiz.CorrectQuizId == quizItem.Id;
 
-            UpdateQuiz();
+                var existingQuizItem = new QuizItemControl(QuizTypes.ProverbSelection, quizItem, isSelected);
+                existingQuizItem.Save += QuizItem_Save;
+                existingQuizItem.Delete += QuizItem_Delete;
+                existingQuizItem.SetAsCorrect += QuizItem_SetAsCorrect;
+
+                spItems.Children.Add(existingQuizItem);
+            }
+
+            var newQuizItem = new QuizItemControl(QuizTypes.ProverbSelection);
+            newQuizItem.Save += QuizItem_Save;
+            newQuizItem.Delete += QuizItem_Delete;
+
+            spItems.Children.Add(newQuizItem);
         }
+
         #endregion
 
     }
