@@ -7,13 +7,13 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <TabControl Margin="0 2 0 0">
-            <TabItem Header="Слова и люди">
+            <TabItem Header="Личности">
                 <quiztabs:CelebrityWordsTab/>
             </TabItem>
             <TabItem Header="Выбор пословицы">
                 <quiztabs:ProverbSelectionTab/>
             </TabItem>
-            <TabItem Header="Пословицы из слов">
+            <TabItem Header="Построение пословицы">
                 <quiztabs:ProverbBuilderTab/>
             </TabItem>
             <TabItem Header="Пробелы">

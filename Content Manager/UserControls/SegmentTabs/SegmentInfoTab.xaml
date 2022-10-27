@@ -17,19 +17,19 @@
                     FontFamily="Segoe MDL2 Assets" Content="&#xE74E;" 
                     Click="btnSave_Click"/>
 
-        <StackPanel Margin="10 0 0 0"
-                    HorizontalAlignment="Left"
-                    Width="400">
+        <StackPanel Margin="10 0 0 0">
 
-            <Label Content="Название раздела"/>
-            <TextBox Margin="10 0 10 0"
+            <Label Content="Название раздела" FontWeight="Bold"/>
+            <TextBox Margin="10 0 70 0"
+                     Padding="5 0 0 0"             
+                     Height="30"
+                     VerticalContentAlignment="Center"
                      VerticalAlignment="Top"
-                     Height="21"
                      Text="{Binding ElementName=SegmentInfo, Path=Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-            <Label Content="Описание"/>
-            <TextBox Margin="10 0 10 0"
-                     Height="50"
+            <Label Content="Описание" FontWeight="Bold"/>
+            <TextBox Margin="10 0 70 0"
+                     Height="60"
                      AcceptsReturn="True"
                      VerticalAlignment="Top"
                      Text="{Binding ElementName=SegmentInfo, Path=Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>

@@ -11,7 +11,7 @@
             <TextBox x:Name="txtTitle"
                      Margin="10 0 0 0" 
                      Padding="5 0 0 0"
-                     Width="200" 
+                     Width="300" 
                      Text="{Binding Path=LmTitle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                      TextAlignment="Left"
                      VerticalContentAlignment="Center"

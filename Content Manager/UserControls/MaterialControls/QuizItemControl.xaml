@@ -19,8 +19,7 @@
                     Click="btnSetAsDefault_Click"
                     FontFamily="Segoe MDL2 Assets"
                     FontWeight="Bold"
-                    Cursor="Hand"
-                >
+                    Cursor="Hand">
             </Button>
 
             <Button x:Name="btnChooseImage"
@@ -36,7 +35,7 @@
             <TextBox x:Name="txtItemText"
                      Margin="2 0 0 0" 
                      Padding="5 0 0 0"
-                     Width="286" 
+                     Width="386" 
                      Text="{Binding Path=ItemText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                      TextAlignment="Left"
                      VerticalContentAlignment="Center"
