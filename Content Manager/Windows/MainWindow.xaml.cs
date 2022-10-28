@@ -3,6 +3,8 @@ using Content_Manager.Stores;
 using Content_Manager.UserControls;
 using Content_Manager.Windows;
 using Data.Interfaces;
+using Squirrel;
+using System;
 using System.Collections;
 using System.IO;
 using System.Resources;
@@ -36,6 +38,7 @@ namespace Content_Manager
             _contentStore.OpenDatabase(lastOpenedDatabasePath);
         }
 
+       
         private void _contentStore_ItemUpdated(string interfaceName, IModelBase model)
         {
             if (!interfaceName.Equals(nameof(IDbMeta)))
@@ -109,5 +112,43 @@ namespace Content_Manager
             aboutWindow.ShowDialog();
         }
 
+        private static void OnAppInstall(SemanticVersion version, IAppTools tools)
+        {
+            tools.CreateShortcutForThisExe(ShortcutLocation.StartMenu | ShortcutLocation.Desktop);
+        }
+
+        private static void OnAppUninstall(SemanticVersion version, IAppTools tools)
+        {
+            tools.RemoveShortcutForThisExe(ShortcutLocation.StartMenu | ShortcutLocation.Desktop);
+        }
+
+        private static void OnAppRun(SemanticVersion version, IAppTools tools, bool firstRun)
+        {
+            tools.SetProcessAppUserModelId();
+            // show a welcome message when the app is first installed
+            if (firstRun) MessageBox.Show("Thanks for installing my application!");
+        }
+
+        protected override void OnInitialized(EventArgs e)
+        {
+            base.OnInitialized(e);
+
+            // run Squirrel first, as the app may exit after these run
+            SquirrelAwareApp.HandleEvents(
+                onInitialInstall: OnAppInstall,
+                onAppUninstall: OnAppUninstall,
+                onEveryRun: OnAppRun);
+        }
+        private static async Task UpdateMyApp()
+        {
+            using var mgr = new UpdateManager("https://the.place/you-host/updates");
+            var newVersion = await mgr.UpdateApp();
+
+            // optionally restart the app automatically, or ask the user if/when they want to restart
+            if (newVersion != null)
+            {
+                UpdateManager.RestartApp();
+            }
+        }
     }
 }
