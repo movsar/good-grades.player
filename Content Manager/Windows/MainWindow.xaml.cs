@@ -3,10 +3,13 @@ using Content_Manager.Stores;
 using Content_Manager.UserControls;
 using Content_Manager.Windows;
 using Data.Interfaces;
+using Microsoft.Extensions.Logging;
 using Squirrel;
 using System;
 using System.Collections;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
+using System.Reflection;
 using System.Resources;
 using System.Threading.Tasks;
 using System.Windows;
@@ -18,12 +21,18 @@ namespace Content_Manager
     {
         private readonly ContentStore _contentStore;
         private readonly FileService _fileService;
-        public MainWindow(ContentStore contentStore, FileService fileService)
+        private ILogger _logger;
+
+        private readonly string _appVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+
+        public MainWindow(ContentStore contentStore, FileService fileService, ILogger<MainWindow> logger)
         {
             InitializeComponent();
             DataContext = this;
+
             _contentStore = contentStore;
             _fileService = fileService;
+            _logger = logger;
 
             _contentStore.ContentStoreInitialized += ContentStoreInitialized;
             _contentStore.SelectedSegmentChanged += SelectedSegmentChanged;
@@ -38,7 +47,7 @@ namespace Content_Manager
             _contentStore.OpenDatabase(lastOpenedDatabasePath);
         }
 
-       
+
         private void _contentStore_ItemUpdated(string interfaceName, IModelBase model)
         {
             if (!interfaceName.Equals(nameof(IDbMeta)))
@@ -79,7 +88,7 @@ namespace Content_Manager
 
         private void SetTitle(string? title = null)
         {
-            Title = $"Good Grades | {title ?? _contentStore.GetDbMeta().Title}";
+            Title = $"Good Grades | {_appVersion} | {title ?? _contentStore.GetDbMeta().Title}";
         }
 
         private void mnuOpenDatabase_Click(object sender, RoutedEventArgs e)
@@ -139,16 +148,31 @@ namespace Content_Manager
                 onAppUninstall: OnAppUninstall,
                 onEveryRun: OnAppRun);
         }
-        private static async Task UpdateMyApp()
+        private async Task UpdateMyApp()
         {
-            using var mgr = new UpdateManager("https://the.place/you-host/updates");
-            var newVersion = await mgr.UpdateApp();
+            var remoteAddress = "http://nohchiyn-mott.com/goodgrades/content_manager";
+            var localAddress = @"d:\Temp\content-manager\";
+            using var mgr = new UpdateManager(localAddress);
 
-            // optionally restart the app automatically, or ask the user if/when they want to restart
-            if (newVersion != null)
+            if (MessageBox.Show("Доступна новая версия, обновить?", "Good Grades", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
             {
-                UpdateManager.RestartApp();
+                var updateInfo = await mgr.CheckForUpdate();
+                
+                _logger.LogInformation($"");
+                _logger.LogInformation($"CurrentlyInstalledVersion: {updateInfo?.CurrentlyInstalledVersion}");
+                _logger.LogInformation($"FutureReleaseEntry: {updateInfo?.FutureReleaseEntry}");
+                _logger.LogInformation($"");
+            
+                if (updateInfo?.FutureReleaseEntry != null && updateInfo.FutureReleaseEntry != updateInfo.CurrentlyInstalledVersion)
+                {
+                    await mgr.UpdateApp();
+                    UpdateManager.RestartApp();
+                }
             }
+        }
+        private async void mnuCheckUpdates_Click(object sender, RoutedEventArgs e)
+        {
+            await UpdateMyApp();
         }
     }
 }
