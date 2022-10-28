@@ -42,8 +42,8 @@ namespace Content_Manager.UserControls.QuizTabs
 
         private void QuizItem_Create(IModelBase model)
         {
-            _contentStore.SelectedSegment?.ProverbSelectionQuiz.QuizItems.Add(model as QuizItem);
-            UpdateQuiz();
+            _contentStore.CreateSelectableQuizItem(QuizTypes.ProverbSelection, model as QuizItem, _contentStore.SelectedSegment?.ProverbSelectionQuiz!);
+            RedrawUi();
         }
 
         private void btnPreview_Click(object sender, RoutedEventArgs e)
@@ -71,10 +71,8 @@ namespace Content_Manager.UserControls.QuizTabs
 
         private void QuizItem_Delete(string itemId)
         {
-            var itemToRemove = _contentStore.SelectedSegment?.ProverbSelectionQuiz.QuizItems.Where(qi => qi.Id == itemId).First();
-            _contentStore.SelectedSegment?.ProverbSelectionQuiz.QuizItems.Remove(itemToRemove!);
-
-            UpdateQuiz();
+            _contentStore.DeleteSelectableQuizItem(QuizTypes.ProverbSelection, itemId, _contentStore.SelectedSegment!.ProverbSelectionQuiz);
+            RedrawUi();
         }
 
         private void QuizItem_Save(string? id, IModelBase model)

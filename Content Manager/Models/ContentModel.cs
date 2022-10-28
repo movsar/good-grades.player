@@ -127,8 +127,6 @@ namespace Content_Manager.Models
         {
             try
             {
-
-
                 SelectRepository<TModel>().Add(ref item);
             }
             catch (Exception ex)

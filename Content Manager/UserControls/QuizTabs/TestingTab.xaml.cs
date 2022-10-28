@@ -30,6 +30,7 @@ namespace Content_Manager.UserControls.QuizTabs
                 var questionControl = new QuestionControl(question);
                 questionControl.Update += QuestionControl_Save;
                 questionControl.Delete += QuestionControl_Delete;
+                questionControl.Refresh += QuestionControl_Refresh; ;
 
                 spItems.Children.Add(questionControl);
             }
@@ -39,6 +40,12 @@ namespace Content_Manager.UserControls.QuizTabs
 
             spItems.Children.Add(newQuestion);
         }
+
+        private void QuestionControl_Refresh()
+        {
+            RedrawUi();
+        }
+
         private void UpdateQuiz()
         {
             _contentStore.UpdateQuiz(QuizTypes.Testing);

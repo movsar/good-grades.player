@@ -4,6 +4,7 @@ using Data.Enums;
 using Data.Interfaces;
 using Data.Models;
 using Data.Repositories;
+using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -96,15 +97,9 @@ namespace Content_Manager.Stores
             // Let everybody know
             ItemAdded?.Invoke(nameof(ISegment), item);
         }
-        public void DeleteQuiz(Segment segment, QuizTypes quizType)
-        {
-
-        }
         public void DeleteSegment(ISegment item)
         {
             var segment = item as Segment;
-
-            // Remove from DB
 
             // Delete related quiz items
             var quizItems = GetQuizItemsBySegment(segment);
@@ -259,25 +254,33 @@ namespace Content_Manager.Stores
             _contentModel.DeleteItem<TestingQuestion>(itemToRemove!);
         }
 
-        internal void DeleteQuestionQuizItem(string quizItemId, TestingQuestion question)
+        internal void DeleteSelectableQuizItem(QuizTypes quizType, string quizItemId, dynamic container)
         {
-            // Deletes a quiz item associated with a testing question, checks if it was the correct one
-            // and deals with that if so.
+            // If remains only one item, mark it as a correct one
+            // If the removed element was set as correct, set the first remaining as correct
+            IEnumerable<QuizItem> quizItems = container.QuizItems;
 
-            var quizItemToRemove = question.QuizItems.Where(qi => qi.Id == quizItemId).First();
-            question.QuizItems.Remove(quizItemToRemove);
+            var quizItemToRemove = quizItems.Where(qi => qi.Id == quizItemId).First();
+            container.QuizItems.Remove(quizItemToRemove);
 
-            // If it's the only quiz item, make it correct by default 
-            if (question.QuizItems.Count == 1 || (question.QuizItems.Count >= 1 && question.CorrectQuizId == quizItemId))
+            if (container.QuizItems.Count == 1 || (container.QuizItems.Count >= 1 && container.CorrectQuizId == quizItemId))
             {
-                question.CorrectQuizId = question.QuizItems[0].Id;
+                container.CorrectQuizId = container.QuizItems[0].Id;
             }
-            else if (question.QuizItems.Count == 0)
+            else if (container.QuizItems.Count == 0)
             {
-                question.CorrectQuizId = null;
+                container.CorrectQuizId = null;
             }
 
-            _contentModel?.DeleteItem<QuizItem>(quizItemToRemove);
+            _contentModel?.DeleteItem<IQuizItem>(quizItemToRemove);
+            if (quizType == QuizTypes.Testing)
+            {
+                _contentModel.UpdateItem<ITestingQuestion>(container);
+            }
+            if (quizType == QuizTypes.ProverbSelection)
+            {
+                _contentModel.UpdateItem<IProverbSelectionQuiz>(container);
+            }
         }
 
         internal void DeleteListeningMaterial(string id)
@@ -294,6 +297,19 @@ namespace Content_Manager.Stores
             SelectedSegment!.ReadingMaterials.Remove(readingMaterial);
             _contentModel!.DeleteItem<ReadingMaterial>(readingMaterial);
             SaveCurrentSegment();
+        }
+
+        internal void CreateSelectableQuizItem(QuizTypes quizType, QuizItem? quizItem, dynamic container)
+        {
+            container.QuizItems.Add(quizItem);
+            UpdateQuiz(quizType);
+
+            // If it's the only quiz item, make it correct by default 
+            if (container.QuizItems.Count == 1)
+            {
+                container.CorrectQuizId = quizItem.Id;
+            }
+            UpdateQuiz(quizType);
         }
     }
 }

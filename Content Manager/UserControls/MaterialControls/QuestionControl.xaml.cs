@@ -17,6 +17,7 @@ namespace Content_Manager.UserControls.MaterialControls
     public partial class QuestionControl : UserControl, IMaterialControl
     {
         #region Events
+        public event Action Refresh;
         public event Action<IModelBase> Create;
         public event Action<string?, IModelBase> Update;
         public event Action<string> Delete;
@@ -121,21 +122,7 @@ namespace Content_Manager.UserControls.MaterialControls
             OnTextSet(true);
         }
 
-        private void Question_QuizItemControl_Create(IModelBase model)
-        {
-            var quizItem = model as QuizItem;
-            var question = _contentStore.GetQuestionById(QuestionId);
 
-            QuizItems.Add(quizItem);
-            Update?.Invoke(QuestionId, question);
-
-            // If it's the only quiz item, make it correct by default 
-            if (QuizItems.Count == 1)
-            {
-                question.CorrectQuizId = quizItem.Id;
-            }
-            Update?.Invoke(QuestionId, question);
-        }
         #endregion
 
         #region Event Handlers
@@ -145,6 +132,13 @@ namespace Content_Manager.UserControls.MaterialControls
             question!.CorrectQuizId = itemId;
             Update?.Invoke(QuestionId, question);
         }
+        private void Question_QuizItemControl_Create(IModelBase model)
+        {
+            var question = _contentStore.GetQuestionById(QuestionId);
+
+            _contentStore.CreateSelectableQuizItem(QuizTypes.Testing, model as QuizItem, question);
+            Refresh?.Invoke();
+        }
         private void Question_QuizItem_Save(string? id, IModelBase model)
         {
             Update?.Invoke(QuestionId, _contentStore.GetQuestionById(QuestionId));
@@ -153,9 +147,8 @@ namespace Content_Manager.UserControls.MaterialControls
         {
             var question = _contentStore.GetQuestionById(QuestionId);
 
-            _contentStore.DeleteQuestionQuizItem(itemId, question);
-          
-            Update?.Invoke(QuestionId, question);
+            _contentStore.DeleteSelectableQuizItem(QuizTypes.Testing, itemId, question);
+            Refresh?.Invoke();
         }
         #endregion
 
