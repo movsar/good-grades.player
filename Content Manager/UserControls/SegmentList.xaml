@@ -8,6 +8,10 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <DockPanel Background="WhiteSmoke">
 
+        <DockPanel.InputBindings>
+            <KeyBinding Key="Delete" Command="{Binding DeleteSelectedSegment}"></KeyBinding>
+        </DockPanel.InputBindings>
+
         <ListView x:Name="lvSegments" 
                   BorderThickness="0"
                   DockPanel.Dock="Top"
