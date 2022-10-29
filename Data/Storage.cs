@@ -4,12 +4,16 @@ using Data.Models;
 using Data.Repositories;
 using Microsoft.Extensions.Logging;
 using Realms;
+using System.Diagnostics;
+using System.Diagnostics.Metrics;
+using System.Reflection;
 
 namespace Data
 {
     public class Storage
     {
         public event Action<string> DatabaseInitialized;
+        public event Action DatabaseUpdated;
 
         private Realm _realmInstance;
         private ILogger _logger;
@@ -111,6 +115,31 @@ namespace Data
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message, ex.StackTrace, ex.InnerException);
+            }
+        }
+
+        public void ImportDatabase(string filePath)
+        {
+            var realmToImport = Realm.GetInstance(filePath);
+
+            var segments = realmToImport.All<SegmentEntity>();
+
+            try
+            {
+                _realmInstance.Write(() =>
+                {
+                    foreach (SegmentEntity segment in segments)
+                    {
+                        _realmInstance.Add(new SegmentEntity(segment), true);
+                    }
+                });
+
+                DatabaseUpdated?.Invoke();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex.StackTrace, ex.InnerException);
+                throw ;
             }
         }
     }

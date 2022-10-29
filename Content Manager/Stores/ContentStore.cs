@@ -17,7 +17,8 @@ namespace Content_Manager.Stores
 {
     public class ContentStore
     {
-        public event Action ContentStoreInitialized;
+        public event Action DatabaseInitialized;
+        public event Action DatabaseUpdated;
 
         #region Properties
         public List<ISegment> StoredSegments = new();
@@ -51,13 +52,20 @@ namespace Content_Manager.Stores
         public ContentStore(ContentModel contentModel)
         {
             _contentModel = contentModel;
-            _contentModel.ContentModelInitialized += ContentModelInitialized;
+            _contentModel.DatabaseInitialized += ContentModelInitialized;
+            _contentModel.DatabaseUpdated += OnDatabaseUpdated;
+        }
+
+        private void OnDatabaseUpdated()
+        {
+            LoadAllSegments();
+            DatabaseUpdated?.Invoke();
         }
 
         private void ContentModelInitialized()
         {
             LoadAllSegments();
-            ContentStoreInitialized?.Invoke();
+            DatabaseInitialized?.Invoke();
         }
         #endregion
 
@@ -310,6 +318,11 @@ namespace Content_Manager.Stores
                 container.CorrectQuizId = quizItem.Id;
             }
             UpdateQuiz(quizType);
+        }
+
+        internal void ImportDatabase(string filePath)
+        {
+            _contentModel.ImportDatabase(filePath);
         }
     }
 }

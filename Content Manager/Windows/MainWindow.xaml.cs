@@ -31,10 +31,11 @@ namespace Content_Manager
             _fileService = fileService;
             _logger = logger;
 
-            _contentStore.ContentStoreInitialized += ContentStoreInitialized;
+            _contentStore.DatabaseInitialized += ContentStoreInitialized;
             _contentStore.SelectedSegmentChanged += SelectedSegmentChanged;
+            _contentStore.DatabaseUpdated += OnDatabaseUpdated;
             _contentStore.ItemUpdated += _contentStore_ItemUpdated;
-
+          
             // Open last opened database
             var lastOpenedDatabasePath = _fileService.ReadResourceString("lastOpenedDatabasePath");
             if (string.IsNullOrEmpty(lastOpenedDatabasePath) || !File.Exists(lastOpenedDatabasePath))
@@ -44,6 +45,9 @@ namespace Content_Manager
             _contentStore.OpenDatabase(lastOpenedDatabasePath);
         }
 
+        private void OnDatabaseUpdated()
+        {
+        }
 
         private void _contentStore_ItemUpdated(string interfaceName, IModelBase model)
         {
@@ -75,6 +79,8 @@ namespace Content_Manager
 
         private void ContentStoreInitialized()
         {
+            _contentStore.LoadAllSegments();
+
             lblChooseDb.Visibility = Visibility.Collapsed;
             lblChooseSegment.Visibility = Visibility.Visible;
             ucSegmentList.Visibility = Visibility.Visible;
@@ -90,7 +96,7 @@ namespace Content_Manager
 
         private void mnuOpenDatabase_Click(object sender, RoutedEventArgs e)
         {
-            string filePath = FileService.OpenFilePath("Файлы Баз Данных (.sgb) | *.sgb;");
+            string filePath = FileService.SelectDatabaseFilePath();
             if (string.IsNullOrEmpty(filePath)) return;
 
             _contentStore.OpenDatabase(filePath);
@@ -98,7 +104,7 @@ namespace Content_Manager
 
         private void mnuCreateDatabase_Click(object sender, RoutedEventArgs e)
         {
-            string filePath = FileService.SaveFilePath("Файлы Баз Данных (.sgb) | *.sgb;");
+            string filePath = FileService.SelectNewDatabaseFilePath();
             if (string.IsNullOrEmpty(filePath)) return;
 
             _contentStore.CreateDatabase(filePath);
@@ -184,9 +190,20 @@ namespace Content_Manager
                 _logger.LogError(ex.Message, ex.StackTrace, ex.InnerException);
             }
         }
+
         private async void mnuCheckUpdates_Click(object sender, RoutedEventArgs e)
         {
             await UpdateMyApp();
+        }
+
+        private void mnuImportDatabase_Click(object sender, RoutedEventArgs e)
+        {
+            string filePath = FileService.SelectDatabaseFilePath();
+            if (!File.Exists(filePath))
+            {
+                return;
+            }
+            _contentStore.ImportDatabase(filePath);
         }
     }
 }

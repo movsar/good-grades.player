@@ -164,7 +164,7 @@ namespace Content_Manager.UserControls
         private void btnUploadFromFile_Click(object sender, RoutedEventArgs e)
         {
             // Read the rtf file
-            string filePath = FileService.OpenFilePath("Файлы с RTF текстом (.rtf) | *.rtf;");
+            string filePath = FileService.SelectTextFilePath();
             if (string.IsNullOrEmpty(filePath)) return;
 
             // Read, load contents to the object and add to collection
@@ -181,7 +181,7 @@ namespace Content_Manager.UserControls
 
         private void btnChooseImage_Click(object sender, RoutedEventArgs e)
         {
-            string filePath = FileService.OpenFilePath("Файлы изображений (.png) | *.png; *.jpg; *.jpeg; *.tiff");
+            string filePath = FileService.SelectImageFilePath();
             if (string.IsNullOrEmpty(filePath)) return;
 
             // Read, load contents to the object and add to collection

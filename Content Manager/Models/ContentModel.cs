@@ -1,24 +1,18 @@
 ﻿using Content_Manager.Services;
-using Content_Manager.Stores;
 using Data;
-using Data.Entities;
 using Data.Interfaces;
-using Data.Models;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Resources;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Content_Manager.Models
 {
     public class ContentModel
     {
-        public event Action ContentModelInitialized;
+        public event Action DatabaseInitialized;
+        public event Action DatabaseUpdated;
+
         private Storage _storage;
         private readonly FileService _fileService;
         private readonly ILogger<ContentModel> _logger;
@@ -28,14 +22,20 @@ namespace Content_Manager.Models
             _storage = storage;
             _fileService = fileService;
             _logger = logger;
-            _storage.DatabaseInitialized += DatabaseInitialized;
+            _storage.DatabaseInitialized += OnDatabaseInitialized;
+            _storage.DatabaseUpdated += OnDatabaseUpdated;
         }
 
-        public void DatabaseInitialized(string databasePath)
+        private void OnDatabaseUpdated()
+        {
+            DatabaseUpdated?.Invoke();
+        }
+
+        public void OnDatabaseInitialized(string databasePath)
         {
             _fileService.SetResourceString("lastOpenedDatabasePath", databasePath);
 
-            ContentModelInitialized?.Invoke();
+            DatabaseInitialized?.Invoke();
         }
 
         private IGeneralRepository SelectRepository<TModel>()
@@ -183,6 +183,11 @@ namespace Content_Manager.Models
             {
                 _logger.LogError(ex.Message, ex.StackTrace, ex.InnerException);
             }
+        }
+
+        internal void ImportDatabase(string filePath)
+        {
+            _storage.ImportDatabase(filePath);
         }
     }
 }

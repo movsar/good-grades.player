@@ -9,20 +9,48 @@ namespace Data.Entities
 {
     public class SegmentEntity : RealmObject, ISegment, IEntityBase
     {
+        public SegmentEntity() { }
+        public SegmentEntity(SegmentEntity segment)
+        {
+            Id = segment.Id;
+            Title = segment.Title;
+            Description = segment.Description;
+
+            CelebrityWordsQuiz = new CelebrityWordsQuizEntity(segment.CelebrityWordsQuiz);
+            ProverbBuilderQuiz = new ProverbBuilderQuizEntity(segment.ProverbBuilderQuiz);
+            ProverbSelectionQuiz = new ProverbSelectionQuizEntity(segment.ProverbSelectionQuiz);
+            GapFillerQuiz = new GapFillerQuizEntity(segment.GapFillerQuiz);
+            TestingQuiz = new TestingQuizEntity(segment.TestingQuiz);
+
+            ReadingMaterials = new List<ReadingMaterialEntity>(segment
+                        .ReadingMaterials
+                        .Select(rm => new ReadingMaterialEntity(rm))
+                    );
+
+            ListeningMaterials = new List<ListeningMaterialEntity>(segment
+                        .ListeningMaterials
+                        .Select(lm => new ListeningMaterialEntity(lm))
+                    );
+        }
+
         [PrimaryKey]
         public string Id { get; set; } = ObjectId.GenerateNewId().ToString();
         [Required]
         public string Title { get; set; }
         public string Description { get; set; }
-        public IList<ReadingMaterialEntity> ReadingMaterials { get; }
-        public IList<ListeningMaterialEntity> ListeningMaterials { get; }
+
         public CelebrityWordsQuizEntity CelebrityWordsQuiz { get; set; }
         public ProverbSelectionQuizEntity ProverbSelectionQuiz { get; set; }
         public ProverbBuilderQuizEntity ProverbBuilderQuiz { get; set; }
         public GapFillerQuizEntity GapFillerQuiz { get; set; }
         public TestingQuizEntity TestingQuiz { get; set; }
+
+        public IList<ReadingMaterialEntity> ReadingMaterials { get; }
+        public IList<ListeningMaterialEntity> ListeningMaterials { get; }
+
         public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.Now;
         public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;
+
         public IModelBase ToModel()
         {
             return new Segment(this);

@@ -27,7 +27,8 @@ namespace Content_Manager.UserControls
             _contentStore.ItemAdded += OnItemAdded;
             _contentStore.ItemDeleted += OnItemDeleted;
             _contentStore.ItemUpdated += OnItemUpdated;
-            _contentStore.ContentStoreInitialized += ContentStoreInitialized;
+            _contentStore.DatabaseUpdated += OnDatabaseLoaded;
+            _contentStore.DatabaseInitialized += OnDatabaseLoaded;
         }
         private void RedrawSegmentList(string? selectedSegmentId = null)
         {
@@ -46,7 +47,7 @@ namespace Content_Manager.UserControls
             var currentSegment = _contentStore.StoredSegments.Where(item => item.Id == selectedSegmentId).First();
             lvSegments.SelectedItem = currentSegment;
         }
-        private void ContentStoreInitialized()
+        private void OnDatabaseLoaded()
         {
             RedrawSegmentList();
         }

@@ -10,6 +10,5 @@ namespace Data.Interfaces
     public interface IEntityBase : IRealmObject, IModelBase {
         public abstract void SetFromModel(IModelBase model);
         public abstract IModelBase ToModel();
-
     }
 }

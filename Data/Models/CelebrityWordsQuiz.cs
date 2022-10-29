@@ -12,7 +12,7 @@ namespace Data.Models
             ModifiedAt = celebrityWordsQuiz.ModifiedAt;
 
             QuizItems = new();
-            foreach (var optionEntity in celebrityWordsQuiz.Options)
+            foreach (var optionEntity in celebrityWordsQuiz.QuizItems)
             {
                 QuizItems.Add(new QuizItem(optionEntity));
             }

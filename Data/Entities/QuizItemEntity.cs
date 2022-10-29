@@ -5,11 +5,20 @@ using Realms;
 
 namespace Data.Entities {
     public class QuizItemEntity : RealmObject, IQuizItem, IEntityBase {
+        public QuizItemEntity() { }
+        public QuizItemEntity(QuizItemEntity option)
+        {
+            Id = option.Id;
+            Image = option.Image;
+            Text = option.Text;
+        }
+
         [Required]
         [PrimaryKey]
         public string Id { get; set; } = ObjectId.GenerateNewId().ToString();
         public byte[] Image { get; set; }
         public string Text { get; set; }
+
         public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.Now;
         public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;
 

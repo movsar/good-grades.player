@@ -18,7 +18,7 @@ namespace Data.Models
                 QuizItems.Add(new QuizItem(optionEntity));
             }
 
-            QuestionText = questionEntity.Question;
+            QuestionText = questionEntity.QuestionText;
             CorrectQuizId = questionEntity.CorrectQuizId;
         }
 

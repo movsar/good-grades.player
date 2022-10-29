@@ -12,6 +12,15 @@ namespace Data.Entities
 {
     public class ReadingMaterialEntity : RealmObject, IEntityBase, IReadingMaterial
     {
+        public ReadingMaterialEntity() { }
+        public ReadingMaterialEntity(ReadingMaterialEntity rm)
+        {
+            Id = rm.Id;
+            Title = rm.Title;
+            Text = rm.Text;
+            Image = rm.Image;
+        }
+
         [PrimaryKey]
         public string Id { get; set; } = ObjectId.GenerateNewId().ToString();
 
@@ -19,8 +28,10 @@ namespace Data.Entities
         public string Title { get; set; }
         public string Text { get; set; }
         public byte[] Image { get; set; }
+
         public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.Now;
         public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;
+
         public IModelBase ToModel()
         {
             return new ReadingMaterial(this);
