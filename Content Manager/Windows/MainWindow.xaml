@@ -37,7 +37,7 @@
                             HorizontalAlignment="Center" 
                             VerticalAlignment="Center" 
                             FontFamily="Segoe MDL2 Assets">
-                            &#xE8E5;
+                            &#xE8B6;
                         </TextBlock>
                     </MenuItem.Icon>
                 </MenuItem>
@@ -74,7 +74,7 @@
                             HorizontalAlignment="Center" 
                             VerticalAlignment="Center" 
                             FontFamily="Segoe MDL2 Assets">
-                            &#xF167;
+                            &#xECC5;
                         </TextBlock>
                     </MenuItem.Icon>
                 </MenuItem>

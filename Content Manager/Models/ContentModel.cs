@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace Content_Manager.Models
 {
@@ -163,9 +164,13 @@ namespace Content_Manager.Models
 
         internal void CreateDatabase(string filePath)
         {
+            // This must be in Content Manager project, otherwise the version will be 
+            // taken from Data project, which is not what we need.
+            string? appVersion = Assembly.GetExecutingAssembly().GetName().Version?.ToString();
+
             try
             {
-                _storage.CreateDatabase(filePath);
+                _storage.CreateDatabase(filePath, appVersion);
             }
             catch (Exception ex)
             {

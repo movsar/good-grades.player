@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -233,7 +234,6 @@ namespace Content_Manager.Stores
             var dbMeta = GetDbMeta();
             dbMeta.Title = title;
             dbMeta.Description = description;
-
             _contentModel.UpdateItem<DbMeta>(dbMeta);
 
             // Let everybody know

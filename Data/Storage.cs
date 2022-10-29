@@ -45,7 +45,7 @@ namespace Data
             DatabaseInitialized?.Invoke(databasePath);
         }
 
-        public void CreateDatabase(string databasePath)
+        public void CreateDatabase(string databasePath, string? appVersion)
         {
             if (File.Exists(databasePath))
             {
@@ -57,7 +57,11 @@ namespace Data
                 return;
             };
 
-            var dbMeta = new DbMeta();
+            var dbMeta = new DbMeta()
+            {
+                Title = Path.GetFileNameWithoutExtension(databasePath),
+                AppVersion = appVersion
+            };
             DbMetaRepository.Add(ref dbMeta);
 
             DatabaseInitialized?.Invoke(databasePath);
@@ -139,7 +143,7 @@ namespace Data
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message, ex.StackTrace, ex.InnerException);
-                throw ;
+                throw;
             }
         }
     }
