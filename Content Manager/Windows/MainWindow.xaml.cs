@@ -159,10 +159,8 @@ namespace Content_Manager
 
                 _logger.LogInformation($"Before Checking for updates");
 
-                _logger.LogDebug($"future: {updateInfo.FutureReleaseEntry.GetReleaseNotes(updateInfo.PackageDirectory)}");
                 _logger.LogDebug($"future: {updateInfo.FutureReleaseEntry.Version}");
                 _logger.LogDebug($"future: {updateInfo.FutureReleaseEntry.Version.Version}");
-                _logger.LogDebug($"current: {updateInfo.CurrentlyInstalledVersion.GetReleaseNotes(updateInfo.PackageDirectory).ToString()}");
                 _logger.LogDebug($"current: {updateInfo.CurrentlyInstalledVersion.Version}");
                 _logger.LogDebug($"current: {updateInfo.CurrentlyInstalledVersion.Version.Version}");
                 _logger.LogDebug($"");

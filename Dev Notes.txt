@@ -1,3 +1,7 @@
+Build
+	Squirrel pack --packAuthors "Movsar Bekaev" -u GGContentManager -p "Content Manager\bin\release\net6.0-windows" -v 1.0.1
+
+
 To do:
 Add Recent Files menu items (https://www.codeproject.com/Articles/23731/RecentFileList-a-WPF-MRU#heading0006)
 
