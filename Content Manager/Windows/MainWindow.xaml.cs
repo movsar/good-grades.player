@@ -152,37 +152,37 @@ namespace Content_Manager
             var repositoryUrl = "https://github.com/movsar/good-grades";
             IUpdateSource source = new GithubSource(repositoryUrl, "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", true);
 
-            using var mgr = new UpdateManager(source);
-            var updateInfo = await mgr.CheckForUpdate();
-
-            _logger.LogInformation($"Before Checking for updates");
-
-            _logger.LogDebug($"future: {updateInfo.FutureReleaseEntry.GetReleaseNotes(updateInfo.PackageDirectory)}");
-            _logger.LogDebug($"future: {updateInfo.FutureReleaseEntry.Version}");
-            _logger.LogDebug($"future: {updateInfo.FutureReleaseEntry.Version.Version}");
-            _logger.LogDebug($"current: {updateInfo.CurrentlyInstalledVersion.GetReleaseNotes(updateInfo.PackageDirectory).ToString()}");
-            _logger.LogDebug($"current: {updateInfo.CurrentlyInstalledVersion.Version}");
-            _logger.LogDebug($"current: {updateInfo.CurrentlyInstalledVersion.Version.Version}");
-            _logger.LogDebug($"");
-
-            if (updateInfo?.FutureReleaseEntry != null && updateInfo.FutureReleaseEntry.SHA1 == updateInfo.CurrentlyInstalledVersion.SHA1)
+            try
             {
-                MessageBox.Show($"Установлена последняя версия!", "Good Grades");
-                return;
-            }
+                using var mgr = new UpdateManager(source);
+                var updateInfo = await mgr.CheckForUpdate();
 
-            if (MessageBox.Show($"Доступна новая версия, обновить?", "Good Grades", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
-            {
-                try
+                _logger.LogInformation($"Before Checking for updates");
+
+                _logger.LogDebug($"future: {updateInfo.FutureReleaseEntry.GetReleaseNotes(updateInfo.PackageDirectory)}");
+                _logger.LogDebug($"future: {updateInfo.FutureReleaseEntry.Version}");
+                _logger.LogDebug($"future: {updateInfo.FutureReleaseEntry.Version.Version}");
+                _logger.LogDebug($"current: {updateInfo.CurrentlyInstalledVersion.GetReleaseNotes(updateInfo.PackageDirectory).ToString()}");
+                _logger.LogDebug($"current: {updateInfo.CurrentlyInstalledVersion.Version}");
+                _logger.LogDebug($"current: {updateInfo.CurrentlyInstalledVersion.Version.Version}");
+                _logger.LogDebug($"");
+
+                if (updateInfo?.FutureReleaseEntry != null && updateInfo.FutureReleaseEntry.SHA1 == updateInfo.CurrentlyInstalledVersion.SHA1)
+                {
+                    MessageBox.Show($"Установлена последняя версия!", "Good Grades");
+                    return;
+                }
+
+                if (MessageBox.Show($"Доступна новая версия, обновить?", "Good Grades", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
                 {
                     await mgr.UpdateApp();
                     UpdateManager.RestartApp();
                 }
-                catch (Exception ex)
-                {
-                    _logger.LogInformation($"An error occurred when trying to update the app");
-                    _logger.LogError(ex.Message, ex.StackTrace, ex.InnerException);
-                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation($"An error occurred when trying to update the app");
+                _logger.LogError(ex.Message, ex.StackTrace, ex.InnerException);
             }
         }
         private async void mnuCheckUpdates_Click(object sender, RoutedEventArgs e)

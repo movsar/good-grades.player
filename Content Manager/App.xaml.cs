@@ -24,7 +24,7 @@ namespace Content_Manager
                     .UseSerilog((host, loggerConfiguration) =>
                     {
                         loggerConfiguration.WriteTo
-                            .File(logPath, rollingInterval: RollingInterval.Day).MinimumLevel.Information();
+                            .File(logPath, rollingInterval: RollingInterval.Day).MinimumLevel.Debug();
                     })
                     .ConfigureServices((hostContext, services) =>
                     {
