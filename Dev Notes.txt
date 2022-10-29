@@ -1,5 +1,5 @@
 Build
-	Squirrel pack --packAuthors "Movsar Bekaev" -u GGContentManager -p "Content Manager\bin\release\net6.0-windows" -v 1.0.1
+	Squirrel pack --packAuthors "Movsar Bekaev" -u GGContentManager -p "Content Manager\bin\release\net6.0-windows" -f "net6" -v 1.0.1
 
 
 To do:

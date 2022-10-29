@@ -150,28 +150,30 @@ namespace Content_Manager
         private async Task UpdateMyApp()
         {
             var repositoryUrl = "https://github.com/movsar/good-grades";
-            IUpdateSource source = new GithubSource(repositoryUrl, "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", true);
+            IUpdateSource girHubSource = new GithubSource(repositoryUrl, "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", true);
+            string tmpLocalSource = @"D:\temp\content-manager";
 
             try
             {
-                using var mgr = new UpdateManager(source);
+                using var mgr = new UpdateManager(girHubSource);
                 var updateInfo = await mgr.CheckForUpdate();
+
+                var newVersion = updateInfo.FutureReleaseEntry.Version;
+                var currentVersion = updateInfo.CurrentlyInstalledVersion.Version;
 
                 _logger.LogInformation($"Before Checking for updates");
 
-                _logger.LogDebug($"future: {updateInfo.FutureReleaseEntry.Version}");
-                _logger.LogDebug($"future: {updateInfo.FutureReleaseEntry.Version.Version}");
-                _logger.LogDebug($"current: {updateInfo.CurrentlyInstalledVersion.Version}");
-                _logger.LogDebug($"current: {updateInfo.CurrentlyInstalledVersion.Version.Version}");
+                _logger.LogDebug($"future: {newVersion}");
+                _logger.LogDebug($"current: {currentVersion}");
                 _logger.LogDebug($"");
 
-                if (updateInfo?.FutureReleaseEntry != null && updateInfo.FutureReleaseEntry.SHA1 == updateInfo.CurrentlyInstalledVersion.SHA1)
+                if (updateInfo?.FutureReleaseEntry != null && newVersion.CompareTo(currentVersion) <= 0)
                 {
                     MessageBox.Show($"Установлена последняя версия!", "Good Grades");
                     return;
                 }
 
-                if (MessageBox.Show($"Доступна новая версия, обновить?", "Good Grades", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
+                if (MessageBox.Show($"Доступна новая версия {newVersion}, обновить?", "Good Grades", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
                 {
                     await mgr.UpdateApp();
                     UpdateManager.RestartApp();
