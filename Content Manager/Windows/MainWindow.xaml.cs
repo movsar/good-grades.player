@@ -9,10 +9,8 @@ using Squirrel.Sources;
 using System;
 using System.IO;
 using System.Reflection;
-using System.Resources;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Input;
 
 namespace Content_Manager
 {
@@ -173,8 +171,9 @@ namespace Content_Manager
                     return;
                 }
 
-                if (MessageBox.Show($"Доступна новая версия {newVersion}, обновить?", "Good Grades", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
+                if (MessageBox.Show($"Доступна новая версия {newVersion}, обновить? Это может занять несколько минут", "Good Grades", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
                 {
+                    IsEnabled = false;
                     await mgr.UpdateApp();
                     UpdateManager.RestartApp();
                 }

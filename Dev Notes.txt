@@ -3,7 +3,8 @@ Build
 
 
 To do:
-Add Recent Files menu items (https://www.codeproject.com/Articles/23731/RecentFileList-a-WPF-MRU#heading0006)
+Add Recent Files menu items: (https://www.codeproject.com/Articles/23731/RecentFileList-a-WPF-MRU#heading0006)
+Add update progress bar: https://github.com/Squirrel/Squirrel.Windows/issues/1019
 
 For a new quiz:
 
