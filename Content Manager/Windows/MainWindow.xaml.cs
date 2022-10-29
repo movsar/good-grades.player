@@ -5,9 +5,8 @@ using Content_Manager.Windows;
 using Data.Interfaces;
 using Microsoft.Extensions.Logging;
 using Squirrel;
+using Squirrel.Sources;
 using System;
-using System.Collections;
-using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Reflection;
 using System.Resources;
@@ -150,23 +149,39 @@ namespace Content_Manager
         }
         private async Task UpdateMyApp()
         {
-            var remoteAddress = "http://nohchiyn-mott.com/goodgrades/content_manager";
-            var localAddress = @"d:\Temp\content-manager\";
-            using var mgr = new UpdateManager(localAddress);
+            var repositoryUrl = "https://github.com/movsar/good-grades";
+            IUpdateSource source = new GithubSource(repositoryUrl, "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", true);
 
-            if (MessageBox.Show("Доступна новая версия, обновить?", "Good Grades", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
+            using var mgr = new UpdateManager(source);
+            var updateInfo = await mgr.CheckForUpdate();
+
+            _logger.LogInformation($"Before Checking for updates");
+
+            _logger.LogDebug($"future: {updateInfo.FutureReleaseEntry.GetReleaseNotes(updateInfo.PackageDirectory)}");
+            _logger.LogDebug($"future: {updateInfo.FutureReleaseEntry.Version}");
+            _logger.LogDebug($"future: {updateInfo.FutureReleaseEntry.Version.Version}");
+            _logger.LogDebug($"current: {updateInfo.CurrentlyInstalledVersion.GetReleaseNotes(updateInfo.PackageDirectory).ToString()}");
+            _logger.LogDebug($"current: {updateInfo.CurrentlyInstalledVersion.Version}");
+            _logger.LogDebug($"current: {updateInfo.CurrentlyInstalledVersion.Version.Version}");
+            _logger.LogDebug($"");
+
+            if (updateInfo?.FutureReleaseEntry != null && updateInfo.FutureReleaseEntry.SHA1 == updateInfo.CurrentlyInstalledVersion.SHA1)
             {
-                var updateInfo = await mgr.CheckForUpdate();
-                
-                _logger.LogInformation($"");
-                _logger.LogInformation($"CurrentlyInstalledVersion: {updateInfo?.CurrentlyInstalledVersion}");
-                _logger.LogInformation($"FutureReleaseEntry: {updateInfo?.FutureReleaseEntry}");
-                _logger.LogInformation($"");
-            
-                if (updateInfo?.FutureReleaseEntry != null && updateInfo.FutureReleaseEntry != updateInfo.CurrentlyInstalledVersion)
+                MessageBox.Show($"Установлена последняя версия!", "Good Grades");
+                return;
+            }
+
+            if (MessageBox.Show($"Доступна новая версия, обновить?", "Good Grades", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
+            {
+                try
                 {
                     await mgr.UpdateApp();
                     UpdateManager.RestartApp();
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogInformation($"An error occurred when trying to update the app");
+                    _logger.LogError(ex.Message, ex.StackTrace, ex.InnerException);
                 }
             }
         }
