@@ -3,9 +3,9 @@ using Data.Interfaces;
 
 namespace Data.Models
 {
-    public class CelebrityWordsQuiz : ModelBase, ICelebrityWordsQuiz
+    public class CelebrityWordsQuiz : ModelBase, ITextToImageQuiz
     {
-        public CelebrityWordsQuiz(CelebrityWordsQuizEntity celebrityWordsQuiz)
+        public CelebrityWordsQuiz(TextToImageQuizEntity celebrityWordsQuiz)
         {
             Id = celebrityWordsQuiz.Id;
             CreatedAt = celebrityWordsQuiz.CreatedAt;

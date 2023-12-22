@@ -68,8 +68,8 @@ namespace Content_Manager.Models
                 case var _ when t.IsAssignableFrom(typeof(IQuizItem)):
                     return _storage.QuizItemsRepository;
 
-                case var _ when t.IsAssignableTo(typeof(ICelebrityWordsQuiz)):
-                case var _ when t.IsAssignableFrom(typeof(ICelebrityWordsQuiz)):
+                case var _ when t.IsAssignableTo(typeof(ITextToImageQuiz)):
+                case var _ when t.IsAssignableFrom(typeof(ITextToImageQuiz)):
                     return _storage.CwqRepository;
 
                 case var _ when t.IsAssignableTo(typeof(IProverbSelectionQuiz)):

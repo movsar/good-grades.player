@@ -5,7 +5,7 @@ using Realms;
 
 namespace Data.Repositories
 {
-    public class CwqRepository : GeneralRepository<CelebrityWordsQuizEntity>
+    public class CwqRepository : GeneralRepository<TextToImageQuizEntity>
     {
         private readonly Realm _realmInstance;
 

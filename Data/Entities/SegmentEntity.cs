@@ -16,7 +16,7 @@ namespace Data.Entities
             Title = segment.Title;
             Description = segment.Description;
 
-            CelebrityWordsQuiz = new CelebrityWordsQuizEntity(segment.CelebrityWordsQuiz);
+            CelebrityWordsQuiz = new TextToImageQuizEntity(segment.CelebrityWordsQuiz);
             ProverbBuilderQuiz = new ProverbBuilderQuizEntity(segment.ProverbBuilderQuiz);
             ProverbSelectionQuiz = new ProverbSelectionQuizEntity(segment.ProverbSelectionQuiz);
             GapFillerQuiz = new GapFillerQuizEntity(segment.GapFillerQuiz);
@@ -39,7 +39,7 @@ namespace Data.Entities
         public string Title { get; set; }
         public string Description { get; set; }
 
-        public CelebrityWordsQuizEntity CelebrityWordsQuiz { get; set; }
+        public TextToImageQuizEntity CelebrityWordsQuiz { get; set; }
         public ProverbSelectionQuizEntity ProverbSelectionQuiz { get; set; }
         public ProverbBuilderQuizEntity ProverbBuilderQuiz { get; set; }
         public GapFillerQuizEntity GapFillerQuiz { get; set; }

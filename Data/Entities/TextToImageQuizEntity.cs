@@ -7,10 +7,10 @@ using System.Collections.Generic;
 
 namespace Data.Entities
 {
-    public class CelebrityWordsQuizEntity : RealmObject, IEntityBase, ICelebrityWordsQuiz
+    public class TextToImageQuizEntity : RealmObject, IEntityBase, ITextToImageQuiz
     {
-        public CelebrityWordsQuizEntity() { }
-        public CelebrityWordsQuizEntity(CelebrityWordsQuizEntity cwq)
+        public TextToImageQuizEntity() { }
+        public TextToImageQuizEntity(TextToImageQuizEntity cwq)
         {
             Id = cwq.Id;
             QuizItems = new List<QuizItemEntity>(

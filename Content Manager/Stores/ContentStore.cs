@@ -118,7 +118,7 @@ namespace Content_Manager.Stores
             _contentModel.DeleteItems<ITestingQuestion>(segment.TestingQuiz.Questions);
 
             // Delete related quizes
-            _contentModel.DeleteItem<ICelebrityWordsQuiz>(segment!.CelebrityWordsQuiz);
+            _contentModel.DeleteItem<ITextToImageQuiz>(segment!.CelebrityWordsQuiz);
             _contentModel.DeleteItem<IProverbSelectionQuiz>(segment!.ProverbSelectionQuiz);
             _contentModel.DeleteItem<IProverbBuilderQuiz>(segment!.ProverbBuilderQuiz);
             _contentModel.DeleteItem<IGapFillerQuiz>(segment!.GapFillerQuiz);
@@ -195,7 +195,7 @@ namespace Content_Manager.Stores
             switch (quizType)
             {
                 case QuizTypes.CelebrityWords:
-                    _contentModel.UpdateItem<ICelebrityWordsQuiz>(SelectedSegment!.CelebrityWordsQuiz);
+                    _contentModel.UpdateItem<ITextToImageQuiz>(SelectedSegment!.CelebrityWordsQuiz);
                     break;
 
                 case QuizTypes.ProverbSelection:

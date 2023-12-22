@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Data.Interfaces
 {
-    public interface ICelebrityWordsQuiz : IModelBase
+    public interface ITextToImageQuiz : IModelBase
     {
 
     }
