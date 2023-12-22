@@ -20,7 +20,7 @@ namespace Data.Entities
         [Required]
         [Key]
         public string Id { get; set; } = Guid.NewGuid().ToString();
-        public string CorrectQuizId { get; set; }
+        public string? CorrectQuizId { get; set; }
         public IList<QuizItemEntity> QuizItems { get; }
         public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.Now;
         public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;

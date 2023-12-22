@@ -35,7 +35,7 @@ namespace Data.Entities
         public string Id { get; set; } = Guid.NewGuid().ToString();
         [Required]
         public string Title { get; set; }
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         public CelebrityWordsQuizEntity CelebrityWordsQuiz { get; set; }
         public ProverbSelectionQuizEntity ProverbSelectionQuiz { get; set; }
@@ -43,8 +43,8 @@ namespace Data.Entities
         public GapFillerQuizEntity GapFillerQuiz { get; set; }
         public TestingQuizEntity TestingQuiz { get; set; }
 
-        public IList<ReadingMaterialEntity> ReadingMaterials { get; }
-        public IList<ListeningMaterialEntity> ListeningMaterials { get; }
+        public IList<ReadingMaterialEntity> ReadingMaterials { get; set; } = new List<ReadingMaterialEntity>();
+        public IList<ListeningMaterialEntity> ListeningMaterials { get; set; } = new List<ListeningMaterialEntity>();
 
         public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.Now;
         public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;

@@ -132,7 +132,8 @@ namespace Content_Manager.Models
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message, ex.StackTrace, ex.InnerException);
+                throw;
+                //_logger.LogError(ex.Message, ex.StackTrace, ex.InnerException);
             }
         }
 

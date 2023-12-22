@@ -29,7 +29,7 @@ namespace Data
         public GenericRepository<GapFillerQuizEntity> GfqRepository => new GenericRepository<GapFillerQuizEntity>();
         public GenericRepository<TestingQuizEntity> TsqRepository => new GenericRepository<TestingQuizEntity>();
         public void OpenDatabase(string databasePath)
-        {         
+        {
             if (!InitializeDatabase(databasePath))
             {
                 return;
@@ -44,8 +44,7 @@ namespace Data
                 DataContext.DB_PATH = databasePath;
                 using (var context = new DataContext())
                 {
-                    context.Database.Migrate();
-                    context.SaveChanges();
+                    context.Database.EnsureCreated();
                 }
             }
             catch (Exception ex)

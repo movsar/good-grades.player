@@ -19,7 +19,7 @@ namespace Data.Models
                 QuizItems.Add(new QuizItem(optionEntity));
             }
         }
-        public string CorrectQuizId { get; set; }
+        public string? CorrectQuizId { get; set; }
         public List<QuizItem> QuizItems { get; set; }
     }
 }

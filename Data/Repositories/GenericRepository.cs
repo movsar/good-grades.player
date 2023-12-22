@@ -1,4 +1,5 @@
 ﻿using Data.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Data.Repositories
 {
@@ -29,8 +30,9 @@ namespace Data.Repositories
             entity.SetFromModel(model);
 
             _dbContext.Add(entity);
-
             _dbContext.SaveChanges();
+
+            model = entity.ToModel();
         }
 
         public virtual void Update<TModel>(TModel model) where TModel : IModelBase
@@ -63,7 +65,21 @@ namespace Data.Repositories
 
         public virtual IEnumerable<TModel> GetAll<TModel>() where TModel : IModelBase
         {
-            return EntitiesToModels<TEntity, TModel>(_dbContext.Set<TEntity>());
+            var query = _dbContext.Set<TEntity>().AsQueryable();
+
+            // Include all navigation properties
+            var navigations = _dbContext.Model.FindEntityType(typeof(TEntity))
+                                 .GetNavigations()
+                                 .Select(e => e.Name);
+
+            foreach (var property in navigations)
+            {
+                query = query.Include(property);
+            }
+
+            var result = query.ToList(); // Execute the query
+
+            return EntitiesToModels<TEntity, TModel>(result);
         }
         #endregion
 
