@@ -12,31 +12,23 @@ namespace Data
         public event Action DatabaseUpdated;
 
         private ILogger _logger;
-        public DbMetaRepository DbMetaRepository { get; private set; }
-        public SegmentRepository SegmentsRepository { get; private set; }
-
-        public ReadingMaterialsRepository ReadingMaterialsRepository { get; private set; }
-        public ListeningMaterialsRepository ListeningMaterialsRepository { get; private set; }
-        public QuizItemsRepository QuizItemsRepository { get; private set; }
-        public QuestionsRepository QuestionsRepository { get; private set; }
-
-        public CwqRepository CwqRepository { get; private set; }
-        public PsqRepository PsqRepository { get; private set; }
-        public PbqRepository PbqRepository { get; private set; }
-        public GfqRepository GfqRepository { get; private set; }
-        public TsqRepository TsqRepository { get; private set; }
         public Storage(ILogger<Storage> logger)
         {
             _logger = logger;
         }
-
+        public GenericRepository<DbMetaEntity> DbMetaRepository = new GenericRepository<DbMetaEntity>();
+        public GenericRepository<SegmentEntity> SegmentsRepository => new GenericRepository<SegmentEntity>();
+        public GenericRepository<ReadingMaterialEntity> ReadingMaterialsRepository => new GenericRepository<ReadingMaterialEntity>();
+        public GenericRepository<ListeningMaterialEntity> ListeningMaterialsRepository => new GenericRepository<ListeningMaterialEntity>();
+        public GenericRepository<QuizItemEntity> QuizItemsRepository => new GenericRepository<QuizItemEntity>();
+        public GenericRepository<TestingQuestionEntity> TestingQuestionsRepository => new GenericRepository<TestingQuestionEntity>();
+        public GenericRepository<CelebrityWordsQuizEntity> CwqRepository => new GenericRepository<CelebrityWordsQuizEntity>();
+        public GenericRepository<ProverbSelectionQuizEntity> PsqRepository => new GenericRepository<ProverbSelectionQuizEntity>();
+        public GenericRepository<ProverbBuilderQuizEntity> PbqRepository => new GenericRepository<ProverbBuilderQuizEntity>();
+        public GenericRepository<GapFillerQuizEntity> GfqRepository => new GenericRepository<GapFillerQuizEntity>();
+        public GenericRepository<TestingQuizEntity> TsqRepository => new GenericRepository<TestingQuizEntity>();
         public void OpenDatabase(string databasePath)
-        {
-            if (!InitializeDatabase(databasePath))
-            {
-                return;
-            };
-
+        {         
             DatabaseInitialized?.Invoke(databasePath);
         }
 
@@ -46,18 +38,16 @@ namespace Data
             {
                 DropDatabase(databasePath);
             }
-
-            if (!InitializeDatabase(databasePath))
-            {
-                return;
-            };
-
+                      
             var dbMeta = new DbMeta()
             {
                 Title = Path.GetFileNameWithoutExtension(databasePath),
                 AppVersion = appVersion
             };
-            DbMetaRepository.Add(ref dbMeta);
+
+            var dbMetaRepository = new GenericRepository<DbMetaEntity>();
+
+            dbMetaRepository.Add(ref dbMeta);
 
             DatabaseInitialized?.Invoke(databasePath);
         }
@@ -65,41 +55,6 @@ namespace Data
         public static DataContext GetDataContext()
         {
             return new DataContext();
-        }
-
-        private bool InitializeDatabase(string databasePath)
-        {
-            // Compacts the database if its size exceedes 30 MiB
-           
-            try
-            {
-                
-            }
-            catch (Exception ex)
-            {
-                _logger.LogCritical(ex.Message, ex.Source, ex.StackTrace, ex.InnerException);
-                return false;
-            }
-            InitializeRepositories();
-
-            return true;
-        }
-
-        private void InitializeRepositories()
-        {
-            SegmentsRepository = new SegmentRepository();
-
-            CwqRepository = new CwqRepository();
-            PsqRepository = new PsqRepository();
-            PbqRepository = new PbqRepository();
-            GfqRepository = new GfqRepository();
-            TsqRepository = new TsqRepository();
-
-            ReadingMaterialsRepository = new ReadingMaterialsRepository();
-            ListeningMaterialsRepository = new ListeningMaterialsRepository();
-            QuizItemsRepository = new QuizItemsRepository();
-            QuestionsRepository = new QuestionsRepository();
-            DbMetaRepository = new DbMetaRepository();
         }
 
         public void DropDatabase(string dbPath)

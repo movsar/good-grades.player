@@ -62,7 +62,7 @@ namespace Content_Manager.Models
 
                 case var _ when t.IsAssignableTo(typeof(ITestingQuestion)):
                 case var _ when t.IsAssignableFrom(typeof(ITestingQuestion)):
-                    return _storage.QuestionsRepository;
+                    return _storage.TestingQuestionsRepository;
 
                 case var _ when t.IsAssignableTo(typeof(IQuizItem)):
                 case var _ when t.IsAssignableFrom(typeof(IQuizItem)):

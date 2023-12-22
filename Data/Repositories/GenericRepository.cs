@@ -2,10 +2,10 @@
 
 namespace Data.Repositories
 {
-    public abstract class GeneralRepository<TEntity> : IGeneralRepository where TEntity : class, IEntityBase, new()
+    public class GenericRepository<TEntity> : IGeneralRepository where TEntity : class, IEntityBase, new()
     {
         protected DataContext _dbContext;
-        internal GeneralRepository()
+        internal GenericRepository()
         {
             _dbContext = Storage.GetDataContext();
         }
