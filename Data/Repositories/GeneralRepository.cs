@@ -1,28 +1,18 @@
-﻿using Data.Entities;
-using Data.Interfaces;
-using Data.Models;
-using Realms;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
+﻿using Data.Interfaces;
 
 namespace Data.Repositories
 {
-    public abstract class GeneralRepository<TEntity> : IGeneralRepository where TEntity : IEntityBase, new()
+    public abstract class GeneralRepository<TEntity> : IGeneralRepository where TEntity : class, IEntityBase, new()
     {
-        private readonly Realm _realmInstance;
-
-        internal GeneralRepository(Realm realm)
+        protected DataContext _dbContext;
+        internal GeneralRepository()
         {
-            _realmInstance = realm;
+            _dbContext = Storage.GetDataContext();
         }
 
         protected IEnumerable<TEntity> GetEntitiesByIds(string[] ids)
         {
-            foreach (var entity in _realmInstance.All<TEntity>())
+            foreach (var entity in _dbContext.Set<TEntity>())
             {
                 if (ids.Any(id => id == entity.Id))
                 {
@@ -38,37 +28,30 @@ namespace Data.Repositories
             dynamic entity = new TEntity();
             entity.SetFromModel(model);
 
-            _realmInstance.Write(() =>
-            {
-                _realmInstance.Add(entity);
-            });
+            _dbContext.Add(entity);
 
-            model = entity.ToModel();
+            _dbContext.SaveChanges();
         }
 
         public virtual void Update<TModel>(TModel model) where TModel : IModelBase
         {
-            dynamic entity = _realmInstance.Find<TEntity>(model.Id);
-            _realmInstance.Write(() =>
-            {
-                entity.SetFromModel(model);
-            });
-
-            model = entity.ToModel();
+            var result = _dbContext.Set<TEntity>().Find(typeof(TEntity), model.Id);            
+            result.SetFromModel(model);
+            
+            _dbContext.SaveChanges();
         }
 
         public virtual void Delete<TModel>(TModel model) where TModel : IModelBase
         {
-            var entity = _realmInstance.Find<TEntity>(model.Id);
-            _realmInstance.Write(() =>
-            {
-                _realmInstance.Remove(entity);
-            });
+            var result = _dbContext.Set<TEntity>().Find(typeof(TEntity), model.Id);
+            _dbContext.Remove(result);
+
+            _dbContext.SaveChanges();
         }
 
         public TModel GetById<TModel>(string id)
         {
-            var result = _realmInstance.Find<TEntity>(id);
+            var result = _dbContext.Set<TEntity>().Find(typeof(TEntity), id);
             return (TModel)result.ToModel();
         }
 
@@ -80,8 +63,7 @@ namespace Data.Repositories
 
         public virtual IEnumerable<TModel> GetAll<TModel>() where TModel : IModelBase
         {
-            var entries = _realmInstance.All<TEntity>();
-            return EntitiesToModels<TEntity, TModel>(entries);
+            return EntitiesToModels<TEntity, TModel>(_dbContext.Set<TEntity>());
         }
         #endregion
 

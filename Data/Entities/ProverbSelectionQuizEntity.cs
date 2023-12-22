@@ -1,13 +1,11 @@
 ﻿using Data.Interfaces;
 using Data.Models;
 using Data.Services;
-using MongoDB.Bson;
-using Realms;
-using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Data.Entities
 {
-    public class ProverbSelectionQuizEntity : RealmObject, IEntityBase, IProverbSelectionQuiz
+    public class ProverbSelectionQuizEntity : IEntityBase, IProverbSelectionQuiz
     {
         public ProverbSelectionQuizEntity() { }
         public ProverbSelectionQuizEntity(ProverbSelectionQuizEntity proverbSelectionQuiz)
@@ -20,8 +18,8 @@ namespace Data.Entities
         }
         #region Properties
         [Required]
-        [PrimaryKey]
-        public string Id { get; set; } = ObjectId.GenerateNewId().ToString();
+        [Key]
+        public string Id { get; set; } = Guid.NewGuid().ToString();
         public string CorrectQuizId { get; set; }
         public IList<QuizItemEntity> QuizItems { get; }
         public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.Now;

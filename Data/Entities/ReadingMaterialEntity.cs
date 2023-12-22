@@ -1,16 +1,10 @@
 ﻿using Data.Interfaces;
 using Data.Models;
-using MongoDB.Bson;
-using Realms;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace Data.Entities
 {
-    public class ReadingMaterialEntity : RealmObject, IEntityBase, IReadingMaterial
+    public class ReadingMaterialEntity : IEntityBase, IReadingMaterial
     {
         public ReadingMaterialEntity() { }
         public ReadingMaterialEntity(ReadingMaterialEntity rm)
@@ -21,16 +15,15 @@ namespace Data.Entities
             Image = rm.Image;
         }
 
-        [PrimaryKey]
-        public string Id { get; set; } = ObjectId.GenerateNewId().ToString();
+        [Key]
+        public string Id { get; set; } = Guid.NewGuid().ToString();
+        public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.Now;
+        public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;
 
         [Required]
         public string Title { get; set; }
         public string Text { get; set; }
         public byte[] Image { get; set; }
-
-        public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.Now;
-        public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;
 
         public IModelBase ToModel()
         {

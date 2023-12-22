@@ -1,12 +1,11 @@
 ﻿using Data.Interfaces;
 using Data.Models;
 using Data.Services;
-using MongoDB.Bson;
-using Realms;
+using System.ComponentModel.DataAnnotations;
 
 namespace Data.Entities
 {
-    public class TestingQuestionEntity : RealmObject, IEntityBase, ITestingQuestion
+    public class TestingQuestionEntity : IEntityBase, ITestingQuestion
     {
         public TestingQuestionEntity() { }
         public TestingQuestionEntity(TestingQuestionEntity question)
@@ -20,8 +19,8 @@ namespace Data.Entities
         }
         #region Properties
         [Required]
-        [PrimaryKey]
-        public string Id { get; set; } = ObjectId.GenerateNewId().ToString();
+        [Key]
+        public string Id { get; set; } = Guid.NewGuid().ToString();
         public string QuestionText { get; set; }
         public string CorrectQuizId { get; set; }
         public IList<QuizItemEntity> QuizItems { get; }

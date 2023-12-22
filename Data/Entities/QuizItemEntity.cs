@@ -1,10 +1,9 @@
 ﻿using Data.Interfaces;
 using Data.Models;
-using MongoDB.Bson;
-using Realms;
+using System.ComponentModel.DataAnnotations;
 
 namespace Data.Entities {
-    public class QuizItemEntity : RealmObject, IQuizItem, IEntityBase {
+    public class QuizItemEntity : IQuizItem, IEntityBase {
         public QuizItemEntity() { }
         public QuizItemEntity(QuizItemEntity option)
         {
@@ -14,8 +13,8 @@ namespace Data.Entities {
         }
 
         [Required]
-        [PrimaryKey]
-        public string Id { get; set; } = ObjectId.GenerateNewId().ToString();
+        [Key]
+        public string Id { get; set; } = Guid.NewGuid().ToString();
         public byte[] Image { get; set; }
         public string Text { get; set; }
 

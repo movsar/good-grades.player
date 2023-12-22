@@ -1,19 +1,15 @@
 ﻿using Data.Interfaces;
 using Data.Models;
-using Data.Services;
-using MongoDB.Bson;
-using Realms;
-using System.Collections.Generic;
-using System.Reflection;
+using System.ComponentModel.DataAnnotations;
 
 namespace Data.Entities
 {
-    public class DbMetaEntity : RealmObject, IEntityBase, IDbMeta
+    public class DbMetaEntity : IEntityBase, IDbMeta
     {
         #region Properties
         [Required]
-        [PrimaryKey]
-        public string Id { get; set; } = ObjectId.GenerateNewId().ToString();
+        [Key]
+        public string Id { get; set; } = Guid.NewGuid().ToString();
         public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.Now;
         public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;
         public string Title { get; set; }

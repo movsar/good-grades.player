@@ -1,13 +1,11 @@
 ﻿using Data.Interfaces;
 using Data.Models;
 using Data.Services;
-using MongoDB.Bson;
-using Realms;
-using static System.Net.Mime.MediaTypeNames;
+using System.ComponentModel.DataAnnotations;
 
 namespace Data.Entities
 {
-    public class SegmentEntity : RealmObject, ISegment, IEntityBase
+    public class SegmentEntity : ISegment, IEntityBase
     {
         public SegmentEntity() { }
         public SegmentEntity(SegmentEntity segment)
@@ -33,8 +31,8 @@ namespace Data.Entities
                     );
         }
 
-        [PrimaryKey]
-        public string Id { get; set; } = ObjectId.GenerateNewId().ToString();
+        [Key]
+        public string Id { get; set; } = Guid.NewGuid().ToString();
         [Required]
         public string Title { get; set; }
         public string Description { get; set; }

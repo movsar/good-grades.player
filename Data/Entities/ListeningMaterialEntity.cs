@@ -1,16 +1,10 @@
 ﻿using Data.Interfaces;
 using Data.Models;
-using MongoDB.Bson;
-using Realms;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace Data.Entities
 {
-    public class ListeningMaterialEntity : RealmObject, IEntityBase, IListeningMaterial
+    public class ListeningMaterialEntity : IEntityBase, IListeningMaterial
     {
         public ListeningMaterialEntity() { }
         public ListeningMaterialEntity(ListeningMaterialEntity lm)
@@ -22,8 +16,8 @@ namespace Data.Entities
             Image = lm.Image;
         }
 
-        [PrimaryKey]
-        public string Id { get; set; } = ObjectId.GenerateNewId().ToString();
+        [Key]
+        public string Id { get; set; } = Guid.NewGuid().ToString();
 
         [Required]
         public string Title { get; set; }

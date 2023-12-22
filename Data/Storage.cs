@@ -3,10 +3,6 @@ using Data.Interfaces;
 using Data.Models;
 using Data.Repositories;
 using Microsoft.Extensions.Logging;
-using Realms;
-using System.Diagnostics;
-using System.Diagnostics.Metrics;
-using System.Reflection;
 
 namespace Data
 {
@@ -15,7 +11,6 @@ namespace Data
         public event Action<string> DatabaseInitialized;
         public event Action DatabaseUpdated;
 
-        private Realm _realmInstance;
         private ILogger _logger;
         public DbMetaRepository DbMetaRepository { get; private set; }
         public SegmentRepository SegmentsRepository { get; private set; }
@@ -67,20 +62,18 @@ namespace Data
             DatabaseInitialized?.Invoke(databasePath);
         }
 
+        public static DataContext GetDataContext()
+        {
+            return new DataContext();
+        }
+
         private bool InitializeDatabase(string databasePath)
         {
             // Compacts the database if its size exceedes 30 MiB
-            var dbConfig = new RealmConfiguration(databasePath)
-            {
-                ShouldCompactOnLaunch = (totalBytes, usedBytes) =>
-                {
-                    ulong edgeSize = 30 * 1024 * 1024;
-                    return totalBytes > edgeSize && usedBytes / totalBytes < 0.5;
-                }
-            };
+           
             try
             {
-                _realmInstance = Realm.GetInstance(dbConfig);
+                
             }
             catch (Exception ex)
             {
@@ -94,27 +87,26 @@ namespace Data
 
         private void InitializeRepositories()
         {
-            SegmentsRepository = new SegmentRepository(_realmInstance);
+            SegmentsRepository = new SegmentRepository();
 
-            CwqRepository = new CwqRepository(_realmInstance);
-            PsqRepository = new PsqRepository(_realmInstance);
-            PbqRepository = new PbqRepository(_realmInstance);
-            GfqRepository = new GfqRepository(_realmInstance);
-            TsqRepository = new TsqRepository(_realmInstance);
+            CwqRepository = new CwqRepository();
+            PsqRepository = new PsqRepository();
+            PbqRepository = new PbqRepository();
+            GfqRepository = new GfqRepository();
+            TsqRepository = new TsqRepository();
 
-            ReadingMaterialsRepository = new ReadingMaterialsRepository(_realmInstance);
-            ListeningMaterialsRepository = new ListeningMaterialsRepository(_realmInstance);
-            QuizItemsRepository = new QuizItemsRepository(_realmInstance);
-            QuestionsRepository = new QuestionsRepository(_realmInstance);
-            DbMetaRepository = new DbMetaRepository(_realmInstance);
+            ReadingMaterialsRepository = new ReadingMaterialsRepository();
+            ListeningMaterialsRepository = new ListeningMaterialsRepository();
+            QuizItemsRepository = new QuizItemsRepository();
+            QuestionsRepository = new QuestionsRepository();
+            DbMetaRepository = new DbMetaRepository();
         }
 
         public void DropDatabase(string dbPath)
         {
             try
             {
-                Realm.DeleteRealm(new RealmConfiguration(dbPath));
-                File.Delete(dbPath);
+                File.Delete(DataContext.DB_PATH);
             }
             catch (Exception ex)
             {
@@ -124,27 +116,27 @@ namespace Data
 
         public void ImportDatabase(string filePath)
         {
-            var realmToImport = Realm.GetInstance(filePath);
+            //var realmToImport = Realm.GetInstance(filePath);
 
-            var segments = realmToImport.All<SegmentEntity>();
+            //var segments = realmToImport.All<SegmentEntity>();
 
-            try
-            {
-                _realmInstance.Write(() =>
-                {
-                    foreach (SegmentEntity segment in segments)
-                    {
-                        _realmInstance.Add(new SegmentEntity(segment), true);
-                    }
-                });
+            //try
+            //{
+            //    _realmInstance.Write(() =>
+            //    {
+            //        foreach (SegmentEntity segment in segments)
+            //        {
+            //            _realmInstance.Add(new SegmentEntity(segment), true);
+            //        }
+            //    });
 
-                DatabaseUpdated?.Invoke();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message, ex.StackTrace, ex.InnerException);
-                throw;
-            }
+            //    DatabaseUpdated?.Invoke();
+            //}
+            //catch (Exception ex)
+            //{
+            //    _logger.LogError(ex.Message, ex.StackTrace, ex.InnerException);
+            //    throw;
+            //}
         }
     }
 }
