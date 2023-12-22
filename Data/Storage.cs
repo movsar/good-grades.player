@@ -2,6 +2,7 @@
 using Data.Interfaces;
 using Data.Models;
 using Data.Repositories;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace Data
@@ -29,16 +30,41 @@ namespace Data
         public GenericRepository<TestingQuizEntity> TsqRepository => new GenericRepository<TestingQuizEntity>();
         public void OpenDatabase(string databasePath)
         {         
+            if (!InitializeDatabase(databasePath))
+            {
+                return;
+            }
+
             DatabaseInitialized?.Invoke(databasePath);
         }
+        private bool InitializeDatabase(string databasePath)
+        {
+            try
+            {
+                DataContext.DB_PATH = databasePath;
+                using (var context = new DataContext())
+                {
+                    context.Database.Migrate();
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogCritical(ex.Message, ex.Source, ex.StackTrace, ex.InnerException);
+                throw;
+                //return false;
+            }
 
+            return true;
+        }
         public void CreateDatabase(string databasePath, string? appVersion)
         {
             if (File.Exists(databasePath))
             {
                 DropDatabase(databasePath);
             }
-                      
+            InitializeDatabase(databasePath);
+
             var dbMeta = new DbMeta()
             {
                 Title = Path.GetFileNameWithoutExtension(databasePath),
@@ -46,7 +72,6 @@ namespace Data
             };
 
             var dbMetaRepository = new GenericRepository<DbMetaEntity>();
-
             dbMetaRepository.Add(ref dbMeta);
 
             DatabaseInitialized?.Invoke(databasePath);

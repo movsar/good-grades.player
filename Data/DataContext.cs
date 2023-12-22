@@ -6,7 +6,7 @@ namespace Data
     public class DataContext : DbContext
     {
         public static string DB_PATH = string.Empty;
-        public DbSet<CelebrityWordsQuiz> CelebrityWordsQuizes { get; set; }
+        public DbSet<CelebrityWordsQuizEntity> CelebrityWordsQuizes { get; set; }
         public DbSet<DbMetaEntity> DbMetas { get; set; }
         public DbSet<GapFillerQuizEntity> GapFillerQuizes { get; set; }
         public DbSet<ListeningMaterialEntity> ListeningMaterials { get; set; }
@@ -16,12 +16,11 @@ namespace Data
         public DbSet<ReadingMaterialEntity> ReadingMaterials { get; set; }
         public DbSet<SegmentEntity> Segments { get; set; }
         public DbSet<TestingQuestionEntity> TestingQuestions { get; set; }
-        public DbSet<TestingQuizEntity> TestingQuizItems { get; set; }
-
+        public DbSet<TestingQuizEntity> TestingQuizItems { get; set; }     
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            DB_PATH = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "data.db");
-            options.UseSqlite($"Data Source={DB_PATH}");
+            string connectionString = $"Data Source=" + DB_PATH;
+            options.UseSqlite(connectionString);
         }
     }
 }
