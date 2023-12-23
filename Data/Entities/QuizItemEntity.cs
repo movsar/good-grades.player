@@ -1,35 +1,16 @@
 ﻿using Data.Interfaces;
-using Data.Models;
 using MongoDB.Bson;
 using Realms;
 
 namespace Data.Entities {
-    public class QuizItemEntity : RealmObject, IQuizItem, IEntityBase {
-        public QuizItemEntity() { }
-        public QuizItemEntity(QuizItemEntity option)
-        {
-            Id = option.Id;
-            Image = option.Image;
-            Text = option.Text;
-        }
-
+    public class QuizItemEntity : RealmObject, IEntityBase {
         [Required]
         [PrimaryKey]
-        public string Id { get; set; } = ObjectId.GenerateNewId().ToString();
-        public byte[] Image { get; set; }
-        public string Text { get; set; }
-
-        public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.Now;
+        public string Id { get; } = ObjectId.GenerateNewId().ToString();
+        public DateTimeOffset CreatedAt { get; } = DateTimeOffset.Now;
         public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;
 
-        public IModelBase ToModel() {
-            return new QuizItem(this);
-        }
-
-        public void SetFromModel(IModelBase model) {
-            var cwqOption = model as QuizItem;
-            Image = cwqOption!.Image;
-            Text = cwqOption!.Text;
-        }
+        public byte[] Image { get; set; }
+        public string Text { get; set; }
     }
 }

@@ -1,10 +1,9 @@
-﻿using Content_Manager.Interfaces;
-using Content_Manager.Stores;
+﻿using Content_Manager.Stores;
+using Content_Manager.UserControls;
 using Data.Enums;
 using Data.Interfaces;
 using Data.Models;
 using Microsoft.Extensions.DependencyInjection;
-using Shared.Controls;
 using Shared.Viewers;
 using System;
 using System.Collections.Generic;
@@ -13,14 +12,26 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 
-namespace Content_Manager.UserControls.QuizTabs
+namespace Content_Manager.Windows.Editors
 {
-    public partial class CelebrityWordsTab : UserControl, IQuizTabControl
+    /// <summary>
+    /// Interaction logic for TextToImageQuizEditor.xaml
+    /// </summary>
+    public partial class TextToImageQuizEditor : Window
     {
+
         private readonly ContentStore _contentStore = App.AppHost!.Services.GetRequiredService<ContentStore>();
-        public CelebrityWordsTab()
+        private TextToImageQuiz _quiz;
+        public TextToImageQuizEditor()
         {
+            _quiz = new TextToImageQuiz();
             InitializeComponent();
             DataContext = this;
             RedrawUi();
@@ -78,7 +89,7 @@ namespace Content_Manager.UserControls.QuizTabs
 
         private void QuizItem_Create(IModelBase model)
         {
-            _contentStore.SelectedSegment?.CelebrityWordsQuiz.QuizItems.Add(model as QuizItem);
+            _contentStore.SelectedSegment?.Cele.QuizItems.Add(model as QuizItem);
             UpdateQuiz();
         }
     }

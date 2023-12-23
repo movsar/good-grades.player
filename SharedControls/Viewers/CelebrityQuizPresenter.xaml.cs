@@ -7,7 +7,7 @@ namespace Shared.Viewers
 {
     public partial class CelebrityQuizPresenter : Window
     {
-        public CelebrityQuizPresenter(CelebrityWordsQuiz celebrityWordsQuiz)
+        public CelebrityQuizPresenter(TextToImageQuiz celebrityWordsQuiz)
         {
             InitializeComponent();
             foreach (var option in celebrityWordsQuiz.QuizItems)
