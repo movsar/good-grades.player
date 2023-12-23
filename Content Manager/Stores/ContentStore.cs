@@ -1,18 +1,14 @@
 ﻿using Content_Manager.Models;
 using Data;
+using Data.Entities;
 using Data.Enums;
 using Data.Interfaces;
-using Data.Models;
-using Data.Repositories;
-using Microsoft.VisualBasic;
+
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
+
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Content_Manager.Stores
 {
@@ -22,9 +18,9 @@ namespace Content_Manager.Stores
         public event Action DatabaseUpdated;
 
         #region Properties
-        public List<ISegment> StoredSegments = new();
-        private Segment? _selectedSegment;
-        public Segment? SelectedSegment
+        public List<SegmentEntity> StoredSegments;
+        private SegmentEntity? _selectedSegment;
+        public SegmentEntity? SelectedSegment
         {
             get
             {
@@ -43,10 +39,10 @@ namespace Content_Manager.Stores
         #endregion
 
         #region Events
-        public event Action<Segment>? SelectedSegmentChanged;
-        public event Action<string, IModelBase>? ItemAdded;
-        public event Action<string, IModelBase>? ItemUpdated;
-        public event Action<string, IModelBase>? ItemDeleted;
+        public event Action<SegmentEntity>? SelectedSegmentChanged;
+        public event Action<string, IEntityBase>? ItemAdded;
+        public event Action<string, IEntityBase>? ItemUpdated;
+        public event Action<string, IEntityBase>? ItemDeleted;
         #endregion
 
         #region Initialization
@@ -73,76 +69,43 @@ namespace Content_Manager.Stores
         #region SegmentHandlers
         public void LoadAllSegments()
         {
-            // Load from DB
-            IEnumerable<ISegment> segmentsFromDb = _contentModel.GetAll<Segment>();
-
-            // Refresh collection
-            StoredSegments.Clear();
-            foreach (ISegment segment in segmentsFromDb)
-            {
-                StoredSegments.Add(segment);
-            }
+            StoredSegments = _contentModel.Database.All<SegmentEntity>().ToList();
         }
-        internal void UpdateSegment(ISegment segment)
+        internal void UpdateSegment(SegmentEntity segment)
         {
             // Update in runtime collection
             var index = StoredSegments.ToList().FindIndex(d => d.Id == segment.Id);
             StoredSegments[index] = segment;
 
             // Save to DB
-            _contentModel.UpdateItem<ISegment>(segment);
+            _contentModel.UpdateItem<SegmentEntity>(segment);
 
             // Let everybody know
-            ItemUpdated?.Invoke(nameof(ISegment), segment);
+            ItemUpdated?.Invoke(nameof(SegmentEntity), segment);
         }
         internal void AddSegment(IModelBase item)
         {
             // Add to DB
-            _contentModel.AddItem<ISegment>(ref item);
+            _contentModel.AddItem<SegmentEntity>(ref item);
 
             // Add to collection
-            StoredSegments.Add(item as ISegment);
+            StoredSegments.Add(item as SegmentEntity);
 
             // Let everybody know
-            ItemAdded?.Invoke(nameof(ISegment), item);
+            ItemAdded?.Invoke(nameof(SegmentEntity), item);
         }
-        public void DeleteSegment(ISegment item)
+        public void DeleteSegment(SegmentEntity item)
         {
-            var segment = item as Segment;
-
-            // Delete related quiz items
-            var quizItems = GetQuizItemsBySegment(segment);
-            _contentModel.DeleteItems<IQuizItem>(quizItems);
-
-            // Delete related test questions
-            _contentModel.DeleteItems<ITestingQuestion>(segment.TestingQuiz.Questions);
-
-            // Delete related quizes
-            _contentModel.DeleteItem<ITextToImageQuiz>(segment!.CelebrityWordsQuiz);
-            _contentModel.DeleteItem<IProverbSelectionQuiz>(segment!.ProverbSelectionQuiz);
-            _contentModel.DeleteItem<IProverbBuilderQuiz>(segment!.ProverbBuilderQuiz);
-            _contentModel.DeleteItem<IGapFillerQuiz>(segment!.GapFillerQuiz);
-            _contentModel.DeleteItem<ITestingQuiz>(segment!.TestingQuiz);
-
-            // Delete related reading and listening materials
-            _contentModel.DeleteItems<IReadingMaterial>(segment.ReadingMaterials);
-            _contentModel.DeleteItems<IListeningMaterial>(segment.ListeningMaterials);
-
-            // Delete the segment
-            _contentModel.DeleteItem<ISegment>(item);
-
-            // Remove from collection
-            var index = StoredSegments.ToList().FindIndex(d => d.Id == item.Id);
-            StoredSegments.RemoveAt(index);
+            StoredSegments.Remove(item);
 
             // Let everybody know
-            ItemDeleted?.Invoke(nameof(ISegment), item);
+            ItemDeleted?.Invoke(nameof(SegmentEntity), item);
         }
-        internal ISegment? FindSegmentByTitle(string segmentTitle)
+        internal SegmentEntity? FindSegmentByTitle(string segmentTitle)
         {
             return StoredSegments.Find(segment => segment.Title == segmentTitle);
         }
-        public void DeleteSegments(IEnumerable<ISegment> itemsToDelete)
+        public void DeleteSegments(IEnumerable<SegmentEntity> itemsToDelete)
         {
             var immutableItems = itemsToDelete.ToList();
             foreach (var item in immutableItems)
@@ -152,29 +115,29 @@ namespace Content_Manager.Stores
         }
         #endregion
 
-        internal ReadingMaterial GetReadingMaterialById(string id)
+        internal ReadingMaterialEntity GetReadingMaterialById(string id)
         {
             return SelectedSegment!.ReadingMaterials.Where(o => o.Id == id).First();
         }
 
-        internal ListeningMaterial GetListeningMaterialById(string id)
+        internal ListeningMaterialEntity GetListeningMaterialById(string id)
         {
             return SelectedSegment!.ListeningMaterials.Where(o => o.Id == id).First();
         }
 
-        internal TestingQuestion? GetTestingQuestionByQuizItemId(string quizItemId)
+        internal TestingQuestionEntity? GetTestingQuestionByQuizItemId(string quizItemId)
         {
-            foreach (var question in SelectedSegment!.TestingQuiz.Questions)
-            {
-                if (question.QuizItems.Any(qi => qi.Id == quizItemId))
-                {
-                    return question;
-                }
-            }
+            //foreach (var question in SelectedSegment!.TestingQuizes.Question)
+            //{
+            //    if (question.QuizItems.Any(qi => qi.Id == quizItemId))
+            //    {
+            //        return question;
+            //    }
+            //}
             return null;
         }
 
-        internal IEnumerable<QuizItem> GetQuizItemsBySegment(Segment segment)
+        internal IEnumerable<QuizItemEntity> GetQuizItemsBySegment(SegmentEntity segment)
         {
             var allQuizItems = segment.CelebrityWordsQuiz.QuizItems
                 .Union(segment.ProverbSelectionQuiz.QuizItems)
@@ -185,48 +148,20 @@ namespace Content_Manager.Stores
             return allQuizItems;
         }
 
-        internal QuizItem GetQuizItem(string id)
+        internal QuizItemEntity GetQuizItem(string id)
         {
             return GetQuizItemsBySegment(SelectedSegment!).Where(o => o.Id == id).First();
         }
 
-        internal void UpdateQuiz(QuizTypes quizType)
+        internal TestingQuestionEntity GetQuestionById(string id)
         {
-            switch (quizType)
-            {
-                case QuizTypes.CelebrityWords:
-                    _contentModel.UpdateItem<ITextToImageQuiz>(SelectedSegment!.CelebrityWordsQuiz);
-                    break;
-
-                case QuizTypes.ProverbSelection:
-                    _contentModel.UpdateItem<IProverbSelectionQuiz>(SelectedSegment!.ProverbSelectionQuiz);
-                    break;
-
-                case QuizTypes.ProverbBuilder:
-                    _contentModel.UpdateItem<IProverbBuilderQuiz>(SelectedSegment!.ProverbBuilderQuiz);
-                    break;
-
-                case QuizTypes.GapFiller:
-                    _contentModel.UpdateItem<IGapFillerQuiz>(SelectedSegment!.GapFillerQuiz);
-                    break;
-
-                case QuizTypes.Testing:
-                    _contentModel.UpdateItem<ITestingQuiz>(SelectedSegment!.TestingQuiz);
-                    break;
-            }
-
-            //SelectedSegment = SelectedSegment;
-        }
-
-        internal TestingQuestion GetQuestionById(string id)
-        {
-            var question = SelectedSegment!.TestingQuiz!.Questions.Find(q => q.Id == id);
+            var question = SelectedSegment!.TestingQuizes!.Questions.Find(q => q.Id == id);
             return question!;
         }
 
-        internal DbMeta GetDbMeta()
+        internal DbMetaEntity GetDbMeta()
         {
-            return _contentModel.GetAll<DbMeta>().First();
+            return _contentModel.Database.All<DbMetaEntity>().First();
         }
 
         internal void SaveDbMeta(string title, string description)
@@ -234,10 +169,10 @@ namespace Content_Manager.Stores
             var dbMeta = GetDbMeta();
             dbMeta.Title = title;
             dbMeta.Description = description;
-            _contentModel.UpdateItem<DbMeta>(dbMeta);
+            //_contentModel.UpdateItem<DbMeta>(dbMeta);
 
             // Let everybody know
-            ItemUpdated?.Invoke(nameof(IDbMeta), dbMeta);
+            //ItemUpdated?.Invoke(nameof(IDbMeta), dbMeta);
         }
 
         internal void OpenDatabase(string filePath)
@@ -255,18 +190,18 @@ namespace Content_Manager.Stores
 
         internal void DeleteQuestion(string questionId)
         {
-            var itemToRemove = SelectedSegment?.TestingQuiz.Questions.Where(qi => qi.Id == questionId).First();
-            SelectedSegment?.TestingQuiz.Questions.Remove(itemToRemove!);
+            //var itemToRemove = SelectedSegment?.TestingQuiz.Questions.Where(qi => qi.Id == questionId).First();
+            //SelectedSegment?.TestingQuiz.Questions.Remove(itemToRemove!);
 
-            _contentModel.DeleteItems<QuizItem>(itemToRemove.QuizItems);
-            _contentModel.DeleteItem<TestingQuestion>(itemToRemove!);
+            //_contentModel.DeleteItems<QuizItem>(itemToRemove.QuizItems);
+            //_contentModel.DeleteItem<TestingQuestion>(itemToRemove!);
         }
 
         internal void DeleteSelectableQuizItem(QuizTypes quizType, string quizItemId, dynamic container)
         {
             // If remains only one item, mark it as a correct one
             // If the removed element was set as correct, set the first remaining as correct
-            IEnumerable<QuizItem> quizItems = container.QuizItems;
+            IEnumerable<QuizItemEntity> quizItems = container.QuizItems;
 
             var quizItemToRemove = quizItems.Where(qi => qi.Id == quizItemId).First();
             container.QuizItems.Remove(quizItemToRemove);
@@ -280,22 +215,22 @@ namespace Content_Manager.Stores
                 container.CorrectQuizId = null;
             }
 
-            _contentModel?.DeleteItem<IQuizItem>(quizItemToRemove);
-            if (quizType == QuizTypes.Testing)
-            {
-                _contentModel.UpdateItem<ITestingQuestion>(container);
-            }
-            if (quizType == QuizTypes.ProverbSelection)
-            {
-                _contentModel.UpdateItem<IProverbSelectionQuiz>(container);
-            }
+            //_contentModel?.DeleteItem<IQuizItem>(quizItemToRemove);
+            //if (quizType == QuizTypes.Testing)
+            //{
+            //    _contentModel.UpdateItem<ITestingQuestion>(container);
+            //}
+            //if (quizType == QuizTypes.ProverbSelection)
+            //{
+            //    _contentModel.UpdateItem<IProverbSelectionQuiz>(container);
+            //}
         }
 
         internal void DeleteListeningMaterial(string id)
         {
             var listeningMaterial = GetListeningMaterialById(id);
             SelectedSegment!.ListeningMaterials.Remove(listeningMaterial);
-            _contentModel!.DeleteItem<ListeningMaterial>(listeningMaterial);
+            //_contentModel!.DeleteItem<ListeningMaterialEntity>(listeningMaterial);
             SaveCurrentSegment();
         }
 
@@ -303,21 +238,21 @@ namespace Content_Manager.Stores
         {
             var readingMaterial = GetReadingMaterialById(id);
             SelectedSegment!.ReadingMaterials.Remove(readingMaterial);
-            _contentModel!.DeleteItem<ReadingMaterial>(readingMaterial);
+            //_contentModel!.DeleteItem<ReadingMaterialEntity>(readingMaterial);
             SaveCurrentSegment();
         }
 
-        internal void CreateSelectableQuizItem(QuizTypes quizType, QuizItem? quizItem, dynamic container)
+        internal void CreateSelectableQuizItem(QuizTypes quizType, QuizItemEntity? quizItem, dynamic container)
         {
             container.QuizItems.Add(quizItem);
-            UpdateQuiz(quizType);
+            //UpdateQuiz(quizType);
 
             // If it's the only quiz item, make it correct by default 
             if (container.QuizItems.Count == 1)
             {
                 container.CorrectQuizId = quizItem.Id;
             }
-            UpdateQuiz(quizType);
+            //UpdateQuiz(quizType);
         }
 
         internal void ImportDatabase(string filePath)
