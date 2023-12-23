@@ -3,22 +3,22 @@ using Data;
 using Data.Entities;
 using Data.Enums;
 using Data.Interfaces;
-
+using Realms;
 using System;
 using System.Collections.Generic;
 
 using System.Linq;
+using System.Reflection;
 
 
 namespace Content_Manager.Stores
 {
     public class ContentStore
     {
-        public event Action DatabaseInitialized;
-        public event Action DatabaseUpdated;
 
-        #region Properties
-        public List<SegmentEntity> StoredSegments;
+        #region Events, Properties and Fields
+        private readonly Storage _storage;
+
         private SegmentEntity? _selectedSegment;
         public SegmentEntity? SelectedSegment
         {
@@ -32,88 +32,20 @@ namespace Content_Manager.Stores
                 SelectedSegmentChanged?.Invoke(value);
             }
         }
-        #endregion
 
-        #region Fields
-        private readonly ContentModel _contentModel;
-        #endregion
+        public Realm Database => _storage.Database;
 
-        #region Events
         public event Action<SegmentEntity>? SelectedSegmentChanged;
         public event Action<string, IEntityBase>? ItemAdded;
         public event Action<string, IEntityBase>? ItemUpdated;
         public event Action<string, IEntityBase>? ItemDeleted;
         #endregion
 
-        #region Initialization
-        public ContentStore(ContentModel contentModel)
+        public ContentStore(Storage storage)
         {
-            _contentModel = contentModel;
-            _contentModel.DatabaseInitialized += ContentModelInitialized;
-            _contentModel.DatabaseUpdated += OnDatabaseUpdated;
+            _storage = storage;
+            SelectedSegment = Database.All<SegmentEntity>().First();
         }
-
-        private void OnDatabaseUpdated()
-        {
-            LoadAllSegments();
-            DatabaseUpdated?.Invoke();
-        }
-
-        private void ContentModelInitialized()
-        {
-            LoadAllSegments();
-            DatabaseInitialized?.Invoke();
-        }
-        #endregion
-
-        #region SegmentHandlers
-        public void LoadAllSegments()
-        {
-            StoredSegments = _contentModel.Database.All<SegmentEntity>().ToList();
-        }
-        internal void UpdateSegment(SegmentEntity segment)
-        {
-            // Update in runtime collection
-            var index = StoredSegments.ToList().FindIndex(d => d.Id == segment.Id);
-            StoredSegments[index] = segment;
-
-            // Save to DB
-            _contentModel.UpdateItem<SegmentEntity>(segment);
-
-            // Let everybody know
-            ItemUpdated?.Invoke(nameof(SegmentEntity), segment);
-        }
-        internal void AddSegment(IModelBase item)
-        {
-            // Add to DB
-            _contentModel.AddItem<SegmentEntity>(ref item);
-
-            // Add to collection
-            StoredSegments.Add(item as SegmentEntity);
-
-            // Let everybody know
-            ItemAdded?.Invoke(nameof(SegmentEntity), item);
-        }
-        public void DeleteSegment(SegmentEntity item)
-        {
-            StoredSegments.Remove(item);
-
-            // Let everybody know
-            ItemDeleted?.Invoke(nameof(SegmentEntity), item);
-        }
-        internal SegmentEntity? FindSegmentByTitle(string segmentTitle)
-        {
-            return StoredSegments.Find(segment => segment.Title == segmentTitle);
-        }
-        public void DeleteSegments(IEnumerable<SegmentEntity> itemsToDelete)
-        {
-            var immutableItems = itemsToDelete.ToList();
-            foreach (var item in immutableItems)
-            {
-                DeleteSegment(item);
-            }
-        }
-        #endregion
 
         internal ReadingMaterialEntity GetReadingMaterialById(string id)
         {
@@ -139,29 +71,31 @@ namespace Content_Manager.Stores
 
         internal IEnumerable<QuizItemEntity> GetQuizItemsBySegment(SegmentEntity segment)
         {
-            var allQuizItems = segment.CelebrityWordsQuiz.QuizItems
-                .Union(segment.ProverbSelectionQuiz.QuizItems)
-                .Union(segment.ProverbBuilderQuiz.QuizItems)
-                .Union(segment.GapFillerQuiz.QuizItems)
-                .Union(segment.TestingQuiz.Questions.SelectMany(q => q.QuizItems));
+            //    var allQuizItems = segment.CelebrityWordsQuiz.QuizItems
+            //        .Union(segment.ProverbSelectionQuiz.QuizItems)
+            //        .Union(segment.ProverbBuilderQuiz.QuizItems)
+            //        .Union(segment.GapFillerQuiz.QuizItems)
+            //        .Union(segment.TestingQuiz.Questions.SelectMany(q => q.QuizItems));
 
-            return allQuizItems;
+            //    return allQuizItems;
+            return null;
         }
 
         internal QuizItemEntity GetQuizItem(string id)
         {
-            return GetQuizItemsBySegment(SelectedSegment!).Where(o => o.Id == id).First();
+            return null;//GetQuizItemsBySegment(SelectedSegment!).Where(o => o.Id == id).First();
         }
 
         internal TestingQuestionEntity GetQuestionById(string id)
         {
-            var question = SelectedSegment!.TestingQuizes!.Questions.Find(q => q.Id == id);
-            return question!;
+            //var question = SelectedSegment!.TestingQuizes!.Questions.Find(q => q.Id == id);
+            //return question!;
+            return null;
         }
 
         internal DbMetaEntity GetDbMeta()
         {
-            return _contentModel.Database.All<DbMetaEntity>().First();
+            return Database.All<DbMetaEntity>().First();
         }
 
         internal void SaveDbMeta(string title, string description)
@@ -177,15 +111,12 @@ namespace Content_Manager.Stores
 
         internal void OpenDatabase(string filePath)
         {
-            _contentModel.OpenDatabase(filePath);
+            _storage.SetDatabaseConfig(filePath);
         }
         internal void CreateDatabase(string filePath)
         {
-            _contentModel.CreateDatabase(filePath);
-        }
-        internal void SaveCurrentSegment()
-        {
-            UpdateSegment(SelectedSegment!);
+            string? appVersion = Assembly.GetExecutingAssembly().GetName().Version?.ToString();
+            _storage.CreateDatabase(filePath, appVersion);
         }
 
         internal void DeleteQuestion(string questionId)
@@ -231,7 +162,7 @@ namespace Content_Manager.Stores
             var listeningMaterial = GetListeningMaterialById(id);
             SelectedSegment!.ListeningMaterials.Remove(listeningMaterial);
             //_contentModel!.DeleteItem<ListeningMaterialEntity>(listeningMaterial);
-            SaveCurrentSegment();
+            //SaveCurrentSegment();
         }
 
         internal void DeleteReadingMaterial(string id)
@@ -239,7 +170,7 @@ namespace Content_Manager.Stores
             var readingMaterial = GetReadingMaterialById(id);
             SelectedSegment!.ReadingMaterials.Remove(readingMaterial);
             //_contentModel!.DeleteItem<ReadingMaterialEntity>(readingMaterial);
-            SaveCurrentSegment();
+            //SaveCurrentSegment();
         }
 
         internal void CreateSelectableQuizItem(QuizTypes quizType, QuizItemEntity? quizItem, dynamic container)
@@ -257,7 +188,7 @@ namespace Content_Manager.Stores
 
         internal void ImportDatabase(string filePath)
         {
-            _contentModel.ImportDatabase(filePath);
+            _storage.ImportDatabase(filePath);
         }
     }
 }

@@ -2,9 +2,9 @@
 using Content_Manager.Models;
 using Content_Manager.Services;
 using Content_Manager.Stores;
+using Data.Entities;
 using Data.Enums;
 using Data.Interfaces;
-using Data.Models;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -18,8 +18,8 @@ namespace Content_Manager.UserControls.MaterialControls
     {
         #region Events
         public event Action Refresh;
-        public event Action<IModelBase> Create;
-        public event Action<string?, IModelBase> Update;
+        public event Action<IEntityBase> Create;
+        public event Action<string?, IEntityBase> Update;
         public event Action<string> Delete;
         #endregion
 
@@ -32,7 +32,7 @@ namespace Content_Manager.UserControls.MaterialControls
         #region Properties
         private readonly ContentStore _contentStore = App.AppHost!.Services.GetRequiredService<ContentStore>();
         StylingService StylingService => App.AppHost!.Services.GetRequiredService<StylingService>();
-        private List<QuizItem> QuizItems { get; set; } = new List<QuizItem>();
+        private List<QuizItemEntity> QuizItems { get; set; } = new List<QuizItemEntity>();
         public string QuestionText
         {
             get { return (string)GetValue(ItemTextProperty); }
@@ -128,18 +128,18 @@ namespace Content_Manager.UserControls.MaterialControls
         #region Event Handlers
         private void Question_QuizItem_SetAsCorrect(string itemId)
         {
-            var question = _contentStore.SelectedSegment?.TestingQuiz.Questions.Where(q => q.Id == QuestionId).First();
-            question!.CorrectQuizId = itemId;
-            Update?.Invoke(QuestionId, question);
+            //var question = _contentStore.SelectedSegment?.TestingQuizes.Questions.Where(q => q.Id == QuestionId).First();
+            //question!.CorrectQuizId = itemId;
+            //Update?.Invoke(QuestionId, question);
         }
-        private void Question_QuizItemControl_Create(IModelBase model)
+        private void Question_QuizItemControl_Create(IEntityBase model)
         {
             var question = _contentStore.GetQuestionById(QuestionId);
 
-            _contentStore.CreateSelectableQuizItem(QuizTypes.Testing, model as QuizItem, question);
+            _contentStore.CreateSelectableQuizItem(QuizTypes.Testing, model as QuizItemEntity, question);
             Refresh?.Invoke();
         }
-        private void Question_QuizItem_Save(string? id, IModelBase model)
+        private void Question_QuizItem_Save(string? id, IEntityBase model)
         {
             Update?.Invoke(QuestionId, _contentStore.GetQuestionById(QuestionId));
         }

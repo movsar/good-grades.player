@@ -21,8 +21,8 @@ namespace Content_Manager.UserControls
 {
     public partial class QuizItemControl : UserControl, IMaterialControl
     {
-        public event Action<IModelBase> Create;
-        public event Action<string?, IModelBase> Update;
+        public event Action<IEntityBase> Create;
+        public event Action<string?, IEntityBase> Update;
         public event Action<string> Delete;
         public event Action<string> SetAsCorrect;
 

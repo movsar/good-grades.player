@@ -1,6 +1,4 @@
 ﻿using Content_Manager.Stores;
-using Data.Interfaces;
-using Data.Models;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Diagnostics.Tracing;

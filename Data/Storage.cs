@@ -6,7 +6,7 @@ namespace Data
 {
     public class Storage
     {
-        private Realm Database
+        public Realm Database
         {
             get
             {
@@ -29,7 +29,7 @@ namespace Data
             _logger = logger;
         }
 
-        private bool InitializeDatabase(string databasePath)
+        public void SetDatabaseConfig(string databasePath)
         {
             // Compacts the database if its size exceedes 30 MiB
             _dbConfig = new RealmConfiguration(databasePath)
@@ -40,8 +40,6 @@ namespace Data
                     return totalBytes > edgeSize && usedBytes / totalBytes < 0.5;
                 }
             };
-
-            return true;
         }
         public void CreateDatabase(string databasePath, string? appVersion)
         {
@@ -50,10 +48,7 @@ namespace Data
                 DropDatabase(databasePath);
             }
 
-            if (!InitializeDatabase(databasePath))
-            {
-                return;
-            };
+            SetDatabaseConfig(databasePath);
 
             var dbMeta = new DbMetaEntity()
             {

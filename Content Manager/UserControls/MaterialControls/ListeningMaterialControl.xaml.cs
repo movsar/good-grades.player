@@ -2,29 +2,22 @@
 using Content_Manager.Models;
 using Content_Manager.Services;
 using Content_Manager.Stores;
+using Data.Entities;
 using Data.Interfaces;
-using Data.Models;
 using Microsoft.Extensions.DependencyInjection;
-using Realms;
-using Shared.Controls;
 using Shared.Viewers;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Media.Media3D;
 
 namespace Content_Manager.UserControls
 {
     public partial class ListeningMaterialControl : UserControl, IMaterialControl
     {
-        public event Action<IModelBase> Create;
-        public event Action<string?, IModelBase> Update;
+        public event Action<IEntityBase> Create;
+        public event Action<string?, IEntityBase> Update;
         public event Action<string> Delete;
 
         #region Fields
@@ -123,7 +116,7 @@ namespace Content_Manager.UserControls
             LmTitle = TitleHintText;
         }
 
-        public ListeningMaterialControl(ListeningMaterial material)
+        public ListeningMaterialControl(ListeningMaterialEntity material)
         {
             SharedInitialization(true);
             SetUiForExistingMaterial();
@@ -218,10 +211,17 @@ namespace Content_Manager.UserControls
 
             if (string.IsNullOrEmpty(LmId))
             {
-                var lm = new ListeningMaterial(LmTitle, LmText, audio: LmAudio, image: LmImage);
+                var lm = new Data.Entities.ListeningMaterialEntity()
+                {
+                    Title = LmTitle,
+                    Text = LmText,
+                    Audio = LmAudio,
+                    Image = LmImage
+                };
+
                 ContentStore.SelectedSegment?.ListeningMaterials.Add(lm);
 
-                Create?.Invoke(lm);
+                //Create?.Invoke(lm);
             }
             else
             {

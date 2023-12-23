@@ -1,13 +1,9 @@
 ﻿using Content_Manager.Stores;
 using Content_Manager.UserControls;
-using Data.Models;
+using Data.Entities;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace Content_Manager.Commands
 {
@@ -15,8 +11,9 @@ namespace Content_Manager.Commands
     {
         private static void DeleteAction(ContentStore contentStore, SegmentList view)
         {
-            var selectedSegments = view.lvSegments.SelectedItems.Cast<Segment>();
-            var segmentsToRemove = contentStore.StoredSegments.Where(segment => selectedSegments.Select(s => s.Id).Contains(segment.Id));
+            var selectedSegments = view.lvSegments.SelectedItems.Cast<SegmentEntity>();
+
+            var segmentsToRemove = contentStore.Database.All<SegmentEntity>().Where(segment => selectedSegments.Select(s => s.Id).Contains(segment.Id));
 
             var result = MessageBox.Show($"Подтвердите удаление раздела \"{segmentsToRemove.First().Title}\"",
                                              "Good Grades",
@@ -25,9 +22,7 @@ namespace Content_Manager.Commands
 
             if (result == MessageBoxResult.Yes)
             {
-
-
-                contentStore.DeleteSegments(segmentsToRemove);
+                contentStore.Database.RemoveRange(segmentsToRemove);
             }
         }
         internal class DeleteSegment : CommandBase

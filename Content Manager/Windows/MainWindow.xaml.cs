@@ -2,6 +2,7 @@
 using Content_Manager.Stores;
 using Content_Manager.UserControls;
 using Content_Manager.Windows;
+using Data.Entities;
 using Data.Interfaces;
 using Microsoft.Extensions.Logging;
 using Squirrel;
@@ -30,11 +31,6 @@ namespace Content_Manager
             _contentStore = contentStore;
             _fileService = fileService;
             _logger = logger;
-
-            _contentStore.DatabaseInitialized += ContentStoreInitialized;
-            _contentStore.SelectedSegmentChanged += SelectedSegmentChanged;
-            _contentStore.DatabaseUpdated += OnDatabaseUpdated;
-            _contentStore.ItemUpdated += _contentStore_ItemUpdated;
           
             // Open last opened database
             var lastOpenedDatabasePath = _fileService.ReadResourceString("lastOpenedDatabasePath");
@@ -49,21 +45,21 @@ namespace Content_Manager
         {
         }
 
-        private void _contentStore_ItemUpdated(string interfaceName, IModelBase model)
+        //private void _contentStore_ItemUpdated(string interfaceName, IModelBase model)
+        //{
+        //    if (!interfaceName.Equals(nameof(IDbMeta)))
+        //    {
+        //        return;
+        //    }
+
+        //    var dbMeta = model as IDbMeta;
+
+        //    SetTitle(dbMeta!.Title);
+        //}
+
+        private void SelectedSegmentChanged(SegmentEntity segment)
         {
-            if (!interfaceName.Equals(nameof(IDbMeta)))
-            {
-                return;
-            }
-
-            var dbMeta = model as IDbMeta;
-
-            SetTitle(dbMeta!.Title);
-        }
-
-        private void SelectedSegmentChanged(Data.Models.Segment obj)
-        {
-            if (obj != null)
+            if (segment != null)
             {
                 lblChooseSegment.Visibility = Visibility.Hidden;
 
@@ -79,8 +75,6 @@ namespace Content_Manager
 
         private void ContentStoreInitialized()
         {
-            _contentStore.LoadAllSegments();
-
             lblChooseDb.Visibility = Visibility.Collapsed;
             lblChooseSegment.Visibility = Visibility.Visible;
             ucSegmentList.Visibility = Visibility.Visible;

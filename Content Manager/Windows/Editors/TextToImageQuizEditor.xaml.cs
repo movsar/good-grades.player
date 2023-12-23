@@ -1,10 +1,8 @@
 ﻿using Content_Manager.Stores;
 using Content_Manager.UserControls;
+using Data.Entities;
 using Data.Enums;
 using Microsoft.Extensions.DependencyInjection;
-using Shared.Viewers;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 
 namespace Content_Manager.Windows.Editors
@@ -16,10 +14,10 @@ namespace Content_Manager.Windows.Editors
     {
 
         private readonly ContentStore _contentStore = App.AppHost!.Services.GetRequiredService<ContentStore>();
-        private TextToImageQuiz _quiz;
+        private TextToImageQuizEntity _quiz;
         public TextToImageQuizEditor()
         {
-            _quiz = new TextToImageQuiz();
+            _quiz = new TextToImageQuizEntity();
             InitializeComponent();
             DataContext = this;
             RedrawUi();
@@ -27,26 +25,26 @@ namespace Content_Manager.Windows.Editors
 
         private void btnPreview_Click(object sender, RoutedEventArgs e)
         {
-            if (_contentStore?.SelectedSegment?.CelebrityWordsQuiz == null)
-            {
-                return;
-            }
-            var previewWindow = new CelebrityQuizPresenter(_contentStore.SelectedSegment.CelebrityWordsQuiz);
-            previewWindow.ShowDialog();
+            //if (_contentStore?.SelectedSegment?.CelebrityWordsQuiz == null)
+            //{
+            //    return;
+            //}
+            //var previewWindow = new CelebrityQuizPresenter(_contentStore.SelectedSegment.CelebrityWordsQuiz);
+            //previewWindow.ShowDialog();
         }
 
 
         #region Event Handlers
         private void UpdateQuiz()
         {
-            _contentStore.UpdateQuiz(QuizTypes.CelebrityWords);
+            //_contentStore.UpdateQuiz(QuizTypes.CelebrityWords);
             RedrawUi();
         }
 
         private void QuizItem_Delete(string itemId)
         {
-            var itemToRemove = _contentStore.SelectedSegment?.CelebrityWordsQuiz.QuizItems.Where(qi => qi.Id == itemId).First();
-            _contentStore.SelectedSegment?.CelebrityWordsQuiz.QuizItems.Remove(itemToRemove!);
+            //var itemToRemove = _contentStore.SelectedSegment?.CelebrityWordsQuiz.QuizItems.Where(qi => qi.Id == itemId).First();
+            //_contentStore.SelectedSegment?.CelebrityWordsQuiz.QuizItems.Remove(itemToRemove!);
 
             UpdateQuiz();
         }
@@ -61,14 +59,14 @@ namespace Content_Manager.Windows.Editors
         public void RedrawUi()
         {
             spItems.Children.Clear();
-            foreach (var quizItem in _contentStore.SelectedSegment!.CelebrityWordsQuiz.QuizItems)
-            {
-                var existingQuizItemControl = new QuizItemControl(QuizTypes.CelebrityWords, quizItem);
-                //existingQuizItemControl.Update += QuizItem_Save;
-                //existingQuizItemControl.Delete += QuizItem_Delete;
+            //foreach (var quizItem in _contentStore.SelectedSegment!.CelebrityWordsQuiz.QuizItems)
+            //{
+            //    var existingQuizItemControl = new QuizItemControl(QuizTypes.CelebrityWords, quizItem);
+            //    //existingQuizItemControl.Update += QuizItem_Save;
+            //    //existingQuizItemControl.Delete += QuizItem_Delete;
 
-                spItems.Children.Add(existingQuizItemControl);
-            }
+            //    spItems.Children.Add(existingQuizItemControl);
+            //}
 
             var newQuizItemControl = new QuizItemControl(QuizTypes.CelebrityWords);
             //newQuizItemControl.Create += QuizItem_Create;
