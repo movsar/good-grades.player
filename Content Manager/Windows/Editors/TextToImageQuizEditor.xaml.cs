@@ -51,10 +51,10 @@ namespace Content_Manager.Windows.Editors
             UpdateQuiz();
         }
 
-        private void QuizItem_Save(string? id, IModelBase model)
-        {
-            UpdateQuiz();
-        }
+        //private void QuizItem_Save(string? id, IModelBase model)
+        //{
+        //    UpdateQuiz();
+        //}
 
 
         #endregion
@@ -64,21 +64,21 @@ namespace Content_Manager.Windows.Editors
             foreach (var quizItem in _contentStore.SelectedSegment!.CelebrityWordsQuiz.QuizItems)
             {
                 var existingQuizItemControl = new QuizItemControl(QuizTypes.CelebrityWords, quizItem);
-                existingQuizItemControl.Update += QuizItem_Save;
-                existingQuizItemControl.Delete += QuizItem_Delete;
+                //existingQuizItemControl.Update += QuizItem_Save;
+                //existingQuizItemControl.Delete += QuizItem_Delete;
 
                 spItems.Children.Add(existingQuizItemControl);
             }
 
             var newQuizItemControl = new QuizItemControl(QuizTypes.CelebrityWords);
-            newQuizItemControl.Create += QuizItem_Create;
+            //newQuizItemControl.Create += QuizItem_Create;
             spItems.Children.Add(newQuizItemControl);
         }
 
-        private void QuizItem_Create(IModelBase model)
-        {
-            _contentStore.SelectedSegment?.Cele.QuizItems.Add(model as QuizItem);
-            UpdateQuiz();
-        }
+        //private void QuizItem_Create(IModelBase model)
+        //{
+        //    _contentStore.SelectedSegment?.Cele.QuizItems.Add(model as QuizItem);
+        //    UpdateQuiz();
+        //}
     }
 }

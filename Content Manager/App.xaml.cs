@@ -30,8 +30,6 @@ namespace Content_Manager
                     {
                         services.AddTransient<FileService>();
                         services.AddSingleton<Storage>();
-                        services.AddSingleton<ContentModel>();
-                        services.AddSingleton<ContentStore>();
                         services.AddSingleton<MainWindow>();
                         services.AddSingleton<StylingService>();
                     }).Build();

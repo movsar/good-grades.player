@@ -6,29 +6,43 @@ namespace Data
 {
     public class Storage
     {
-        public event Action<string> DatabaseInitialized;
-        public event Action DatabaseUpdated;
+        private Realm Database
+        {
+            get
+            {
+                try
+                {
+                    return Realm.GetInstance(_dbConfig);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogCritical(ex.Message, ex.Source, ex.StackTrace, ex.InnerException);
+                    throw;
+                }
+            }
+        }
 
-        private Realm _realmInstance;
         private ILogger _logger;
-
-        public RealmConfiguration DbConfig { get; private set; }
-
+        private RealmConfiguration _dbConfig;
         public Storage(ILogger<Storage> logger)
         {
             _logger = logger;
         }
 
-        public void OpenDatabase(string databasePath)
+        private bool InitializeDatabase(string databasePath)
         {
-            if (!InitializeDatabase(databasePath))
+            // Compacts the database if its size exceedes 30 MiB
+            _dbConfig = new RealmConfiguration(databasePath)
             {
-                return;
+                ShouldCompactOnLaunch = (totalBytes, usedBytes) =>
+                {
+                    ulong edgeSize = 30 * 1024 * 1024;
+                    return totalBytes > edgeSize && usedBytes / totalBytes < 0.5;
+                }
             };
 
-            DatabaseInitialized?.Invoke(databasePath);
+            return true;
         }
-
         public void CreateDatabase(string databasePath, string? appVersion)
         {
             if (File.Exists(databasePath))
@@ -47,35 +61,8 @@ namespace Data
                 AppVersion = appVersion
             };
 
-            _realmInstance.Write(() => _realmInstance.Add(dbMeta));
-
-            DatabaseInitialized?.Invoke(databasePath);
+            Database.Write(() => Database.Add(dbMeta));
         }
-
-        private bool InitializeDatabase(string databasePath)
-        {
-            // Compacts the database if its size exceedes 30 MiB
-            DbConfig = new RealmConfiguration(databasePath)
-            {
-                ShouldCompactOnLaunch = (totalBytes, usedBytes) =>
-                {
-                    ulong edgeSize = 30 * 1024 * 1024;
-                    return totalBytes > edgeSize && usedBytes / totalBytes < 0.5;
-                }
-            };
-            try
-            {
-                _realmInstance = Realm.GetInstance(DbConfig);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogCritical(ex.Message, ex.Source, ex.StackTrace, ex.InnerException);
-                return false;
-            }
-
-            return true;
-        }
-
         public void DropDatabase(string dbPath)
         {
             try
@@ -88,7 +75,6 @@ namespace Data
                 _logger.LogError(ex.Message, ex.StackTrace, ex.InnerException);
             }
         }
-
         public void ImportDatabase(string filePath)
         {
             var realmToImport = Realm.GetInstance(filePath);
@@ -97,15 +83,13 @@ namespace Data
 
             try
             {
-                _realmInstance.Write(() =>
+                Database.Write(() =>
                 {
                     foreach (SegmentEntity segment in segments)
                     {
-                        _realmInstance.Add(segment, true);
+                        Database.Add(segment, true);
                     }
                 });
-
-                DatabaseUpdated?.Invoke();
             }
             catch (Exception ex)
             {
