@@ -1,7 +1,6 @@
 ﻿using Content_Manager.Stores;
 using Content_Manager.UserControls;
 using Data.Entities.Materials;
-using Data.Enums;
 using Microsoft.Extensions.DependencyInjection;
 using System.Windows;
 
@@ -68,9 +67,9 @@ namespace Content_Manager.Windows.Editors
             //    spItems.Children.Add(existingQuizItemControl);
             //}
 
-            var newQuizItemControl = new QuizItemControl(QuizTypes.CelebrityWords);
+            //var newQuizItemControl = new QuizItemControl(QuizTypes.CelebrityWords);
             //newQuizItemControl.Create += QuizItem_Create;
-            spItems.Children.Add(newQuizItemControl);
+            //spItems.Children.Add(newQuizItemControl);
         }
 
         //private void QuizItem_Create(IModelBase model)

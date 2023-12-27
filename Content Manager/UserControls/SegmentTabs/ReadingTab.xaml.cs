@@ -23,35 +23,18 @@ namespace Content_Manager.UserControls.SegmentTabs
 
             foreach (var material in _contentStore.SelectedSegment!.ReadingMaterials)
             {
-                var rmcExisting = new ReadingMaterialControl(material);
-                rmcExisting.Update += ReadingMaterialControl_Save;
-                rmcExisting.Delete += ReadingMaterialControl_Delete;
+                var existingReadingMaterial = new ReadingMaterialControl(material);
+                //existingReadingMaterial.Update += ReadingMaterialControl_Save;
+                //existingReadingMaterial.Delete += ReadingMaterialControl_Delete;
 
-                spReadingMaterialControls.Children.Add(rmcExisting);
+                spReadingMaterialControls.Children.Add(existingReadingMaterial);
             }
 
             var rmcNew = new ReadingMaterialControl();
-            rmcNew.Create += RmcNew_Create;
+            //rmcNew.Create += RmcNew_Create;
 
             spReadingMaterialControls.Children.Add(rmcNew);
         }
 
-        private void RmcNew_Create(IModelBase obj)
-        {
-            _contentStore.SaveCurrentSegment();
-            RedrawUi();
-        }
-
-        private void ReadingMaterialControl_Delete(string id)
-        {
-            _contentStore.DeleteReadingMaterial(id);
-            RedrawUi();
-        }
-
-        private void ReadingMaterialControl_Save(string? id, IModelBase model)
-        {
-            _contentStore.SaveCurrentSegment();
-            RedrawUi();
-        }
     }
 }

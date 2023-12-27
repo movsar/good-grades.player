@@ -2,9 +2,8 @@
 using Content_Manager.Models;
 using Content_Manager.Services;
 using Content_Manager.Stores;
-using Data.Enums;
+using Data.Entities.Materials.QuizItems;
 using Data.Interfaces;
-using Data.Models;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -19,7 +18,7 @@ using Image = System.Windows.Controls.Image;
 
 namespace Content_Manager.UserControls
 {
-    public partial class QuizItemControl : UserControl, IMaterialControl
+    public partial class TextAndImageQuizItemControl : UserControl, IMaterialControl
     {
         public event Action<IEntityBase> Create;
         public event Action<string?, IEntityBase> Update;
@@ -29,7 +28,6 @@ namespace Content_Manager.UserControls
         #region Fields
         private const string Hint = "Введите описание";
         private FormCompletionInfo _formCompletionInfo;
-        private QuizTypes _quizType;
         #endregion
 
         #region Properties
@@ -41,7 +39,7 @@ namespace Content_Manager.UserControls
             set { SetValue(ItemTextProperty, value); }
         }
         public static readonly DependencyProperty ItemTextProperty =
-            DependencyProperty.Register("ItemText", typeof(string), typeof(QuizItemControl), new PropertyMetadata(""));
+            DependencyProperty.Register("ItemText", typeof(string), typeof(TextAndImageQuizItemControl), new PropertyMetadata(""));
 
         public string ItemId { get; }
         private byte[] ItemImage { get; set; }
@@ -90,7 +88,7 @@ namespace Content_Manager.UserControls
         {
             btnDelete.Visibility = Visibility.Visible;
         }
-        private void SharedInitialization(QuizTypes quizType, bool isExistingMaterial, bool isSelected)
+        private void SharedInitialization(bool isExistingMaterial, bool isSelected)
         {
             InitializeComponent();
             DataContext = this;
@@ -99,53 +97,25 @@ namespace Content_Manager.UserControls
             propertiesToWatch.Add(nameof(ItemText));
 
             // Decide what controls to make available
-            _quizType = quizType;
-            switch (quizType)
-            {
-                case QuizTypes.CelebrityWords:
-                    btnChooseImage.Visibility = Visibility.Visible;
+            btnChooseImage.Visibility = Visibility.Visible;
 
-                    propertiesToWatch.Add(nameof(ItemImage));
+            propertiesToWatch.Add(nameof(ItemImage));
 
-                    break;
-                case QuizTypes.Testing:
-                case QuizTypes.ProverbSelection:
-                    btnSetAsCorrect.Visibility = Visibility.Visible;
-
-                    if (isSelected)
-                    {
-                        btnSetAsCorrect.Content = "\uE73A";
-                        btnSetAsCorrect.Foreground = Brushes.DarkGreen;
-                    }
-                    else
-                    {
-                        btnSetAsCorrect.Content = "\uE739";
-                    }
-
-                    if (!isExistingMaterial)
-                    {
-                        btnSetAsCorrect.IsEnabled = false;
-                    }
-
-                    break;
-                default:
-                    break;
-            }
 
             _formCompletionInfo = new FormCompletionInfo(propertiesToWatch, isExistingMaterial);
             _formCompletionInfo.StatusChanged += OnFormStatusChanged;
         }
-        public QuizItemControl(QuizTypes quizType)
+        public TextAndImageQuizItemControl()
         {
-            SharedInitialization(quizType, false, false);
+            SharedInitialization(false, false);
             SetUiForNewMaterial();
 
             ItemText = Hint;
         }
 
-        public QuizItemControl(QuizTypes quizType, QuizItem quizItem, bool isSelected = false)
+        public TextAndImageQuizItemControl(TextAndImageQuizItem quizItem, bool isSelected = false)
         {
-            SharedInitialization(quizType, true, isSelected);
+            SharedInitialization(true, isSelected);
             SetUiForExistingMaterial();
 
             ItemId = quizItem.Id!;
@@ -227,13 +197,17 @@ namespace Content_Manager.UserControls
 
             if (string.IsNullOrEmpty(ItemId))
             {
-                var quizItem = new QuizItem(ItemText, ItemImage);
+                var quizItem = new TextAndImageQuizItem()
+                {
+                    Text = ItemText,
+                    Image = ItemImage
+                };
 
                 Create?.Invoke(quizItem);
             }
             else
             {
-                var quizItem = ContentStore.GetQuizItem(ItemId);
+                var quizItem = ContentStore.Database.All<TextAndImageQuizItem>().First(qi => qi.Id == ItemId);
                 quizItem.Image = ItemImage;
                 quizItem.Text = ItemText;
 
@@ -243,26 +217,26 @@ namespace Content_Manager.UserControls
 
         private void ValidateInput()
         {
-            switch (_quizType)
-            {
-                case QuizTypes.GapFiller:
-                    var gapOpeners = Regex.Matches(ItemText, @"\{");
-                    var gapClosers = Regex.Matches(ItemText, @"\}");
-                    var gappedWords = Regex.Matches(ItemText, @"\{\W*\w+.*?\}");
+            //switch (_quizType)
+            //{
+            //    case QuizTypes.GapFiller:
+            //        var gapOpeners = Regex.Matches(ItemText, @"\{");
+            //        var gapClosers = Regex.Matches(ItemText, @"\}");
+            //        var gappedWords = Regex.Matches(ItemText, @"\{\W*\w+.*?\}");
 
-                    if (gapOpeners.Count != gapClosers.Count || gapOpeners.Count != gappedWords.Count)
-                    {
-                        throw new Exception("Неправильное форматирование");
-                    }
+            //        if (gapOpeners.Count != gapClosers.Count || gapOpeners.Count != gappedWords.Count)
+            //        {
+            //            throw new Exception("Неправильное форматирование");
+            //        }
 
 
-                    if (gappedWords.Count == 0)
-                    {
-                        throw new Exception("Необходимо указать хотя бы одно слово для пропуска");
-                    }
+            //        if (gappedWords.Count == 0)
+            //        {
+            //            throw new Exception("Необходимо указать хотя бы одно слово для пропуска");
+            //        }
 
-                    break;
-            }
+            //        break;
+            //}
         }
         #endregion
 

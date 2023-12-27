@@ -2,14 +2,14 @@
 using Content_Manager.Models;
 using Content_Manager.Services;
 using Content_Manager.Stores;
+using Data.Entities.Materials;
 using Data.Interfaces;
-using Data.Models;
 using Microsoft.Extensions.DependencyInjection;
-using Shared.Controls;
 using Shared.Viewers;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -27,8 +27,8 @@ namespace Content_Manager.UserControls
         #endregion
 
         #region Properties
-        ContentStore ContentStore => App.AppHost!.Services.GetRequiredService<ContentStore>();
-        StylingService StylingService => App.AppHost!.Services.GetRequiredService<StylingService>();
+        ContentStore _contentStore = App.AppHost!.Services.GetRequiredService<ContentStore>();
+        StylingService _stylingService = App.AppHost!.Services.GetRequiredService<StylingService>();
 
         public string RmTitle
         {
@@ -64,13 +64,13 @@ namespace Content_Manager.UserControls
         }
         private void OnContentSet(bool isSet = true)
         {
-            btnUploadFromFile.Background = StylingService.StagedBrush;
+            btnUploadFromFile.Background = _stylingService.StagedBrush;
 
             _formCompletionInfo.Update(nameof(RmText), isSet);
         }
         private void OnImageSet(bool isSet = true)
         {
-            btnChooseImage.Background = StylingService.StagedBrush;
+            btnChooseImage.Background = _stylingService.StagedBrush;
 
             _formCompletionInfo.Update(nameof(RmImage), isSet);
         }
@@ -85,14 +85,14 @@ namespace Content_Manager.UserControls
         }
         private void SetUiForExistingMaterial()
         {
-            btnUploadFromFile.Background = StylingService.ReadyBrush;
+            btnUploadFromFile.Background = _stylingService.ReadyBrush;
 
             if (RmImage != null)
             {
-                btnChooseImage.Background = StylingService.ReadyBrush;
+                btnChooseImage.Background = _stylingService.ReadyBrush;
             }
 
-            btnPreview.Background = StylingService.ReadyBrush;
+            btnPreview.Background = _stylingService.ReadyBrush;
             btnDelete.Visibility = Visibility.Visible;
         }
 
@@ -198,17 +198,25 @@ namespace Content_Manager.UserControls
 
             if (string.IsNullOrEmpty(RmId))
             {
-                var newRm = new ReadingMaterial(RmTitle, RmText, RmImage);
-                ContentStore.SelectedSegment?.ReadingMaterials.Add(newRm);
+                var newRm = new ReadingMaterial()
+                {
+                    Title = RmTitle,
+                    Text = RmText,
+                    Image = RmImage
+                };
+                _contentStore.SelectedSegment?.ReadingMaterials.Add(newRm);
 
                 Create?.Invoke(newRm);
             }
             else
             {
-                var rm = ContentStore.GetReadingMaterialById(RmId);
-                rm.Title = RmTitle;
-                rm.Text = RmText;
-                rm.Image = RmImage;
+                var rm = _contentStore.Database.All<ReadingMaterial>().First(rm => rm.Id == RmId);
+                _contentStore.Database.Write(() =>
+                {
+                    rm.Title = RmTitle;
+                    rm.Text = RmText;
+                    rm.Image = RmImage;
+                });
 
                 Update?.Invoke(RmId, rm);
             }

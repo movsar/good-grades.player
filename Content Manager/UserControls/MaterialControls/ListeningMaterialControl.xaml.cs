@@ -9,6 +9,7 @@ using Shared.Viewers;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -211,25 +212,28 @@ namespace Content_Manager.UserControls
 
             if (string.IsNullOrEmpty(LmId))
             {
-                var lm = new Data.Entities.ListeningTask()
-                {
-                    Title = LmTitle,
-                    Text = LmText,
-                    Audio = LmAudio,
-                    Image = LmImage
-                };
+                //var lm = new Data.Entities.ListeningTask()
+                //{
+                //    Title = LmTitle,
+                //    Text = LmText,
+                //    Audio = LmAudio,
+                //    Image = LmImage
+                //};
 
-                ContentStore.SelectedSegment?.ListeningMaterials.Add(lm);
+                //ContentStore.SelectedSegment?.ListeningMaterials.Add(lm);
 
                 //Create?.Invoke(lm);
             }
             else
             {
-                var lm = ContentStore.GetListeningMaterialById(LmId);
-                lm.Title = LmTitle;
-                lm.Text = LmText;
-                lm.Image = LmImage;
-                lm.Audio = LmAudio;
+                var lm = ContentStore.Database.All<ListeningMaterial>().First(lm => lm.Id == LmId);
+                ContentStore.Database.Write(() =>
+                {
+                    lm.Title = LmTitle;
+                    lm.Text = LmText;
+                    lm.Image = LmImage;
+                    lm.Audio = LmAudio;
+                });
 
                 Update?.Invoke(LmId, lm);
             }

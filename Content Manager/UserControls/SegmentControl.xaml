@@ -18,7 +18,7 @@
                 <segmenttabs:ListeningTab/>
             </TabItem>
             <TabItem Header="Задачи">
-                <segmenttabs:QuizsTab/>
+                <segmenttabs:TasksTab/>
             </TabItem>
         </TabControl>
     </Grid>
