@@ -7,20 +7,19 @@ namespace Data.Entities
 {
     public class SegmentEntity : RealmObject, IEntityBase
     {
-        [PrimaryKey]
-        public string Id { get; } = ObjectId.GenerateNewId().ToString();
+        [PrimaryKey] public string Id { get; } = ObjectId.GenerateNewId().ToString();
+        [Required] public string Title { get; set; }
+        public string Description { get; set; }
         public DateTimeOffset CreatedAt { get; } = DateTimeOffset.Now;
         public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;
+        /******************************************************************/
         
-        [Required]
-        public string Title { get; set; }
-        public string Description { get; set; }
+        public IList<MatchingTaskMaterial> MatchingTasks { get; }
+        public IList<SelectingTaskMaterial> SelectingTasks { get; }
+        public IList<BuildingTaskMaterial> BuildingTasks { get; }
+        public IList<FillingTaskMaterial> FillingTasks { get; }
+        public IList<TestingTaskMaterial> TestingTasks { get; }
 
-        public IList<MatchingTaskMaterial> TextToImageQuizes { get; }
-        public IList<SelectingTaskMaterial> ProverbSelectionQuizes { get; }
-        public IList<BuildingTaskMaterial> ProverbBuilderQuizes { get; }
-        public IList<FillingTaskMaterial> GapFillerQuizes { get; }
-        public IList<TestingTaskMaterial> TestingQuizes { get; }
         public IList<ReadingMaterial> ReadingMaterials { get; }
         public IList<ListeningMaterial> ListeningMaterials { get; }
 

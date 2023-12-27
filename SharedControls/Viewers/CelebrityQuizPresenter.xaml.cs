@@ -9,12 +9,12 @@ namespace Shared.Viewers
         public CelebrityQuizPresenter(MatchingTaskMaterial celebrityWordsQuiz)
         {
             InitializeComponent();
-            foreach (var option in celebrityWordsQuiz.QuizItems)
+            foreach (var option in celebrityWordsQuiz.Matches)
             {
                 //spChallenges.Children.Add(option);
             }
 
-            foreach (var option in celebrityWordsQuiz.QuizItems)
+            foreach (var option in celebrityWordsQuiz.Matches)
             {
                 //spOptions.Children.Add(option);
             }
