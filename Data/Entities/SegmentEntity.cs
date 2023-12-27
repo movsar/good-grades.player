@@ -1,4 +1,5 @@
-﻿using Data.Interfaces;
+﻿using Data.Entities.Materials;
+using Data.Interfaces;
 using MongoDB.Bson;
 using Realms;
 
@@ -15,13 +16,13 @@ namespace Data.Entities
         public string Title { get; set; }
         public string Description { get; set; }
 
-        public IList<TextToImageQuizEntity> TextToImageQuizes { get; }
-        public IList<ProverbSelectionQuizEntity> ProverbSelectionQuizes { get; }
-        public IList<ProverbBuilderQuizEntity> ProverbBuilderQuizes { get; }
-        public IList<GapFillerQuizEntity> GapFillerQuizes { get; }
-        public IList<TestingQuizEntity> TestingQuizes { get; }
-        public IList<ReadingMaterialEntity> ReadingMaterials { get; }
-        public IList<ListeningMaterialEntity> ListeningMaterials { get; }
+        public IList<MatchingTaskMaterial> TextToImageQuizes { get; }
+        public IList<SelectingTaskMaterial> ProverbSelectionQuizes { get; }
+        public IList<BuildingTaskMaterial> ProverbBuilderQuizes { get; }
+        public IList<FillingTaskMaterial> GapFillerQuizes { get; }
+        public IList<TestingTaskMaterial> TestingQuizes { get; }
+        public IList<ReadingMaterial> ReadingMaterials { get; }
+        public IList<ListeningMaterial> ListeningMaterials { get; }
 
     }
 }

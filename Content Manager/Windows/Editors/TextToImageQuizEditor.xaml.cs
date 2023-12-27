@@ -1,6 +1,6 @@
 ﻿using Content_Manager.Stores;
 using Content_Manager.UserControls;
-using Data.Entities;
+using Data.Entities.Materials;
 using Data.Enums;
 using Microsoft.Extensions.DependencyInjection;
 using System.Windows;
@@ -14,10 +14,10 @@ namespace Content_Manager.Windows.Editors
     {
 
         private readonly ContentStore _contentStore = App.AppHost!.Services.GetRequiredService<ContentStore>();
-        private TextToImageQuizEntity _quiz;
+        private MatchingTaskMaterial _quiz;
         public TextToImageQuizEditor()
         {
-            _quiz = new TextToImageQuizEntity();
+            _quiz = new MatchingTaskMaterial();
             InitializeComponent();
             DataContext = this;
             RedrawUi();

@@ -1,21 +1,10 @@
 ﻿using Content_Manager.Stores;
-using Data.Models;
+using Data.Entities;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Channels;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Content_Manager.UserControls
 {
@@ -28,7 +17,7 @@ namespace Content_Manager.UserControls
             InitializeComponent();
             DataContext = this;
 
-            var dbMeta = _contentStore.GetDbMeta();
+            var dbMeta = _contentStore.Database.All<DbMeta>().First();
             txtDbName.Text = dbMeta.Title;
             txtDbCreatedAt.Text = dbMeta.CreatedAt.ToString("R");
             txtDescription.Text = dbMeta.Description;
@@ -40,7 +29,13 @@ namespace Content_Manager.UserControls
             var newName = txtDbName.Text;
             var newDescription = txtDescription.Text;
 
-            _contentStore.SaveDbMeta(newName, newDescription);
+            var dbMeta = _contentStore.Database.All<DbMeta>().First();
+            _contentStore.Database.Write(() =>
+            {
+                dbMeta.Title = newName;
+                dbMeta.Description = newDescription;
+            });
+
             Saved?.Invoke();
         }
 

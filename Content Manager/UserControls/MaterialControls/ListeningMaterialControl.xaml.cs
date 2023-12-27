@@ -2,7 +2,7 @@
 using Content_Manager.Models;
 using Content_Manager.Services;
 using Content_Manager.Stores;
-using Data.Entities;
+using Data.Entities.Materials;
 using Data.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Shared.Viewers;
@@ -116,7 +116,7 @@ namespace Content_Manager.UserControls
             LmTitle = TitleHintText;
         }
 
-        public ListeningMaterialControl(ListeningMaterialEntity material)
+        public ListeningMaterialControl(ListeningMaterial material)
         {
             SharedInitialization(true);
             SetUiForExistingMaterial();
@@ -211,7 +211,7 @@ namespace Content_Manager.UserControls
 
             if (string.IsNullOrEmpty(LmId))
             {
-                var lm = new Data.Entities.ListeningMaterialEntity()
+                var lm = new Data.Entities.ListeningTask()
                 {
                     Title = LmTitle,
                     Text = LmText,

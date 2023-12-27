@@ -9,6 +9,7 @@ using Squirrel;
 using Squirrel.Sources;
 using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
@@ -31,7 +32,7 @@ namespace Content_Manager
             _contentStore = contentStore;
             _fileService = fileService;
             _logger = logger;
-          
+
             // Open last opened database
             var lastOpenedDatabasePath = _fileService.ReadResourceString("lastOpenedDatabasePath");
             if (string.IsNullOrEmpty(lastOpenedDatabasePath) || !File.Exists(lastOpenedDatabasePath))
@@ -85,7 +86,7 @@ namespace Content_Manager
 
         private void SetTitle(string? title = null)
         {
-            Title = $"Good Grades | {_appVersion} | {title ?? _contentStore.GetDbMeta().Title}";
+            Title = $"Good Grades | {_appVersion} | {title ?? _contentStore.Database.All<DbMeta>().First().Title}";
         }
 
         private void mnuOpenDatabase_Click(object sender, RoutedEventArgs e)

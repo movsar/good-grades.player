@@ -1,20 +1,19 @@
-﻿using Data.Interfaces;
+﻿using Data.Entities.Materials.QuizItems;
+using Data.Interfaces;
 using MongoDB.Bson;
 using Realms;
 
-namespace Data.Entities
+namespace Data.Entities.Materials
 {
-    public class ProverbSelectionQuizEntity : RealmObject, IEntityBase
+    public class SelectingTaskMaterial : RealmObject, IEntityBase
     {
-        #region Properties
         [Required]
         [PrimaryKey]
         public string Id { get; } = ObjectId.GenerateNewId().ToString();
         public DateTimeOffset CreatedAt { get; } = DateTimeOffset.Now;
         public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;
-
+        /******************************************************************/
         public string CorrectQuizId { get; set; }
-        public IList<QuizItemEntity> QuizItems { get; }
-        #endregion
+        public IList<TextQuizItem> QuizItems { get; }
     }
 }

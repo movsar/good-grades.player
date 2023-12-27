@@ -2,14 +2,15 @@
 using MongoDB.Bson;
 using Realms;
 
-namespace Data.Entities
+namespace Data.Entities.Materials
 {
-    public class ListeningMaterialEntity : RealmObject, IEntityBase
+    public class ListeningMaterial : RealmObject, IEntityBase
     {
         [PrimaryKey]
         public string Id { get; set; } = ObjectId.GenerateNewId().ToString();
         public DateTimeOffset CreatedAt { get; } = DateTimeOffset.Now;
         public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;
+        /******************************************************************/
 
         [Required]
         public string Title { get; set; }

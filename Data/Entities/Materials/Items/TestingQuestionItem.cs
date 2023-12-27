@@ -2,17 +2,18 @@
 using MongoDB.Bson;
 using Realms;
 
-namespace Data.Entities
+namespace Data.Entities.Materials.QuizItems
 {
-    public class TextToImageQuizEntity : RealmObject, IEntityBase
+    public class TestingQuestionItem : RealmObject, IEntityBase
     {
-        #region Properties
         [Required]
         [PrimaryKey]
         public string Id { get; } = ObjectId.GenerateNewId().ToString();
         public DateTimeOffset CreatedAt { get; } = DateTimeOffset.Now;
         public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;
-        public IList<QuizItemEntity> QuizItems { get; }
-        #endregion
+        /******************************************************************/
+        public string QuestionText { get; set; }
+        public string CorrectAnswerId { get; set; }
+        public IList<TextQuizItem> Answers { get; }
     }
 }

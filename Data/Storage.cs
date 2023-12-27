@@ -50,7 +50,7 @@ namespace Data
 
             SetDatabaseConfig(databasePath);
 
-            var dbMeta = new DbMetaEntity()
+            var dbMeta = new DbMeta()
             {
                 Title = Path.GetFileNameWithoutExtension(databasePath),
                 AppVersion = appVersion

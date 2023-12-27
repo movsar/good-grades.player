@@ -1,7 +1,7 @@
 ﻿using Content_Manager.Commands;
 using Content_Manager.Stores;
+using Data.Entities;
 using Data.Interfaces;
-using Data.Models;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -27,13 +27,11 @@ namespace Content_Manager.UserControls
             _contentStore.ItemAdded += OnItemAdded;
             _contentStore.ItemDeleted += OnItemDeleted;
             _contentStore.ItemUpdated += OnItemUpdated;
-            _contentStore.DatabaseUpdated += OnDatabaseLoaded;
-            _contentStore.DatabaseInitialized += OnDatabaseLoaded;
         }
         private void RedrawSegmentList(string? selectedSegmentId = null)
         {
             lvSegments.Items.Clear();
-            foreach (var segment in _contentStore.StoredSegments)
+            foreach (var segment in _contentStore.Database.All<SegmentEntity>())
             {
                 lvSegments.Items.Add(segment);
             }
@@ -44,7 +42,7 @@ namespace Content_Manager.UserControls
                 return;
             }
 
-            var currentSegment = _contentStore.StoredSegments.Where(item => item.Id == selectedSegmentId).First();
+            var currentSegment = _contentStore.Database.All<SegmentEntity>().Where(item => item.Id == selectedSegmentId).First();
             lvSegments.SelectedItem = currentSegment;
         }
         private void OnDatabaseLoaded()
@@ -53,14 +51,14 @@ namespace Content_Manager.UserControls
         }
         private void BtnNewSection_Click(object sender, RoutedEventArgs e)
         {
-            ISegment segment = new Segment() { Title = "Керла дакъа" };
+            SegmentEntity segment = new SegmentEntity() { Title = "Керла дакъа" };
 
-            _contentStore.AddSegment(segment);
+            _contentStore.Database.Add(segment);
         }
 
         private void lvSegments_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var segment = ((Segment)lvSegments.SelectedItem);
+            var segment = ((SegmentEntity)lvSegments.SelectedItem);
             if (segment == null) return;
 
             if (_contentStore.SelectedSegment?.Id == segment.Id) return;
@@ -68,9 +66,9 @@ namespace Content_Manager.UserControls
         }
 
         #region Segment Event Handlers
-        private void OnItemAdded(string modelType, IModelBase model)
+        private void OnItemAdded(string modelType, IEntityBase model)
         {
-            if (!modelType.Equals(nameof(ISegment)))
+            if (!modelType.Equals(nameof(SegmentEntity)))
             {
                 return;
             }
@@ -78,9 +76,9 @@ namespace Content_Manager.UserControls
             RedrawSegmentList();
         }
 
-        private void OnItemUpdated(string modelType, IModelBase model)
+        private void OnItemUpdated(string modelType, IEntityBase model)
         {
-            if (!modelType.Equals(nameof(ISegment)))
+            if (!modelType.Equals(nameof(SegmentEntity)))
             {
                 return;
             }
@@ -88,9 +86,9 @@ namespace Content_Manager.UserControls
             RedrawSegmentList(model.Id);
         }
 
-        private void OnItemDeleted(string modelType, IModelBase model)
+        private void OnItemDeleted(string modelType, IEntityBase model)
         {
-            if (!modelType.Equals(nameof(ISegment)))
+            if (!modelType.Equals(nameof(SegmentEntity)))
             {
                 return;
             }

@@ -4,7 +4,7 @@ using Realms;
 
 namespace Data.Entities
 {
-    public class DbMetaEntity : RealmObject, IEntityBase
+    public class DbMeta : RealmObject, IEntityBase
     {
         #region Properties
         [Required]

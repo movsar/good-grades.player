@@ -2,7 +2,7 @@
 using Content_Manager.Models;
 using Content_Manager.Services;
 using Content_Manager.Stores;
-using Data.Entities;
+using Data.Entities.Materials.QuizItems;
 using Data.Enums;
 using Data.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,7 +32,7 @@ namespace Content_Manager.UserControls.MaterialControls
         #region Properties
         private readonly ContentStore _contentStore = App.AppHost!.Services.GetRequiredService<ContentStore>();
         StylingService StylingService => App.AppHost!.Services.GetRequiredService<StylingService>();
-        private List<QuizItemEntity> QuizItems { get; set; } = new List<QuizItemEntity>();
+        private List<TextAndImageQuizItem> QuizItems { get; set; } = new List<TextAndImageQuizItem>();
         public string QuestionText
         {
             get { return (string)GetValue(ItemTextProperty); }
@@ -136,7 +136,7 @@ namespace Content_Manager.UserControls.MaterialControls
         {
             var question = _contentStore.GetQuestionById(QuestionId);
 
-            _contentStore.CreateSelectableQuizItem(QuizTypes.Testing, model as QuizItemEntity, question);
+            _contentStore.CreateSelectableQuizItem(QuizTypes.Testing, model as TextAndImageQuizItem, question);
             Refresh?.Invoke();
         }
         private void Question_QuizItem_Save(string? id, IEntityBase model)

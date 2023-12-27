@@ -1,7 +1,7 @@
 ﻿using Content_Manager.Stores;
+using Data.Entities;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Diagnostics.Tracing;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -40,10 +40,14 @@ namespace Content_Manager.UserControls.SegmentTabs
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            _contentStore.SelectedSegment!.Title = Title;
-            _contentStore.SelectedSegment!.Description = Description;
+            var segment = _contentStore.Database.All<SegmentEntity>().First(s => s.Id == _contentStore.SelectedSegment!.Id);
+            _contentStore.Database.Write(() =>
+            {
+                segment.Title = Title;
+                segment.Description = Description;
+            });
 
-            _contentStore.UpdateSegment(_contentStore.SelectedSegment!);
+            _contentStore.SelectedSegment = segment;
         }
     }
 }
