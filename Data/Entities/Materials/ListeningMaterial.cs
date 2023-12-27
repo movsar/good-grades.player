@@ -6,14 +6,12 @@ namespace Data.Entities.Materials
 {
     public class ListeningMaterial : RealmObject, IEntityBase
     {
-        [PrimaryKey]
-        public string Id { get; set; } = ObjectId.GenerateNewId().ToString();
+        [Required][PrimaryKey] public string Id { get; } = ObjectId.GenerateNewId().ToString();
+        [Required] public string SectionId { get; set; }
+        [Required] public string Title { get; set; }
         public DateTimeOffset CreatedAt { get; } = DateTimeOffset.Now;
         public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;
         /******************************************************************/
-
-        [Required]
-        public string Title { get; set; }
         public string Text { get; set; }
         public byte[] Audio { get; set; }
         public byte[] Image { get; set; }
