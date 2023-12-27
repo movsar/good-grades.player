@@ -35,6 +35,7 @@ namespace Content_Manager.Stores
 
         public Realm Database => _storage.Database;
 
+        public event Action? CurrentDatabaseChanged;
         public event Action<SegmentEntity>? SelectedSegmentChanged;
         public event Action<string, IEntityBase>? ItemAdded;
         public event Action<string, IEntityBase>? ItemUpdated;
@@ -50,11 +51,15 @@ namespace Content_Manager.Stores
         internal void OpenDatabase(string filePath)
         {
             _storage.SetDatabaseConfig(filePath);
+
+            CurrentDatabaseChanged?.Invoke();
         }
         internal void CreateDatabase(string filePath)
         {
             string? appVersion = Assembly.GetExecutingAssembly().GetName().Version?.ToString();
             _storage.CreateDatabase(filePath, appVersion);
+
+            CurrentDatabaseChanged?.Invoke();
         }
 
         internal void ImportDatabase(string filePath)

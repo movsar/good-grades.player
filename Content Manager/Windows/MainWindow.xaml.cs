@@ -22,7 +22,6 @@ namespace Content_Manager
         private readonly FileService _fileService;
         private ILogger _logger;
 
-        private readonly string _appVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
         public MainWindow(ContentStore contentStore, FileService fileService, ILogger<MainWindow> logger)
         {
@@ -42,9 +41,6 @@ namespace Content_Manager
             _contentStore.OpenDatabase(lastOpenedDatabasePath);
         }
 
-        private void OnDatabaseUpdated()
-        {
-        }
 
         //private void _contentStore_ItemUpdated(string interfaceName, IModelBase model)
         //{
@@ -74,27 +70,20 @@ namespace Content_Manager
             }
         }
 
-        private void ContentStoreInitialized()
-        {
-            lblChooseDb.Visibility = Visibility.Collapsed;
-            lblChooseSegment.Visibility = Visibility.Visible;
-            ucSegmentList.Visibility = Visibility.Visible;
-            mnuDatabaseInfo.IsEnabled = true;
-
-            SetTitle();
-        }
-
         private void SetTitle(string? title = null)
         {
+            string _appVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
             Title = $"Good Grades | {_appVersion} | {title ?? _contentStore.Database.All<DbMeta>().First().Title}";
         }
 
+        #region Database Operations
         private void mnuOpenDatabase_Click(object sender, RoutedEventArgs e)
         {
             string filePath = FileService.SelectDatabaseFilePath();
             if (string.IsNullOrEmpty(filePath)) return;
 
             _contentStore.OpenDatabase(filePath);
+            OnDatabaseOpened();
         }
 
         private void mnuCreateDatabase_Click(object sender, RoutedEventArgs e)
@@ -107,18 +96,44 @@ namespace Content_Manager
             Task.Delay(200);
             var dbInfo = new DbInfoWindow();
             dbInfo.ShowDialog();
+
+            OnDatabaseOpened();
         }
+
         private void mnuDatabaseInfo_Click(object sender, RoutedEventArgs e)
         {
             var dbInfoWindow = new DbInfoWindow();
             dbInfoWindow.ShowDialog();
         }
+
         private void mnuAbout_Click(object sender, RoutedEventArgs e)
         {
             var aboutWindow = new AboutWindow();
             aboutWindow.ShowDialog();
         }
 
+        private void OnDatabaseOpened()
+        {
+            lblChooseDb.Visibility = Visibility.Collapsed;
+            lblChooseSegment.Visibility = Visibility.Visible;
+            ucSegmentList.Visibility = Visibility.Visible;
+            mnuDatabaseInfo.IsEnabled = true;
+
+            SetTitle();
+        }
+
+        private void mnuImportDatabase_Click(object sender, RoutedEventArgs e)
+        {
+            string filePath = FileService.SelectDatabaseFilePath();
+            if (!File.Exists(filePath))
+            {
+                return;
+            }
+            _contentStore.ImportDatabase(filePath);
+        }
+        #endregion
+
+        #region App Install, Update and Uninstall
         private static void OnAppInstall(SemanticVersion version, IAppTools tools)
         {
             tools.CreateShortcutForThisExe(ShortcutLocation.StartMenu | ShortcutLocation.Desktop);
@@ -191,14 +206,6 @@ namespace Content_Manager
             await UpdateMyApp();
         }
 
-        private void mnuImportDatabase_Click(object sender, RoutedEventArgs e)
-        {
-            string filePath = FileService.SelectDatabaseFilePath();
-            if (!File.Exists(filePath))
-            {
-                return;
-            }
-            _contentStore.ImportDatabase(filePath);
-        }
+        #endregion
     }
 }

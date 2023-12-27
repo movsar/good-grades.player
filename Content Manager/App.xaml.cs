@@ -32,6 +32,7 @@ namespace Content_Manager
                         services.AddSingleton<Storage>();
                         services.AddSingleton<MainWindow>();
                         services.AddSingleton<StylingService>();
+                        services.AddSingleton<ContentStore>();
                     }).Build();
         }
 

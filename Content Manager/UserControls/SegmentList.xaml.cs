@@ -27,7 +27,14 @@ namespace Content_Manager.UserControls
             _contentStore.ItemAdded += OnItemAdded;
             _contentStore.ItemDeleted += OnItemDeleted;
             _contentStore.ItemUpdated += OnItemUpdated;
+            _contentStore.CurrentDatabaseChanged += _contentStore_CurrentDatabaseChanged;
         }
+
+        private void _contentStore_CurrentDatabaseChanged()
+        {
+            RedrawSegmentList();
+        }
+
         private void RedrawSegmentList(string? selectedSegmentId = null)
         {
             lvSegments.Items.Clear();
@@ -45,15 +52,11 @@ namespace Content_Manager.UserControls
             var currentSegment = _contentStore.Database.All<SegmentEntity>().Where(item => item.Id == selectedSegmentId).First();
             lvSegments.SelectedItem = currentSegment;
         }
-        private void OnDatabaseLoaded()
-        {
-            RedrawSegmentList();
-        }
+ 
         private void BtnNewSection_Click(object sender, RoutedEventArgs e)
         {
             SegmentEntity segment = new SegmentEntity() { Title = "Керла дакъа" };
-
-            _contentStore.Database.Add(segment);
+            _contentStore.Database.Write(()=> _contentStore.Database.Add(segment));
         }
 
         private void lvSegments_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -72,7 +75,7 @@ namespace Content_Manager.UserControls
             {
                 return;
             }
-
+            
             RedrawSegmentList();
         }
 
