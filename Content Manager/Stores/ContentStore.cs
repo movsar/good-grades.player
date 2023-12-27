@@ -1,4 +1,5 @@
-﻿using Data;
+﻿using Content_Manager.Services;
+using Data;
 using Data.Entities;
 using Data.Interfaces;
 using Realms;
@@ -18,7 +19,7 @@ namespace Content_Manager.Stores
 
         #region Events, Properties and Fields
         private readonly Storage _storage;
-
+        private readonly FileService _fileService;
         private SegmentEntity? _selectedSegment;
         public SegmentEntity? SelectedSegment
         {
@@ -42,15 +43,17 @@ namespace Content_Manager.Stores
         public event Action<string, IEntityBase>? ItemDeleted;
         #endregion
 
-        public ContentStore(Storage storage)
+        public ContentStore(Storage storage, FileService fileService)
         {
             _storage = storage;
+            _fileService = fileService;
             SelectedSegment = Database.All<SegmentEntity>().FirstOrDefault();
         }
 
         internal void OpenDatabase(string filePath)
         {
             _storage.SetDatabaseConfig(filePath);
+            _fileService.SetResourceString("lastOpenedDatabasePath", filePath);
 
             CurrentDatabaseChanged?.Invoke();
         }
