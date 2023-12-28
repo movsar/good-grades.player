@@ -74,13 +74,13 @@ namespace Data
         {
             var realmToImport = Realm.GetInstance(filePath);
 
-            var segments = realmToImport.All<SegmentEntity>();
+            var segments = realmToImport.All<Segment>();
 
             try
             {
                 Database.Write(() =>
                 {
-                    foreach (SegmentEntity segment in segments)
+                    foreach (Segment segment in segments)
                     {
                         Database.Add(segment, true);
                     }

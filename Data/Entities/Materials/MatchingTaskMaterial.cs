@@ -11,9 +11,9 @@ namespace Data.Entities.Materials
      */
     public class MatchingTaskMaterial : RealmObject, IEntityBase
     {
-        [Required][PrimaryKey] public string Id { get; } = ObjectId.GenerateNewId().ToString();
         [Required] public string Title { get; set; }
-        public DateTimeOffset CreatedAt { get; } = DateTimeOffset.Now;
+        [Required][PrimaryKey] public string Id { get; set; } = ObjectId.GenerateNewId().ToString();
+        public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.Now;
         public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;
         /******************************************************************/
         public IList<TextAndImageQuizItem> Matches { get; }

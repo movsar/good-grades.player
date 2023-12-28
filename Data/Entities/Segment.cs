@@ -5,7 +5,7 @@ using Realms;
 
 namespace Data.Entities
 {
-    public class SegmentEntity : RealmObject, IEntityBase
+    public class Segment : RealmObject, IEntityBase
     {
         [PrimaryKey] public string Id { get; } = ObjectId.GenerateNewId().ToString();
         [Required] public string Title { get; set; }

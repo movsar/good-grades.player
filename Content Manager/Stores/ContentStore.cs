@@ -20,8 +20,8 @@ namespace Content_Manager.Stores
         #region Events, Properties and Fields
         private readonly Storage _storage;
         private readonly FileService _fileService;
-        private SegmentEntity? _selectedSegment;
-        public SegmentEntity? SelectedSegment
+        private Segment? _selectedSegment;
+        public Segment? SelectedSegment
         {
             get
             {
@@ -37,7 +37,7 @@ namespace Content_Manager.Stores
         public Realm Database => _storage.Database;
 
         public event Action? CurrentDatabaseChanged;
-        public event Action<SegmentEntity>? SelectedSegmentChanged;
+        public event Action<Segment>? SelectedSegmentChanged;
 
         public event Action<IEntityBase>? ItemAdded;
         public event Action<IEntityBase>? ItemUpdated;
@@ -48,7 +48,6 @@ namespace Content_Manager.Stores
         {
             _storage = storage;
             _fileService = fileService;
-            SelectedSegment = Database.All<SegmentEntity>().FirstOrDefault();
         }
 
         internal void OpenDatabase(string filePath)
@@ -62,8 +61,7 @@ namespace Content_Manager.Stores
         {
             string? appVersion = Assembly.GetExecutingAssembly().GetName().Version?.ToString();
             _storage.CreateDatabase(filePath, appVersion);
-
-            CurrentDatabaseChanged?.Invoke();
+            OpenDatabase(filePath);
         }
 
         internal void ImportDatabase(string filePath)

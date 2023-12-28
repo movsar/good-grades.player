@@ -11,7 +11,7 @@ namespace Content_Manager.Commands
     {
         private static void DeleteAction(ContentStore contentStore, SegmentList view)
         {
-            SegmentEntity? selectedSegment = view.lvSegments.SelectedItems.Cast<SegmentEntity>().FirstOrDefault();
+            Segment? selectedSegment = view.lvSegments.SelectedItems.Cast<Segment>().FirstOrDefault();
             if (selectedSegment == null)
             {
                 return;

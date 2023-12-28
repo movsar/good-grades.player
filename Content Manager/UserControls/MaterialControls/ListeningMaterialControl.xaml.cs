@@ -17,16 +17,10 @@ namespace Content_Manager.UserControls
 {
     public partial class ListeningMaterialControl : UserControl, IMaterialControl
     {
-        public event Action<IEntityBase> Create;
-        public event Action<string?, IEntityBase> Update;
-        public event Action<string> Delete;
-
-        #region Fields
-        private FormCompletionInfo _formCompletionInfo;
-        private const string TitleHintText = "Введите название материала";
-        #endregion
 
         #region Properties
+        private FormCompletionInfo _formCompletionInfo;
+        private const string TitleHintText = "Введите название материала";
         ContentStore ContentStore => App.AppHost!.Services.GetRequiredService<ContentStore>();
         StylingService StylingService => App.AppHost!.Services.GetRequiredService<StylingService>();
 
@@ -212,17 +206,17 @@ namespace Content_Manager.UserControls
 
             if (string.IsNullOrEmpty(LmId))
             {
-                //var lm = new Data.Entities.ListeningTask()
-                //{
-                //    Title = LmTitle,
-                //    Text = LmText,
-                //    Audio = LmAudio,
-                //    Image = LmImage
-                //};
+                var lm = new ListeningMaterial
+                {
+                    Title = LmTitle,
+                    Text = LmText,
+                    Audio = LmAudio,
+                    Image = LmImage
+                };
 
-                //ContentStore.SelectedSegment?.ListeningMaterials.Add(lm);
-
-                //Create?.Invoke(lm);
+                ContentStore.Database.Write(() => ContentStore.SelectedSegment?.ListeningMaterials.Add(lm));
+               
+                ContentStore.RaiseItemAddedEvent(lm);
             }
             else
             {
@@ -234,14 +228,16 @@ namespace Content_Manager.UserControls
                     lm.Image = LmImage;
                     lm.Audio = LmAudio;
                 });
-
-                Update?.Invoke(LmId, lm);
+                
+                ContentStore.RaiseItemUpdatedEvent(lm);
             }
         }
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-            Delete?.Invoke(LmId);
+            var lm = ContentStore.Database.Find<ReadingMaterial>(LmId);
+            ContentStore.Database.Write(() => ContentStore.Database.Remove(lm));
+            ContentStore.RaiseItemDeletedEvent(lm);
         }
         #endregion
 

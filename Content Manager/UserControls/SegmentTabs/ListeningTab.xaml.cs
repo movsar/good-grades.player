@@ -25,7 +25,7 @@ namespace Content_Manager.UserControls.SegmentTabs
             {
                 var existingMaterial = new ListeningMaterialControl(material);
                 //existingMaterial.Update += ExistingMaterial_Save;
-                existingMaterial.Delete += ExistingMaterial_Delete;
+                //existingMaterial.Delete += ExistingMaterial_Delete;
                 spListeningMaterialControls.Children.Add(existingMaterial);
             }
 

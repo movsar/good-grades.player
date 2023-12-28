@@ -13,6 +13,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
+using static Realms.Sync.MongoClient;
 
 namespace Content_Manager
 {
@@ -37,6 +38,7 @@ namespace Content_Manager
             if (!string.IsNullOrEmpty(lastOpenedDatabasePath) && File.Exists(lastOpenedDatabasePath))
             {
                 _contentStore.OpenDatabase(lastOpenedDatabasePath);
+                _contentStore.SelectedSegment = _contentStore.Database.All<Segment>().FirstOrDefault();
             }
         }
 
@@ -53,7 +55,7 @@ namespace Content_Manager
         //    SetTitle(dbMeta!.Title);
         //}
 
-        private void SelectedSegmentChanged(SegmentEntity segment)
+        private void SelectedSegmentChanged(Segment segment)
         {
             if (segment != null)
             {

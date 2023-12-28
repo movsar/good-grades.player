@@ -17,16 +17,10 @@ namespace Content_Manager.UserControls
 {
     public partial class ReadingMaterialControl : UserControl, IMaterialControl
     {
-        public event Action<IEntityBase> Create;
-        public event Action<string?, IEntityBase> Update;
-        public event Action<string> Delete;
-
-        #region Fields
+        #region Properties and Fields
         private FormCompletionInfo _formCompletionInfo;
         private const string TitleHintText = "Введите название материала";
-        #endregion
 
-        #region Properties
         ContentStore _contentStore = App.AppHost!.Services.GetRequiredService<ContentStore>();
         StylingService _stylingService = App.AppHost!.Services.GetRequiredService<StylingService>();
 
@@ -198,15 +192,15 @@ namespace Content_Manager.UserControls
 
             if (string.IsNullOrEmpty(RmId))
             {
-                var newRm = new ReadingMaterial()
+                var rm = new ReadingMaterial()
                 {
                     Title = RmTitle,
                     Text = RmText,
                     Image = RmImage
                 };
-                _contentStore.SelectedSegment?.ReadingMaterials.Add(newRm);
+                _contentStore.Database.Write(() => _contentStore.SelectedSegment?.ReadingMaterials.Add(rm));
 
-                Create?.Invoke(newRm);
+                _contentStore.RaiseItemAddedEvent(rm);
             }
             else
             {
@@ -218,13 +212,16 @@ namespace Content_Manager.UserControls
                     rm.Image = RmImage;
                 });
 
-                Update?.Invoke(RmId, rm);
+                _contentStore.RaiseItemUpdatedEvent(rm);
             }
         }
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-            Delete?.Invoke(RmId);
+            var all = _contentStore.Database.All<ReadingMaterial>().ToList();
+            var rm = _contentStore.Database.Find<ReadingMaterial>(RmId);
+            _contentStore.Database.Write(() => _contentStore.Database.Remove(rm));
+            _contentStore.RaiseItemDeletedEvent(rm);
         }
         #endregion
 

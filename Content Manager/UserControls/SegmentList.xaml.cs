@@ -37,7 +37,7 @@ namespace Content_Manager.UserControls
         private void RedrawSegmentList(string? selectedSegmentId = null)
         {
             lvSegments.Items.Clear();
-            foreach (var segment in _contentStore.Database.All<SegmentEntity>())
+            foreach (var segment in _contentStore.Database.All<Segment>())
             {
                 lvSegments.Items.Add(segment);
             }
@@ -48,13 +48,13 @@ namespace Content_Manager.UserControls
                 return;
             }
 
-            var currentSegment = _contentStore.Database.All<SegmentEntity>().Where(item => item.Id == selectedSegmentId).First();
+            var currentSegment = _contentStore.Database.All<Segment>().Where(item => item.Id == selectedSegmentId).First();
             lvSegments.SelectedItem = currentSegment;
         }
 
         private void BtnNewSection_Click(object sender, RoutedEventArgs e)
         {
-            SegmentEntity segment = new SegmentEntity() { Title = "Керла дакъа" };
+            Segment segment = new Segment() { Title = "Керла дакъа" };
             _contentStore.Database.Write(() => _contentStore.Database.Add(segment));
             RedrawSegmentList();
 
@@ -62,7 +62,7 @@ namespace Content_Manager.UserControls
 
         private void lvSegments_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var segment = ((SegmentEntity)lvSegments.SelectedItem);
+            var segment = ((Segment)lvSegments.SelectedItem);
             if (segment == null) return;
 
             if (_contentStore.SelectedSegment?.Id == segment.Id) return;
@@ -73,7 +73,7 @@ namespace Content_Manager.UserControls
 
         private void OnItemUpdated(IEntityBase entity)
         {
-            if (entity is not SegmentEntity)
+            if (entity is not Segment)
             {
                 return;
             }
@@ -83,7 +83,7 @@ namespace Content_Manager.UserControls
 
         private void OnItemDeleted(IEntityBase entity)
         {
-            if (entity is not SegmentEntity)
+            if (entity is not Segment)
             {
                 return;
             }

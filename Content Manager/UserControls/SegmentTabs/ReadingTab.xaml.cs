@@ -7,11 +7,31 @@ namespace Content_Manager.UserControls.SegmentTabs
 {
     public partial class ReadingTab : UserControl, ISegmentTabControl
     {
-        private readonly ContentStore _contentStore = App.AppHost!.Services.GetRequiredService<ContentStore>();
+        private ContentStore ContentStore => App.AppHost!.Services.GetRequiredService<ContentStore>();
         public ReadingTab()
         {
             InitializeComponent();
             DataContext = this;
+
+            ContentStore.ItemAdded += ContentStore_ItemAdded;
+            ContentStore.ItemDeleted += ContentStore_ItemDeleted;
+            ContentStore.ItemUpdated += ContentStore_ItemUpdated;
+
+            RedrawUi();
+        }
+
+        private void ContentStore_ItemUpdated(Data.Interfaces.IEntityBase obj)
+        {
+            RedrawUi();
+        }
+
+        private void ContentStore_ItemDeleted(Data.Interfaces.IEntityBase obj)
+        {
+            RedrawUi();
+        }
+
+        private void ContentStore_ItemAdded(Data.Interfaces.IEntityBase obj)
+        {
             RedrawUi();
         }
 
@@ -19,19 +39,16 @@ namespace Content_Manager.UserControls.SegmentTabs
         {
             spReadingMaterialControls.Children.Clear();
 
-            if (_contentStore.SelectedSegment!.ReadingMaterials == null) return;
+            if (ContentStore.SelectedSegment!.ReadingMaterials == null) return;
 
-            foreach (var material in _contentStore.SelectedSegment!.ReadingMaterials)
+            foreach (var material in ContentStore.SelectedSegment!.ReadingMaterials)
             {
                 var existingReadingMaterial = new ReadingMaterialControl(material);
-                //existingReadingMaterial.Update += ReadingMaterialControl_Save;
-                //existingReadingMaterial.Delete += ReadingMaterialControl_Delete;
 
                 spReadingMaterialControls.Children.Add(existingReadingMaterial);
             }
 
             var rmcNew = new ReadingMaterialControl();
-            //rmcNew.Create += RmcNew_Create;
 
             spReadingMaterialControls.Children.Add(rmcNew);
         }
