@@ -38,9 +38,10 @@ namespace Content_Manager.Stores
 
         public event Action? CurrentDatabaseChanged;
         public event Action<SegmentEntity>? SelectedSegmentChanged;
-        public event Action<string, IEntityBase>? ItemAdded;
-        public event Action<string, IEntityBase>? ItemUpdated;
-        public event Action<string, IEntityBase>? ItemDeleted;
+
+        public event Action<IEntityBase>? ItemAdded;
+        public event Action<IEntityBase>? ItemUpdated;
+        public event Action<IEntityBase>? ItemDeleted;
         #endregion
 
         public ContentStore(Storage storage, FileService fileService)
@@ -68,6 +69,19 @@ namespace Content_Manager.Stores
         internal void ImportDatabase(string filePath)
         {
             _storage.ImportDatabase(filePath);
+        }
+
+        internal void RaiseItemDeletedEvent(IEntityBase entity)
+        {
+            ItemDeleted?.Invoke(entity);
+        }
+        internal void RaiseItemUpdatedEvent(IEntityBase entity)
+        {
+            ItemUpdated?.Invoke(entity);
+        }
+        internal void RaiseItemAddedEvent(IEntityBase entity)
+        {
+            ItemAdded?.Invoke(entity);
         }
     }
 }

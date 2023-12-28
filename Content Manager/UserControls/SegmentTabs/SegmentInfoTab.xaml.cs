@@ -25,7 +25,6 @@ namespace Content_Manager.UserControls.SegmentTabs
         }
         public static readonly DependencyProperty DescriptionProperty =
             DependencyProperty.Register("Description", typeof(string), typeof(SegmentInfoTab), new PropertyMetadata(string.Empty));
-
         #endregion
 
         private readonly ContentStore _contentStore = App.AppHost!.Services.GetRequiredService<ContentStore>();
@@ -40,14 +39,11 @@ namespace Content_Manager.UserControls.SegmentTabs
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            var segment = _contentStore.Database.All<SegmentEntity>().First(s => s.Id == _contentStore.SelectedSegment!.Id);
             _contentStore.Database.Write(() =>
             {
-                segment.Title = Title;
-                segment.Description = Description;
+                _contentStore.SelectedSegment!.Title = Title;
+                _contentStore.SelectedSegment!.Description = Description;
             });
-
-            _contentStore.SelectedSegment = segment;
         }
     }
 }

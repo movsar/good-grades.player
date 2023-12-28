@@ -22,23 +22,22 @@ namespace Content_Manager
         private readonly FileService _fileService;
         private ILogger _logger;
 
-
         public MainWindow(ContentStore contentStore, FileService fileService, ILogger<MainWindow> logger)
         {
             InitializeComponent();
             DataContext = this;
 
-            _contentStore = contentStore;
-            _fileService = fileService;
             _logger = logger;
+            _fileService = fileService;
+            _contentStore = contentStore;
+            _contentStore.SelectedSegmentChanged += SelectedSegmentChanged;
+            _contentStore.CurrentDatabaseChanged += OnDatabaseOpened;
 
-            // Open last opened database
             var lastOpenedDatabasePath = _fileService.ReadResourceString("lastOpenedDatabasePath");
-            if (string.IsNullOrEmpty(lastOpenedDatabasePath) || !File.Exists(lastOpenedDatabasePath))
+            if (!string.IsNullOrEmpty(lastOpenedDatabasePath) && File.Exists(lastOpenedDatabasePath))
             {
-                return;
+                _contentStore.OpenDatabase(lastOpenedDatabasePath);
             }
-            _contentStore.OpenDatabase(lastOpenedDatabasePath);
         }
 
 
@@ -83,7 +82,6 @@ namespace Content_Manager
             if (string.IsNullOrEmpty(filePath)) return;
 
             _contentStore.OpenDatabase(filePath);
-            OnDatabaseOpened();
         }
 
         private void mnuCreateDatabase_Click(object sender, RoutedEventArgs e)
@@ -96,8 +94,6 @@ namespace Content_Manager
             Task.Delay(200);
             var dbInfo = new DbInfoWindow();
             dbInfo.ShowDialog();
-
-            OnDatabaseOpened();
         }
 
         private void mnuDatabaseInfo_Click(object sender, RoutedEventArgs e)
@@ -148,7 +144,10 @@ namespace Content_Manager
         {
             tools.SetProcessAppUserModelId();
             // show a welcome message when the app is first installed
-            if (firstRun) MessageBox.Show("Thanks for installing my application!");
+            if (firstRun)
+            {
+                MessageBox.Show("Добро пожаловать!");
+            }
         }
 
         protected override void OnInitialized(EventArgs e)

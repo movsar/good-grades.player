@@ -24,7 +24,6 @@ namespace Content_Manager.UserControls
             DeleteSelectedSegment = new SegmentCommands.DeleteSegment(_contentStore, this);
 
             // Set events
-            _contentStore.ItemAdded += OnItemAdded;
             _contentStore.ItemDeleted += OnItemDeleted;
             _contentStore.ItemUpdated += OnItemUpdated;
             _contentStore.CurrentDatabaseChanged += _contentStore_CurrentDatabaseChanged;
@@ -52,11 +51,13 @@ namespace Content_Manager.UserControls
             var currentSegment = _contentStore.Database.All<SegmentEntity>().Where(item => item.Id == selectedSegmentId).First();
             lvSegments.SelectedItem = currentSegment;
         }
- 
+
         private void BtnNewSection_Click(object sender, RoutedEventArgs e)
         {
             SegmentEntity segment = new SegmentEntity() { Title = "Керла дакъа" };
-            _contentStore.Database.Write(()=> _contentStore.Database.Add(segment));
+            _contentStore.Database.Write(() => _contentStore.Database.Add(segment));
+            RedrawSegmentList();
+
         }
 
         private void lvSegments_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -69,29 +70,20 @@ namespace Content_Manager.UserControls
         }
 
         #region Segment Event Handlers
-        private void OnItemAdded(string modelType, IEntityBase model)
-        {
-            if (!modelType.Equals(nameof(SegmentEntity)))
-            {
-                return;
-            }
-            
-            RedrawSegmentList();
-        }
 
-        private void OnItemUpdated(string modelType, IEntityBase model)
+        private void OnItemUpdated(IEntityBase entity)
         {
-            if (!modelType.Equals(nameof(SegmentEntity)))
+            if (entity is not SegmentEntity)
             {
                 return;
             }
 
-            RedrawSegmentList(model.Id);
+            RedrawSegmentList(entity.Id);
         }
 
-        private void OnItemDeleted(string modelType, IEntityBase model)
+        private void OnItemDeleted(IEntityBase entity)
         {
-            if (!modelType.Equals(nameof(SegmentEntity)))
+            if (entity is not SegmentEntity)
             {
                 return;
             }

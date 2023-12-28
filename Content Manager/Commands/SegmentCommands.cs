@@ -11,18 +11,21 @@ namespace Content_Manager.Commands
     {
         private static void DeleteAction(ContentStore contentStore, SegmentList view)
         {
-            var selectedSegments = view.lvSegments.SelectedItems.Cast<SegmentEntity>();
+            SegmentEntity? selectedSegment = view.lvSegments.SelectedItems.Cast<SegmentEntity>().FirstOrDefault();
+            if (selectedSegment == null)
+            {
+                return;
+            }
 
-            var segmentsToRemove = contentStore.Database.All<SegmentEntity>().Where(segment => selectedSegments.Select(s => s.Id).Contains(segment.Id));
-
-            var result = MessageBox.Show($"Подтвердите удаление раздела \"{segmentsToRemove.First().Title}\"",
+            var result = MessageBox.Show($"Подтвердите удаление раздела {selectedSegment.Title}\"",
                                              "Good Grades",
                                              MessageBoxButton.YesNo,
                                              MessageBoxImage.Question);
 
             if (result == MessageBoxResult.Yes)
             {
-                contentStore.Database.RemoveRange(segmentsToRemove);
+                contentStore.Database.Write(() => contentStore.Database.Remove(selectedSegment));
+                contentStore.RaiseItemDeletedEvent(selectedSegment);
             }
         }
         internal class DeleteSegment : CommandBase
