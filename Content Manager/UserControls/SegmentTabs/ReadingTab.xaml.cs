@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Content_Manager.Stores;
 using Content_Manager.Interfaces;
+using Data.Interfaces;
 
 namespace Content_Manager.UserControls.SegmentTabs
 {
@@ -13,24 +14,14 @@ namespace Content_Manager.UserControls.SegmentTabs
             InitializeComponent();
             DataContext = this;
 
-            ContentStore.ItemAdded += ContentStore_ItemAdded;
-            ContentStore.ItemDeleted += ContentStore_ItemDeleted;
-            ContentStore.ItemUpdated += ContentStore_ItemUpdated;
+            ContentStore.ItemAdded += ContentStore_ItemChanged;
+            ContentStore.ItemDeleted += ContentStore_ItemChanged;
+            ContentStore.ItemUpdated += ContentStore_ItemChanged;
 
             RedrawUi();
         }
 
-        private void ContentStore_ItemUpdated(Data.Interfaces.IEntityBase obj)
-        {
-            RedrawUi();
-        }
-
-        private void ContentStore_ItemDeleted(Data.Interfaces.IEntityBase obj)
-        {
-            RedrawUi();
-        }
-
-        private void ContentStore_ItemAdded(Data.Interfaces.IEntityBase obj)
+        private void ContentStore_ItemChanged(IEntityBase entity)
         {
             RedrawUi();
         }
