@@ -4,7 +4,7 @@ using Realms;
 
 namespace Data.Entities.Materials
 {
-    public class ReadingMaterial : RealmObject, IEntityBase
+    public class ListeningAssignmentEntity : RealmObject, IEntityBase
     {
         [Required] public string Title { get; set; }
         [Required][PrimaryKey] public string Id { get; set; } = ObjectId.GenerateNewId().ToString();
@@ -12,6 +12,7 @@ namespace Data.Entities.Materials
         public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;
         /******************************************************************/
         public string Text { get; set; }
+        public byte[] Audio { get; set; }
         public byte[] Image { get; set; }
     }
 }

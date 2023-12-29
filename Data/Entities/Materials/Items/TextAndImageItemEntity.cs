@@ -2,9 +2,9 @@
 using MongoDB.Bson;
 using Realms;
 
-namespace Data.Entities.Materials.QuizItems
+namespace Data.Entities.Materials.TaskItems
 {
-    public class TextAndImageQuizItem : RealmObject, IEntityBase
+    public class TextAndImageItemEntity : RealmObject, IEntityBase
     {
         [Required]
         [PrimaryKey]

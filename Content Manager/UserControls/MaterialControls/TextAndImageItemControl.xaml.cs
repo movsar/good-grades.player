@@ -2,7 +2,7 @@
 using Content_Manager.Models;
 using Content_Manager.Services;
 using Content_Manager.Stores;
-using Data.Entities.Materials.QuizItems;
+using Data.Entities.Materials.TaskItems;
 using Data.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -18,7 +18,7 @@ using Image = System.Windows.Controls.Image;
 
 namespace Content_Manager.UserControls
 {
-    public partial class TextAndImageQuizItemControl : UserControl, IMaterialControl
+    public partial class TextAndImageItemControl : UserControl, IMaterialControl
     {
         public event Action<IEntityBase> Create;
         public event Action<string?, IEntityBase> Update;
@@ -39,7 +39,7 @@ namespace Content_Manager.UserControls
             set { SetValue(ItemTextProperty, value); }
         }
         public static readonly DependencyProperty ItemTextProperty =
-            DependencyProperty.Register("ItemText", typeof(string), typeof(TextAndImageQuizItemControl), new PropertyMetadata(""));
+            DependencyProperty.Register("ItemText", typeof(string), typeof(TextAndImageItemControl), new PropertyMetadata(""));
 
         public string ItemId { get; }
         private byte[] ItemImage { get; set; }
@@ -105,7 +105,7 @@ namespace Content_Manager.UserControls
             _formCompletionInfo = new FormCompletionInfo(propertiesToWatch, isExistingMaterial);
             _formCompletionInfo.StatusChanged += OnFormStatusChanged;
         }
-        public TextAndImageQuizItemControl()
+        public TextAndImageItemControl()
         {
             SharedInitialization(false, false);
             SetUiForNewMaterial();
@@ -113,7 +113,7 @@ namespace Content_Manager.UserControls
             ItemText = Hint;
         }
 
-        public TextAndImageQuizItemControl(TextAndImageQuizItem quizItem, bool isSelected = false)
+        public TextAndImageItemControl(TextAndImageItemEntity quizItem, bool isSelected = false)
         {
             SharedInitialization(true, isSelected);
             SetUiForExistingMaterial();
@@ -197,7 +197,7 @@ namespace Content_Manager.UserControls
 
             if (string.IsNullOrEmpty(ItemId))
             {
-                var quizItem = new TextAndImageQuizItem()
+                var quizItem = new TextAndImageItemEntity()
                 {
                     Text = ItemText,
                     Image = ItemImage
@@ -207,7 +207,7 @@ namespace Content_Manager.UserControls
             }
             else
             {
-                var quizItem = ContentStore.Database.All<TextAndImageQuizItem>().First(qi => qi.Id == ItemId);
+                var quizItem = ContentStore.Database.All<TextAndImageItemEntity>().First(qi => qi.Id == ItemId);
                 quizItem.Image = ItemImage;
                 quizItem.Text = ItemText;
 

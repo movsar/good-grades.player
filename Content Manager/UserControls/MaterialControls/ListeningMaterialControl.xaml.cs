@@ -111,7 +111,7 @@ namespace Content_Manager.UserControls
             LmTitle = TitleHintText;
         }
 
-        public ListeningMaterialControl(ListeningMaterial material)
+        public ListeningMaterialControl(ListeningAssignmentEntity material)
         {
             SharedInitialization(true);
             SetUiForExistingMaterial();
@@ -206,7 +206,7 @@ namespace Content_Manager.UserControls
 
             if (string.IsNullOrEmpty(LmId))
             {
-                var lm = new ListeningMaterial
+                var lm = new ListeningAssignmentEntity
                 {
                     Title = LmTitle,
                     Text = LmText,
@@ -220,7 +220,7 @@ namespace Content_Manager.UserControls
             }
             else
             {
-                var lm = ContentStore.Database.All<ListeningMaterial>().First(lm => lm.Id == LmId);
+                var lm = ContentStore.Database.All<ListeningAssignmentEntity>().First(lm => lm.Id == LmId);
                 ContentStore.Database.Write(() =>
                 {
                     lm.Title = LmTitle;
@@ -235,7 +235,7 @@ namespace Content_Manager.UserControls
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-            var lm = ContentStore.Database.Find<ListeningMaterial>(LmId);
+            var lm = ContentStore.Database.Find<ListeningAssignmentEntity>(LmId);
             ContentStore.Database.Write(() => ContentStore.Database.Remove(lm));
             ContentStore.RaiseItemDeletedEvent(lm);
         }

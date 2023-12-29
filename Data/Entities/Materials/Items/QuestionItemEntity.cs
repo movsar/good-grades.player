@@ -2,9 +2,9 @@
 using MongoDB.Bson;
 using Realms;
 
-namespace Data.Entities.Materials.QuizItems
+namespace Data.Entities.Materials.TaskItems
 {
-    public class TextQuizItem : RealmObject, IEntityBase
+    public class QuestionItemEntity : RealmObject, IEntityBase
     {
         [Required]
         [PrimaryKey]
@@ -12,6 +12,8 @@ namespace Data.Entities.Materials.QuizItems
         public DateTimeOffset CreatedAt { get; } = DateTimeOffset.Now;
         public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;
         /******************************************************************/
-        public string Text { get; set; }
+        public string QuestionText { get; set; }
+        public string CorrectAnswerId { get; set; }
+        public IList<TextItemEntity> Answers { get; }
     }
 }

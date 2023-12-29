@@ -1,4 +1,4 @@
-﻿using Data.Entities.Materials.QuizItems;
+﻿using Data.Entities.Materials.TaskItems;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -25,7 +25,7 @@ namespace Shared.Controls
             InitializeComponent();
         }
 
-        public CwqOptionBox(TextQuizItem option)
+        public CwqOptionBox(TextItemEntity option)
         {
             DataContext = this;
             InitializeComponent();

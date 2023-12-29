@@ -2,7 +2,7 @@
 using Content_Manager.Models;
 using Content_Manager.Services;
 using Content_Manager.Stores;
-using Data.Entities.Materials.QuizItems;
+using Data.Entities.Materials.TaskItems;
 using Data.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -30,7 +30,7 @@ namespace Content_Manager.UserControls.MaterialControls
         #region Properties
         private readonly ContentStore _contentStore = App.AppHost!.Services.GetRequiredService<ContentStore>();
         StylingService StylingService => App.AppHost!.Services.GetRequiredService<StylingService>();
-        private List<TextQuizItem> Answers { get; set; } = new List<TextQuizItem>();
+        private List<TextItemEntity> Answers { get; set; } = new List<TextItemEntity>();
         public string QuestionText
         {
             get { return (string)GetValue(ItemTextProperty); }
@@ -91,7 +91,7 @@ namespace Content_Manager.UserControls.MaterialControls
             QuestionText = Hint;
         }
 
-        public QuestionControl(TestingQuestionItem testingQuestion)
+        public QuestionControl(QuestionItemEntity testingQuestion)
         {
             SharedInitialization(true);
             SetUiForExistingMaterial();

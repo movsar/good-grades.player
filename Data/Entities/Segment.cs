@@ -14,14 +14,14 @@ namespace Data.Entities
         public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;
         /******************************************************************/
         
-        public IList<MatchingTaskMaterial> MatchingTasks { get; }
-        public IList<SelectingTaskMaterial> SelectingTasks { get; }
-        public IList<BuildingTaskMaterial> BuildingTasks { get; }
-        public IList<FillingTaskMaterial> FillingTasks { get; }
-        public IList<TestingTaskMaterial> TestingTasks { get; }
+        public IList<MatchingTaskEntity> MatchingTasks { get; }
+        public IList<SelectingTaskEntity> SelectingTasks { get; }
+        public IList<BuildingTaskEntity> BuildingTasks { get; }
+        public IList<FillingTaskEntity> FillingTasks { get; }
+        public IList<TestingTaskEntity> TestingTasks { get; }
 
-        public IList<ReadingMaterial> ReadingMaterials { get; }
-        public IList<ListeningMaterial> ListeningMaterials { get; }
+        public IList<ReadingAssignmentEntity> ReadingMaterials { get; }
+        public IList<ListeningAssignmentEntity> ListeningMaterials { get; }
 
     }
 }

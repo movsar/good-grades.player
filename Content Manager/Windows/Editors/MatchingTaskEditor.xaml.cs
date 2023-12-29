@@ -1,6 +1,9 @@
 ﻿using Content_Manager.Stores;
 using Content_Manager.UserControls;
+using Data;
 using Data.Entities.Materials;
+using Data.Entities.Materials.TaskItems;
+using Data.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using System.Windows;
 
@@ -9,16 +12,18 @@ namespace Content_Manager.Windows.Editors
     /// <summary>
     /// Interaction logic for TextToImageQuizEditor.xaml
     /// </summary>
-    public partial class TextToImageQuizEditor : Window
+    public partial class MatchingTaskEditor : Window
     {
 
         private readonly ContentStore _contentStore = App.AppHost!.Services.GetRequiredService<ContentStore>();
-        private MatchingTaskMaterial _quiz;
-        public TextToImageQuizEditor()
+        private MatchingTaskEntity _material;
+        public MatchingTaskEditor()
         {
-            _quiz = new MatchingTaskMaterial();
+            _material = new MatchingTaskEntity();
+
             InitializeComponent();
             DataContext = this;
+
             RedrawUi();
         }
 
@@ -48,10 +53,10 @@ namespace Content_Manager.Windows.Editors
             UpdateQuiz();
         }
 
-        //private void QuizItem_Save(string? id, IModelBase model)
-        //{
-        //    UpdateQuiz();
-        //}
+        private void QuizItem_Save(string? id, IEntityBase model)
+        {
+            UpdateQuiz();
+        }
 
 
         #endregion
@@ -67,15 +72,15 @@ namespace Content_Manager.Windows.Editors
             //    spItems.Children.Add(existingQuizItemControl);
             //}
 
-            //var newQuizItemControl = new QuizItemControl(QuizTypes.CelebrityWords);
-            //newQuizItemControl.Create += QuizItem_Create;
-            //spItems.Children.Add(newQuizItemControl);
+            var newItemControl = new TextAndImageItemControl();
+            newItemControl.Create += Item_Create;
+            spItems.Children.Add(newItemControl);
         }
 
-        //private void QuizItem_Create(IModelBase model)
-        //{
-        //    _contentStore.SelectedSegment?.Cele.QuizItems.Add(model as QuizItem);
-        //    UpdateQuiz();
-        //}
+        private void Item_Create(IEntityBase model)
+        {
+            //_contentStore.SelectedSegment?.MatchingTasks.Add(model as TextAndImageItem);
+            //UpdateQuiz();
+        }
     }
 }

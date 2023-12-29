@@ -1,6 +1,7 @@
 ﻿using Content_Manager.Models;
 using Content_Manager.Services;
 using Content_Manager.Stores;
+using Content_Manager.Windows.Editors;
 using Data;
 using Data.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
@@ -125,6 +126,12 @@ namespace Content_Manager.UserControls.MaterialControls
 
         private void btnSetData_Click(object sender, RoutedEventArgs e)
         {
+            if (_taskType == TaskType.Matching)
+            {
+                var matchingTaskEditor = new MatchingTaskEditor();
+                matchingTaskEditor.ShowDialog();
+            }
+
             btnSetData.Background = _stylingService.StagedBrush;
 
             _formCompletionInfo.Update(nameof(IsContentSet), IsContentSet);
