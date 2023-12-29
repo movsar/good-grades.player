@@ -1,5 +1,15 @@
-﻿using System.Windows;
+﻿using Content_Manager.Models;
+using Content_Manager.Services;
+using Content_Manager.Stores;
+using Data;
+using Data.Entities.Materials;
+using Data.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Controls;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Content_Manager.UserControls.MaterialControls
 {
@@ -8,33 +18,105 @@ namespace Content_Manager.UserControls.MaterialControls
     /// </summary>
     public partial class TaskMaterialControl : UserControl
     {
-        public TaskMaterialControl()
+        #region Properties and Fields
+        private FormCompletionInfo _formCompletionInfo;
+        private TaskType _taskType;
+
+        ContentStore _contentStore => App.AppHost!.Services.GetRequiredService<ContentStore>();
+        StylingService _stylingService => App.AppHost!.Services.GetRequiredService<StylingService>();
+
+        public bool ContentSet { get; set; }
+        private string TaskId { get; }
+
+        #endregion
+        #region Initialization
+        private void SetUiForNewMaterial()
+        {
+            btnPreview.Visibility = Visibility.Collapsed;
+            btnDelete.Visibility = Visibility.Collapsed;
+            btnSave.Visibility = Visibility.Collapsed;
+        }
+        private void SetUiForExistingMaterial()
+        {
+            btnSetData.Background = _stylingService.ReadyBrush;
+
+            if (ContentSet)
+            {
+                btnSetData.Background = _stylingService.ReadyBrush;
+            }
+
+            btnPreview.Background = _stylingService.ReadyBrush;
+            btnDelete.Visibility = Visibility.Visible;
+        }
+
+        private void SharedInitialization(bool isExistingMaterial = false)
         {
             InitializeComponent();
+            DataContext = this;
 
+            var propertiesToWatch = new List<string>(){
+                nameof(ContentSet)
+            };
+
+            _formCompletionInfo = new FormCompletionInfo(propertiesToWatch, isExistingMaterial);
+            _formCompletionInfo.StatusChanged += OnFormStatusChanged;
+        }
+
+        public TaskMaterialControl()
+        {
+            SharedInitialization();
+            AddTaskTypeOptions();
+            SetUiForNewMaterial();
+        }
+
+        public TaskMaterialControl(ITaskMaterial material)
+        {
+            SharedInitialization(true);
+
+            TaskId = material.Id!;
+
+            SetUiForExistingMaterial();
+        }
+        #endregion
+        private void OnFormStatusChanged(bool isReady)
+        {
+            if (isReady)
+            {
+                btnSave.Visibility = Visibility.Visible;
+                btnPreview.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                btnSave.Visibility = Visibility.Collapsed;
+                btnPreview.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void AddTaskTypeOptions()
+        {
             var fillingTaskType = new ComboBoxItem()
             {
-                Content = "Заполнение пробелов"
+                Content = Constants.TASK_NAME_FILLING
             };
 
             var selectingTaskType = new ComboBoxItem()
             {
-                Content = "Выбор правильного"
+                Content = Constants.TASK_NAME_SELECTING
             };
 
             var testingTaskType = new ComboBoxItem()
             {
-                Content = "Тест"
+                Content = Constants.TASK_NAME_TEST
             };
 
             var matchingTaskType = new ComboBoxItem()
             {
-                Content = "Сопоставление"
+                Content = Constants.TASK_NAME_MATCHING
             };
 
             var buildingTaskMaterial = new ComboBoxItem()
             {
-                Content = "Построение выражений"
+                Content = Constants.TASK_NAME_BUILDING
             };
 
             cmbTaskType.Items.Add(fillingTaskType);
@@ -43,6 +125,7 @@ namespace Content_Manager.UserControls.MaterialControls
             cmbTaskType.Items.Add(matchingTaskType);
             cmbTaskType.Items.Add(buildingTaskMaterial);
         }
+
 
         private void btnSetData_Click(object sender, RoutedEventArgs e)
         {
@@ -61,7 +144,9 @@ namespace Content_Manager.UserControls.MaterialControls
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-
+            var rm = _contentStore.Database.Find<ITaskMaterial>(TaskId);
+            _contentStore.Database.Write(() => _contentStore.Database.Remove(rm));
+            _contentStore.RaiseItemDeletedEvent(rm);
         }
 
         private void cmbTaskType_GotFocus(object sender, RoutedEventArgs e)
@@ -76,7 +161,43 @@ namespace Content_Manager.UserControls.MaterialControls
 
         private void cmbTaskType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            var cmbItem = e.AddedItems[0] as ComboBoxItem;
+            var selectedItemTitle = cmbItem?.Content.ToString();
+            if (string.IsNullOrEmpty(selectedItemTitle))
+            {
+                return;
+            }
 
+            btnSetData.IsEnabled = true;
+            _taskType = GetSelectedTaskType(selectedItemTitle);
+        }
+
+        private TaskType GetSelectedTaskType(string selectedTaskTypeTitle)
+        {
+            if (selectedTaskTypeTitle.Equals(Constants.TASK_NAME_FILLING))
+            {
+                return TaskType.Filling;
+            }
+            else if (selectedTaskTypeTitle.Equals(Constants.TASK_NAME_TEST))
+            {
+                return TaskType.Test;
+            }
+            else if (selectedTaskTypeTitle.Equals(Constants.TASK_NAME_BUILDING))
+            {
+                return TaskType.Building;
+            }
+            else if (selectedTaskTypeTitle.Equals(Constants.TASK_NAME_SELECTING))
+            {
+                return TaskType.Selecting;
+            }
+            else if (selectedTaskTypeTitle.Equals(Constants.TASK_NAME_MATCHING))
+            {
+                return TaskType.Matching;
+            }
+            else
+            {
+                throw new Exception("No matching TaskType has been found");
+            }
         }
     }
 }

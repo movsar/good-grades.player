@@ -9,7 +9,7 @@ namespace Data.Entities.Materials
      * This one allows to set an image and a text for each item, then it could be used for 
      * 2 types of tasks, matching image to text and text to image     
      */
-    public class MatchingTaskMaterial : RealmObject, IEntityBase
+    public class MatchingTaskMaterial : RealmObject, ITaskMaterial
     {
         [Required] public string Title { get; set; }
         [Required][PrimaryKey] public string Id { get; set; } = ObjectId.GenerateNewId().ToString();

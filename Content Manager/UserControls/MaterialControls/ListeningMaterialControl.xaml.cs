@@ -235,7 +235,7 @@ namespace Content_Manager.UserControls
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-            var lm = ContentStore.Database.Find<ReadingMaterial>(LmId);
+            var lm = ContentStore.Database.Find<ListeningMaterial>(LmId);
             ContentStore.Database.Write(() => ContentStore.Database.Remove(lm));
             ContentStore.RaiseItemDeletedEvent(lm);
         }

@@ -24,6 +24,7 @@
               Cursor="Hand"
               Content="Данные"
               Click="btnSetData_Click"
+              IsEnabled="False"
              />
 
             <Button x:Name="btnPreview"

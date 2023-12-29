@@ -5,7 +5,7 @@ using Realms;
 
 namespace Data.Entities.Materials
 {
-    public class BuildingTaskMaterial : RealmObject, IEntityBase
+    public class BuildingTaskMaterial : RealmObject, ITaskMaterial
     {
         [Required] public string Title { get; set; }
         [Required][PrimaryKey] public string Id { get; set; } = ObjectId.GenerateNewId().ToString();
