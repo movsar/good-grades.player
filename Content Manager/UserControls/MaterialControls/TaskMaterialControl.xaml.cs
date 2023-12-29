@@ -139,7 +139,12 @@ namespace Content_Manager.UserControls.MaterialControls
 
         private void btnPreview_Click(object sender, RoutedEventArgs e)
         {
-
+            //if (_contentStore?.SelectedSegment?.CelebrityWordsQuiz == null)
+            //{
+            //    return;
+            //}
+            //var previewWindow = new CelebrityQuizPresenter(_contentStore.SelectedSegment.CelebrityWordsQuiz);
+            //previewWindow.ShowDialog();
         }
 
         private void btnSave_Click(object sender, RoutedEventArgs e)

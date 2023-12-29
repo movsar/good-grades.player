@@ -8,27 +8,14 @@
 
         <Style TargetType="{x:Type Button}" x:Key="ButtonStyle">
             <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Margin" Value="10,10,10,10"/>
+            <Setter Property="Padding" Value="7,7,7,7"/>
             <Setter Property="Panel.ZIndex" Value="1"/>
         </Style>
 
         <Style TargetType="{x:Type Button}" x:Key="IconButtonStyle" BasedOn="{StaticResource ButtonStyle}">
             <Setter Property="Background" Value="LightSeaGreen"/>
-            <Setter Property="Margin" Value="10,10,10,10"/>
-            <Setter Property="Padding" Value="7,7,7,7"/>
             <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
         </Style>
-
-        <!--<Style TargetType="Button" x:Key="AddNewButton">
-            <Setter Property="FontFamily" Value="Comic Sans MS"/>
-            <Setter Property="FontSize" Value="22"/>
-            <Setter Property="Margin" Value="20,20,20,20"/>
-            <Setter Property="Width" Value="40"/>
-            <Setter Property="Content" Value="+"/>
-            <Setter Property="Background" Value="Black"/>
-            <Setter Property="Foreground" Value="Lime"/>
-            <Setter Property="HorizontalAlignment" Value="Right"/>
-            <Setter Property="VerticalAlignment" Value="Bottom"/>
-            <Setter Property="Cursor" Value="Hand"/>
-        </Style>-->
     </Application.Resources>
 </Application>

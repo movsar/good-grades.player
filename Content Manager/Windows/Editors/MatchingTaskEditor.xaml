@@ -6,30 +6,37 @@
         xmlns:local="clr-namespace:Content_Manager.Windows.Editors"
         mc:Ignorable="d"
         Title="TextToImageQuizEditor" Height="450" Width="800">
-    <StackPanel Orientation="Vertical" Margin="20">
-        <Grid>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
 
-            <Grid.RowDefinitions>
-                <RowDefinition Height="30"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
-            </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Vertical" Margin="20" VerticalAlignment="Top" Background="AliceBlue">
+            <TextBlock Margin="10 5 10 0" FontWeight="Bold">Выберите изображения и пропишите их описания</TextBlock>
 
-            <TextBlock Margin="10 5 10 0"
-                FontWeight="Bold">Выберите изображения и пропишите их описания</TextBlock>
+            <Button x:Name="btnPreview" 
+                    Margin="10 5 10 0"
+                    Padding="7 0 7 0" 
+                    Visibility="Collapsed"
+                    HorizontalAlignment="Right"
+                    Background="LightSeaGreen"
+                    Cursor="Hand"
+                    FontFamily="Segoe MDL2 Assets" Content="&#xE8FF;" 
+            />
+        </StackPanel>
 
-            <Button Grid.Row="0" x:Name="btnPreview" 
-             Margin="10 5 10 0"
-             Padding="7 0 7 0" 
-             Visibility="Collapsed"
-             HorizontalAlignment="Right"
-             Background="LightSeaGreen"
-             Cursor="Hand"
-             FontFamily="Segoe MDL2 Assets" Content="&#xE8FF;" 
-             Click="btnPreview_Click"/>
+        <ScrollViewer Grid.Row="1">
+            <StackPanel Margin="20 0 10 0"  x:Name="spItems"></StackPanel>
+        </ScrollViewer>
 
-            <ScrollViewer Grid.Row="1">
-                <StackPanel x:Name="spItems"></StackPanel>
-            </ScrollViewer>
-        </Grid>
-    </StackPanel>
+        <Button Grid.Row="2"
+                Style="{StaticResource ButtonStyle}"
+                Content="Закрыть"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Margin="10"
+        />
+    </Grid>
 </Window>
