@@ -13,8 +13,6 @@
                 Padding="5 0 0 0"
                 Width="300"
                 VerticalContentAlignment="Center"
-                GotFocus="cmbTaskType_GotFocus"
-                LostFocus="cmbTaskType_LostFocus"
                 SelectionChanged="cmbTaskType_SelectionChanged"
                />
                <!--Text="{Binding Path=DataContext.RmTitle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"--> 

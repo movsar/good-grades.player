@@ -2,20 +2,16 @@
 using Content_Manager.Services;
 using Content_Manager.Stores;
 using Data;
-using Data.Entities.Materials;
 using Data.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
+using Realms;
 using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Content_Manager.UserControls.MaterialControls
 {
-    /// <summary>
-    /// Interaction logic for TaskMaterialControl.xaml
-    /// </summary>
     public partial class TaskMaterialControl : UserControl
     {
         #region Properties and Fields
@@ -25,13 +21,13 @@ namespace Content_Manager.UserControls.MaterialControls
         ContentStore _contentStore => App.AppHost!.Services.GetRequiredService<ContentStore>();
         StylingService _stylingService => App.AppHost!.Services.GetRequiredService<StylingService>();
 
-        public bool ContentSet { get; set; }
+        public bool IsContentSet { get; set; }
         private string TaskId { get; }
 
         #endregion
         #region Initialization
         private void SetUiForNewMaterial()
-        {
+        {            
             btnPreview.Visibility = Visibility.Collapsed;
             btnDelete.Visibility = Visibility.Collapsed;
             btnSave.Visibility = Visibility.Collapsed;
@@ -40,7 +36,7 @@ namespace Content_Manager.UserControls.MaterialControls
         {
             btnSetData.Background = _stylingService.ReadyBrush;
 
-            if (ContentSet)
+            if (IsContentSet)
             {
                 btnSetData.Background = _stylingService.ReadyBrush;
             }
@@ -55,7 +51,7 @@ namespace Content_Manager.UserControls.MaterialControls
             DataContext = this;
 
             var propertiesToWatch = new List<string>(){
-                nameof(ContentSet)
+                nameof(IsContentSet)
             };
 
             _formCompletionInfo = new FormCompletionInfo(propertiesToWatch, isExistingMaterial);
@@ -129,7 +125,9 @@ namespace Content_Manager.UserControls.MaterialControls
 
         private void btnSetData_Click(object sender, RoutedEventArgs e)
         {
+            btnSetData.Background = _stylingService.StagedBrush;
 
+            _formCompletionInfo.Update(nameof(IsContentSet), IsContentSet);
         }
 
         private void btnPreview_Click(object sender, RoutedEventArgs e)
@@ -147,16 +145,6 @@ namespace Content_Manager.UserControls.MaterialControls
             var rm = _contentStore.Database.Find<ITaskMaterial>(TaskId);
             _contentStore.Database.Write(() => _contentStore.Database.Remove(rm));
             _contentStore.RaiseItemDeletedEvent(rm);
-        }
-
-        private void cmbTaskType_GotFocus(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void cmbTaskType_LostFocus(object sender, RoutedEventArgs e)
-        {
-
         }
 
         private void cmbTaskType_SelectionChanged(object sender, SelectionChangedEventArgs e)
