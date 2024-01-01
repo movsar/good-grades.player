@@ -50,11 +50,11 @@ namespace Content_Manager.UserControls
         {
             if (isReady)
             {
-                btnAdd.Visibility = Visibility.Visible;
+                btnSave.Visibility = Visibility.Visible;
             }
             else
             {
-                btnAdd.Visibility = Visibility.Collapsed;
+                btnSave.Visibility = Visibility.Collapsed;
             }
         }
         private void OnTextSet(bool isSet)
@@ -81,7 +81,7 @@ namespace Content_Manager.UserControls
         private void SetUiForNewMaterial()
         {
             btnDelete.Visibility = Visibility.Hidden;
-            btnAdd.Visibility = Visibility.Hidden;
+            btnSave.Visibility = Visibility.Hidden;
         }
         private void SetUiForExistingMaterial()
         {
@@ -104,13 +104,19 @@ namespace Content_Manager.UserControls
             _formCompletionInfo = new FormCompletionInfo(propertiesToWatch, isExistingMaterial);
             _formCompletionInfo.StatusChanged += OnFormStatusChanged;
         }
-
-        public TextAndImageItemControl(TextAndImageItemEntity? item = null)
+        public TextAndImageItemControl()
         {
+            Item = new TextAndImageItemEntity();
+
+            SharedInitialization(false, false);
+            SetUiForNewMaterial();
+        }
+        public TextAndImageItemControl(TextAndImageItemEntity item)
+        {
+            Item = item;
+
             SharedInitialization(true, false);
             SetUiForExistingMaterial();
-
-            Item = item ?? new TextAndImageItemEntity();
 
             if (Item.Image != null)
             {
@@ -185,7 +191,7 @@ namespace Content_Manager.UserControls
                 return;
             }
 
-            if (string.IsNullOrEmpty(Item.Id))
+            if (!Item.IsManaged)
             {
                 var item = new TextAndImageItemEntity()
                 {

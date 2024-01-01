@@ -3,11 +3,13 @@ using Content_Manager.Services;
 using Content_Manager.Stores;
 using Content_Manager.Windows.Editors;
 using Data;
+using Data.Entities.Materials;
 using Data.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Realms;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -28,7 +30,7 @@ namespace Content_Manager.UserControls.MaterialControls
         #endregion
         #region Initialization
         private void SetUiForNewMaterial()
-        {            
+        {
             btnPreview.Visibility = Visibility.Collapsed;
             btnDelete.Visibility = Visibility.Collapsed;
             btnSave.Visibility = Visibility.Collapsed;
@@ -69,9 +71,10 @@ namespace Content_Manager.UserControls.MaterialControls
         public TaskMaterialControl(ITaskMaterial material)
         {
             SharedInitialization(true);
+            AddTaskTypeOptions();
+            SetTaskType(material);
 
             TaskId = material.Id!;
-
             SetUiForExistingMaterial();
         }
         #endregion
@@ -89,6 +92,22 @@ namespace Content_Manager.UserControls.MaterialControls
             }
         }
 
+        private void SetTaskType(ITaskMaterial taskMaterial)
+        {
+            string selectedTaskName = taskMaterial switch
+            {
+                FillingTaskEntity _ => Constants.TASK_NAME_FILLING,
+                SelectingTaskEntity _ => Constants.TASK_NAME_SELECTING,
+                TestingTaskEntity _ => Constants.TASK_NAME_TEST,
+                BuildingTaskEntity _ => Constants.TASK_NAME_BUILDING,
+                MatchingTaskEntity _ => Constants.TASK_NAME_MATCHING,
+                _ => ""
+            };
+
+            cmbTaskType.SelectedItem = cmbTaskType.Items
+                                .Cast<ComboBoxItem>()
+                                .FirstOrDefault(item => item.Content.ToString() == selectedTaskName);
+        }
         private void AddTaskTypeOptions()
         {
             var fillingTaskType = new ComboBoxItem()

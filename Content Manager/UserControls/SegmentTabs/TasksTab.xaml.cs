@@ -24,12 +24,25 @@ namespace Content_Manager.UserControls.SegmentTabs
         {
             spTaskMaterialControls.Children.Clear();
 
-            if (ContentStore.SelectedSegment!.ListeningMaterials == null) return;
-
-            foreach (var material in ContentStore.SelectedSegment!.ListeningMaterials)
+            foreach (var material in ContentStore.SelectedSegment!.MatchingTasks)
             {
-                //var existingMaterial = new TaskMaterialControl(material);
-                //spTaskMaterialControls.Children.Add(existingMaterial);
+                spTaskMaterialControls.Children.Add(new TaskMaterialControl(material));
+            }
+            foreach (var material in ContentStore.SelectedSegment!.FillingTasks)
+            {
+                spTaskMaterialControls.Children.Add(new TaskMaterialControl(material));
+            }
+            foreach (var material in ContentStore.SelectedSegment!.BuildingTasks)
+            {
+                spTaskMaterialControls.Children.Add(new TaskMaterialControl(material));
+            }
+            foreach (var material in ContentStore.SelectedSegment!.TestingTasks)
+            {
+                spTaskMaterialControls.Children.Add(new TaskMaterialControl(material));
+            }
+            foreach (var material in ContentStore.SelectedSegment!.SelectingTasks)
+            {
+                spTaskMaterialControls.Children.Add(new TaskMaterialControl(material));
             }
 
             var newMaterial = new TaskMaterialControl();

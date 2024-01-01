@@ -1,6 +1,7 @@
 ﻿using Content_Manager.Stores;
 using Content_Manager.UserControls;
 using Data;
+using Data.Entities;
 using Data.Entities.Materials;
 using Data.Entities.Materials.TaskItems;
 using Data.Interfaces;
@@ -17,11 +18,14 @@ namespace Content_Manager.Windows.Editors
     {
 
         private readonly ContentStore ContentStore = App.AppHost!.Services.GetRequiredService<ContentStore>();
-        public MatchingTaskEntity TaskEntity { get; private set; }
+        public MatchingTaskEntity MatchingTaskEntity { get; private set; }
         public MatchingTaskEditor(MatchingTaskEntity? matchingTaskEntity = null)
         {
-            TaskEntity = matchingTaskEntity ?? new MatchingTaskEntity();
-            
+            MatchingTaskEntity = matchingTaskEntity ?? new MatchingTaskEntity()
+            {
+                Title = "Adsad"
+            };
+
             InitializeComponent();
             DataContext = this;
 
@@ -31,7 +35,7 @@ namespace Content_Manager.Windows.Editors
         public void RedrawUi()
         {
             spItems.Children.Clear();
-            foreach (var item in TaskEntity.Items)
+            foreach (var item in MatchingTaskEntity.Items)
             {
                 var existingQuizItemControl = new TextAndImageItemControl(item);
                 existingQuizItemControl.Update += Item_Update;
@@ -48,8 +52,8 @@ namespace Content_Manager.Windows.Editors
 
         private void Item_Delete(string id)
         {
-            var itemToRemove = TaskEntity.Items.First(i => i.Id == id);
-            TaskEntity.Items.Remove(itemToRemove);
+            var itemToRemove = MatchingTaskEntity.Items.First(i => i.Id == id);
+            MatchingTaskEntity.Items.Remove(itemToRemove);
         }
 
         private void Item_Update(IEntityBase entity)
@@ -59,7 +63,15 @@ namespace Content_Manager.Windows.Editors
 
         private void Item_Create(IEntityBase entity)
         {
-            TaskEntity.Items.Add(entity as TextAndImageItemEntity);
+
+            var e = (TextAndImageItemEntity)entity;
+
+            if (!MatchingTaskEntity.IsManaged)
+            {
+                ContentStore.Database.Write(() => ContentStore.SelectedSegment!.MatchingTasks.Add(MatchingTaskEntity));
+            }
+
+            ContentStore.Database.Write(() => MatchingTaskEntity.Items.Add(e));
             RedrawUi();
         }
     }

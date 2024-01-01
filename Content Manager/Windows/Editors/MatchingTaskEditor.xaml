@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Content_Manager.Windows.Editors"
         mc:Ignorable="d"
-        Title="TextToImageQuizEditor" Height="450" Width="800">
+        Title="MatchingTaskEditor" Height="450" Width="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
