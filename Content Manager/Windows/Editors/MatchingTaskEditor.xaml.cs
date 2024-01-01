@@ -52,8 +52,13 @@ namespace Content_Manager.Windows.Editors
 
         private void Item_Delete(string id)
         {
-            var itemToRemove = MatchingTaskEntity.Items.First(i => i.Id == id);
-            MatchingTaskEntity.Items.Remove(itemToRemove);
+            ContentStore.Database.Write(() =>
+            {
+                var itemToRemove = MatchingTaskEntity.Items.First(i => i.Id == id);
+                MatchingTaskEntity.Items.Remove(itemToRemove);
+            });    
+            
+            RedrawUi();
         }
 
         private void Item_Update(IEntityBase entity)

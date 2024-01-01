@@ -8,8 +8,8 @@ namespace Data.Entities.Materials.TaskItems
     {
         [Required]
         [PrimaryKey]
-        public string Id { get; } = ObjectId.GenerateNewId().ToString();
-        public DateTimeOffset CreatedAt { get; } = DateTimeOffset.Now;
+        public string Id { get; set; } = ObjectId.GenerateNewId().ToString();
+        public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.Now;
         public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;
         /******************************************************************/
         public string Text { get; set; }

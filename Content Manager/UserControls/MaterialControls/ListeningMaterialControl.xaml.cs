@@ -95,10 +95,12 @@ namespace Content_Manager.UserControls
             InitializeComponent();
             DataContext = this;
 
-            var propertiesToWatch = new List<string>();
-            propertiesToWatch.Add(nameof(LmTitle));
-            propertiesToWatch.Add(nameof(LmText));
-            propertiesToWatch.Add(nameof(LmAudio));
+            var propertiesToWatch = new List<string>
+            {
+                nameof(LmTitle),
+                nameof(LmText),
+                nameof(LmAudio)
+            };
 
             _formCompletionInfo = new FormCompletionInfo(propertiesToWatch, isExistingMaterial);
             _formCompletionInfo.StatusChanged += OnFormStatusChanged;

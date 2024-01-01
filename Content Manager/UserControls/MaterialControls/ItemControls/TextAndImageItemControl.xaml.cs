@@ -41,8 +41,8 @@ namespace Content_Manager.UserControls
         }
         public static readonly DependencyProperty ItemTextProperty =
             DependencyProperty.Register("ItemText", typeof(string), typeof(TextAndImageItemControl), new PropertyMetadata(""));
-
-        public TextAndImageItemEntity Item { get; private set; }
+        public byte[] ItemImage { get; private set; }
+        public string ItemId { get; set; }
         #endregion
 
         #region Reactions
@@ -65,7 +65,7 @@ namespace Content_Manager.UserControls
         {
             BitmapImage logo = new BitmapImage();
             logo.BeginInit();
-            logo.StreamSource = new MemoryStream(Item.Image);
+            logo.StreamSource = new MemoryStream(ItemImage);
             logo.EndInit();
 
             var imgControl = new Image();
@@ -73,7 +73,7 @@ namespace Content_Manager.UserControls
             imgControl.Source = logo;
             btnChooseImage.Content = imgControl;
 
-            _formCompletionInfo.Update(nameof(Item.Image), isSet);
+            _formCompletionInfo.Update(nameof(ItemImage), isSet);
         }
         #endregion
 
@@ -92,13 +92,15 @@ namespace Content_Manager.UserControls
             InitializeComponent();
             DataContext = this;
 
-            var propertiesToWatch = new List<string>();
-            propertiesToWatch.Add(nameof(ItemText));
+            var propertiesToWatch = new List<string>
+            {
+                nameof(ItemText)
+            };
 
             // Decide what controls to make available
             btnChooseImage.Visibility = Visibility.Visible;
 
-            propertiesToWatch.Add(nameof(Item.Image));
+            propertiesToWatch.Add(nameof(ItemImage));
 
 
             _formCompletionInfo = new FormCompletionInfo(propertiesToWatch, isExistingMaterial);
@@ -106,27 +108,20 @@ namespace Content_Manager.UserControls
         }
         public TextAndImageItemControl()
         {
-            Item = new TextAndImageItemEntity();
-
             SharedInitialization(false, false);
             SetUiForNewMaterial();
         }
         public TextAndImageItemControl(TextAndImageItemEntity item)
         {
-            Item = item;
+            ItemId = item.Id;
+            ItemImage = item.Image;
+            ItemText = item.Text;
 
             SharedInitialization(true, false);
             SetUiForExistingMaterial();
 
-            if (Item.Image != null)
-            {
-                OnImageSet(true);
-            }
-
-            if (Item.Text != null)
-            {
-                OnTextSet(true);
-            }
+            OnImageSet(true);
+            OnTextSet(true);
         }
         #endregion
 
@@ -170,14 +165,14 @@ namespace Content_Manager.UserControls
             var content = File.ReadAllBytes(filePath);
             if (content.Length == 0) return;
 
-            Item.Image = content;
+            ItemImage = content;
 
             OnImageSet(true);
         }
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-            Delete?.Invoke(Item.Id);
+            Delete?.Invoke(ItemId);
         }
         private void btnOk_Click(object sender, RoutedEventArgs e)
         {
@@ -191,26 +186,28 @@ namespace Content_Manager.UserControls
                 return;
             }
 
-            if (!Item.IsManaged)
+            if (string.IsNullOrEmpty(ItemId))
             {
                 var item = new TextAndImageItemEntity()
                 {
                     Text = ItemText,
-                    Image = Item.Image
+                    Image = ItemImage
                 };
 
                 Create?.Invoke(item);
             }
             else
             {
-                var item = ContentStore.Database.Find<TextAndImageItemEntity>(Item.Id);
-                item.Image = Item.Image;
-                item.Text = Item.Text;
+                var item = ContentStore.Database.Find<TextAndImageItemEntity>(ItemId);
+                ContentStore.Database.Write(() =>
+                {
+                    item.Image = ItemImage;
+                    item.Text = ItemText;
+                });
 
                 Update?.Invoke(item);
             }
         }
-
         private void ValidateInput()
         {
             //switch (_quizType)
@@ -238,12 +235,12 @@ namespace Content_Manager.UserControls
 
         private void btnSetAsDefault_Click(object sender, RoutedEventArgs e)
         {
-            if (Item.Id == null)
+            if (ItemId == null)
             {
                 return;
             }
 
-            SetAsCorrect?.Invoke(Item.Id);
+            SetAsCorrect?.Invoke(ItemId);
         }
     }
 }

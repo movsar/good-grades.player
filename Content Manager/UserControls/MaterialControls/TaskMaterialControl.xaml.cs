@@ -20,31 +20,31 @@ namespace Content_Manager.UserControls.MaterialControls
         #region Properties and Fields
         private FormCompletionInfo _formCompletionInfo;
         private TaskType _taskType;
-
-        ContentStore _contentStore => App.AppHost!.Services.GetRequiredService<ContentStore>();
-        StylingService _stylingService => App.AppHost!.Services.GetRequiredService<StylingService>();
+        ContentStore ContentStore => App.AppHost!.Services.GetRequiredService<ContentStore>();
+        StylingService StylingService => App.AppHost!.Services.GetRequiredService<StylingService>();
 
         public bool IsContentSet { get; set; }
-        private string TaskId { get; }
+
+        private readonly ITaskMaterial _taskMaterial;
 
         #endregion
+
         #region Initialization
         private void SetUiForNewMaterial()
         {
             btnPreview.Visibility = Visibility.Collapsed;
             btnDelete.Visibility = Visibility.Collapsed;
-            btnSave.Visibility = Visibility.Collapsed;
         }
         private void SetUiForExistingMaterial()
         {
-            btnSetData.Background = _stylingService.ReadyBrush;
+            btnSetData.Background = StylingService.ReadyBrush;
 
             if (IsContentSet)
             {
-                btnSetData.Background = _stylingService.ReadyBrush;
+                btnSetData.Background = StylingService.ReadyBrush;
             }
 
-            btnPreview.Background = _stylingService.ReadyBrush;
+            btnPreview.Background = StylingService.ReadyBrush;
             btnDelete.Visibility = Visibility.Visible;
         }
 
@@ -64,17 +64,18 @@ namespace Content_Manager.UserControls.MaterialControls
         public TaskMaterialControl()
         {
             SharedInitialization();
-            AddTaskTypeOptions();
+            AddTaskTypes();
             SetUiForNewMaterial();
         }
 
-        public TaskMaterialControl(ITaskMaterial material)
+        public TaskMaterialControl(ITaskMaterial taskMaterial)
         {
             SharedInitialization(true);
-            AddTaskTypeOptions();
-            SetTaskType(material);
+            AddTaskTypes();
+            SetSelectedTaskType(taskMaterial);
 
-            TaskId = material.Id!;
+            _taskMaterial = taskMaterial;
+
             SetUiForExistingMaterial();
         }
         #endregion
@@ -82,33 +83,60 @@ namespace Content_Manager.UserControls.MaterialControls
         {
             if (isReady)
             {
-                btnSave.Visibility = Visibility.Visible;
                 btnPreview.Visibility = Visibility.Visible;
             }
             else
             {
-                btnSave.Visibility = Visibility.Collapsed;
                 btnPreview.Visibility = Visibility.Collapsed;
             }
         }
-
-        private void SetTaskType(ITaskMaterial taskMaterial)
+        private void btnSetData_Click(object sender, RoutedEventArgs e)
         {
-            string selectedTaskName = taskMaterial switch
+            if (_taskType == TaskType.Matching)
             {
-                FillingTaskEntity _ => Constants.TASK_NAME_FILLING,
-                SelectingTaskEntity _ => Constants.TASK_NAME_SELECTING,
-                TestingTaskEntity _ => Constants.TASK_NAME_TEST,
-                BuildingTaskEntity _ => Constants.TASK_NAME_BUILDING,
-                MatchingTaskEntity _ => Constants.TASK_NAME_MATCHING,
-                _ => ""
-            };
+                var matchingTaskEditor = new MatchingTaskEditor(_taskMaterial as MatchingTaskEntity);
+                matchingTaskEditor.ShowDialog();
+            }
 
-            cmbTaskType.SelectedItem = cmbTaskType.Items
-                                .Cast<ComboBoxItem>()
-                                .FirstOrDefault(item => item.Content.ToString() == selectedTaskName);
+            btnSetData.Background = StylingService.StagedBrush;
+
+            _formCompletionInfo.Update(nameof(IsContentSet), IsContentSet);
+
         }
-        private void AddTaskTypeOptions()
+
+        private void btnPreview_Click(object sender, RoutedEventArgs e)
+        {
+            //if (_contentStore?.SelectedSegment?.CelebrityWordsQuiz == null)
+            //{
+            //    return;
+            //}
+            //var previewWindow = new CelebrityQuizPresenter(_contentStore.SelectedSegment.CelebrityWordsQuiz);
+            //previewWindow.ShowDialog();
+        }
+
+        private void btnDelete_Click(object sender, RoutedEventArgs e)
+        {
+            ContentStore.Database.Write(() =>
+            {
+                ContentStore.Database.Remove(_taskMaterial);
+            });
+
+            ContentStore.RaiseItemDeletedEvent(_taskMaterial);
+        }
+
+        private void cmbTaskType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var cmbItem = e.AddedItems[0] as ComboBoxItem;
+            var selectedItemTitle = cmbItem?.Content.ToString();
+            if (string.IsNullOrEmpty(selectedItemTitle))
+            {
+                return;
+            }
+
+            btnSetData.IsEnabled = true;
+            _taskType = GetSelectedTaskType(selectedItemTitle);
+        }
+        private void AddTaskTypes()
         {
             var fillingTaskType = new ComboBoxItem()
             {
@@ -141,56 +169,22 @@ namespace Content_Manager.UserControls.MaterialControls
             cmbTaskType.Items.Add(matchingTaskType);
             cmbTaskType.Items.Add(buildingTaskMaterial);
         }
-
-
-        private void btnSetData_Click(object sender, RoutedEventArgs e)
+        private void SetSelectedTaskType(ITaskMaterial taskMaterial)
         {
-            if (_taskType == TaskType.Matching)
+            string selectedTaskName = taskMaterial switch
             {
-                var matchingTaskEditor = new MatchingTaskEditor();
-                matchingTaskEditor.ShowDialog();
-            }
+                FillingTaskEntity _ => Constants.TASK_NAME_FILLING,
+                SelectingTaskEntity _ => Constants.TASK_NAME_SELECTING,
+                TestingTaskEntity _ => Constants.TASK_NAME_TEST,
+                BuildingTaskEntity _ => Constants.TASK_NAME_BUILDING,
+                MatchingTaskEntity _ => Constants.TASK_NAME_MATCHING,
+                _ => ""
+            };
 
-            btnSetData.Background = _stylingService.StagedBrush;
-
-            _formCompletionInfo.Update(nameof(IsContentSet), IsContentSet);
+            cmbTaskType.SelectedItem = cmbTaskType.Items
+                                .Cast<ComboBoxItem>()
+                                .FirstOrDefault(item => item.Content.ToString() == selectedTaskName);
         }
-
-        private void btnPreview_Click(object sender, RoutedEventArgs e)
-        {
-            //if (_contentStore?.SelectedSegment?.CelebrityWordsQuiz == null)
-            //{
-            //    return;
-            //}
-            //var previewWindow = new CelebrityQuizPresenter(_contentStore.SelectedSegment.CelebrityWordsQuiz);
-            //previewWindow.ShowDialog();
-        }
-
-        private void btnSave_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void btnDelete_Click(object sender, RoutedEventArgs e)
-        {
-            var rm = _contentStore.Database.Find<ITaskMaterial>(TaskId);
-            _contentStore.Database.Write(() => _contentStore.Database.Remove(rm));
-            _contentStore.RaiseItemDeletedEvent(rm);
-        }
-
-        private void cmbTaskType_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var cmbItem = e.AddedItems[0] as ComboBoxItem;
-            var selectedItemTitle = cmbItem?.Content.ToString();
-            if (string.IsNullOrEmpty(selectedItemTitle))
-            {
-                return;
-            }
-
-            btnSetData.IsEnabled = true;
-            _taskType = GetSelectedTaskType(selectedItemTitle);
-        }
-
         private TaskType GetSelectedTaskType(string selectedTaskTypeTitle)
         {
             if (selectedTaskTypeTitle.Equals(Constants.TASK_NAME_FILLING))
