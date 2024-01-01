@@ -4,7 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         Title="Good Grades" Height="500" Width="900"
-        xmlns:i="http://schemas.microsoft.com/xaml/behaviors" xmlns:usercontrols="clr-namespace:Content_Manager.UserControls"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors" 
+        xmlns:usercontrols="clr-namespace:Content_Manager.UserControls"
         x:Name="mainWindow">
 
     <DockPanel>
@@ -101,12 +102,12 @@
                    VerticalAlignment="Center"               
                    BorderThickness="1"/>
 
-            <usercontrols:SegmentList 
+            <usercontrols:SegmentListControl 
                 Grid.Column="0"
                 x:Name="ucSegmentList"
                 Visibility="Collapsed">
 
-            </usercontrols:SegmentList>
+            </usercontrols:SegmentListControl>
 
             <DockPanel
                 Grid.Column="1"

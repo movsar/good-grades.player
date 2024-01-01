@@ -9,7 +9,7 @@ namespace Content_Manager.Commands
 {
     internal class SegmentCommands
     {
-        private static void DeleteAction(ContentStore contentStore, SegmentList view)
+        private static void DeleteAction(ContentStore contentStore, SegmentListControl view)
         {
             Segment? selectedSegment = view.lvSegments.SelectedItems.Cast<Segment>().FirstOrDefault();
             if (selectedSegment == null)
@@ -31,9 +31,9 @@ namespace Content_Manager.Commands
         internal class DeleteSegment : CommandBase
         {
             private readonly ContentStore _contentStore;
-            private readonly SegmentList _view;
+            private readonly SegmentListControl _view;
 
-            public DeleteSegment(ContentStore contentStore, SegmentList view)
+            public DeleteSegment(ContentStore contentStore, SegmentListControl view)
             {
                 _contentStore = contentStore;
                 _view = view;

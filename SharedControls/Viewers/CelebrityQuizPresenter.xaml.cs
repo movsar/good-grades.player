@@ -1,4 +1,4 @@
-﻿using Data.Entities.Materials;
+﻿using Data.Entities;
 using Shared.Controls;
 using System.Windows;
 
@@ -6,7 +6,7 @@ namespace Shared.Viewers
 {
     public partial class CelebrityQuizPresenter : Window
     {
-        public CelebrityQuizPresenter(MatchingTaskEntity celebrityWordsQuiz)
+        public CelebrityQuizPresenter(MatchingTaskAssignment celebrityWordsQuiz)
         {
             InitializeComponent();
             foreach (var option in celebrityWordsQuiz.Items)

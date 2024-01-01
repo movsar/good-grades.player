@@ -1,4 +1,4 @@
-﻿using Data.Entities.Materials.TaskItems;
+﻿using Data.Entities.TaskItems;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -25,7 +25,7 @@ namespace Shared.Controls
             InitializeComponent();
         }
 
-        public CwqOptionBox(TextItemEntity option)
+        public CwqOptionBox(TextItem option)
         {
             DataContext = this;
             InitializeComponent();

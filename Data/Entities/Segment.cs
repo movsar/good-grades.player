@@ -1,5 +1,4 @@
-﻿using Data.Entities.Materials;
-using Data.Interfaces;
+﻿using Data.Interfaces;
 using MongoDB.Bson;
 using Realms;
 
@@ -14,14 +13,14 @@ namespace Data.Entities
         public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;
         /******************************************************************/
         
-        public IList<MatchingTaskEntity> MatchingTasks { get; }
-        public IList<SelectingTaskEntity> SelectingTasks { get; }
-        public IList<BuildingTaskEntity> BuildingTasks { get; }
-        public IList<FillingTaskEntity> FillingTasks { get; }
-        public IList<TestingTaskEntity> TestingTasks { get; }
+        public IList<MatchingTaskAssignment> MatchingTasks { get; }
+        public IList<SelectingTaskAssignment> SelectingTasks { get; }
+        public IList<BuildingTaskAssignment> BuildingTasks { get; }
+        public IList<FillingTaskAssignment> FillingTasks { get; }
+        public IList<TestingTaskAssignment> TestingTasks { get; }
 
-        public IList<ReadingAssignmentEntity> ReadingMaterials { get; }
-        public IList<ListeningAssignmentEntity> ListeningMaterials { get; }
+        public IList<ReadingAssignmnet> ReadingMaterials { get; }
+        public IList<ListeningAssignment> ListeningMaterials { get; }
 
     }
 }

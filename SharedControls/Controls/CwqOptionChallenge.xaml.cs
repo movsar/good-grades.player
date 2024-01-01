@@ -1,4 +1,4 @@
-﻿using Data.Entities.Materials.TaskItems;
+﻿using Data.Entities.TaskItems;
 using System.IO;
 using System.Linq;
 using System.Windows.Controls;
@@ -9,7 +9,7 @@ namespace Shared.Controls
     public partial class CwqChallenge : UserControl
     {
         public enum State { Empty, Success, Failure }
-        public CwqChallenge(TextAndImageItemEntity option)
+        public CwqChallenge(TextAndImageItem option)
         {
             InitializeComponent();
 

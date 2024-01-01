@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Content_Manager.UserControls" xmlns:segmenttabs="clr-namespace:Content_Manager.UserControls.SegmentTabs"
+             xmlns:local="clr-namespace:Content_Manager.UserControls"
+             xmlns:segmenttabs="clr-namespace:Content_Manager.UserControls.SegmentTabs"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -12,13 +13,13 @@
                 <segmenttabs:SegmentInfoTab/>
             </TabItem>
             <TabItem Header="Чтение">
-                <segmenttabs:ReadingTab/>
+                <segmenttabs:ReadingAssignmentsTab/>
             </TabItem>
             <TabItem Header="Аудирование">
-                <segmenttabs:ListeningTab/>
+                <segmenttabs:ListeningAssignmentsTab/>
             </TabItem>
             <TabItem Header="Задачи">
-                <segmenttabs:TasksTab/>
+                <segmenttabs:TaskAssignmentsTab/>
             </TabItem>
         </TabControl>
     </Grid>
