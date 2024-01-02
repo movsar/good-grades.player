@@ -4,7 +4,7 @@ using Realms;
 
 namespace Data.Entities.TaskItems
 {
-    public class TextAndImageItem : RealmObject, IEntityBase
+    public class AssignmentItem : RealmObject, IEntityBase
     {
         [Required]
         [PrimaryKey]

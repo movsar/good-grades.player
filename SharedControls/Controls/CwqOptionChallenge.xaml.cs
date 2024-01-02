@@ -9,7 +9,7 @@ namespace Shared.Controls
     public partial class CwqChallenge : UserControl
     {
         public enum State { Empty, Success, Failure }
-        public CwqChallenge(TextAndImageItem option)
+        public CwqChallenge(AssignmentItem option)
         {
             InitializeComponent();
 

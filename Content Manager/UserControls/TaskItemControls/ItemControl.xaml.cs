@@ -107,7 +107,7 @@ namespace Content_Manager.UserControls
             SharedInitialization(false, false);
             SetUiForNewMaterial();
         }
-        public ItemControl(TextAndImageItem item)
+        public ItemControl(AssignmentItem item)
         {
             ItemId = item.Id;
             ItemImage = item.Image;
@@ -184,7 +184,7 @@ namespace Content_Manager.UserControls
 
             if (string.IsNullOrEmpty(ItemId))
             {
-                var item = new TextAndImageItem()
+                var item = new AssignmentItem()
                 {
                     Text = ItemText,
                     Image = ItemImage
@@ -194,7 +194,7 @@ namespace Content_Manager.UserControls
             }
             else
             {
-                var item = ContentStore.Database.Find<TextAndImageItem>(ItemId);
+                var item = ContentStore.Database.Find<AssignmentItem>(ItemId);
                 ContentStore.Database.Write(() =>
                 {
                     item.Image = ItemImage;

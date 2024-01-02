@@ -25,7 +25,7 @@ namespace Shared.Controls
             InitializeComponent();
         }
 
-        public CwqOptionBox(TextItem option)
+        public CwqOptionBox(AssignmentItem option)
         {
             DataContext = this;
             InitializeComponent();

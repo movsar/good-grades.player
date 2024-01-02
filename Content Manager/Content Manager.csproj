@@ -39,6 +39,18 @@
 			<AutoGen>True</AutoGen>
 			<DependentUpon>Settings.settings</DependentUpon>
 		</Compile>
+		<Compile Update="Windows\TaskEditors\TestingTaskEditor.xaml.cs">
+		  <SubType>Code</SubType>
+		</Compile>
+		<Compile Update="Windows\TaskEditors\SelectingTaskEditor.xaml.cs">
+		  <SubType>Code</SubType>
+		</Compile>
+		<Compile Update="Windows\TaskEditors\BuildingTaskEditor.xaml.cs">
+		  <SubType>Code</SubType>
+		</Compile>
+		<Compile Update="Windows\TaskEditors\FillingTaskEditor.xaml.cs">
+		  <SubType>Code</SubType>
+		</Compile>
 	</ItemGroup>
 
 	<ItemGroup>

@@ -14,6 +14,6 @@ namespace Data.Entities.TaskItems
         /******************************************************************/
         public string QuestionText { get; set; }
         public string CorrectAnswerId { get; set; }
-        public IList<TextItem> Answers { get; }
+        public IList<AssignmentItem> Answers { get; }
     }
 }

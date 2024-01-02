@@ -95,10 +95,11 @@ namespace Content_Manager.UserControls
             ITaskEditor taskEditor = _taskType switch
             {
                 TaskType.Matching => new MatchingTaskEditor(_taskMaterial as MatchingTaskAssignment),
-                //TaskType.Filling => new MatchingTaskEditor(_taskMaterial as MatchingTaskAssignment),
-                //TaskType.Selecting => new MatchingTaskEditor(_taskMaterial as MatchingTaskAssignment),
-                //TaskType.Building => new MatchingTaskEditor(_taskMaterial as MatchingTaskAssignment),
-                //TaskType.Test => new MatchingTaskEditor(_taskMaterial as MatchingTaskAssignment),
+                TaskType.Filling => new FillingTaskEditor(_taskMaterial as FillingTaskAssignment),
+                TaskType.Selecting => new SelectingTaskEditor(_taskMaterial as SelectingTaskAssignment),
+                TaskType.Building => new BuildingTaskEditor(_taskMaterial as BuildingTaskAssignment),
+                TaskType.Test => new TestingTaskEditor(_taskMaterial as TestingTaskAssignment),
+                _ => throw new NotImplementedException()
             };
 
             taskEditor.ShowDialog();

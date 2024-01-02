@@ -10,18 +10,18 @@ using System.Windows;
 
 namespace Content_Manager.Windows.Editors
 {
-    public partial class MatchingTaskEditor : Window, ITaskEditor
+    public partial class SelectingTaskEditor : Window, ITaskEditor
     {
-        private MatchingTaskAssignment _taskAssignment;
+        private SelectingTaskAssignment _taskAssignment;
         public ITaskAssignment TaskAssignment => _taskAssignment;
         private ContentStore ContentStore => App.AppHost!.Services.GetRequiredService<ContentStore>();
 
-        public MatchingTaskEditor(MatchingTaskAssignment? matchingTaskEntity = null)
+        public SelectingTaskEditor(SelectingTaskAssignment? taskEntity = null)
         {
             InitializeComponent();
             DataContext = this;
 
-            _taskAssignment = matchingTaskEntity ?? new MatchingTaskAssignment()
+            _taskAssignment = taskEntity ?? new SelectingTaskAssignment()
             {
                 Title = txtTitle.Text
             };
@@ -54,7 +54,7 @@ namespace Content_Manager.Windows.Editors
                 // Add the Task entity
                 if (_taskAssignment.IsManaged == false)
                 {
-                    ContentStore.SelectedSegment!.MatchingTasks.Add(_taskAssignment);
+                    ContentStore.SelectedSegment!.SelectingTasks.Add(_taskAssignment);
                 }
 
                 // Add the Task item entity

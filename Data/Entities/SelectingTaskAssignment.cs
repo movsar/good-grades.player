@@ -13,8 +13,8 @@ namespace Data.Entities
         public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;
         /******************************************************************/
         public string CorrectQuizId { get; set; }
-        public IList<TextItem> Options { get; }
-        public bool IsContentSet => Options.Count() > 0 && !string.IsNullOrEmpty(CorrectQuizId);
+        public IList<AssignmentItem> Items { get; }
+        public bool IsContentSet => Items.Count() > 0 && !string.IsNullOrEmpty(CorrectQuizId);
 
     }
 }

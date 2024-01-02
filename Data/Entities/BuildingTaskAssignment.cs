@@ -12,8 +12,8 @@ namespace Data.Entities
         public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.Now;
         public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;
         /******************************************************************/
-        public IList<TextItem> Words { get; }
-        public bool IsContentSet => Words.Count() > 0;
+        public IList<AssignmentItem> Items { get; }
+        public bool IsContentSet => Items.Count() > 0;
 
     }
 }

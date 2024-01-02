@@ -29,7 +29,7 @@ namespace Content_Manager.UserControls
         #region Properties
         private readonly ContentStore _contentStore = App.AppHost!.Services.GetRequiredService<ContentStore>();
         StylingService StylingService => App.AppHost!.Services.GetRequiredService<StylingService>();
-        private List<TextItem> Answers { get; set; } = new List<TextItem>();
+        private List<AssignmentItem> Answers { get; set; } = new List<AssignmentItem>();
         public string QuestionText
         {
             get { return (string)GetValue(ItemTextProperty); }

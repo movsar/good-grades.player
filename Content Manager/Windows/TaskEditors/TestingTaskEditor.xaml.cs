@@ -10,18 +10,18 @@ using System.Windows;
 
 namespace Content_Manager.Windows.Editors
 {
-    public partial class MatchingTaskEditor : Window, ITaskEditor
+    public partial class TestingTaskEditor : Window, ITaskEditor
     {
-        private MatchingTaskAssignment _taskAssignment;
+        private TestingTaskAssignment _taskAssignment;
         public ITaskAssignment TaskAssignment => _taskAssignment;
         private ContentStore ContentStore => App.AppHost!.Services.GetRequiredService<ContentStore>();
 
-        public MatchingTaskEditor(MatchingTaskAssignment? matchingTaskEntity = null)
+        public TestingTaskEditor(TestingTaskAssignment? taskEntity = null)
         {
             InitializeComponent();
             DataContext = this;
 
-            _taskAssignment = matchingTaskEntity ?? new MatchingTaskAssignment()
+            _taskAssignment = taskEntity ?? new TestingTaskAssignment()
             {
                 Title = txtTitle.Text
             };
@@ -32,33 +32,33 @@ namespace Content_Manager.Windows.Editors
         public void RedrawUi()
         {
             spItems.Children.Clear();
-            foreach (var item in _taskAssignment.Items)
+            foreach (var item in _taskAssignment.Questions)
             {
-                var existingQuizItemControl = new ItemControl(item);
+                var existingQuizItemControl = new TestingQuestionControl(item);
                 existingQuizItemControl.Delete += Item_Delete;
 
                 spItems.Children.Add(existingQuizItemControl);
             }
 
-            var newItemControl = new ItemControl();
+            var newItemControl = new TestingQuestionControl();
             newItemControl.Create += Item_Create;
             spItems.Children.Add(newItemControl);
         }
 
         private void Item_Create(IEntityBase entity)
         {
-            var itemEntity = (AssignmentItem)entity;
+            var itemEntity = (TestingQuestion)entity;
 
             ContentStore.Database.Write(() =>
             {
                 // Add the Task entity
                 if (_taskAssignment.IsManaged == false)
                 {
-                    ContentStore.SelectedSegment!.MatchingTasks.Add(_taskAssignment);
+                    ContentStore.SelectedSegment!.TestingTasks.Add(_taskAssignment);
                 }
 
                 // Add the Task item entity
-                _taskAssignment.Items.Add(itemEntity);
+                _taskAssignment.Questions.Add(itemEntity);
             });
 
             RedrawUi();
@@ -68,8 +68,8 @@ namespace Content_Manager.Windows.Editors
         {
             ContentStore.Database.Write(() =>
             {
-                var itemToRemove = _taskAssignment.Items.First(i => i.Id == id);
-                _taskAssignment.Items.Remove(itemToRemove);
+                var itemToRemove = _taskAssignment.Questions.First(i => i.Id == id);
+                _taskAssignment.Questions.Remove(itemToRemove);
             });
 
             RedrawUi();
