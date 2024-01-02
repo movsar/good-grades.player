@@ -8,40 +8,35 @@
     <Grid>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="80"></RowDefinition>
-            <RowDefinition Height="89*"></RowDefinition>
-            <RowDefinition Height="29*"/>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0"  Margin="10,5,10,0" >
+        <StackPanel Grid.Row="0"  Margin="10,5,10,0" Orientation="Vertical">
+            <TextBlock Style="{StaticResource HeaderStyle}">
+                Заголовок
+            </TextBlock>
+
             <TextBox 
                 x:Name="txtTitle"
-                Margin="10 5 10 0" 
-                FontWeight="Bold"
-                Text="Выберите изображения и пропишите их описания">
+                Style="{StaticResource InputFieldStyle}" 
+                Text="Заполните пробелы">
             </TextBox>
 
-            <TextBlock FontWeight="Bold" TextWrapping="Wrap">
-                Добавьте выражения с указанием слов-пропусков.<LineBreak/>
+            <TextBlock Style="{StaticResource HeaderStyle}">
+              Выражения
             </TextBlock>
-
-            <TextBlock TextWrapping="Wrap">
+            
+            <TextBlock FontStyle="Italic" 
+                       TextWrapping="Wrap" 
+                       Margin="5 5 5 5">
+                Добавьте выражения с указанием слов-пропусков.                
+                <LineBreak/>
                 Чтобы указать опускаемое слово, нужно его пометить фигурными скобками, одно выражение может иметь несколько пропусков.
-           
-            <TextBlock TextWrapping="Wrap" FontWeight="Bold">
-                Пример: Это выражение с {опущенным} словом
-            </TextBlock>
+                Каждый пропуск может иметь несколько возможных вариантов заполнения разделенных через символ "|"
             </TextBlock>
 
         </StackPanel>
-
-        <Button Grid.Row="0" x:Name="btnPreview"
-                Visibility="Collapsed"
-                HorizontalAlignment="Left"
-                Background="LightSeaGreen"
-                Margin="800,0,0,0" Padding="7 0 7 0" 
-                Cursor="Hand"
-                FontFamily="Segoe MDL2 Assets" Content="&#xE8FF;" />
 
         <ScrollViewer Grid.Row="1" Grid.RowSpan="2">
             <StackPanel x:Name="spItems"></StackPanel>

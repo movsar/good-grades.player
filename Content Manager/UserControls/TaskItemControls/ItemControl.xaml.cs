@@ -25,7 +25,7 @@ namespace Content_Manager.UserControls
         public event Action<string> SetAsCorrect;
 
         #region Fields
-        private const string Hint = "Введите описание";
+        private string Hint = "Введите описание";
         private FormCompletionInfo _formCompletionInfo;
         private TaskType _taskType;
         #endregion
@@ -86,7 +86,7 @@ namespace Content_Manager.UserControls
         {
             btnDelete.Visibility = Visibility.Visible;
         }
-        private void SharedInitialization(TaskType taskType, bool isExistingMaterial, bool isSelected)
+        private void SharedUiInitialization(TaskType taskType, bool isExistingMaterial, bool isSelected)
         {
             InitializeComponent();
             DataContext = this;
@@ -101,7 +101,12 @@ namespace Content_Manager.UserControls
             // Decide what controls to make available
             switch (_taskType)
             {
+                case TaskType.Filling:
+                    Hint = "Как { она | он } поживает? Как {погода}?";
+                    break;
                 case TaskType.Matching:
+                    Hint = "Введите текст изображения";
+
                     btnChooseImage.Visibility = Visibility.Visible;
 
                     propertiesToWatch.Add(nameof(ItemImage));
@@ -131,25 +136,32 @@ namespace Content_Manager.UserControls
                     break;
             }
 
+            ItemText = Hint;
+
             _formCompletionInfo = new FormCompletionInfo(propertiesToWatch, isExistingMaterial);
             _formCompletionInfo.StatusChanged += OnFormStatusChanged;
         }
         public ItemControl(TaskType taskType)
         {
-            SharedInitialization(taskType, false, false);
+            SharedUiInitialization(taskType, false, false);
             SetUiForNewMaterial();
         }
         public ItemControl(TaskType taskType, AssignmentItem item)
         {
+            SharedUiInitialization(taskType, true, false);
+            SetUiForExistingMaterial();
+
             ItemId = item.Id;
             ItemImage = item.Image;
             ItemText = item.Text;
 
-            SharedInitialization(taskType, true, false);
-            SetUiForExistingMaterial();
 
-            OnImageSet(true);
             OnTextSet(true);
+
+            if (item.Image != null)
+            {
+                OnImageSet(true);
+            }
         }
         #endregion
 

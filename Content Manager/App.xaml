@@ -7,6 +7,16 @@
         <SolidColorBrush x:Key="ReadyBrush">PaleGreen</SolidColorBrush>
         <SolidColorBrush x:Key="NeutralBrush" Color="{DynamicResource {x:Static SystemColors.ControlBrush}}"></SolidColorBrush>
 
+        <Style TargetType="TextBox" x:Key="InputFieldStyle">
+            <Setter Property="Margin" Value="5,0,5,0"/>
+            <Setter Property="Padding" Value="5"/>
+        </Style>
+
+        <Style TargetType="TextBlock" x:Key="HeaderStyle">
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+        
         <Style TargetType="{x:Type Button}">
             <Setter Property="Background" Value="{StaticResource ResourceKey=NeutralBrush}"/>
             <Setter Property="Cursor" Value="Hand"/>
