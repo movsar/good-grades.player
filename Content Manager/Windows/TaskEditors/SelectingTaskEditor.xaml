@@ -8,23 +8,34 @@
         Title="SelectingTaskEditor" Height="450" Width="800">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" Orientation="Vertical" Margin="20" VerticalAlignment="Top" Background="AliceBlue">
+
+        <StackPanel Orientation="Vertical" Grid.Row="0">
             <TextBox 
                 x:Name="txtTitle"
                 Margin="10 5 10 0" 
                 FontWeight="Bold"
                 Text="Выберите изображения и пропишите их описания">
             </TextBox>
-          
+
+            <TextBlock Margin="10 5 10 0"
+                   FontWeight="Bold">Добавьте пословицы и выберите корректную</TextBlock>
+
+            <Button Grid.Row="0" x:Name="btnPreview"
+                Visibility="Collapsed"
+                HorizontalAlignment="Right"
+                Background="LightSeaGreen"
+                Margin="10 0 0 0" Padding="7 0 7 0" 
+                Cursor="Hand"
+                FontFamily="Segoe MDL2 Assets" Content="&#xE8FF;" />
         </StackPanel>
 
         <ScrollViewer Grid.Row="1">
-            <StackPanel Margin="20 0 10 0"  x:Name="spItems"></StackPanel>
+            <StackPanel x:Name="spItems"></StackPanel>
         </ScrollViewer>
+
     </Grid>
 </Window>

@@ -3,28 +3,49 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Content_Manager.Windows.Editors"
         mc:Ignorable="d"
         Title="FillingTaskEditor" Height="450" Width="800">
     <Grid>
+
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="80"></RowDefinition>
+            <RowDefinition Height="89*"></RowDefinition>
+            <RowDefinition Height="29*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" Orientation="Vertical" Margin="20" VerticalAlignment="Top" Background="AliceBlue">
+        <StackPanel Grid.Row="0"  Margin="10,5,10,0" >
             <TextBox 
                 x:Name="txtTitle"
                 Margin="10 5 10 0" 
                 FontWeight="Bold"
                 Text="Выберите изображения и пропишите их описания">
             </TextBox>
-          
+
+            <TextBlock FontWeight="Bold" TextWrapping="Wrap">
+                Добавьте выражения с указанием слов-пропусков.<LineBreak/>
+            </TextBlock>
+
+            <TextBlock TextWrapping="Wrap">
+                Чтобы указать опускаемое слово, нужно его пометить фигурными скобками, одно выражение может иметь несколько пропусков.
+           
+            <TextBlock TextWrapping="Wrap" FontWeight="Bold">
+                Пример: Это выражение с {опущенным} словом
+            </TextBlock>
+            </TextBlock>
+
         </StackPanel>
 
-        <ScrollViewer Grid.Row="1">
-            <StackPanel Margin="20 0 10 0"  x:Name="spItems"></StackPanel>
+        <Button Grid.Row="0" x:Name="btnPreview"
+                Visibility="Collapsed"
+                HorizontalAlignment="Left"
+                Background="LightSeaGreen"
+                Margin="800,0,0,0" Padding="7 0 7 0" 
+                Cursor="Hand"
+                FontFamily="Segoe MDL2 Assets" Content="&#xE8FF;" />
+
+        <ScrollViewer Grid.Row="1" Grid.RowSpan="2">
+            <StackPanel x:Name="spItems"></StackPanel>
         </ScrollViewer>
+
     </Grid>
 </Window>

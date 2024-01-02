@@ -1,12 +1,14 @@
 ﻿using Content_Manager.Models;
 using Content_Manager.Services;
 using Content_Manager.Stores;
+using Data;
 using Data.Entities.TaskItems;
 using Data.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -25,6 +27,7 @@ namespace Content_Manager.UserControls
         #region Fields
         private const string Hint = "Введите описание";
         private FormCompletionInfo _formCompletionInfo;
+        private TaskType _taskType;
         #endregion
 
         #region Properties
@@ -37,8 +40,8 @@ namespace Content_Manager.UserControls
         }
         public static readonly DependencyProperty ItemTextProperty =
             DependencyProperty.Register("ItemText", typeof(string), typeof(ItemControl), new PropertyMetadata(""));
-        public byte[] ItemImage { get; private set; }
         public string ItemId { get; set; }
+        public byte[] ItemImage { get; private set; }
         #endregion
 
         #region Reactions
@@ -83,10 +86,12 @@ namespace Content_Manager.UserControls
         {
             btnDelete.Visibility = Visibility.Visible;
         }
-        private void SharedInitialization(bool isExistingMaterial, bool isSelected)
+        private void SharedInitialization(TaskType taskType, bool isExistingMaterial, bool isSelected)
         {
             InitializeComponent();
             DataContext = this;
+
+            _taskType = taskType;
 
             var propertiesToWatch = new List<string>
             {
@@ -94,26 +99,53 @@ namespace Content_Manager.UserControls
             };
 
             // Decide what controls to make available
-            btnChooseImage.Visibility = Visibility.Visible;
+            switch (_taskType)
+            {
+                case TaskType.Matching:
+                    btnChooseImage.Visibility = Visibility.Visible;
 
-            propertiesToWatch.Add(nameof(ItemImage));
+                    propertiesToWatch.Add(nameof(ItemImage));
 
+                    break;
+                case TaskType.Test:
+                case TaskType.Selecting:
+                    btnSetAsCorrect.Visibility = Visibility.Visible;
+
+                    if (isSelected)
+                    {
+                        btnSetAsCorrect.Content = "\uE73A";
+                        btnSetAsCorrect.Foreground = Brushes.DarkGreen;
+                    }
+                    else
+                    {
+                        btnSetAsCorrect.Content = "\uE739";
+                    }
+
+                    if (!isExistingMaterial)
+                    {
+                        btnSetAsCorrect.IsEnabled = false;
+                    }
+
+                    break;
+                default:
+                    break;
+            }
 
             _formCompletionInfo = new FormCompletionInfo(propertiesToWatch, isExistingMaterial);
             _formCompletionInfo.StatusChanged += OnFormStatusChanged;
         }
-        public ItemControl()
+        public ItemControl(TaskType taskType)
         {
-            SharedInitialization(false, false);
+            SharedInitialization(taskType, false, false);
             SetUiForNewMaterial();
         }
-        public ItemControl(AssignmentItem item)
+        public ItemControl(TaskType taskType, AssignmentItem item)
         {
             ItemId = item.Id;
             ItemImage = item.Image;
             ItemText = item.Text;
 
-            SharedInitialization(true, false);
+            SharedInitialization(taskType, true, false);
             SetUiForExistingMaterial();
 
             OnImageSet(true);
@@ -206,26 +238,25 @@ namespace Content_Manager.UserControls
         }
         private void ValidateInput()
         {
-            //switch (_quizType)
-            //{
-            //    case QuizTypes.GapFiller:
-            //        var gapOpeners = Regex.Matches(ItemText, @"\{");
-            //        var gapClosers = Regex.Matches(ItemText, @"\}");
-            //        var gappedWords = Regex.Matches(ItemText, @"\{\W*\w+.*?\}");
+            switch (_taskType)
+            {
+                case TaskType.Filling:
+                    var gapOpeners = Regex.Matches(ItemText, @"\{");
+                    var gapClosers = Regex.Matches(ItemText, @"\}");
+                    var gappedWords = Regex.Matches(ItemText, @"\{\W*\w+.*?\}");
 
-            //        if (gapOpeners.Count != gapClosers.Count || gapOpeners.Count != gappedWords.Count)
-            //        {
-            //            throw new Exception("Неправильное форматирование");
-            //        }
+                    if (gapOpeners.Count != gapClosers.Count || gapOpeners.Count != gappedWords.Count)
+                    {
+                        throw new Exception("Неправильное форматирование");
+                    }
 
+                    if (gappedWords.Count == 0)
+                    {
+                        throw new Exception("Необходимо указать хотя бы одно слово для пропуска");
+                    }
 
-            //        if (gappedWords.Count == 0)
-            //        {
-            //            throw new Exception("Необходимо указать хотя бы одно слово для пропуска");
-            //        }
-
-            //        break;
-            //}
+                    break;
+            }
         }
         #endregion
 

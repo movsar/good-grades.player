@@ -1,6 +1,7 @@
 ﻿using Content_Manager.Interfaces;
 using Content_Manager.Stores;
 using Content_Manager.UserControls;
+using Data;
 using Data.Entities;
 using Data.Entities.TaskItems;
 using Data.Interfaces;
@@ -34,13 +35,13 @@ namespace Content_Manager.Windows.Editors
             spItems.Children.Clear();
             foreach (var item in _taskAssignment.Items)
             {
-                var existingQuizItemControl = new ItemControl(item);
+                var existingQuizItemControl = new ItemControl(TaskType.Building, item);
                 existingQuizItemControl.Delete += Item_Delete;
 
                 spItems.Children.Add(existingQuizItemControl);
             }
 
-            var newItemControl = new ItemControl();
+            var newItemControl = new ItemControl(TaskType.Building);
             newItemControl.Create += Item_Create;
             spItems.Children.Add(newItemControl);
         }
