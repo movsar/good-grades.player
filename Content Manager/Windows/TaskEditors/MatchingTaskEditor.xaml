@@ -14,17 +14,13 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0" Orientation="Vertical" Margin="20" VerticalAlignment="Top" Background="AliceBlue">
-            <TextBlock Margin="10 5 10 0" FontWeight="Bold">Выберите изображения и пропишите их описания</TextBlock>
-
-            <Button x:Name="btnPreview" 
-                    Margin="10 5 10 0"
-                    Padding="7 0 7 0" 
-                    Visibility="Collapsed"
-                    HorizontalAlignment="Right"
-                    Background="LightSeaGreen"
-                    Cursor="Hand"
-                    FontFamily="Segoe MDL2 Assets" Content="&#xE8FF;" 
-            />
+            <TextBox 
+                x:Name="txtTitle"
+                Margin="10 5 10 0" 
+                FontWeight="Bold"
+                Text="Выберите изображения и пропишите их описания">
+            </TextBox>
+          
         </StackPanel>
 
         <ScrollViewer Grid.Row="1">

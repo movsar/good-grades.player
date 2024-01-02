@@ -92,12 +92,14 @@ namespace Content_Manager.UserControls
         private void btnSetData_Click(object sender, RoutedEventArgs e)
         {
             ITaskAssignment taskAssignment;
-            ITaskEditor taskEditor = null!;
-
-            if (_taskType == TaskType.Matching)
+            ITaskEditor taskEditor = _taskType switch
             {
-                taskEditor = new MatchingTaskEditor(_taskMaterial as MatchingTaskAssignment);
-            }
+                TaskType.Matching => new MatchingTaskEditor(_taskMaterial as MatchingTaskAssignment),
+                //TaskType.Filling => new MatchingTaskEditor(_taskMaterial as MatchingTaskAssignment),
+                //TaskType.Selecting => new MatchingTaskEditor(_taskMaterial as MatchingTaskAssignment),
+                //TaskType.Building => new MatchingTaskEditor(_taskMaterial as MatchingTaskAssignment),
+                //TaskType.Test => new MatchingTaskEditor(_taskMaterial as MatchingTaskAssignment),
+            };
 
             taskEditor.ShowDialog();
             taskAssignment = taskEditor.TaskAssignment;
