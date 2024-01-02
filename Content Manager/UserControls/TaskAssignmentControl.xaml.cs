@@ -1,4 +1,5 @@
-﻿using Content_Manager.Models;
+﻿using Content_Manager.Interfaces;
+using Content_Manager.Models;
 using Content_Manager.Services;
 using Content_Manager.Stores;
 using Content_Manager.Windows.Editors;
@@ -25,7 +26,7 @@ namespace Content_Manager.UserControls
 
         public bool IsContentSet { get; set; }
 
-        private readonly ITaskMaterial _taskMaterial;
+        private readonly ITaskAssignment _taskMaterial;
 
         #endregion
 
@@ -37,15 +38,10 @@ namespace Content_Manager.UserControls
         }
         private void SetUiForExistingMaterial()
         {
-            btnSetData.Background = StylingService.ReadyBrush;
-
-            if (IsContentSet)
-            {
-                btnSetData.Background = StylingService.ReadyBrush;
-            }
-
+            btnSetData.Background = IsContentSet ? StylingService.ReadyBrush : StylingService.StagedBrush;
             btnPreview.Background = StylingService.ReadyBrush;
             btnDelete.Visibility = Visibility.Visible;
+            cmbTaskType.IsEnabled = false;
         }
 
         private void SharedInitialization(bool isExistingMaterial = false)
@@ -64,17 +60,20 @@ namespace Content_Manager.UserControls
         public TaskAssignmentControl()
         {
             SharedInitialization();
+
             AddTaskTypes();
             SetUiForNewMaterial();
         }
 
-        public TaskAssignmentControl(ITaskMaterial taskMaterial)
+        public TaskAssignmentControl(ITaskAssignment taskMaterial)
         {
-            SharedInitialization(true);
-            AddTaskTypes();
-            SetSelectedTaskType(taskMaterial);
-
             _taskMaterial = taskMaterial;
+            IsContentSet = GetCurrentTaskItems().Count() > 0;
+
+            SharedInitialization(true);
+
+            AddTaskTypes();
+            SetSelectedTaskType();
 
             SetUiForExistingMaterial();
         }
@@ -92,16 +91,27 @@ namespace Content_Manager.UserControls
         }
         private void btnSetData_Click(object sender, RoutedEventArgs e)
         {
+            ITaskAssignment taskAssignment;
+            ITaskEditor taskEditor = null!;
+
             if (_taskType == TaskType.Matching)
             {
-                var matchingTaskEditor = new MatchingTaskEditor(_taskMaterial as MatchingTaskAssignment);
-                matchingTaskEditor.ShowDialog();
+                taskEditor = new MatchingTaskEditor(_taskMaterial as MatchingTaskAssignment);
             }
 
-            btnSetData.Background = StylingService.StagedBrush;
+            taskEditor.ShowDialog();
+            taskAssignment = taskEditor.TaskAssignment;
 
-            _formCompletionInfo.Update(nameof(IsContentSet), IsContentSet);
-
+            if (_taskMaterial != null)
+            {
+                // Data update may or may not have been done
+                ContentStore.RaiseItemUpdatedEvent(taskAssignment);
+            }
+            else if (taskAssignment.IsContentSet)
+            {
+                // Content has been specified for a new task
+                ContentStore.RaiseItemAddedEvent(taskAssignment);
+            }
         }
 
         private void btnPreview_Click(object sender, RoutedEventArgs e)
@@ -169,9 +179,23 @@ namespace Content_Manager.UserControls
             cmbTaskType.Items.Add(matchingTaskType);
             cmbTaskType.Items.Add(buildingTaskMaterial);
         }
-        private void SetSelectedTaskType(ITaskMaterial taskMaterial)
+        private IEnumerable<object> GetCurrentTaskItems()
         {
-            string selectedTaskName = taskMaterial switch
+            var items = _taskMaterial switch
+            {
+                MatchingTaskAssignment mt => mt.Items,
+                FillingTaskAssignment ft => ft.Items,
+                //SelectingTaskAssignment st => st.,
+                //TestingTaskAssignment _ => Constants.TASK_NAME_TEST,
+                //BuildingTaskAssignment _ => Constants.TASK_NAME_BUILDING,
+                //_ => ""
+            };
+
+            return items;
+        }
+        private void SetSelectedTaskType()
+        {
+            string selectedTaskName = _taskMaterial switch
             {
                 FillingTaskAssignment _ => Constants.TASK_NAME_FILLING,
                 SelectingTaskAssignment _ => Constants.TASK_NAME_SELECTING,

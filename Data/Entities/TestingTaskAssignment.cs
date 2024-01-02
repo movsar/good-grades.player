@@ -5,7 +5,7 @@ using Realms;
 
 namespace Data.Entities
 {
-    public class TestingTaskAssignment : RealmObject, ITaskMaterial
+    public class TestingTaskAssignment : RealmObject, ITaskAssignment
     {
         [Required] public string Title { get; set; }
         [Required][PrimaryKey] public string Id { get; set; } = ObjectId.GenerateNewId().ToString();
@@ -13,5 +13,6 @@ namespace Data.Entities
         public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;
         /******************************************************************/
         public IList<TestingQuestion> Questions { get; }
+        public bool IsContentSet => Questions.Count() > 0;
     }
 }

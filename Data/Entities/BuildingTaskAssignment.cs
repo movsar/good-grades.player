@@ -5,7 +5,7 @@ using Realms;
 
 namespace Data.Entities
 {
-    public class BuildingTaskAssignment : RealmObject, ITaskMaterial
+    public class BuildingTaskAssignment : RealmObject, ITaskAssignment
     {
         [Required] public string Title { get; set; }
         [Required][PrimaryKey] public string Id { get; set; } = ObjectId.GenerateNewId().ToString();
@@ -13,5 +13,7 @@ namespace Data.Entities
         public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;
         /******************************************************************/
         public IList<TextItem> Words { get; }
+        public bool IsContentSet => Words.Count() > 0;
+
     }
 }

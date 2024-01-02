@@ -30,13 +30,5 @@
         <ScrollViewer Grid.Row="1">
             <StackPanel Margin="20 0 10 0"  x:Name="spItems"></StackPanel>
         </ScrollViewer>
-
-        <Button Grid.Row="2"
-                Style="{StaticResource ButtonStyle}"
-                Content="Закрыть"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Bottom"
-                Margin="10"
-        />
     </Grid>
 </Window>

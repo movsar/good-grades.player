@@ -1,4 +1,5 @@
-﻿using Content_Manager.Stores;
+﻿using Content_Manager.Interfaces;
+using Content_Manager.Stores;
 using Content_Manager.UserControls;
 using Data.Entities;
 using Data.Entities.TaskItems;
@@ -12,14 +13,17 @@ namespace Content_Manager.Windows.Editors
     /// <summary>
     /// Interaction logic for TextToImageQuizEditor.xaml
     /// </summary>
-    public partial class MatchingTaskEditor : Window
+    public partial class MatchingTaskEditor : Window, ITaskEditor
     {
 
         private readonly ContentStore ContentStore = App.AppHost!.Services.GetRequiredService<ContentStore>();
-        public MatchingTaskAssignment MatchingTaskEntity { get; private set; }
+        private MatchingTaskAssignment _taskAssignment;
+        public ITaskAssignment TaskAssignment => _taskAssignment;
+
+
         public MatchingTaskEditor(MatchingTaskAssignment? matchingTaskEntity = null)
         {
-            MatchingTaskEntity = matchingTaskEntity ?? new MatchingTaskAssignment()
+            _taskAssignment = matchingTaskEntity ?? new MatchingTaskAssignment()
             {
                 Title = "Adsad"
             };
@@ -33,7 +37,7 @@ namespace Content_Manager.Windows.Editors
         public void RedrawUi()
         {
             spItems.Children.Clear();
-            foreach (var item in MatchingTaskEntity.Items)
+            foreach (var item in _taskAssignment.Items)
             {
                 var existingQuizItemControl = new ItemControl(item);
                 existingQuizItemControl.Update += Item_Update;
@@ -52,10 +56,10 @@ namespace Content_Manager.Windows.Editors
         {
             ContentStore.Database.Write(() =>
             {
-                var itemToRemove = MatchingTaskEntity.Items.First(i => i.Id == id);
-                MatchingTaskEntity.Items.Remove(itemToRemove);
-            });    
-            
+                var itemToRemove = _taskAssignment.Items.First(i => i.Id == id);
+                _taskAssignment.Items.Remove(itemToRemove);
+            });
+
             RedrawUi();
         }
 
@@ -69,12 +73,12 @@ namespace Content_Manager.Windows.Editors
 
             var e = (TextAndImageItem)entity;
 
-            if (!MatchingTaskEntity.IsManaged)
+            if (!_taskAssignment.IsManaged)
             {
-                ContentStore.Database.Write(() => ContentStore.SelectedSegment!.MatchingTasks.Add(MatchingTaskEntity));
+                ContentStore.Database.Write(() => ContentStore.SelectedSegment!.MatchingTasks.Add(_taskAssignment));
             }
 
-            ContentStore.Database.Write(() => MatchingTaskEntity.Items.Add(e));
+            ContentStore.Database.Write(() => _taskAssignment.Items.Add(e));
             RedrawUi();
         }
     }

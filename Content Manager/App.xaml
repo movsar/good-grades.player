@@ -5,15 +5,17 @@
         <SolidColorBrush x:Key="StagedBrush">LightYellow</SolidColorBrush>
         <SolidColorBrush x:Key="DeleteBrush">Red</SolidColorBrush>
         <SolidColorBrush x:Key="ReadyBrush">PaleGreen</SolidColorBrush>
+        <SolidColorBrush x:Key="NeutralBrush" Color="{DynamicResource {x:Static SystemColors.ControlBrush}}"></SolidColorBrush>
 
-        <Style TargetType="{x:Type Button}" x:Key="ButtonStyle">
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="{StaticResource ResourceKey=NeutralBrush}"/>
             <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Panel.ZIndex" Value="1"/>
             <Setter Property="Margin" Value="10,10,10,10"/>
             <Setter Property="Padding" Value="7,7,7,7"/>
-            <Setter Property="Panel.ZIndex" Value="1"/>
         </Style>
-
-        <Style TargetType="{x:Type Button}" x:Key="IconButtonStyle" BasedOn="{StaticResource ButtonStyle}">
+        
+        <Style TargetType="{x:Type Button}" x:Key="IconButtonStyle" BasedOn="{StaticResource {x:Type Button}}">
             <Setter Property="Background" Value="LightSeaGreen"/>
             <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
         </Style>

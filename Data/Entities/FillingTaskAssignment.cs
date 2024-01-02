@@ -5,13 +5,14 @@ using Realms;
 
 namespace Data.Entities
 {
-    public class FillingTaskAssignment : RealmObject, ITaskMaterial
+    public class FillingTaskAssignment : RealmObject, ITaskAssignment
     {
         [Required] public string Title { get; set; }
         [Required][PrimaryKey] public string Id { get; set; } = ObjectId.GenerateNewId().ToString();
         public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.Now;
         public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;
         /******************************************************************/
-        public IList<TextAndImageItem> GapFillers { get; }
+        public IList<TextAndImageItem> Items { get; }
+        public bool IsContentSet => Items.Count() > 0;
     }
 }
