@@ -8,6 +8,7 @@ using Data.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace Content_Manager.Windows.Editors
 {
@@ -25,7 +26,8 @@ namespace Content_Manager.Windows.Editors
             _taskAssignment = matchingTaskEntity ?? new MatchingTaskAssignment()
             {
                 Title = txtTitle.Text
-            };
+            };            
+            txtTitle.Text = _taskAssignment.Title;
 
             RedrawUi();
         }
@@ -75,5 +77,13 @@ namespace Content_Manager.Windows.Editors
 
             RedrawUi();
         }
+        private void txtTitle_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (_taskAssignment != null)
+            {
+                ContentStore.Database.Write(() => _taskAssignment.Title = txtTitle.Text);
+            }
+        }
+
     }
 }

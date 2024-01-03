@@ -21,7 +21,8 @@
             <TextBox 
                 x:Name="txtTitle"
                 Style="{StaticResource InputFieldStyle}" 
-                Text="Заполните пробелы">
+                TextChanged="txtTitle_TextChanged"
+                Text="Постройте предложение из данных слов">
             </TextBox>
 
             <TextBlock Style="{StaticResource HeaderStyle}">
