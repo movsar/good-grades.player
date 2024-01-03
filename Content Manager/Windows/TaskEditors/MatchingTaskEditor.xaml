@@ -21,6 +21,7 @@
             <TextBox 
                x:Name="txtTitle"
                Style="{StaticResource InputFieldStyle}" 
+               TextChanged="txtTitle_TextChanged"
                Text="Выберите изображения и пропишите их описания">
             </TextBox>
           

@@ -20,6 +20,7 @@
             <TextBox 
                 x:Name="txtTitle"
                 Style="{StaticResource InputFieldStyle}" 
+                TextChanged="txtTitle_TextChanged"
                 Text="Пройдите тест">
             </TextBox>
 
