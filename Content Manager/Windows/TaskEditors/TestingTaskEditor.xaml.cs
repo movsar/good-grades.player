@@ -44,6 +44,8 @@ namespace Content_Manager.Windows.Editors
             var newItemControl = new TestingQuestionControl(_taskAssignment);
             newItemControl.QuestionCreated += Question_Updated;
             spItems.Children.Add(newItemControl);
+
+            ContentStore.ItemUpdated += Question_Updated;
         }
 
         private void Question_Updated(IEntityBase quiestion)

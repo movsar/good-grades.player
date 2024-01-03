@@ -146,6 +146,7 @@ namespace Content_Manager.UserControls
         {
             ContentStore.Database.Write(() => _testingQuestion!.CorrectOptionId = itemId);
             ContentStore.RaiseItemUpdatedEvent(_testingQuestion);
+            
         }
         private void Option_Create(IEntityBase entity)
         {
