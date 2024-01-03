@@ -9,28 +9,25 @@
     <Grid>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Vertical" Grid.Row="0">
+        <StackPanel Grid.Row="0"  Margin="10,5,10,0" Orientation="Vertical">
+            <TextBlock Style="{StaticResource HeaderStyle}">
+                Заголовок
+            </TextBlock>
+
             <TextBox 
                 x:Name="txtTitle"
-                Margin="10 5 10 0" 
-                FontWeight="Bold"
-                Text="Выберите изображения и пропишите их описания">
+                Style="{StaticResource InputFieldStyle}" 
+                Text="Заполните пробелы">
             </TextBox>
 
-            <TextBlock Margin="10 5 10 0"
-                FontWeight="Bold">Добавьте пословицы</TextBlock>
+            <TextBlock Style="{StaticResource HeaderStyle}">
+                Выражения
+            </TextBlock>
 
-            <Button  x:Name="btnPreview"
-                Visibility="Collapsed"
-                HorizontalAlignment="Right"
-                Background="LightSeaGreen"
-                Margin="10 0 0 0" Padding="7 0 7 0" 
-                Cursor="Hand"
-                FontFamily="Segoe MDL2 Assets" Content="&#xE8FF;" />
         </StackPanel>
 
         <ScrollViewer Grid.Row="1">

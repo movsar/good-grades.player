@@ -34,37 +34,24 @@ namespace Content_Manager.Windows.Editors
             spItems.Children.Clear();
             foreach (var item in _taskAssignment.Questions)
             {
-                var existingQuizItemControl = new TestingQuestionControl(item);
-                existingQuizItemControl.Delete += Item_Delete;
-
-                spItems.Children.Add(existingQuizItemControl);
+                var existingQuestionControl = new TestingQuestionControl(_taskAssignment, item);
+                existingQuestionControl.QuestionDeleted += Question_Deleted;
+                existingQuestionControl.QuestionUpdated += Question_Updated;
+                
+                spItems.Children.Add(existingQuestionControl);
             }
 
-            var newItemControl = new TestingQuestionControl();
-            newItemControl.Create += Item_Create;
+            var newItemControl = new TestingQuestionControl(_taskAssignment);
+            newItemControl.QuestionCreated += Question_Updated;
             spItems.Children.Add(newItemControl);
         }
 
-        private void Item_Create(IEntityBase entity)
+        private void Question_Updated(IEntityBase quiestion)
         {
-            var itemEntity = (TestingQuestion)entity;
-
-            ContentStore.Database.Write(() =>
-            {
-                // Add the Task entity
-                if (_taskAssignment.IsManaged == false)
-                {
-                    ContentStore.SelectedSegment!.TestingTasks.Add(_taskAssignment);
-                }
-
-                // Add the Task item entity
-                _taskAssignment.Questions.Add(itemEntity);
-            });
-
             RedrawUi();
         }
 
-        private void Item_Delete(string id)
+        private void Question_Deleted(string id)
         {
             ContentStore.Database.Write(() =>
             {

@@ -35,15 +35,15 @@ namespace Content_Manager.Windows.Editors
             spItems.Children.Clear();
             foreach (var item in _taskAssignment.Items)
             {
-                var isSelected = _taskAssignment.CorrectQuizId == item.Id;
-                var existingQuizItemControl = new ItemControl(TaskType.Selecting, item, isSelected);
+                var isSelected = _taskAssignment.CorrectItemId == item.Id;
+                var existingQuizItemControl = new AssignmentItemControl(TaskType.Selecting, item, isSelected);
                 existingQuizItemControl.Delete += Item_Delete;
                 existingQuizItemControl.SetAsCorrect += ExistingQuizItemControl_SetAsCorrect;
 
                 spItems.Children.Add(existingQuizItemControl);
             }
 
-            var newItemControl = new ItemControl(TaskType.Selecting);
+            var newItemControl = new AssignmentItemControl(TaskType.Selecting);
             newItemControl.Create += Item_Create;
             spItems.Children.Add(newItemControl);
         }
@@ -52,7 +52,7 @@ namespace Content_Manager.Windows.Editors
         {
             ContentStore.Database.Write(() =>
             {
-                _taskAssignment.CorrectQuizId = itemId;
+                _taskAssignment.CorrectItemId = itemId;
             });
 
             RedrawUi();

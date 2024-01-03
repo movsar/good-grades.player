@@ -39,7 +39,7 @@ namespace Data
                     ulong edgeSize = 30 * 1024 * 1024;
                     return totalBytes > edgeSize && usedBytes / totalBytes < 0.5;
                 },
-                SchemaVersion = 4
+                SchemaVersion = 5
             };
         }
         public void CreateDatabase(string databasePath, string? appVersion)

@@ -17,7 +17,7 @@ using Image = System.Windows.Controls.Image;
 
 namespace Content_Manager.UserControls
 {
-    public partial class ItemControl : UserControl
+    public partial class AssignmentItemControl : UserControl
     {
         public event Action<IEntityBase> Create;
         public event Action<IEntityBase> Update;
@@ -39,7 +39,7 @@ namespace Content_Manager.UserControls
             set { SetValue(ItemTextProperty, value); }
         }
         public static readonly DependencyProperty ItemTextProperty =
-            DependencyProperty.Register("ItemText", typeof(string), typeof(ItemControl), new PropertyMetadata(""));
+            DependencyProperty.Register("ItemText", typeof(string), typeof(AssignmentItemControl), new PropertyMetadata(""));
         public string ItemId { get; set; }
         public byte[] ItemImage { get; private set; }
         #endregion
@@ -141,12 +141,12 @@ namespace Content_Manager.UserControls
             _formCompletionInfo = new FormCompletionInfo(propertiesToWatch, isExistingMaterial);
             _formCompletionInfo.StatusChanged += OnFormStatusChanged;
         }
-        public ItemControl(TaskType taskType)
+        public AssignmentItemControl(TaskType taskType)
         {
             SharedUiInitialization(taskType, false, false);
             SetUiForNewMaterial();
         }
-        public ItemControl(TaskType taskType, AssignmentItem item, bool isSelected = false)
+        public AssignmentItemControl(TaskType taskType, AssignmentItem item, bool isSelected = false)
         {
             SharedUiInitialization(taskType, true, isSelected);
             SetUiForExistingMaterial();

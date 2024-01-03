@@ -1,12 +1,15 @@
 ﻿using Content_Manager.Models;
 using Content_Manager.Services;
 using Content_Manager.Stores;
+using Data;
+using Data.Entities;
 using Data.Entities.TaskItems;
 using Data.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -15,10 +18,9 @@ namespace Content_Manager.UserControls
     public partial class TestingQuestionControl : UserControl
     {
         #region Events
-        public event Action Refresh;
-        public event Action<IEntityBase> Create;
-        public event Action<string?, IEntityBase> Update;
-        public event Action<string> Delete;
+        public event Action<IEntityBase> QuestionCreated;
+        public event Action<IEntityBase> QuestionUpdated;
+        public event Action<string> QuestionDeleted;
         #endregion
 
         #region Fields
@@ -27,17 +29,22 @@ namespace Content_Manager.UserControls
         #endregion
 
         #region Properties
-        private readonly ContentStore _contentStore = App.AppHost!.Services.GetRequiredService<ContentStore>();
+        private readonly ContentStore ContentStore = App.AppHost!.Services.GetRequiredService<ContentStore>();
         StylingService StylingService => App.AppHost!.Services.GetRequiredService<StylingService>();
-        private List<AssignmentItem> Answers { get; set; } = new List<AssignmentItem>();
+        private List<AssignmentItem> Options { get; set; } = new List<AssignmentItem>();
+
+        private readonly TestingQuestion _testingQuestion;
+
         public string QuestionText
         {
             get { return (string)GetValue(ItemTextProperty); }
             set { SetValue(ItemTextProperty, value); }
         }
+
+        private TestingTaskAssignment _task;
+        private readonly string _taskId;
         public static readonly DependencyProperty ItemTextProperty =
             DependencyProperty.Register("QuestionText", typeof(string), typeof(TestingQuestionControl), new PropertyMetadata(""));
-
 
         public string QuestionId { get; }
 
@@ -76,46 +83,52 @@ namespace Content_Manager.UserControls
             InitializeComponent();
             DataContext = this;
 
-            var propertiesToWatch = new List<string>();
-            propertiesToWatch.Add(nameof(QuestionText));
+            var propertiesToWatch = new List<string>
+            {
+                nameof(QuestionText)
+            };
 
             _formCompletionInfo = new FormCompletionInfo(propertiesToWatch, isExistingMaterial);
             _formCompletionInfo.StatusChanged += OnFormStatusChanged;
         }
-        public TestingQuestionControl()
+        public TestingQuestionControl(TestingTaskAssignment task)
         {
             SharedInitialization(false);
             SetUiForNewMaterial();
 
             QuestionText = Hint;
+            _testingQuestion = new TestingQuestion();
+            _task = task;
         }
 
-        public TestingQuestionControl(TestingQuestion testingQuestion)
+        public TestingQuestionControl(TestingTaskAssignment task, TestingQuestion testingQuestion)
         {
             SharedInitialization(true);
             SetUiForExistingMaterial();
 
+            _testingQuestion = testingQuestion;
+            _task = task;
+
             QuestionId = testingQuestion.Id!;
-            QuestionText = testingQuestion.QuestionText;
-            Answers = testingQuestion.Answers.ToList();
+            QuestionText = testingQuestion.Text;
+            Options = testingQuestion.Options.ToList();
 
-            //foreach (var answer in Answers)
-            //{
-            //    var isSelected = _contentStore.SelectedSegment?.TestingTasks.SelectMany(t => t.Questions).Where(q => q.Id == QuestionId).FirstOrDefault()?.CorrectAnswerId == answer.Id;
+            foreach (var answer in Options)
+            {
+                var isSelected = ContentStore.SelectedSegment?.TestingTasks.SelectMany(t => t.Questions).Where(q => q.Id == QuestionId).FirstOrDefault()?.CorrectOptionId == answer.Id;
 
-            //    var existingQuizItemControl = new TextQuizItem(){
-            //        Text = answer, isSelected);
-            //    existingQuizItemControl.Update += Question_QuizItem_Save;
-            //    existingQuizItemControl.Delete += Question_QuizItem_Delete;
-            //    existingQuizItemControl.SetAsCorrect += Question_QuizItem_SetAsCorrect;
+                var existingItemControl = new AssignmentItemControl(TaskType.Test, answer, isSelected);
+                existingItemControl.Update += Option_Save;
+                existingItemControl.Delete += Option_Delete;
+                existingItemControl.SetAsCorrect += Question_Option_SetAsCorrect;
 
-            //    spItems.Children.Add(existingQuizItemControl);
-            //}
+                spItems.Children.Add(existingItemControl);
+            }
 
-            //var newQuizItemControl = new QuizItemControl(QuizTypes.Testing);
-            //   newQuizItemControl.Create += Question_QuizItemControl_Create;
+            var newItemControl = new AssignmentItemControl(TaskType.Test);
+            newItemControl.Create += Option_Create;
 
-            // spItems.Children.Add(newQuizItemControl);
+            spItems.Children.Add(newItemControl);
 
             OnTextSet(true);
         }
@@ -123,30 +136,35 @@ namespace Content_Manager.UserControls
 
         #endregion
 
+        private TestingQuestion GetQuestionById(string questionId)
+        {
+            return ContentStore.SelectedSegment!.TestingTasks.SelectMany(t => t.Questions).Where(q => q.Id == questionId).First();
+        }
+
         #region Event Handlers
-        private void Question_QuizItem_SetAsCorrect(string itemId)
+        private void Question_Option_SetAsCorrect(string itemId)
         {
-            //var question = _contentStore.SelectedSegment?.TestingQuizes.Questions.Where(q => q.Id == QuestionId).First();
-            //question!.CorrectQuizId = itemId;
-            //Update?.Invoke(QuestionId, question);
+            ContentStore.Database.Write(() => _testingQuestion!.CorrectOptionId = itemId);
+            ContentStore.RaiseItemUpdatedEvent(_testingQuestion);
         }
-        private void Question_QuizItemControl_Create(IEntityBase model)
+        private void Option_Create(IEntityBase entity)
         {
-            //    var question = _contentStore.GetQuestionById(QuestionId);
+            var newAnswer = (AssignmentItem)entity;
+            var question = GetQuestionById(QuestionId);
 
-            //    _contentStore.CreateSelectableQuizItem(QuizTypes.Testing, model as TextAndImageQuizItem, question);
-            Refresh?.Invoke();
+            ContentStore.Database.Write(() => _testingQuestion.Options.Add(newAnswer));
+            QuestionUpdated?.Invoke(_testingQuestion);
         }
-        private void Question_QuizItem_Save(string? id, IEntityBase model)
+        private void Option_Save(IEntityBase model)
         {
-            //Update?.Invoke(QuestionId, _contentStore.GetQuestionById(QuestionId));
+            QuestionUpdated?.Invoke(_testingQuestion);
         }
-        private void Question_QuizItem_Delete(string itemId)
+        private void Option_Delete(string itemId)
         {
-            //var question = _contentStore.GetQuestionById(QuestionId);
+            var item = ContentStore.Database.Find<AssignmentItem>(itemId);
 
-            //_contentStore.DeleteSelectableQuizItem(QuizTypes.Testing, itemId, question);
-            //Refresh?.Invoke();
+            ContentStore.Database.Write(() => _testingQuestion.Options.Remove(item));
+            QuestionUpdated?.Invoke(_testingQuestion);
         }
         #endregion
 
@@ -183,23 +201,38 @@ namespace Content_Manager.UserControls
         #region Button Handlers
         private void btnSaveQuestion_Click(object sender, RoutedEventArgs e)
         {
-            //if (string.IsNullOrEmpty(QuestionId))
-            //{
-            //    Create?.Invoke(new TestingQuestion(QuestionText, Answers));
-            //}
-            //else
-            //{
-            //    var question = _contentStore.GetQuestionById(QuestionId);
-            //    question.QuestionText = QuestionText;
-            //    question.QuizItems = Answers;
+            ContentStore.Database.Write(() =>
+            {
+                // If the TestingTaskAssignment is new - add to database
+                if (!_task.IsManaged)
+                {
+                    ContentStore.SelectedSegment!.TestingTasks.Add(_task);
+                }
 
-            //    Update?.Invoke(QuestionId, question);
-            //}
+                // Set testing question fields
+                _testingQuestion.Text = QuestionText;
+                _testingQuestion.Options.Clear();
+                foreach (var option in Options)
+                {
+                    _testingQuestion.Options.Add(option);
+                }
+
+                // If testing question is new - add to database
+                if (!_testingQuestion.IsManaged)
+                {
+                    _task.Questions.Add(_testingQuestion);
+                    QuestionCreated?.Invoke(_testingQuestion);
+                }
+                else
+                {
+                    QuestionUpdated?.Invoke(_testingQuestion);
+                }
+            });
         }
 
         private void btnDeleteQuestion_Click(object sender, RoutedEventArgs e)
         {
-            Delete?.Invoke(QuestionId);
+            QuestionDeleted?.Invoke(QuestionId);
         }
         #endregion
     }

@@ -12,8 +12,8 @@ namespace Data.Entities.TaskItems
         public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.Now;
         public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;
         /******************************************************************/
-        public string QuestionText { get; set; }
-        public string CorrectAnswerId { get; set; }
-        public IList<AssignmentItem> Answers { get; }
+        public string Text { get; set; }
+        public string CorrectOptionId { get; set; }
+        public IList<AssignmentItem> Options { get; }
     }
 }
