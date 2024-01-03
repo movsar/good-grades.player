@@ -1,6 +1,8 @@
 ﻿using Content_Manager.Stores;
 using Data.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Controls;
 
 namespace Content_Manager.UserControls.SegmentTabs
@@ -23,23 +25,13 @@ namespace Content_Manager.UserControls.SegmentTabs
         {
             spTaskAssignmentControls.Children.Clear();
 
-            foreach (var material in ContentStore.SelectedSegment!.MatchingTasks)
-            {
-                spTaskAssignmentControls.Children.Add(new TaskAssignmentControl(material));
-            }
-            foreach (var material in ContentStore.SelectedSegment!.FillingTasks)
-            {
-                spTaskAssignmentControls.Children.Add(new TaskAssignmentControl(material));
-            }
-            foreach (var material in ContentStore.SelectedSegment!.BuildingTasks)
-            {
-                spTaskAssignmentControls.Children.Add(new TaskAssignmentControl(material));
-            }
-            foreach (var material in ContentStore.SelectedSegment!.TestingTasks)
-            {
-                spTaskAssignmentControls.Children.Add(new TaskAssignmentControl(material));
-            }
-            foreach (var material in ContentStore.SelectedSegment!.SelectingTasks)
+            List<ITaskAssignment> allTasks = ContentStore.SelectedSegment!.MatchingTasks.Cast<ITaskAssignment>().ToList();
+            allTasks.AddRange(ContentStore.SelectedSegment!.FillingTasks);
+            allTasks.AddRange(ContentStore.SelectedSegment!.BuildingTasks);
+            allTasks.AddRange(ContentStore.SelectedSegment!.TestingTasks);
+            allTasks.AddRange(ContentStore.SelectedSegment!.SelectingTasks);
+
+            foreach (var material in allTasks.OrderBy(t => t.CreatedAt))
             {
                 spTaskAssignmentControls.Children.Add(new TaskAssignmentControl(material));
             }
