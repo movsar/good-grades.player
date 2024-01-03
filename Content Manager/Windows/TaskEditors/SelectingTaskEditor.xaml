@@ -12,17 +12,16 @@
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
 
+        <StackPanel Grid.Row="0"  Margin="10,5,10,0" Orientation="Vertical">
+            <TextBlock Style="{StaticResource HeaderStyle}">
+                Заголовок
+            </TextBlock>
 
-        <StackPanel Orientation="Vertical" Grid.Row="0">
             <TextBox 
                 x:Name="txtTitle"
-                Margin="10 5 10 0" 
-                FontWeight="Bold"
-                Text="Выберите изображения и пропишите их описания">
+                Style="{StaticResource InputFieldStyle}" 
+                Text="Выберите правильную пословицу">
             </TextBox>
-
-            <TextBlock Margin="10 5 10 0"
-                   FontWeight="Bold">Добавьте пословицы и выберите корректную</TextBlock>
 
             <Button Grid.Row="0" x:Name="btnPreview"
                 Visibility="Collapsed"

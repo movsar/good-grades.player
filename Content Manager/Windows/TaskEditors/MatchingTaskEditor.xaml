@@ -13,18 +13,21 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" Orientation="Vertical" Margin="20" VerticalAlignment="Top" Background="AliceBlue">
+        <StackPanel Grid.Row="0"  Margin="10,5,10,0" Orientation="Vertical">
+            <TextBlock Style="{StaticResource HeaderStyle}">
+               Заголовок
+            </TextBlock>
+
             <TextBox 
-                x:Name="txtTitle"
-                Margin="10 5 10 0" 
-                FontWeight="Bold"
-                Text="Выберите изображения и пропишите их описания">
+               x:Name="txtTitle"
+               Style="{StaticResource InputFieldStyle}" 
+               Text="Выберите изображения и пропишите их описания">
             </TextBox>
           
         </StackPanel>
 
         <ScrollViewer Grid.Row="1">
-            <StackPanel Margin="20 0 10 0"  x:Name="spItems"></StackPanel>
+            <StackPanel Margin="5" x:Name="spItems"></StackPanel>
         </ScrollViewer>
     </Grid>
 </Window>

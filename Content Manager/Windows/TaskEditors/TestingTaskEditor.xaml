@@ -8,23 +8,28 @@
         Title="TestingTaskEditor" Height="450" Width="800">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" Orientation="Vertical" Margin="20" VerticalAlignment="Top" Background="AliceBlue">
+        <StackPanel Grid.Row="0"  Margin="10,5,10,0" Orientation="Vertical">
+            <TextBlock Style="{StaticResource HeaderStyle}">
+           Заголовок
+            </TextBlock>
+
             <TextBox 
                 x:Name="txtTitle"
-                Margin="10 5 10 0" 
-                FontWeight="Bold"
-                Text="Выберите изображения и пропишите их описания">
+                Style="{StaticResource InputFieldStyle}" 
+                Text="Пройдите тест">
             </TextBox>
-          
+
         </StackPanel>
+        
+        <TextBlock Margin="10 5 10 0"
+                   FontWeight="Bold">Добавьте вопросы, варианты и выберите правильные</TextBlock>
 
         <ScrollViewer Grid.Row="1">
-            <StackPanel Margin="20 0 10 0"  x:Name="spItems"></StackPanel>
+            <StackPanel x:Name="spItems"></StackPanel>
         </ScrollViewer>
     </Grid>
 </Window>

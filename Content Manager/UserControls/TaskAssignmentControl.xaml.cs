@@ -184,14 +184,14 @@ namespace Content_Manager.UserControls
         }
         private IEnumerable<object> GetCurrentTaskItems()
         {
-            var items = _taskMaterial switch
+            IEnumerable<object> items = _taskMaterial switch
             {
                 MatchingTaskAssignment mt => mt.Items,
                 FillingTaskAssignment ft => ft.Items,
-                //SelectingTaskAssignment st => st.,
-                //TestingTaskAssignment _ => Constants.TASK_NAME_TEST,
-                //BuildingTaskAssignment _ => Constants.TASK_NAME_BUILDING,
-                //_ => ""
+                SelectingTaskAssignment st => st.Items,
+                TestingTaskAssignment tt => tt.Questions,
+                BuildingTaskAssignment bt => bt.Items,
+                _ => throw new NotImplementedException()
             };
 
             return items;

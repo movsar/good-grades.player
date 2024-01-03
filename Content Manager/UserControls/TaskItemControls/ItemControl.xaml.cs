@@ -146,15 +146,14 @@ namespace Content_Manager.UserControls
             SharedUiInitialization(taskType, false, false);
             SetUiForNewMaterial();
         }
-        public ItemControl(TaskType taskType, AssignmentItem item)
+        public ItemControl(TaskType taskType, AssignmentItem item, bool isSelected = false)
         {
-            SharedUiInitialization(taskType, true, false);
+            SharedUiInitialization(taskType, true, isSelected);
             SetUiForExistingMaterial();
 
             ItemId = item.Id;
             ItemImage = item.Image;
             ItemText = item.Text;
-
 
             OnTextSet(true);
 
