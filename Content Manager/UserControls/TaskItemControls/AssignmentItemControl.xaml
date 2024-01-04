@@ -28,7 +28,7 @@
                     Width="30"
                     Height="30"
                     Click="btnChooseImage_Click"
-                    FontFamily="Segoe MDL2 Assets" Content="&#xE77B;" 
+                    FontFamily="Segoe MDL2 Assets" Content="&#xE722;" 
                 >
             </Button>
 
