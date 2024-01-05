@@ -19,21 +19,36 @@ namespace Shared.Viewers
         #region Event Handlers
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            for (int i = 0; i < gridMatchOptions.Children.Count; i++)
+            // Assuming grid rows and columns are filled in pairs (Image in column 0 and TextBlock in column 1)
+            for (int row = 0; row < gridMatchOptions.RowDefinitions.Count; row++)
             {
-                var gridItem = gridMatchOptions.Children[i];
-                var border = gridItem as Border;
+                var imageBorder = FindChildInGrid<Border>(gridMatchOptions, row, 0);
+                var textBlockBorder = FindChildInGrid<Border>(gridMatchOptions, row, 1);
 
-                var item = border.Child;
-                if (item.GetType() == typeof(Image))
+                if (imageBorder == null || textBlockBorder == null) continue;
+
+                var image = imageBorder.Child as Image;
+                var textBlock = textBlockBorder.Child as TextBlock;
+
+                if (image != null && textBlock != null && image.Name != textBlock.Name)
                 {
-                    continue;
+                    MessageBox.Show(Localization.ElementsDoNotMatch);
+                    return;
                 }
-
-                var textValue = ((TextBlock)item).Text;
-                var correspondingImage = _matchingPairs[textValue];
-
             }
+
+            MessageBox.Show(Localization.AllElementsMatch);
+        }
+        private T? FindChildInGrid<T>(Grid grid, int row, int column) where T : FrameworkElement
+        {
+            foreach (FrameworkElement child in grid.Children)
+            {
+                if (Grid.GetRow(child) == row && Grid.GetColumn(child) == column && child is T)
+                {
+                    return (T)child;
+                }
+            }
+            return null;
         }
         private void Element_Drop(object sender, DragEventArgs e)
         {
@@ -173,9 +188,10 @@ namespace Shared.Viewers
             {
                 var text = _matchingPairs.Keys.ToList()[i];
                 var image = _matchingPairs.Values.ToList()[i];
-
-                var imageUiElement = new Image { Source = image };
-                var textBlockUiElement = new TextBlock { Text = text };
+                
+                int pairIndex = i;
+                var imageUiElement = new Image { Source = image, Name = $"Pair_{pairIndex}" };
+                var textBlockUiElement = new TextBlock { Text = text, Name = $"Pair_{pairIndex}" };
 
                 gridItems.Add(new GridItem
                 {
