@@ -7,49 +7,30 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-
-        <Border Grid.Row="0" Grid.Column="0" Background="Transparent" MouseLeftButtonDown="Element_MouseLeftButtonDown" MouseMove="Element_MouseMove" Drop="Element_Drop" AllowDrop="True">
-            <Image Source="/Shared;component/Viewers/Бабин ЧIирдиг.png"/>
-        </Border>
-
-        <Border Grid.Row="0" Grid.Column="1" Background="Transparent" MouseLeftButtonDown="Element_MouseLeftButtonDown" MouseMove="Element_MouseMove" Drop="Element_Drop" AllowDrop="True">
-            <TextBlock Text="Дерево"/>
-        </Border>
-
-        <Border Grid.Row="1" Grid.Column="0" Background="Transparent" MouseLeftButtonDown="Element_MouseLeftButtonDown" MouseMove="Element_MouseMove" Drop="Element_Drop" AllowDrop="True">
-            <Image Source="/Shared;component/Viewers/Picture1.jpg"/>
-        </Border>
-
-        <Border Grid.Row="1" Grid.Column="1"  Background="Transparent" MouseLeftButtonDown="Element_MouseLeftButtonDown" MouseMove="Element_MouseMove" Drop="Element_Drop" AllowDrop="True">
-            <TextBlock Text="Бабушка"/>
-        </Border>
-
-        <Border Grid.Row="2" Grid.Column="0" Background="Transparent" MouseLeftButtonDown="Element_MouseLeftButtonDown" MouseMove="Element_MouseMove" Drop="Element_Drop" AllowDrop="True">
-            <Image  Source="/Shared;component/Viewers/Picture2.jpg"/>
-        </Border>
-
-        <Border Grid.Row="2" Grid.Column="1" Background="Transparent" MouseLeftButtonDown="Element_MouseLeftButtonDown" MouseMove="Element_MouseMove" Drop="Element_Drop" AllowDrop="True">
-            <TextBlock  Text="Человек"/>
-        </Border>
         
-        <Border Grid.Row="3" Grid.Column="0" Background="Transparent" MouseLeftButtonDown="Element_MouseLeftButtonDown" MouseMove="Element_MouseMove" Drop="Element_Drop" AllowDrop="True">
-            <Image Source="/Shared;component/Viewers/StoryPicture.png" StretchDirection="DownOnly"/>
-        </Border>
+        <Grid Grid.Row="0" x:Name="gridMatchOptions" Height="600" 
+              VerticalAlignment="Top" 
+              HorizontalAlignment="Stretch">
 
-        <Border Grid.Row="3" Grid.Column="1" Background="Transparent" MouseLeftButtonDown="Element_MouseLeftButtonDown" MouseMove="Element_MouseMove" Drop="Element_Drop" AllowDrop="True">
-            <TextBlock Text="Стамбул"/>
-        </Border>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="150"/>
+                <RowDefinition Height="150"/>
+                <RowDefinition Height="150"/>
+                <RowDefinition Height="150"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+        </Grid>
+
+        <Button Grid.Row="1" Content="Проверить" HorizontalAlignment="Right"/>
 
     </Grid>
 </Window>
