@@ -168,7 +168,7 @@ namespace Content_Manager.UserControls
         }
         private void btnPreview_Click(object sender, RoutedEventArgs e)
         {
-            var rtbPreviewWindow = new MaterialPresenter(RmTitle, RmText, RmImage);
+            var rtbPreviewWindow = new ReadingViewer(RmTitle, RmText, RmImage);
             rtbPreviewWindow.ShowDialog();
         }
 

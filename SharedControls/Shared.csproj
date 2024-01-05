@@ -15,7 +15,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Page Update="Viewers\MaterialPresenter.xaml">
+    <Page Update="Viewers\ListeningViewerr.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Viewers\ReadingViewer.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
   </ItemGroup>

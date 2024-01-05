@@ -198,7 +198,7 @@ namespace Content_Manager.UserControls
 
         private void btnPreview_Click(object sender, RoutedEventArgs e)
         {
-            var listeningPreviewWindow = new MaterialPresenter(LmTitle, LmText, LmImage, LmAudio);
+            var listeningPreviewWindow = new ListeningViewer(LmTitle, LmText, LmImage, LmAudio);
             listeningPreviewWindow.ShowDialog();
         }
         private void btnSave_Click(object sender, RoutedEventArgs e)
