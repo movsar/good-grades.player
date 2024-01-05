@@ -1,7 +1,8 @@
 ﻿using Data.Entities;
 using System;
 using System.Collections.Generic;
-using System.Reflection;
+using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -88,28 +89,47 @@ namespace Shared.Viewers
                 DragDrop.DoDragDrop(border, new DataObject(typeof(Border), border), DragDropEffects.Move);
             }
         }
-        private void Element_MouseMove(object sender, MouseEventArgs e){}
+        private void Element_MouseMove(object sender, MouseEventArgs e) { }
 
         public MatchingViewer(MatchingTaskAssignment assignment)
         {
             InitializeComponent();
 
-            List<GridItem> items = new List<GridItem>
+            var matchingPairs = assignment.Items.Select(i => new MatchingPair
             {
-                new GridItem { ImageSource = "/Shared;component/Viewers/Picture1.jpg", Row = 0, Column = 0 },
-                new GridItem { ImageSource = "/Shared;component/Viewers/Picture2.jpg", Row = 1, Column = 0 },
-                new GridItem { ImageSource = "/Shared;component/Viewers/Бабин ЧIирдиг.png", Row = 2, Column = 0 },
-                new GridItem { ImageSource = "/Shared;component/Viewers/StoryPicture.png" , Row = 3, Column = 0 },
+                Image = ConvertByteArrayToBitmapImage(i.Image),
+                Text = i.Text
+            }).ToList();
 
+            var randomizer = new Random();
+            var randomRowIndexesForTexts = Enumerable.Range(0, 4).OrderBy(i => randomizer.Next(0, 4)).ToArray();
+            var randomRowIndexesForImages = Enumerable.Range(0, 4).OrderBy(i => randomizer.Next(0, 4)).ToArray();
 
-                new GridItem { Text = "Дерево", Row = 0, Column = 1 },
-                new GridItem { Text = "Человек", Row = 1, Column = 1 },
-                new GridItem { Text = "Бабушка", Row = 2, Column = 1 },
-                new GridItem { Text = "Стамбул", Row = 3, Column = 1 },
-                // Add other items here
-            };
+            var gridItems = new List<GridItem>();
 
-            AddElementsToGrid(gridMatchOptions, items);
+            for (int i = 0; i < matchingPairs.Count(); i++)
+            {
+                var item = matchingPairs[i];
+
+                var imageUiElement = new Image { Source = item.Image };
+                var textBlockUiElement = new TextBlock { Text = item.Text };
+
+                gridItems.Add(new GridItem
+                {
+                    Element = imageUiElement,
+                    Row = randomRowIndexesForImages[i],
+                    Column = 0
+                });
+
+                gridItems.Add(new GridItem
+                {
+                    Element = textBlockUiElement,
+                    Row = randomRowIndexesForTexts[i],
+                    Column = 1
+                });
+            }
+
+            AddElementsToGrid(gridMatchOptions, gridItems);
         }
 
         private void AddElementsToGrid(Grid grid, List<GridItem> items)
@@ -129,34 +149,36 @@ namespace Shared.Viewers
                 border.DragLeave += Border_DragLeave;
                 border.Padding = new Thickness(10);
 
+                border.Child = item.Element;
+
                 Grid.SetRow(border, item.Row);
                 Grid.SetColumn(border, item.Column);
-
-                if (!string.IsNullOrEmpty(item.ImageSource))
-                {
-                    Image image = new Image
-                    {
-                        Source = new BitmapImage(new Uri(item.ImageSource, UriKind.Relative))
-                    };
-                    border.Child = image;
-                }
-                else if (!string.IsNullOrEmpty(item.Text))
-                {
-                    TextBlock textBlock = new TextBlock
-                    {
-                        Text = item.Text
-                    };
-                    border.Child = textBlock;
-                }
 
                 grid.Children.Add(border);
             }
         }
+        public BitmapImage ConvertByteArrayToBitmapImage(byte[] byteArray)
+        {
+            using (var stream = new MemoryStream(byteArray))
+            {
+                var bitmap = new BitmapImage();
+                bitmap.BeginInit();
+                bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                bitmap.StreamSource = stream;
+                bitmap.EndInit();
+                bitmap.Freeze();
+                return bitmap;
+            }
+        }
+        public class MatchingPair
+        {
+            public BitmapImage Image { get; set; }
+            public string Text { get; set; }
+        }
 
         public class GridItem
         {
-            public string ImageSource { get; set; }
-            public string Text { get; set; }
+            public FrameworkElement Element { get; set; }
             public int Row { get; set; }
             public int Column { get; set; }
         }
