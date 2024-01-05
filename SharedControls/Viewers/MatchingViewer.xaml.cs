@@ -1,4 +1,5 @@
 ﻿using Data.Entities;
+using Shared.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,41 +9,32 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Xml.Linq;
 
 namespace Shared.Viewers
 {
     public partial class MatchingViewer : Window
     {
-        private void Border_DragEnter(object sender, DragEventArgs e)
+        private readonly Dictionary<string, BitmapImage> _matchingPairs = new Dictionary<string, BitmapImage>();
+        #region Event Handlers
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
-            var border = sender as Border;
-            var draggedBorder = e.Data.GetData(typeof(Border)) as Border;
-
-            if (border != null && draggedBorder != null)
+            for (int i = 0; i < gridMatchOptions.Children.Count; i++)
             {
-                // Check if the types of the children of the source and target borders are the same
-                bool isSameType = (draggedBorder.Child.GetType() == border.Child.GetType());
+                var gridItem = gridMatchOptions.Children[i];
+                var border = gridItem as Border;
 
-                border.BorderBrush = isSameType ? Brushes.Green : Brushes.Red;
-                border.BorderThickness = new Thickness(3);
+                var item = border.Child;
+                if (item.GetType() == typeof(Image))
+                {
+                    continue;
+                }
+
+                var textValue = ((TextBlock)item).Text;
+                var correspondingImage = _matchingPairs[textValue];
+
             }
         }
-
-        private void ResetBorderStyle(Border border)
-        {
-            border.BorderBrush = Brushes.Transparent;
-            border.BorderThickness = new Thickness(0);
-        }
-
-        private void Border_DragLeave(object sender, DragEventArgs e)
-        {
-            var border = sender as Border;
-            if (border != null)
-            {
-                ResetBorderStyle(border);
-            }
-        }
-
         private void Element_Drop(object sender, DragEventArgs e)
         {
             var targetBorder = sender as Border;
@@ -60,7 +52,6 @@ namespace Shared.Viewers
             {
                 return;
             }
-
 
             // Get the contents of the Borders
             UIElement sourceContent = sourceBorder.Child;
@@ -89,30 +80,102 @@ namespace Shared.Viewers
                 DragDrop.DoDragDrop(border, new DataObject(typeof(Border), border), DragDropEffects.Move);
             }
         }
-        private void Element_MouseMove(object sender, MouseEventArgs e) { }
+        private void Border_DragEnter(object sender, DragEventArgs e)
+        {
+            var border = sender as Border;
+            var draggedBorder = e.Data.GetData(typeof(Border)) as Border;
 
+            if (border != null && draggedBorder != null)
+            {
+                // Check if the types of the children of the source and target borders are the same
+                bool isSameType = (draggedBorder.Child.GetType() == border.Child.GetType());
+
+                border.BorderBrush = isSameType ? Brushes.Green : Brushes.Red;
+                border.BorderThickness = new Thickness(3);
+            }
+        }
+        private void Border_DragLeave(object sender, DragEventArgs e)
+        {
+            var border = sender as Border;
+            if (border != null)
+            {
+                ResetBorderStyle(border);
+            }
+        }
+        #endregion
+
+        private void ResetBorderStyle(Border border)
+        {
+            border.BorderBrush = Brushes.Transparent;
+            border.BorderThickness = new Thickness(0);
+        }
+
+        private void AddElementsToGrid(Grid grid, List<GridItem> items)
+        {
+            foreach (var item in items)
+            {
+                var border = CreateBorderWithChild(item.Element);
+                Grid.SetRow(border, item.Row);
+                Grid.SetColumn(border, item.Column);
+                grid.Children.Add(border);
+            }
+        }
+
+        private Border CreateBorderWithChild(UIElement child)
+        {
+            var border = new Border
+            {
+                Background = Brushes.Transparent,
+                AllowDrop = true,
+                Padding = new Thickness(10),
+                Child = child
+            };
+
+            // AttachDragDropEvents
+            border.MouseLeftButtonDown += Element_MouseLeftButtonDown;
+            border.Drop += Element_Drop;
+            border.DragEnter += Border_DragEnter;
+            border.DragLeave += Border_DragLeave;
+
+            return border;
+        }
+
+        public BitmapImage ConvertByteArrayToBitmapImage(byte[] byteArray)
+        {
+            using (var stream = new MemoryStream(byteArray))
+            {
+                var bitmap = new BitmapImage();
+                bitmap.BeginInit();
+                bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                bitmap.StreamSource = stream;
+                bitmap.EndInit();
+                bitmap.Freeze();
+                return bitmap;
+            }
+        }
+
+        #region Properties, Fields and Constructors
         public MatchingViewer(MatchingTaskAssignment assignment)
         {
             InitializeComponent();
 
-            var matchingPairs = assignment.Items.Select(i => new MatchingPair
+            foreach (var item in assignment.Items)
             {
-                Image = ConvertByteArrayToBitmapImage(i.Image),
-                Text = i.Text
-            }).ToList();
+                _matchingPairs.Add(item.Text, ConvertByteArrayToBitmapImage(item.Image));
+            }
 
-            var randomizer = new Random();
-            var randomRowIndexesForTexts = Enumerable.Range(0, 4).OrderBy(i => randomizer.Next(0, 4)).ToArray();
-            var randomRowIndexesForImages = Enumerable.Range(0, 4).OrderBy(i => randomizer.Next(0, 4)).ToArray();
+            var randomRowIndexesForTexts = Enumerable.Range(0, 4).OrderBy(i => Guid.NewGuid()).ToArray();
+            var randomRowIndexesForImages = Enumerable.Range(0, 4).OrderBy(i => Guid.NewGuid()).ToArray();
 
             var gridItems = new List<GridItem>();
 
-            for (int i = 0; i < matchingPairs.Count(); i++)
+            for (int i = 0; i < _matchingPairs.Count(); i++)
             {
-                var item = matchingPairs[i];
+                var text = _matchingPairs.Keys.ToList()[i];
+                var image = _matchingPairs.Values.ToList()[i];
 
-                var imageUiElement = new Image { Source = item.Image };
-                var textBlockUiElement = new TextBlock { Text = item.Text };
+                var imageUiElement = new Image { Source = image };
+                var textBlockUiElement = new TextBlock { Text = text };
 
                 gridItems.Add(new GridItem
                 {
@@ -131,57 +194,7 @@ namespace Shared.Viewers
 
             AddElementsToGrid(gridMatchOptions, gridItems);
         }
-
-        private void AddElementsToGrid(Grid grid, List<GridItem> items)
-        {
-            foreach (var item in items)
-            {
-                Border border = new Border
-                {
-                    Background = Brushes.Transparent,
-                    AllowDrop = true
-                };
-
-                border.MouseLeftButtonDown += Element_MouseLeftButtonDown;
-                border.MouseMove += Element_MouseMove;
-                border.Drop += Element_Drop;
-                border.DragEnter += Border_DragEnter;
-                border.DragLeave += Border_DragLeave;
-                border.Padding = new Thickness(10);
-
-                border.Child = item.Element;
-
-                Grid.SetRow(border, item.Row);
-                Grid.SetColumn(border, item.Column);
-
-                grid.Children.Add(border);
-            }
-        }
-        public BitmapImage ConvertByteArrayToBitmapImage(byte[] byteArray)
-        {
-            using (var stream = new MemoryStream(byteArray))
-            {
-                var bitmap = new BitmapImage();
-                bitmap.BeginInit();
-                bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                bitmap.StreamSource = stream;
-                bitmap.EndInit();
-                bitmap.Freeze();
-                return bitmap;
-            }
-        }
-        public class MatchingPair
-        {
-            public BitmapImage Image { get; set; }
-            public string Text { get; set; }
-        }
-
-        public class GridItem
-        {
-            public FrameworkElement Element { get; set; }
-            public int Row { get; set; }
-            public int Column { get; set; }
-        }
+        #endregion
 
     }
 }
