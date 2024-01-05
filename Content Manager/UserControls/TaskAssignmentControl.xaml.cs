@@ -8,6 +8,7 @@ using Data.Entities;
 using Data.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Realms;
+using Shared.Viewers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +27,7 @@ namespace Content_Manager.UserControls
 
         public bool IsContentSet { get; set; }
 
-        private readonly ITaskAssignment _taskMaterial;
+        private readonly ITaskAssignment _taskAssignment;
 
         #endregion
 
@@ -67,7 +68,7 @@ namespace Content_Manager.UserControls
 
         public TaskAssignmentControl(ITaskAssignment taskMaterial)
         {
-            _taskMaterial = taskMaterial;
+            _taskAssignment = taskMaterial;
             IsContentSet = GetCurrentTaskItems().Count() > 0;
 
             SharedInitialization(true);
@@ -94,18 +95,18 @@ namespace Content_Manager.UserControls
             ITaskAssignment taskAssignment;
             ITaskEditor taskEditor = _taskType switch
             {
-                TaskType.Matching => new MatchingTaskEditor(_taskMaterial as MatchingTaskAssignment),
-                TaskType.Filling => new FillingTaskEditor(_taskMaterial as FillingTaskAssignment),
-                TaskType.Selecting => new SelectingTaskEditor(_taskMaterial as SelectingTaskAssignment),
-                TaskType.Building => new BuildingTaskEditor(_taskMaterial as BuildingTaskAssignment),
-                TaskType.Test => new TestingTaskEditor(_taskMaterial as TestingTaskAssignment),
+                TaskType.Matching => new MatchingTaskEditor(_taskAssignment as MatchingTaskAssignment),
+                TaskType.Filling => new FillingTaskEditor(_taskAssignment as FillingTaskAssignment),
+                TaskType.Selecting => new SelectingTaskEditor(_taskAssignment as SelectingTaskAssignment),
+                TaskType.Building => new BuildingTaskEditor(_taskAssignment as BuildingTaskAssignment),
+                TaskType.Test => new TestingTaskEditor(_taskAssignment as TestingTaskAssignment),
                 _ => throw new NotImplementedException()
             };
 
             taskEditor.ShowDialog();
             taskAssignment = taskEditor.TaskAssignment;
 
-            if (_taskMaterial != null)
+            if (_taskAssignment != null)
             {
                 // Data update may or may not have been done
                 ContentStore.RaiseItemUpdatedEvent(taskAssignment);
@@ -119,22 +120,21 @@ namespace Content_Manager.UserControls
 
         private void btnPreview_Click(object sender, RoutedEventArgs e)
         {
-            //if (_contentStore?.SelectedSegment?.CelebrityWordsQuiz == null)
-            //{
-            //    return;
-            //}
-            //var previewWindow = new CelebrityQuizPresenter(_contentStore.SelectedSegment.CelebrityWordsQuiz);
-            //previewWindow.ShowDialog();
+            if (_taskType == TaskType.Matching)
+            {
+                var matchingViewer = new MatchingViewer(_taskAssignment as MatchingTaskAssignment);
+                matchingViewer.Show();
+            }
         }
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
             ContentStore.Database.Write(() =>
             {
-                ContentStore.Database.Remove(_taskMaterial);
+                ContentStore.Database.Remove(_taskAssignment);
             });
 
-            ContentStore.RaiseItemDeletedEvent(_taskMaterial);
+            ContentStore.RaiseItemDeletedEvent(_taskAssignment);
         }
 
         private void cmbTaskType_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -184,7 +184,7 @@ namespace Content_Manager.UserControls
         }
         private IEnumerable<object> GetCurrentTaskItems()
         {
-            IEnumerable<object> items = _taskMaterial switch
+            IEnumerable<object> items = _taskAssignment switch
             {
                 MatchingTaskAssignment mt => mt.Items,
                 FillingTaskAssignment ft => ft.Items,
@@ -198,7 +198,7 @@ namespace Content_Manager.UserControls
         }
         private void SetSelectedTaskType()
         {
-            string selectedTaskName = _taskMaterial switch
+            string selectedTaskName = _taskAssignment switch
             {
                 FillingTaskAssignment _ => Constants.TASK_NAME_FILLING,
                 SelectingTaskAssignment _ => Constants.TASK_NAME_SELECTING,
