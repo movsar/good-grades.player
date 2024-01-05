@@ -19,16 +19,37 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Image Grid.Row="0" Grid.Column="0" Source="/Shared;component/Viewers/Бабин ЧIирдиг.png"/>
-        <TextBlock Grid.Row="0" Grid.Column="1" Text="Дерево"/>
+        <Border Grid.Row="0" Grid.Column="0" Background="Transparent" MouseLeftButtonDown="Element_MouseLeftButtonDown" MouseMove="Element_MouseMove" Drop="Element_Drop" AllowDrop="True">
+            <Image Source="/Shared;component/Viewers/Бабин ЧIирдиг.png"/>
+        </Border>
 
-        <Image Grid.Row="1" Grid.Column="0" Source="/Shared;component/Viewers/Picture1.jpg"/>
-        <TextBlock Grid.Row="1" Grid.Column="1" Text="Бабушка"/>
+        <Border Grid.Row="0" Grid.Column="1" Background="Transparent" MouseLeftButtonDown="Element_MouseLeftButtonDown" MouseMove="Element_MouseMove" Drop="Element_Drop" AllowDrop="True">
+            <TextBlock Text="Дерево"/>
+        </Border>
 
-        <Image Grid.Row="2" Grid.Column="0" Source="/Shared;component/Viewers/Picture2.jpg"/>
-        <TextBlock Grid.Row="2" Grid.Column="1" Text="Человек"/>
+        <Border Grid.Row="1" Grid.Column="0" Background="Transparent" MouseLeftButtonDown="Element_MouseLeftButtonDown" MouseMove="Element_MouseMove" Drop="Element_Drop" AllowDrop="True">
+            <Image Source="/Shared;component/Viewers/Picture1.jpg"/>
+        </Border>
 
-        <Image Grid.Row="3" Grid.Column="0" Source="/Shared;component/Viewers/StoryPicture.png" StretchDirection="DownOnly"/>
-        <TextBlock Grid.Row="3" Grid.Column="1" Text="Стамбул"/>
+        <Border Grid.Row="1" Grid.Column="1"  Background="Transparent" MouseLeftButtonDown="Element_MouseLeftButtonDown" MouseMove="Element_MouseMove" Drop="Element_Drop" AllowDrop="True">
+            <TextBlock Text="Бабушка"/>
+        </Border>
+
+        <Border Grid.Row="2" Grid.Column="0" Background="Transparent" MouseLeftButtonDown="Element_MouseLeftButtonDown" MouseMove="Element_MouseMove" Drop="Element_Drop" AllowDrop="True">
+            <Image  Source="/Shared;component/Viewers/Picture2.jpg"/>
+        </Border>
+
+        <Border Grid.Row="2" Grid.Column="1" Background="Transparent" MouseLeftButtonDown="Element_MouseLeftButtonDown" MouseMove="Element_MouseMove" Drop="Element_Drop" AllowDrop="True">
+            <TextBlock  Text="Человек"/>
+        </Border>
+        
+        <Border Grid.Row="3" Grid.Column="0" Background="Transparent" MouseLeftButtonDown="Element_MouseLeftButtonDown" MouseMove="Element_MouseMove" Drop="Element_Drop" AllowDrop="True">
+            <Image Source="/Shared;component/Viewers/StoryPicture.png" StretchDirection="DownOnly"/>
+        </Border>
+
+        <Border Grid.Row="3" Grid.Column="1" Background="Transparent" MouseLeftButtonDown="Element_MouseLeftButtonDown" MouseMove="Element_MouseMove" Drop="Element_Drop" AllowDrop="True">
+            <TextBlock Text="Стамбул"/>
+        </Border>
+
     </Grid>
 </Window>
