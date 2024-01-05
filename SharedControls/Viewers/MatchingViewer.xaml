@@ -7,14 +7,28 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <StackPanel>
-            <StackPanel x:Name="spChallenges">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-            </StackPanel>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
-            <StackPanel x:Name="spOptions" Orientation="Horizontal">
+        <Image Grid.Row="0" Grid.Column="0" Source="/Shared;component/Viewers/Бабин ЧIирдиг.png"/>
+        <TextBlock Grid.Row="0" Grid.Column="1" Text="Дерево"/>
 
-            </StackPanel>
-        </StackPanel>
+        <Image Grid.Row="1" Grid.Column="0" Source="/Shared;component/Viewers/Picture1.jpg"/>
+        <TextBlock Grid.Row="1" Grid.Column="1" Text="Бабушка"/>
+
+        <Image Grid.Row="2" Grid.Column="0" Source="/Shared;component/Viewers/Picture2.jpg"/>
+        <TextBlock Grid.Row="2" Grid.Column="1" Text="Человек"/>
+
+        <Image Grid.Row="3" Grid.Column="0" Source="/Shared;component/Viewers/StoryPicture.png" StretchDirection="DownOnly"/>
+        <TextBlock Grid.Row="3" Grid.Column="1" Text="Стамбул"/>
     </Grid>
 </Window>
