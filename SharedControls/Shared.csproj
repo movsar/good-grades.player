@@ -29,12 +29,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Page Update="Viewers\ListeningViewerr.xaml">
+    <Page Update="Viewers\ListeningViewer.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
     <Page Update="Viewers\ReadingViewer.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controls\" />
   </ItemGroup>
 
 </Project>

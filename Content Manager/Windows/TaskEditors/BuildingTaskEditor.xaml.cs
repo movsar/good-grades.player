@@ -37,13 +37,13 @@ namespace Content_Manager.Windows.Editors
             spItems.Children.Clear();
             foreach (var item in _taskAssignment.Items)
             {
-                var existingQuizItemControl = new AssignmentItemControl(TaskType.Building, item);
+                var existingQuizItemControl = new AssignmentItemEditControl(TaskType.Building, item);
                 existingQuizItemControl.Delete += Item_Delete;
 
                 spItems.Children.Add(existingQuizItemControl);
             }
 
-            var newItemControl = new AssignmentItemControl(TaskType.Building);
+            var newItemControl = new AssignmentItemEditControl(TaskType.Building);
             newItemControl.Create += Item_Create;
             spItems.Children.Add(newItemControl);
         }

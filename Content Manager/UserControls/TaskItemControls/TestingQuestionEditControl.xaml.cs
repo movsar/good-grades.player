@@ -15,7 +15,7 @@ using System.Windows.Controls;
 
 namespace Content_Manager.UserControls
 {
-    public partial class TestingQuestionControl : UserControl
+    public partial class TestingQuestionEditControl : UserControl
     {
         #region Events
         public event Action<IEntityBase> QuestionCreated;
@@ -44,7 +44,7 @@ namespace Content_Manager.UserControls
         private TestingTaskAssignment _task;
         private readonly string _taskId;
         public static readonly DependencyProperty ItemTextProperty =
-            DependencyProperty.Register("QuestionText", typeof(string), typeof(TestingQuestionControl), new PropertyMetadata(""));
+            DependencyProperty.Register("QuestionText", typeof(string), typeof(TestingQuestionEditControl), new PropertyMetadata(""));
 
         public string QuestionId { get; }
 
@@ -91,7 +91,7 @@ namespace Content_Manager.UserControls
             _formCompletionInfo = new FormCompletionInfo(propertiesToWatch, isExistingMaterial);
             _formCompletionInfo.StatusChanged += OnFormStatusChanged;
         }
-        public TestingQuestionControl(TestingTaskAssignment task)
+        public TestingQuestionEditControl(TestingTaskAssignment task)
         {
             SharedInitialization(false);
             SetUiForNewMaterial();
@@ -101,7 +101,7 @@ namespace Content_Manager.UserControls
             _task = task;
         }
 
-        public TestingQuestionControl(TestingTaskAssignment task, TestingQuestion testingQuestion)
+        public TestingQuestionEditControl(TestingTaskAssignment task, TestingQuestion testingQuestion)
         {
             SharedInitialization(true);
             SetUiForExistingMaterial();
@@ -117,7 +117,7 @@ namespace Content_Manager.UserControls
             {
                 var isSelected = ContentStore.SelectedSegment?.TestingTasks.SelectMany(t => t.Questions).Where(q => q.Id == QuestionId).FirstOrDefault()?.CorrectOptionId == answer.Id;
 
-                var existingItemControl = new AssignmentItemControl(TaskType.Test, answer, isSelected);
+                var existingItemControl = new AssignmentItemEditControl(TaskType.Test, answer, isSelected);
                 existingItemControl.Update += Option_Save;
                 existingItemControl.Delete += Option_Delete;
                 existingItemControl.SetAsCorrect += Question_Option_SetAsCorrect;
@@ -125,7 +125,7 @@ namespace Content_Manager.UserControls
                 spItems.Children.Add(existingItemControl);
             }
 
-            var newItemControl = new AssignmentItemControl(TaskType.Test);
+            var newItemControl = new AssignmentItemEditControl(TaskType.Test);
             newItemControl.Create += Option_Create;
 
             spItems.Children.Add(newItemControl);

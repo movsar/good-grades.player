@@ -36,14 +36,14 @@ namespace Content_Manager.Windows.Editors
             spItems.Children.Clear();
             foreach (var item in _taskAssignment.Questions)
             {
-                var existingQuestionControl = new TestingQuestionControl(_taskAssignment, item);
+                var existingQuestionControl = new TestingQuestionEditControl(_taskAssignment, item);
                 existingQuestionControl.QuestionDeleted += Question_Deleted;
                 existingQuestionControl.QuestionUpdated += Question_Updated;
 
                 spItems.Children.Add(existingQuestionControl);
             }
 
-            var newItemControl = new TestingQuestionControl(_taskAssignment);
+            var newItemControl = new TestingQuestionEditControl(_taskAssignment);
             newItemControl.QuestionCreated += Question_Updated;
             spItems.Children.Add(newItemControl);
 

@@ -38,14 +38,14 @@ namespace Content_Manager.Windows.Editors
             foreach (var item in _taskAssignment.Items)
             {
                 var isSelected = _taskAssignment.CorrectItemId == item.Id;
-                var existingQuizItemControl = new AssignmentItemControl(TaskType.Selecting, item, isSelected);
+                var existingQuizItemControl = new AssignmentItemEditControl(TaskType.Selecting, item, isSelected);
                 existingQuizItemControl.Delete += Item_Delete;
                 existingQuizItemControl.SetAsCorrect += ExistingQuizItemControl_SetAsCorrect;
 
                 spItems.Children.Add(existingQuizItemControl);
             }
 
-            var newItemControl = new AssignmentItemControl(TaskType.Selecting);
+            var newItemControl = new AssignmentItemEditControl(TaskType.Selecting);
             newItemControl.Create += Item_Create;
             spItems.Children.Add(newItemControl);
         }
