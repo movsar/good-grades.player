@@ -120,11 +120,26 @@ namespace Content_Manager.UserControls
 
         private void btnPreview_Click(object sender, RoutedEventArgs e)
         {
-            if (_taskType == TaskType.Matching)
+            Window viewer = null!;
+            switch (_taskType)
             {
-                var matchingViewer = new MatchingViewer(_taskAssignment as MatchingTaskAssignment);
-                matchingViewer.Show();
+                case TaskType.Matching:
+                    viewer = new MatchingViewer((MatchingTaskAssignment)_taskAssignment);
+                    break;
+
+                case TaskType.Test:
+                    viewer = new TestingViewer((TestingTaskAssignment)_taskAssignment);
+                    break;
+                
+                case TaskType.Filling:
+                    break;
+                case TaskType.Selecting: 
+                    break;
+                case TaskType.Building:
+                    break;
             }
+
+            viewer.Show();
         }
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)

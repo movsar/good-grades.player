@@ -7,25 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Viewers\Picture1.jpg" />
-    <None Remove="Viewers\Picture2.jpg" />
-    <None Remove="Viewers\StoryPicture.png" />
-    <None Remove="Viewers\Бабин ЧIирдиг.png" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Xam.Plugin.SimpleAudioPlayer.WPF" Version="1.6.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Data\Data.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Resource Include="Viewers\Picture1.jpg" />
-    <Resource Include="Viewers\Picture2.jpg" />
-    <Resource Include="Viewers\StoryPicture.png" />
-    <Resource Include="Viewers\Бабин ЧIирдиг.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -35,10 +21,6 @@
     <Page Update="Viewers\ReadingViewer.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controls\" />
   </ItemGroup>
 
 </Project>
