@@ -20,13 +20,13 @@ namespace Shared.Viewers
             TaskTitle = selectingTask.Question.Text;
             _question = selectingTask.Question;
 
-            var questionViewControl = new TestingQuestionViewControl(selectingTask.Question);
+            var questionViewControl = new QuestionViewControl(selectingTask.Question);
             spItems.Children.Add(questionViewControl);
         }
 
         private void btnCheck_Click(object sender, RoutedEventArgs e)
         {
-            var questionViewControls = spItems.Children[0] as TestingQuestionViewControl;
+            var questionViewControls = spItems.Children[0] as QuestionViewControl;
 
             if (questionViewControls.SelectedOptionId == _question.CorrectOptionId)
             {

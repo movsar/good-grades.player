@@ -23,20 +23,20 @@ namespace Shared.Viewers
 
             foreach (var question in testingTask.Questions)
             {
-                var questionViewControl = new TestingQuestionViewControl(question);
+                var questionViewControl = new QuestionViewControl(question);
                 spQuestions.Children.Add(questionViewControl);
             }
         }
 
         private void btnOk_Click(object sender, RoutedEventArgs e)
         {
-            var questionViewControls = new List<TestingQuestionViewControl>();
+            var questionViewControls = new List<QuestionViewControl>();
 
             foreach (var view in spQuestions.Children)
             {
-                if (view is TestingQuestionViewControl)
+                if (view is QuestionViewControl)
                 {
-                    questionViewControls.Add(view as TestingQuestionViewControl);
+                    questionViewControls.Add(view as QuestionViewControl);
                 }
             }
 

@@ -140,6 +140,7 @@ namespace Content_Manager.UserControls
                     viewer = new SelectingViewer((SelectingTaskAssignment)_taskAssignment);
                     break;
                 case TaskType.Building:
+                    viewer = new BuildingViewer((BuildingTaskAssignment)_taskAssignment);
                     break;
             }
 
