@@ -6,9 +6,9 @@ namespace Shared.Controls
     public partial class TestingQuestionViewControl : UserControl
     {
         public string SelectedOptionId { get; set; }
-        public TestingQuestion Question { get; }
+        public Question Question { get; }
 
-        public TestingQuestionViewControl(TestingQuestion testingQuestion)
+        public TestingQuestionViewControl(Question testingQuestion)
         {
             InitializeComponent();
             DataContext = this;

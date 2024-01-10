@@ -4,7 +4,7 @@ using Realms;
 
 namespace Data.Entities.TaskItems
 {
-    public class TestingQuestion : RealmObject, IEntityBase
+    public class Question : RealmObject, IEntityBase
     {
         [Required]
         [PrimaryKey]
