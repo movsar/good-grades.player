@@ -2,32 +2,10 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Application.Resources>
-        <SolidColorBrush x:Key="StagedBrush">LightYellow</SolidColorBrush>
-        <SolidColorBrush x:Key="DeleteBrush">Red</SolidColorBrush>
-        <SolidColorBrush x:Key="ReadyBrush">PaleGreen</SolidColorBrush>
-        <SolidColorBrush x:Key="NeutralBrush" Color="{DynamicResource {x:Static SystemColors.ControlBrush}}"></SolidColorBrush>
-
-        <Style TargetType="TextBox" x:Key="InputFieldStyle">
-            <Setter Property="Margin" Value="5,0,5,0"/>
-            <Setter Property="Padding" Value="5"/>
-        </Style>
-
-        <Style TargetType="TextBlock" x:Key="HeaderStyle">
-            <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Margin" Value="5"/>
-        </Style>
-        
-        <Style TargetType="{x:Type Button}">
-            <Setter Property="Background" Value="{StaticResource ResourceKey=NeutralBrush}"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Panel.ZIndex" Value="1"/>
-            <Setter Property="Margin" Value="10,10,10,10"/>
-            <Setter Property="Padding" Value="7,7,7,7"/>
-        </Style>
-        
-        <Style TargetType="{x:Type Button}" x:Key="IconButtonStyle" BasedOn="{StaticResource {x:Type Button}}">
-            <Setter Property="Background" Value="LightSeaGreen"/>
-            <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
-        </Style>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Shared;component/StylesDictionary.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>
