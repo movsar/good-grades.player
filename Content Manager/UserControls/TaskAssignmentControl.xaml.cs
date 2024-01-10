@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using Ru = Shared.Translations.Ru;
 
 namespace Content_Manager.UserControls
 {
@@ -120,11 +121,28 @@ namespace Content_Manager.UserControls
 
         private void btnPreview_Click(object sender, RoutedEventArgs e)
         {
-            if (_taskType == TaskType.Matching)
+            Window viewer = null!;
+            switch (_taskType)
             {
-                var matchingViewer = new MatchingViewer(_taskAssignment as MatchingTaskAssignment);
-                matchingViewer.Show();
+                case TaskType.Matching:
+                    viewer = new MatchingViewer((MatchingTaskAssignment)_taskAssignment);
+                    break;
+
+                case TaskType.Test:
+                    viewer = new TestingViewer((TestingTaskAssignment)_taskAssignment);
+                    break;
+
+                case TaskType.Filling:
+                    viewer = new FillingViewer((FillingTaskAssignment)_taskAssignment);
+                    break;
+
+                case TaskType.Selecting:
+                    break;
+                case TaskType.Building:
+                    break;
             }
+
+            viewer.Show();
         }
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
@@ -153,27 +171,27 @@ namespace Content_Manager.UserControls
         {
             var fillingTaskType = new ComboBoxItem()
             {
-                Content = Constants.TASK_NAME_FILLING
+                Content = Ru.FillingTaskName
             };
 
             var selectingTaskType = new ComboBoxItem()
             {
-                Content = Constants.TASK_NAME_SELECTING
+                Content = Ru.SelectingTaskName
             };
 
             var testingTaskType = new ComboBoxItem()
             {
-                Content = Constants.TASK_NAME_TEST
+                Content = Ru.TestTaskName
             };
 
             var matchingTaskType = new ComboBoxItem()
             {
-                Content = Constants.TASK_NAME_MATCHING
+                Content = Ru.MatchingTaskName
             };
 
             var buildingTaskMaterial = new ComboBoxItem()
             {
-                Content = Constants.TASK_NAME_BUILDING
+                Content = Ru.BuildingTaskName
             };
 
             cmbTaskType.Items.Add(fillingTaskType);
@@ -200,11 +218,11 @@ namespace Content_Manager.UserControls
         {
             string selectedTaskName = _taskAssignment switch
             {
-                FillingTaskAssignment _ => Constants.TASK_NAME_FILLING,
-                SelectingTaskAssignment _ => Constants.TASK_NAME_SELECTING,
-                TestingTaskAssignment _ => Constants.TASK_NAME_TEST,
-                BuildingTaskAssignment _ => Constants.TASK_NAME_BUILDING,
-                MatchingTaskAssignment _ => Constants.TASK_NAME_MATCHING,
+                FillingTaskAssignment _ => Ru.FillingTaskName,
+                SelectingTaskAssignment _ => Ru.SelectingTaskName,
+                TestingTaskAssignment _ => Ru.TestTaskName,
+                BuildingTaskAssignment _ => Ru.BuildingTaskName,
+                MatchingTaskAssignment _ => Ru.MatchingTaskName,
                 _ => ""
             };
 
@@ -214,23 +232,23 @@ namespace Content_Manager.UserControls
         }
         private TaskType GetSelectedTaskType(string selectedTaskTypeTitle)
         {
-            if (selectedTaskTypeTitle.Equals(Constants.TASK_NAME_FILLING))
+            if (selectedTaskTypeTitle.Equals(Ru.FillingTaskName))
             {
                 return TaskType.Filling;
             }
-            else if (selectedTaskTypeTitle.Equals(Constants.TASK_NAME_TEST))
+            else if (selectedTaskTypeTitle.Equals(Ru.TestTaskName))
             {
                 return TaskType.Test;
             }
-            else if (selectedTaskTypeTitle.Equals(Constants.TASK_NAME_BUILDING))
+            else if (selectedTaskTypeTitle.Equals(Ru.BuildingTaskName))
             {
                 return TaskType.Building;
             }
-            else if (selectedTaskTypeTitle.Equals(Constants.TASK_NAME_SELECTING))
+            else if (selectedTaskTypeTitle.Equals(Ru.SelectingTaskName))
             {
                 return TaskType.Selecting;
             }
-            else if (selectedTaskTypeTitle.Equals(Constants.TASK_NAME_MATCHING))
+            else if (selectedTaskTypeTitle.Equals(Ru.MatchingTaskName))
             {
                 return TaskType.Matching;
             }
