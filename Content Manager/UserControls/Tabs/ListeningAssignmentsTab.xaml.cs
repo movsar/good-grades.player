@@ -23,7 +23,10 @@ namespace Content_Manager.UserControls.SegmentTabs
         {
             spListeningControls.Children.Clear();
 
-            if (ContentStore.SelectedSegment!.ListeningMaterials == null) return;
+            if (ContentStore.SelectedSegment == null)
+            {
+                return;
+            }
 
             foreach (var material in ContentStore.SelectedSegment!.ListeningMaterials)
             {

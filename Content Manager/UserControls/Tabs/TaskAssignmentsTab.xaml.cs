@@ -25,6 +25,11 @@ namespace Content_Manager.UserControls.SegmentTabs
         {
             spTaskAssignmentControls.Children.Clear();
 
+            if (ContentStore.SelectedSegment == null)
+            {
+                return;
+            }
+
             List<ITaskAssignment> allTasks = ContentStore.SelectedSegment!.MatchingTasks.Cast<ITaskAssignment>().ToList();
             allTasks.AddRange(ContentStore.SelectedSegment!.FillingTasks);
             allTasks.AddRange(ContentStore.SelectedSegment!.BuildingTasks);
