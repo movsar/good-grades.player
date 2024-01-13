@@ -1,5 +1,6 @@
 ﻿using Data.Entities;
 using Shared.Models;
+using Shared.Translations;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -32,12 +33,12 @@ namespace Shared.Viewers
 
                 if (image != null && textBlock != null && image.Name != textBlock.Name)
                 {
-                    MessageBox.Show(Localization.ElementsDoNotMatch);
+                    MessageBox.Show(Ru.ElementsDoNotMatch);
                     return;
                 }
             }
 
-            MessageBox.Show(Localization.AllElementsMatch);
+            MessageBox.Show(Ru.AllElementsMatch);
         }
         private T? FindChildInGrid<T>(Grid grid, int row, int column) where T : FrameworkElement
         {
