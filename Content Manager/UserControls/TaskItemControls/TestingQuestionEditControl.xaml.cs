@@ -33,7 +33,7 @@ namespace Content_Manager.UserControls
         StylingService StylingService => App.AppHost!.Services.GetRequiredService<StylingService>();
         private List<AssignmentItem> Options { get; set; } = new List<AssignmentItem>();
 
-        private readonly TestingQuestion _testingQuestion;
+        private readonly Question _testingQuestion;
 
         public string QuestionText
         {
@@ -97,11 +97,11 @@ namespace Content_Manager.UserControls
             SetUiForNewMaterial();
 
             QuestionText = Hint;
-            _testingQuestion = new TestingQuestion();
+            _testingQuestion = new Question();
             _task = task;
         }
 
-        public TestingQuestionEditControl(TestingTaskAssignment task, TestingQuestion testingQuestion)
+        public TestingQuestionEditControl(TestingTaskAssignment task, Question testingQuestion)
         {
             SharedInitialization(true);
             SetUiForExistingMaterial();
@@ -136,7 +136,7 @@ namespace Content_Manager.UserControls
 
         #endregion
 
-        private TestingQuestion GetQuestionById(string questionId)
+        private Question GetQuestionById(string questionId)
         {
             return ContentStore.SelectedSegment!.TestingTasks.SelectMany(t => t.Questions).Where(q => q.Id == questionId).First();
         }

@@ -12,7 +12,7 @@ namespace Data.Entities
         public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.Now;
         public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;
         /******************************************************************/
-        public IList<TestingQuestion> Questions { get; }
+        public IList<Question> Questions { get; }
         public bool IsContentSet => Questions.Count() > 0;
     }
 }

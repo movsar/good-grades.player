@@ -29,7 +29,10 @@ namespace Content_Manager.UserControls.SegmentTabs
         {
             spReadingAssignmentControls.Children.Clear();
 
-            if (ContentStore.SelectedSegment!.ReadingMaterials == null) return;
+            if (ContentStore.SelectedSegment == null)
+            {
+                return;
+            }
 
             foreach (var material in ContentStore.SelectedSegment!.ReadingMaterials)
             {

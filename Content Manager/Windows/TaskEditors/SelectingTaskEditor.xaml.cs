@@ -27,7 +27,7 @@ namespace Content_Manager.Windows.Editors
             {
                 Title = txtTitle.Text
             };
-            txtTitle.Text = _taskAssignment.Title;
+            txtTitle.Text = _taskAssignment.Question.Text;
 
             RedrawUi();
         }
@@ -35,9 +35,9 @@ namespace Content_Manager.Windows.Editors
         public void RedrawUi()
         {
             spItems.Children.Clear();
-            foreach (var item in _taskAssignment.Items)
+            foreach (var item in _taskAssignment.Question.Options)
             {
-                var isSelected = _taskAssignment.CorrectItemId == item.Id;
+                var isSelected = _taskAssignment.Question.CorrectOptionId == item.Id;
                 var existingQuizItemControl = new AssignmentItemEditControl(TaskType.Selecting, item, isSelected);
                 existingQuizItemControl.Delete += Item_Delete;
                 existingQuizItemControl.SetAsCorrect += ExistingQuizItemControl_SetAsCorrect;
@@ -54,7 +54,7 @@ namespace Content_Manager.Windows.Editors
         {
             ContentStore.Database.Write(() =>
             {
-                _taskAssignment.CorrectItemId = itemId;
+                _taskAssignment.Question.CorrectOptionId = itemId;
             });
 
             RedrawUi();
@@ -73,7 +73,7 @@ namespace Content_Manager.Windows.Editors
                 }
 
                 // Add the Task item entity
-                _taskAssignment.Items.Add(itemEntity);
+                _taskAssignment.Question.Options.Add(itemEntity);
             });
 
             RedrawUi();
@@ -83,8 +83,8 @@ namespace Content_Manager.Windows.Editors
         {
             ContentStore.Database.Write(() =>
             {
-                var itemToRemove = _taskAssignment.Items.First(i => i.Id == id);
-                _taskAssignment.Items.Remove(itemToRemove);
+                var itemToRemove = _taskAssignment.Question.Options.First(i => i.Id == id);
+                _taskAssignment.Question.Options.Remove(itemToRemove);
             });
 
             RedrawUi();
@@ -94,7 +94,7 @@ namespace Content_Manager.Windows.Editors
         {
             if (_taskAssignment != null)
             {
-                ContentStore.Database.Write(() => _taskAssignment.Title = txtTitle.Text);
+                ContentStore.Database.Write(() => _taskAssignment.Question.Text = txtTitle.Text);
             }
         }
     }

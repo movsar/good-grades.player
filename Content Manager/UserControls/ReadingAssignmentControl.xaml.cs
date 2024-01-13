@@ -85,7 +85,6 @@ namespace Content_Manager.UserControls
                 btnChooseImage.Background = _stylingService.ReadyBrush;
             }
 
-            btnPreview.Background = _stylingService.ReadyBrush;
             btnDelete.Visibility = Visibility.Visible;
         }
 

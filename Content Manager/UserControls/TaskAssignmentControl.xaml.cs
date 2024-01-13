@@ -5,6 +5,7 @@ using Content_Manager.Stores;
 using Content_Manager.Windows.Editors;
 using Data;
 using Data.Entities;
+using Data.Entities.TaskItems;
 using Data.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Realms;
@@ -41,7 +42,6 @@ namespace Content_Manager.UserControls
         private void SetUiForExistingMaterial()
         {
             btnSetData.Background = IsContentSet ? StylingService.ReadyBrush : StylingService.StagedBrush;
-            btnPreview.Background = StylingService.ReadyBrush;
             btnDelete.Visibility = Visibility.Visible;
             cmbTaskType.IsEnabled = false;
         }
@@ -137,8 +137,10 @@ namespace Content_Manager.UserControls
                     break;
 
                 case TaskType.Selecting:
+                    viewer = new SelectingViewer((SelectingTaskAssignment)_taskAssignment);
                     break;
                 case TaskType.Building:
+                    viewer = new BuildingViewer((BuildingTaskAssignment)_taskAssignment);
                     break;
             }
 
@@ -206,7 +208,7 @@ namespace Content_Manager.UserControls
             {
                 MatchingTaskAssignment mt => mt.Items,
                 FillingTaskAssignment ft => ft.Items,
-                SelectingTaskAssignment st => st.Items,
+                SelectingTaskAssignment st => st.Question.Options,
                 TestingTaskAssignment tt => tt.Questions,
                 BuildingTaskAssignment bt => bt.Items,
                 _ => throw new NotImplementedException()

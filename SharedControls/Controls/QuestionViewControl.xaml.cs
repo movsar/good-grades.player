@@ -3,12 +3,12 @@ using System.Windows.Controls;
 
 namespace Shared.Controls
 {
-    public partial class TestingQuestionViewControl : UserControl
+    public partial class QuestionViewControl : UserControl
     {
         public string SelectedOptionId { get; set; }
-        public TestingQuestion Question { get; }
+        public Question Question { get; }
 
-        public TestingQuestionViewControl(TestingQuestion testingQuestion)
+        public QuestionViewControl(Question testingQuestion)
         {
             InitializeComponent();
             DataContext = this;
@@ -17,7 +17,7 @@ namespace Shared.Controls
         }
 
         // Just for the DesignContext to work
-        public TestingQuestionViewControl() { }
+        public QuestionViewControl() { }
 
         private void RadioButton_Checked(object sender, System.Windows.RoutedEventArgs e)
         {
