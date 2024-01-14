@@ -23,9 +23,14 @@
                 TextChanged="txtTitle_TextChanged"
                 Text="Выберите правильную пословицу">
             </TextBox>
+
+            <TextBlock Style="{StaticResource HeaderStyle}">
+                Варианты
+            </TextBlock>
+            
         </StackPanel>
 
-        <ScrollViewer Grid.Row="1">
+        <ScrollViewer Grid.Row="1" Margin="3 0 0 0">
             <StackPanel x:Name="spItems"></StackPanel>
         </ScrollViewer>
 
