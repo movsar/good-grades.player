@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace Content_Manager.UserControls.SegmentTabs
 {
@@ -39,11 +40,24 @@ namespace Content_Manager.UserControls.SegmentTabs
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
+            Save();
+        }
+
+        private void Save()
+        {
             _contentStore.Database.Write(() =>
             {
                 _contentStore.SelectedSegment!.Title = Title;
                 _contentStore.SelectedSegment!.Description = Description;
             });
+        }
+
+        private void TextBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                Save();
+            }
         }
     }
 }

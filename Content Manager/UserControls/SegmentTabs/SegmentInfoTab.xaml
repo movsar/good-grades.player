@@ -27,7 +27,9 @@
                      Height="30"
                      VerticalContentAlignment="Center"
                      VerticalAlignment="Top"
-                     Text="{Binding ElementName=SegmentInfo, Path=Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                     Text="{Binding ElementName=SegmentInfo, Path=Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     KeyUp="TextBox_KeyUp"
+                     />
 
             <Label Content="Описание" FontWeight="Bold"/>
             <TextBox Margin="10 0 70 0"

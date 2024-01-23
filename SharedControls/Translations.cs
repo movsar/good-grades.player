@@ -2,6 +2,7 @@
 {
     public static class Ru
     {
+        public static string SetTitleAndDataForListeningMaterial { get; } = "Напишите название материала, выберите текст и аудио";
         public static string AllElementsMatch { get; } = "Все элементы совпадают!";
         public static string ElementsDoNotMatch { get; } = "Элементы не совпадают!";
         public static string Correct { get; } = "Правильно";

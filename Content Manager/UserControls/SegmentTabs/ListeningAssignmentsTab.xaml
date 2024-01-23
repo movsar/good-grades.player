@@ -4,12 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Content_Manager.UserControls"
+             xmlns:translations="clr-namespace:Shared.Translations;assembly=Shared"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
 
         <TextBlock Margin="10 5 10 0"
-                   FontWeight="Bold">Напишите название материала, выберите текст и аудио</TextBlock>
+                   FontWeight="Bold" Text="{x:Static translations:Ru.SetTitleAndDataForListeningMaterial}" />
 
         <StackPanel Margin="0 20 0 0" x:Name="spListeningControls"></StackPanel>
     </Grid>
