@@ -11,6 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using Shared.Translations;
 
 namespace Content_Manager.UserControls
 {
@@ -19,10 +20,10 @@ namespace Content_Manager.UserControls
 
         #region Properties
         private FormCompletionInfo _formCompletionInfo;
-        private const string TitleHintText = "Введите название материала";
+        private const string TitleHintText = Ru.SetMaterialTitle;
         ContentStore ContentStore => App.AppHost!.Services.GetRequiredService<ContentStore>();
         StylingService StylingService => App.AppHost!.Services.GetRequiredService<StylingService>();
-
+        
         public string LmTitle
         {
             get { return (string)GetValue(TitleProperty); }

@@ -15,5 +15,12 @@
         public static string BuildingTaskName { get; } = "Построение";
         public static string MatchingTaskName { get; } = "Сопоставление";
         public static string TestTaskName { get; } = "Тест";
+        public static string Title { get; } = "Название: ";
+        public static string Description { get; } = "Описание: ";
+        public static string DateOfCreation { get; } = "Дата создания: ";
+        public static string ProgramVersion { get; } = "Версия программы: ";
+        public static string Text { get; } = "Текст";
+        public static string Image { get; } = "Изображение";
+        public static string SetMaterialTitle { get; } = "Введите название материала";
     }
 }
