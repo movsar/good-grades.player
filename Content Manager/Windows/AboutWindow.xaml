@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Content_Manager.Windows"
         mc:Ignorable="d"
-        Title="AboutWindow" Height="250" Width="400">
+        Title="О программе" Height="250" Width="400" MinHeight="250" MinWidth="450">
     <Grid Margin="20 20 20 20">
         <TextBlock FontSize="17">
             (c) 2022 ГКУ «Институт чеченского языка»
