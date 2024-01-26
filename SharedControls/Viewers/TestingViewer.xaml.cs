@@ -1,6 +1,7 @@
 ﻿using Data.Entities;
 using Data.Entities.TaskItems;
 using Shared.Controls;
+using Shared.Translations;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -45,12 +46,12 @@ namespace Shared.Viewers
             {
                 if (useSelections[question.Id] != question.CorrectOptionId)
                 {
-                    MessageBox.Show("Неправильный ответ(ы)");
+                    MessageBox.Show(Ru.IncorrectAnswer);
                     return;
                 }
             }
          
-            MessageBox.Show("Ура!");
+            MessageBox.Show(Ru.Celebrating);
         }
     }
 }

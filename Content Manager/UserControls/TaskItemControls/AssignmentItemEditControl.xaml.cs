@@ -14,6 +14,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Image = System.Windows.Controls.Image;
+using Shared.Translations;
 
 namespace Content_Manager.UserControls
 {
@@ -25,7 +26,7 @@ namespace Content_Manager.UserControls
         public event Action<string> SetAsCorrect;
 
         #region Fields
-        private string Hint = "Введите описание";
+        private string Hint = Ru.SetDescription;
         private FormCompletionInfo _formCompletionInfo;
         private TaskType _taskType;
         #endregion
@@ -102,10 +103,10 @@ namespace Content_Manager.UserControls
             switch (_taskType)
             {
                 case TaskType.Filling:
-                    Hint = "Как { она | он } поживает? Как {погода}?";
+                    Hint = Ru.FillingQuestion;
                     break;
                 case TaskType.Matching:
-                    Hint = "Введите текст изображения";
+                    Hint = Ru.SetImageDescription;
 
                     btnChooseImage.Visibility = Visibility.Visible;
 
@@ -258,12 +259,12 @@ namespace Content_Manager.UserControls
 
                     if (gapOpeners.Count != gapClosers.Count || gapOpeners.Count != gappedWords.Count)
                     {
-                        throw new Exception("Неправильное форматирование");
+                        throw new Exception(Ru.ExceptionUncorrectFormate);
                     }
 
                     if (gappedWords.Count == 0)
                     {
-                        throw new Exception("Необходимо указать хотя бы одно слово для пропуска");
+                        throw new Exception(Ru.ExceptionMinWords);
                     }
 
                     break;

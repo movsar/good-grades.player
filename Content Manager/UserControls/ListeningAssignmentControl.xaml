@@ -28,7 +28,7 @@
             <Button x:Name="btnChooseAudio"
                     Margin="10 0 0 0" Padding="7 0 7 0" 
                     Cursor="Hand"
-                    Content="Аудио" Click="btnChooseAudio_Click"/>
+                    Content="{x:Static translations:Ru.Audio}" Click="btnChooseAudio_Click"/>
 
             <Button x:Name="btnChooseImage"
                     Margin="10 0 0 0" Padding="7 0 7 0" 

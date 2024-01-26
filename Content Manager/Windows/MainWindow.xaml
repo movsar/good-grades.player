@@ -6,6 +6,7 @@
         Title="Good Grades" Height="500" Width="900" MinHeight="250" MinWidth="450"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors" 
         xmlns:usercontrols="clr-namespace:Content_Manager.UserControls"
+        xmlns:translations="clr-namespace:Shared.Translations;assembly=Shared"
         x:Name="mainWindow">
 
     <DockPanel>
@@ -90,14 +91,14 @@
             </Grid.ColumnDefinitions>
 
             <Label Grid.Column="1" x:Name="lblChooseSegment" 
-                   Content="Выберите раздел с которым хотите работать"
+                   Content="{x:Static translations:Ru.ChoosingChapterToWork}"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center" 
                    BorderThickness="1"
                    Visibility="Hidden"/>
 
             <Label Grid.Column="0" Grid.ColumnSpan="2" x:Name="lblChooseDb" 
-                   Content="Откройте или создайте Базу Данных"
+                   Content="{x:Static translations:Ru.OpenOrCreateDB}"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"               
                    BorderThickness="1"/>

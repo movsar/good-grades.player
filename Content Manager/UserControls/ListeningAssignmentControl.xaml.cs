@@ -20,7 +20,7 @@ namespace Content_Manager.UserControls
 
         #region Properties
         private FormCompletionInfo _formCompletionInfo;
-        private const string TitleHintText = Ru.SetMaterialTitle;
+        static string TitleHintText { get; } = Ru.SetMaterialTitle;
         ContentStore ContentStore => App.AppHost!.Services.GetRequiredService<ContentStore>();
         StylingService StylingService => App.AppHost!.Services.GetRequiredService<StylingService>();
         
@@ -204,7 +204,7 @@ namespace Content_Manager.UserControls
         }
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            //MessageBox.Show("Укажите все необходимые данные для материала");
+            //MessageBox.Show(Ru.NecessaryInfoForContent);
 
             if (string.IsNullOrEmpty(LmId))
             {

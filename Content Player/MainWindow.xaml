@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Content_Player"
+        xmlns:translations="clr-namespace:Shared.Translations;assembly=Shared"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
@@ -17,7 +18,7 @@
         <Border CornerRadius="20" Background="White" Margin="10">
             <Grid>
                 <!-- Title at the top -->
-                <TextBlock Text="ДІЕШІАРАН КІНІШКА"
+                <TextBlock Text="{x:Static translations:Ru.BookForStudy}"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Top"
                            FontSize="24"

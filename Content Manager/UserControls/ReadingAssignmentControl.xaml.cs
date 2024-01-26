@@ -11,6 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using Shared.Translations;
 
 namespace Content_Manager.UserControls
 {
@@ -18,7 +19,7 @@ namespace Content_Manager.UserControls
     {
         #region Properties and Fields
         private FormCompletionInfo _formCompletionInfo;
-        private const string TitleHintText = "Введите название материала";
+        static string TitleHintText { get; } = Ru.SetMaterialTitle;
 
         ContentStore _contentStore = App.AppHost!.Services.GetRequiredService<ContentStore>();
         StylingService _stylingService = App.AppHost!.Services.GetRequiredService<StylingService>();
@@ -186,7 +187,7 @@ namespace Content_Manager.UserControls
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            //MessageBox.Show("Укажите все необходимые данные для материала");
+            //MessageBox.Show("Ru.NecessaryInfoForContent");
 
             if (string.IsNullOrEmpty(RmId))
             {

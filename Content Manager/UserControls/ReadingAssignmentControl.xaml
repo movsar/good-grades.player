@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:translations="clr-namespace:Shared.Translations;assembly=Shared"
              
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
@@ -24,12 +25,12 @@
             <Button x:Name="btnUploadFromFile"
                     Margin="10 0 0 0" Padding="7 0 7 0" 
                     Cursor="Hand"
-                    Content="Текст" Click="btnUploadFromFile_Click"/>
+                    Content="{x:Static translations:Ru.Text}" Click="btnUploadFromFile_Click"/>
 
             <Button x:Name="btnChooseImage"
                     Margin="10 0 0 0" Padding="7 0 7 0" 
                     Cursor="Hand"
-                    Content="Изображение" Click="btnChooseImage_Click"/>
+                    Content="{x:Static translations:Ru.Image}" Click="btnChooseImage_Click"/>
 
             <Button x:Name="btnPreview"
                     Background="LightSeaGreen"

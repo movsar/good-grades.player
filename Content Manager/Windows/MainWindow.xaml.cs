@@ -14,6 +14,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using static Realms.Sync.MongoClient;
+using Shared.Translations;
 
 namespace Content_Manager
 {
@@ -148,7 +149,7 @@ namespace Content_Manager
             // show a welcome message when the app is first installed
             if (firstRun)
             {
-                MessageBox.Show("Добро пожаловать!");
+                MessageBox.Show(Ru.Welcome);
             }
         }
 
@@ -184,11 +185,11 @@ namespace Content_Manager
 
                 if (updateInfo?.FutureReleaseEntry != null && newVersion.CompareTo(currentVersion) <= 0)
                 {
-                    MessageBox.Show($"Установлена последняя версия!", "Good Grades");
+                    MessageBox.Show(Ru.LastVersionInstalled, "Good Grades");
                     return;
                 }
 
-                if (MessageBox.Show($"Доступна новая версия {newVersion}, обновить? Это может занять несколько минут", "Good Grades", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
+                if (MessageBox.Show(String.Format(Ru.AvailableNewVersion, newVersion), "Good Grades", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
                 {
                     IsEnabled = false;
                     await mgr.UpdateApp();
