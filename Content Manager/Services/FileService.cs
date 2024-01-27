@@ -3,6 +3,7 @@ using System.Formats.Asn1;
 using System.IO;
 using System.Resources;
 using System.Runtime.Serialization.Formatters.Binary;
+using Shared.Translations;
 
 namespace Content_Manager.Services
 {
@@ -39,19 +40,19 @@ namespace Content_Manager.Services
 
         internal static string SelectImageFilePath()
         {
-            return OpenFilePath("Файлы изображений (.png) | *.png; *.jpg; *.jpeg; *.tiff", "Выбор файла с изображением");
+            return OpenFilePath(Ru.ImageFiles, Ru.ImageFileChoose);
         }
         internal static string SelectDatabaseFilePath()
         {
-            return OpenFilePath("Файлы Баз Данных (.sgb) | *.sgb;", "Выбор файла баз данных");
+            return OpenFilePath(Ru.DBFiles, Ru.DBFileChoose);
         }
         internal static string SelectTextFilePath()
         {
-            return OpenFilePath("Файлы с RTF текстом (.rtf) | *.rtf;", "Выбор файла с текстом");
+            return OpenFilePath(Ru.RtfFiles, Ru.RtfFileChoose);
         }
         internal static string SelectAudioFilePath()
         {
-            return OpenFilePath("MP3 Файлы (.mp3) | *.mp3", "Выбор файла с аудиозаписью");
+            return OpenFilePath(Ru.AudioFiles, Ru.AudioFileChoose);
         }
 
         internal static string OpenFilePath(string filter, string title)
@@ -85,7 +86,7 @@ namespace Content_Manager.Services
 
         internal static string SelectNewDatabaseFilePath()
         {
-            return SaveFilePath("Файлы Баз Данных (.sgb) | *.sgb;", "Выбор файла баз данных");
+            return SaveFilePath(Ru.DBFiles, Ru.DBFileChoose);
         }
     }
 }

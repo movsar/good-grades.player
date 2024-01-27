@@ -4,8 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Content_Manager.Windows.Editors"
+        xmlns:translations="clr-namespace:Shared.Translations;assembly=Shared"
         mc:Ignorable="d"
-        Title="Задача - Построение" Height="450" Width="800" MinHeight="250" MinWidth="450">
+        Title="{x:Static translations:Ru.BuildingTaskName}" Height="450" Width="800" MinHeight="250" MinWidth="450">
     <Grid>
 
         <Grid.RowDefinitions>
@@ -22,7 +23,7 @@
                 x:Name="txtTitle"
                 Style="{StaticResource InputFieldStyle}" 
                 TextChanged="txtTitle_TextChanged"
-                Text="Постройте предложение из данных слов">
+                Text="{x:Static translations:Ru.BuildingTaskText}">
             </TextBox>
 
             <TextBlock Style="{StaticResource HeaderStyle}">

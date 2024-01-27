@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Content_Manager.Windows.Editors"
         mc:Ignorable="d"
-        Title="Задача - Тест" Height="450" Width="800" MinHeight="250" MinWidth="450">
+        xmlns:translations="clr-namespace:Shared.Translations;assembly=Shared"
+        Title="{x:Static translations:Ru.TestTaskName}" Height="450" Width="800" MinHeight="250" MinWidth="450">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -21,7 +22,7 @@
                 x:Name="txtTitle"
                 Style="{StaticResource InputFieldStyle}" 
                 TextChanged="txtTitle_TextChanged"
-                Text="Пройдите тест">
+                Text="{x:Static translations:Ru.TestTaskText}">
             </TextBox>
 
             <TextBlock Margin="10 5 10 0"

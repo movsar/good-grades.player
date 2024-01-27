@@ -8,6 +8,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Shared.Translations;
 
 namespace Content_Manager.UserControls
 {
@@ -54,7 +55,7 @@ namespace Content_Manager.UserControls
 
         private void BtnNewSection_Click(object sender, RoutedEventArgs e)
         {
-            Segment segment = new Segment() { Title = "Керла дакъа" };
+            Segment segment = new Segment() { Title = Ru.NewChapter};
             _contentStore.Database.Write(() => _contentStore.Database.Add(segment));
             RedrawSegmentList();
 

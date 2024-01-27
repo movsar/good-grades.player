@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Shared.Viewers"
+             xmlns:translations="clr-namespace:Shared.Translations;assembly=Shared"
              mc:Ignorable="d" 
              d:DesignHeight="700" d:DesignWidth="1000"
             Height="700" Width="1100"
@@ -33,7 +34,7 @@
         </Grid>
 
         <Button Grid.Row="1" 
-                Content="Проверить" 
+                Content="{x:Static translations:Ru.Check}" 
                 HorizontalAlignment="Right"
                 VerticalAlignment="Bottom"
                 Margin="0,0,0,0" Click="Button_Click"

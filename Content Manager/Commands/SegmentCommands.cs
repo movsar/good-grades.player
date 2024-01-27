@@ -4,6 +4,7 @@ using Data.Entities;
 using System;
 using System.Linq;
 using System.Windows;
+using Shared.Translations;
 
 namespace Content_Manager.Commands
 {
@@ -17,7 +18,7 @@ namespace Content_Manager.Commands
                 return;
             }
 
-            var result = MessageBox.Show($"Подтвердите удаление раздела {selectedSegment.Title}\"",
+            var result = MessageBox.Show(string.Format(Ru.ConfirmingDelete, selectedSegment.Title),
                                              "Good Grades",
                                              MessageBoxButton.YesNo,
                                              MessageBoxImage.Question);

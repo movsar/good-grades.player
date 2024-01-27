@@ -12,6 +12,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using Shared.Translations;
 
 namespace Content_Manager.UserControls
 {
@@ -24,7 +25,7 @@ namespace Content_Manager.UserControls
         #endregion
 
         #region Fields
-        private const string Hint = "Введите описание";
+       static string Hint { get; } = Ru.SetDescription;
         private FormCompletionInfo _formCompletionInfo;
         #endregion
 
