@@ -85,5 +85,7 @@ namespace Content_Manager.Windows.Editors
                 ContentStore.Database.Write(() => _taskAssignment.Title = txtTitle.Text);
             }
         }
+
+
     }
 }
