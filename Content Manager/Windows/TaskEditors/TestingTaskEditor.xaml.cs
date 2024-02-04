@@ -5,9 +5,11 @@ using Data.Entities;
 using Data.Entities.TaskItems;
 using Data.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Xml.Schema;
 
 namespace Content_Manager.Windows.Editors
 {
@@ -27,8 +29,9 @@ namespace Content_Manager.Windows.Editors
                 Title = txtTitle.Text
             };
             txtTitle.Text = _taskAssignment.Title;
-
             RedrawUi();
+
+
         }
 
         public void RedrawUi()
@@ -73,5 +76,21 @@ namespace Content_Manager.Windows.Editors
                 ContentStore.Database.Write(() => _taskAssignment.Title = txtTitle.Text);
             }
         }
+
+        //ошибка при неправильном заполнении, где item - созданный вариант с вопросом, CorrectOptionId-правильный вариант ответа, а Options.Count-количество ответов в вопросе
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            foreach (var item in _taskAssignment.Questions)
+            {
+                if (string.IsNullOrEmpty(item.CorrectOptionId) == true || item.Options.Count < 2)
+                {
+                    MessageBox.Show("Вы неправильно заполнили данные! У вопроса должны быть минимум 2 варианта ответа и один правильный!");
+                    e.Cancel = true;
+                }
+            }
+
+        }
+
     }
 }
+
