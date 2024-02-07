@@ -10,6 +10,7 @@ using System.Windows;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using System.IO;
+using Shared.Services;
 
 namespace Content_Manager
 {

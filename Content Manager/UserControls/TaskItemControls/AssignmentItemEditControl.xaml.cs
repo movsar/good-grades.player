@@ -15,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Image = System.Windows.Controls.Image;
 using Shared.Translations;
+using Shared.Services;
 
 namespace Content_Manager.UserControls
 {

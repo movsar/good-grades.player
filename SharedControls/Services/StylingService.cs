@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Media;
 
-namespace Content_Manager.Services {
+namespace Shared.Services {
     public class StylingService {
         public Brush StagedBrush => (Brush)Application.Current.Resources["StagedBrush"];
         public Brush DeleteBrush => (Brush)Application.Current.Resources["DeleteBrush"];

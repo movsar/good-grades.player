@@ -12,6 +12,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using Shared.Translations;
+using Shared.Services;
 
 namespace Content_Manager.UserControls
 {
