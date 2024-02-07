@@ -6,16 +6,41 @@
         xmlns:local="clr-namespace:Content_Player"
         xmlns:translations="clr-namespace:Shared.Translations;assembly=Shared"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        d:DataContext="{d:DesignInstance Type=local:MainWindow}"
+        Title="MainWindow" Height="500" Width="850">
     <Grid>
         <Grid.Background>
-            <SolidColorBrush Color="#FFD8E4F8"/>
+            <ImageBrush ImageSource="UiImages/main_background.jpg" 
+                        Stretch="None" AlignmentX="Left" AlignmentY="Bottom"/>
         </Grid.Background>
 
-        <!-- Main container for content -->
-        <Border CornerRadius="10" Background="White" Margin="5">
-            <ListView>
-                
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <Label Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Top"   
+               FontSize="26"
+               FontWeight="Bold"
+               Content="{Binding DbTitle}"/>
+
+        <Border CornerRadius="10" Background="White" Margin="5" Grid.Column="1">
+            <ListView x:Name="lvSegments" ItemsSource="{Binding Segments}" 
+                      HorizontalAlignment="Right"
+                      MouseDoubleClick="lvSegments_MouseDoubleClick"
+                      KeyUp="lvSegments_KeyUp"
+                      >
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderThickness="1" 
+                                BorderBrush="AntiqueWhite" 
+                                Padding="5">
+
+                            <Label Content="{Binding Title}"                                   
+                                   Cursor="Hand"/>
+                        </Border>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
             </ListView>
         </Border>
     </Grid>
