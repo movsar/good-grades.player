@@ -20,6 +20,9 @@ namespace Content_Manager.Stores
         #region Events, Properties and Fields
         private readonly Storage _storage;
         private readonly FileService _fileService;
+        public string DatabasePath { get; private set; }
+        public Realm Database => _storage.Database;
+
         private Segment? _selectedSegment;
         public Segment? SelectedSegment
         {
@@ -34,7 +37,6 @@ namespace Content_Manager.Stores
             }
         }
 
-        public Realm Database => _storage.Database;
 
         public event Action? CurrentDatabaseChanged;
         public event Action<Segment>? SelectedSegmentChanged;
@@ -52,6 +54,7 @@ namespace Content_Manager.Stores
 
         internal void OpenDatabase(string filePath)
         {
+            DatabasePath = filePath;
             _storage.SetDatabaseConfig(filePath);
             _fileService.SetResourceString("lastOpenedDatabasePath", filePath);
 

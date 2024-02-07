@@ -8,23 +8,21 @@
              d:DesignHeight="450" d:DesignWidth="800"
              x:Name="SegmentInfo">
     <Grid>
-        <!--xmlns:models="clr-namespace:E;assembly=Data" d:DataContext="{d:DesignInstance Type=models:Segment}"-->
-        <Button x:Name="btnSave" 
-                    Style="{StaticResource IconButtonStyle}"
-                    VerticalAlignment="Top"
-                    HorizontalAlignment="Right"
-                    Content="&#xE74E;"
-                    Click="btnSave_Click">
-            
-          
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-        </Button>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
 
-        <StackPanel Margin="10 0 0 0">
-
-            <Label Content="{x:Static translations:Ru.ChapterTitle}" FontWeight="Bold"/>
-            <TextBox Margin="10 0 70 0"
-                     Padding="5 0 0 0"             
+        <Label Grid.Row="0" Content="{x:Static translations:Ru.ChapterTitle}" FontWeight="Bold"/>
+        <TextBox Grid.Row="1" Margin="10"
+                     Padding="5"
                      Height="30"
                      VerticalContentAlignment="Center"
                      VerticalAlignment="Top"
@@ -32,13 +30,18 @@
                      KeyUp="TextBox_KeyUp"
                      />
 
-            <Label Content="{x:Static translations:Ru.Description}" FontWeight="Bold"/>
-            <TextBox Margin="10 0 70 0"
-                     Height="60"
-                     AcceptsReturn="True"
-                     VerticalAlignment="Top"
-                     Text="{Binding ElementName=SegmentInfo, Path=Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <Button Grid.Row="1" Grid.Column="1" x:Name="btnSave" 
+                Style="{StaticResource IconButtonStyle}" Margin="10"
+                Content="&#xE74E;"
+                Click="btnSave_Click">
+        </Button>
 
-        </StackPanel>
+        <Label Grid.Row="2" Content="{x:Static translations:Ru.Description}" FontWeight="Bold"/>
+
+        <RichTextBox Grid.Row="3" Grid.ColumnSpan="2" x:Name="rtbDescription" 
+                     Margin="10" 
+                     Padding="3"
+                     FontSize="16"
+                     AcceptsReturn="True"/>
     </Grid>
 </UserControl>

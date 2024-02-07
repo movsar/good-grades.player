@@ -1,9 +1,11 @@
 ﻿using Content_Manager.Stores;
-using Data.Entities;
 using Microsoft.Extensions.DependencyInjection;
-using System.Linq;
+using Shared.Services;
+using System.IO;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Input;
 
 namespace Content_Manager.UserControls.SegmentTabs
@@ -34,30 +36,32 @@ namespace Content_Manager.UserControls.SegmentTabs
             InitializeComponent();
             DataContext = this;
 
+            RtfService.LoadRtfFromText(rtbDescription, _contentStore.SelectedSegment!.Description);
             Title = _contentStore.SelectedSegment!.Title;
-            Description = _contentStore.SelectedSegment!.Description;
         }
-
-        private void btnSave_Click(object sender, RoutedEventArgs e)
-        {
-            Save();
-        }
+    
 
         private void Save()
         {
             _contentStore.Database.Write(() =>
             {
                 _contentStore.SelectedSegment!.Title = Title;
-                _contentStore.SelectedSegment!.Description = Description;
+                _contentStore.SelectedSegment!.Description = RtfService.GetRtfDescriptionAsText(rtbDescription);
             });
         }
 
+        #region Event Handler
+        private void btnSave_Click(object sender, RoutedEventArgs e)
+        {
+            Save();
+        }
         private void TextBox_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter)
+            if (e.Key == Key.Enter || e.Key == Key.Return)
             {
                 Save();
             }
         }
+        #endregion
     }
 }
