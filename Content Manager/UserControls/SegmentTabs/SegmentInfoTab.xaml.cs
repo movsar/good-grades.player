@@ -35,11 +35,17 @@ namespace Content_Manager.UserControls.SegmentTabs
         {
             InitializeComponent();
             DataContext = this;
-
-            RtfService.LoadRtfFromText(rtbDescription, _contentStore.SelectedSegment!.Description);
+            try
+            {
+                RtfService.LoadRtfFromText(rtbDescription, _contentStore.SelectedSegment!.Description);
+            }
+            catch
+            {
+                Description = null;
+            }
             Title = _contentStore.SelectedSegment!.Title;
         }
-    
+
 
         private void Save()
         {
