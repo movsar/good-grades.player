@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\listening.png" />
+    <None Remove="Images\reading.png" />
+    <None Remove="Images\testing.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Xam.Plugin.SimpleAudioPlayer.WPF" Version="1.6.0" />
   </ItemGroup>
 
@@ -21,6 +27,12 @@
     <Page Update="Viewers\ReadingViewer.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\listening.png" />
+    <Resource Include="Images\reading.png" />
+    <Resource Include="Images\testing.png" />
   </ItemGroup>
 
 </Project>

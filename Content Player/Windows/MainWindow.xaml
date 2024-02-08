@@ -10,7 +10,7 @@
         Title="MainWindow" Height="500" Width="850">
     <Grid>
         <Grid.Background>
-            <ImageBrush ImageSource="/UiImages/main_background.jpg" 
+            <ImageBrush ImageSource="/Images/main_background.jpg" 
                         Stretch="None" AlignmentX="Left" AlignmentY="Bottom"/>
         </Grid.Background>
 
