@@ -6,29 +6,27 @@ namespace Data
 {
     public class Storage
     {
-        public Realm Database
-        {
-            get
-            {
-                try
-                {
-                    return Realm.GetInstance(_dbConfig);
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogCritical(ex.Message, ex.Source, ex.StackTrace, ex.InnerException);
-                    throw;
-                }
-            }
-        }
+        public Realm Database => Realm.GetInstance(_dbConfig);
 
         private ILogger _logger;
-        private RealmConfiguration _dbConfig;
+        private RealmConfiguration? _dbConfig;
         public Storage(ILogger<Storage> logger)
         {
             _logger = logger;
         }
-
+        public void CheckDatabaseConnection()
+        {
+            try
+            {
+                Realm.GetInstance(_dbConfig);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogCritical(ex.Message, ex.Source, ex.StackTrace, ex.InnerException);
+                _dbConfig = null;
+                throw;
+            }
+        }
         public void SetDatabaseConfig(string databasePath)
         {
             // Compacts the database if its size exceedes 30 MiB
@@ -39,7 +37,7 @@ namespace Data
                     ulong edgeSize = 30 * 1024 * 1024;
                     return totalBytes > edgeSize && usedBytes / totalBytes < 0.5;
                 },
-                SchemaVersion = 7
+                SchemaVersion = 8
             };
         }
         public void CreateDatabase(string databasePath, string? appVersion)

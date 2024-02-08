@@ -5,7 +5,7 @@ using Realms;
 
 namespace Data.Entities
 {
-    public class TestingTaskAssignment : RealmObject, ITaskAssignment
+    public class TestingTaskAssignment : RealmObject, IAssignment
     {
         [Required] public string Title { get; set; }
         [Required][PrimaryKey] public string Id { get; set; } = ObjectId.GenerateNewId().ToString();

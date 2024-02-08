@@ -16,7 +16,7 @@ namespace Content_Manager.Windows.Editors
     public partial class TestingTaskEditor : Window, ITaskEditor
     {
         private TestingTaskAssignment _taskAssignment;
-        public ITaskAssignment TaskAssignment => _taskAssignment;
+        public IAssignment TaskAssignment => _taskAssignment;
         private ContentStore ContentStore => App.AppHost!.Services.GetRequiredService<ContentStore>();
 
         public TestingTaskEditor(TestingTaskAssignment? taskEntity = null)

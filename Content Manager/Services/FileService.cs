@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Formats.Asn1;
 using System.IO;
 using System.Resources;
-using System.Runtime.Serialization.Formatters.Binary;
 using Shared.Translations;
 
 namespace Content_Manager.Services
@@ -10,7 +8,7 @@ namespace Content_Manager.Services
     public class FileService
     {
         public string AppResourcesPath => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "GoodGrades");
-        internal void SetResourceString(string key, string value, string fileName = "Settings.resx")
+        internal void SetValue(string key, string value, string fileName = "Settings.resx")
         {
             string filePath = Path.Combine(AppResourcesPath, fileName);
 
@@ -22,7 +20,7 @@ namespace Content_Manager.Services
             using ResourceWriter resourceWriter = new ResourceWriter(filePath);
             resourceWriter.AddResource(key, value);
         }
-        internal string ReadResourceString(string key, string fileName = "Settings.resx")
+        internal string GetValue(string key, string fileName = "Settings.resx")
         {
             string filePath = Path.Combine(AppResourcesPath, fileName);
             if (!File.Exists(filePath))

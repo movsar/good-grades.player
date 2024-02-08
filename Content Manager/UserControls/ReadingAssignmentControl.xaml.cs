@@ -111,7 +111,7 @@ namespace Content_Manager.UserControls
             RmTitle = TitleHintText;
         }
 
-        public ReadingAssignmentControl(ReadingAssignmnet material)
+        public ReadingAssignmentControl(ReadingMaterial material)
         {
             SharedInitialization(true);
 
@@ -192,7 +192,7 @@ namespace Content_Manager.UserControls
 
             if (string.IsNullOrEmpty(RmId))
             {
-                var rm = new ReadingAssignmnet()
+                var rm = new ReadingMaterial()
                 {
                     Title = RmTitle,
                     Text = RmText,
@@ -204,7 +204,7 @@ namespace Content_Manager.UserControls
             }
             else
             {
-                var rm = _contentStore.Database.All<ReadingAssignmnet>().First(rm => rm.Id == RmId);
+                var rm = _contentStore.Database.All<ReadingMaterial>().First(rm => rm.Id == RmId);
                 _contentStore.Database.Write(() =>
                 {
                     rm.Title = RmTitle;
@@ -218,7 +218,7 @@ namespace Content_Manager.UserControls
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-            var rm = _contentStore.Database.Find<ReadingAssignmnet>(RmId);
+            var rm = _contentStore.Database.Find<ReadingMaterial>(RmId);
             _contentStore.Database.Write(() => _contentStore.Database.Remove(rm));
             _contentStore.RaiseItemDeletedEvent(rm);
         }

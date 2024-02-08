@@ -30,7 +30,7 @@ namespace Content_Manager.UserControls
 
         public bool IsContentSet { get; set; }
 
-        private readonly ITaskAssignment _taskAssignment;
+        private readonly IAssignment _taskAssignment;
 
         #endregion
 
@@ -68,7 +68,7 @@ namespace Content_Manager.UserControls
             SetUiForNewMaterial();
         }
 
-        public TaskAssignmentControl(ITaskAssignment taskMaterial)
+        public TaskAssignmentControl(IAssignment taskMaterial)
         {
             _taskAssignment = taskMaterial;
             IsContentSet = GetCurrentTaskItems().Count() > 0;
@@ -94,7 +94,7 @@ namespace Content_Manager.UserControls
         }
         private void btnSetData_Click(object sender, RoutedEventArgs e)
         {
-            ITaskAssignment taskAssignment;
+            IAssignment taskAssignment;
             ITaskEditor taskEditor = _taskType switch
             {
                 TaskType.Matching => new MatchingTaskEditor(_taskAssignment as MatchingTaskAssignment),

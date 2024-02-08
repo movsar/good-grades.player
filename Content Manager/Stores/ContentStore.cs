@@ -6,6 +6,7 @@ using Realms;
 using System;
 using System.Linq;
 using System.Reflection;
+using System.Windows;
 
 namespace Content_Manager.Stores
 {
@@ -54,11 +55,20 @@ namespace Content_Manager.Stores
 
         internal void OpenDatabase(string filePath)
         {
-            DatabasePath = filePath;
             _storage.SetDatabaseConfig(filePath);
-            _fileService.SetResourceString("lastOpenedDatabasePath", filePath);
 
-            CurrentDatabaseChanged?.Invoke();
+            try
+            {
+                _storage.CheckDatabaseConnection();
+
+                DatabasePath = filePath;
+                _fileService.SetValue("lastOpenedDatabasePath", filePath);
+                CurrentDatabaseChanged?.Invoke();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Произошла ошибка с открытием Базы Данных предыдущей сессии");
+            }
         }
         internal void CreateDatabase(string filePath)
         {

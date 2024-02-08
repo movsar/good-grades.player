@@ -13,7 +13,6 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
-using static Realms.Sync.MongoClient;
 using Shared.Translations;
 
 namespace Content_Manager
@@ -35,26 +34,12 @@ namespace Content_Manager
             _contentStore.SelectedSegmentChanged += SelectedSegmentChanged;
             _contentStore.CurrentDatabaseChanged += OnDatabaseOpened;
 
-            var lastOpenedDatabasePath = _fileService.ReadResourceString("lastOpenedDatabasePath");
+            var lastOpenedDatabasePath = _fileService.GetValue("lastOpenedDatabasePath");
             if (!string.IsNullOrEmpty(lastOpenedDatabasePath) && File.Exists(lastOpenedDatabasePath))
             {
                 _contentStore.OpenDatabase(lastOpenedDatabasePath);
-                _contentStore.SelectedSegment = _contentStore.Database.All<Segment>().FirstOrDefault();
             }
         }
-
-
-        //private void _contentStore_ItemUpdated(string interfaceName, IModelBase model)
-        //{
-        //    if (!interfaceName.Equals(nameof(IDbMeta)))
-        //    {
-        //        return;
-        //    }
-
-        //    var dbMeta = model as IDbMeta;
-
-        //    SetTitle(dbMeta!.Title);
-        //}
 
         private void SelectedSegmentChanged(Segment segment)
         {
@@ -113,6 +98,8 @@ namespace Content_Manager
 
         private void OnDatabaseOpened()
         {
+            _contentStore.SelectedSegment = _contentStore.Database.All<Segment>().FirstOrDefault();
+
             lblChooseDb.Visibility = Visibility.Collapsed;
             lblChooseSegment.Visibility = Visibility.Visible;
             ucSegmentList.Visibility = Visibility.Visible;

@@ -19,8 +19,8 @@ namespace Data.Entities
         public IList<FillingTaskAssignment> FillingTasks { get; }
         public IList<TestingTaskAssignment> TestingTasks { get; }
 
-        public IList<ReadingAssignmnet> ReadingMaterials { get; }
-        public IList<ListeningAssignment> ListeningMaterials { get; }
+        public IList<ReadingMaterial> ReadingMaterials { get; }
+        public IList<ListeningMaterial> ListeningMaterials { get; }
 
     }
 }

@@ -30,7 +30,7 @@ namespace Content_Manager.UserControls.SegmentTabs
                 return;
             }
 
-            List<ITaskAssignment> allTasks = ContentStore.SelectedSegment!.MatchingTasks.Cast<ITaskAssignment>().ToList();
+            List<IAssignment> allTasks = ContentStore.SelectedSegment!.MatchingTasks.Cast<IAssignment>().ToList();
             allTasks.AddRange(ContentStore.SelectedSegment!.FillingTasks);
             allTasks.AddRange(ContentStore.SelectedSegment!.BuildingTasks);
             allTasks.AddRange(ContentStore.SelectedSegment!.TestingTasks);

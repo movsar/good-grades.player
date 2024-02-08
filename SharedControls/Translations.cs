@@ -58,7 +58,7 @@ namespace Shared.Translations
         public static string DBFileChoose { get; } = "Выбор файла баз данных";
         public static string RtfFiles { get; } = "Файлы с RTF текстом (.rtf) | *.rtf;";
         public static string RtfFileChoose { get; } = "Выбор файла с текстом";
-        public static string AudioFiles { get; } = "MP3 Файлы (.mp3) | *.mp3; | *.wav | *.aac";
+        public static string AudioFiles { get; } = "Аудио файлы (.mp3, .wav, .aac) | *.mp3; *.wav; *.aac";
         public static string AudioFileChoose { get; } = "Выбор файла с аудиозаписью";
         public static string NecessaryInfoForContent { get; } = "Укажите все необходимые данные для материала";
         public static string IncorrectAnswer { get; } = "Неправильный ответ(ы)";
