@@ -10,19 +10,18 @@ namespace Content_Player.Windows
     {
         private List<IAssignment> Assignments { get; } = new List<IAssignment>();
         private StylingService _stylingService = App.AppHost.Services.GetRequiredService<StylingService>();
+
+        const int ButtonSize = 100;
+        const int ButtonSpacing = 50;
+
         public AssignmentSelector(List<IAssignment> assignments)
         {
             InitializeComponent();
             Assignments.AddRange(assignments);
-            GenerateAssignmentButtons();
         }
 
         private void GenerateAssignmentButtons()
         {
-            // Size of the buttons
-            const int buttonSize = 100;
-            // Space between buttons
-            const int spacing = 50;
 
             // Track the current row and column
             int row = 0, column = 0;
@@ -31,11 +30,12 @@ namespace Content_Player.Windows
 
             WrapPanel wrapPanel = new WrapPanel()
             {
-                Width = this.Width
+                HorizontalAlignment = HorizontalAlignment.Left,
+                Width = this.ActualWidth
             };
 
             // Determine the number of buttons that can fit in a row based on the container's width
-            int buttonsPerRow = (int)wrapPanel.Width / (buttonSize + spacing) - 1;
+            int buttonsPerRow = (int)wrapPanel.Width / (ButtonSize + ButtonSpacing) - 1;
 
             int count = 1;
             foreach (var assignment in Assignments)
@@ -44,9 +44,9 @@ namespace Content_Player.Windows
                 Button button = new Button
                 {
                     Content = count.ToString(),
-                    Width = buttonSize,
-                    Height = buttonSize,
-                    Margin = new Thickness(spacing),
+                    Width = ButtonSize,
+                    Height = ButtonSize,
+                    Margin = new Thickness(ButtonSpacing),
                     Style = _stylingService.CircularButtonStyle
                 };
 
@@ -54,7 +54,7 @@ namespace Content_Player.Windows
                 if (isOffset && column == 0)
                 {
                     // Add an offset at the beginning of an offset row
-                    wrapPanel.Children.Add(new TextBlock { Width = buttonSize });
+                    wrapPanel.Children.Add(new TextBlock { Width = ButtonSize });
                 }
 
                 wrapPanel.Children.Add(button);
@@ -72,6 +72,7 @@ namespace Content_Player.Windows
             }
 
             ScrollViewerContainer.Content = wrapPanel;
+            ScrollViewerContainer.UpdateLayout();
         }
 
 
@@ -79,6 +80,20 @@ namespace Content_Player.Windows
         {
             var clickedButton = (Button)e.Source;
             var assignment = Assignments[int.Parse(clickedButton.Content.ToString()!) - 1];
+        }
+
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            var widthDifference = this.ActualWidth - e.PreviousSize.Width;
+            var heightDifference = this.ActualHeight - e.PreviousSize.Height;
+
+            if (widthDifference < ButtonSize && heightDifference < ButtonSize)
+            {
+                return;
+            }
+
+            ScrollViewerContainer.Content = null;
+            GenerateAssignmentButtons();
         }
     }
 }
