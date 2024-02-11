@@ -19,18 +19,23 @@ namespace Content_Player.Windows
 
         private void GenerateAssignmentButtons()
         {
-            const int buttonSize = 100; // Size of the buttons
-            const int spacing = 10; // Space between buttons
-            int row = 0, column = 0; // Track the current row and column
-            bool isOffset = false; // Used to create the checkmate pattern
+            // Size of the buttons
+            const int buttonSize = 100;
+            // Space between buttons
+            const int spacing = 50;
+
+            // Track the current row and column
+            int row = 0, column = 0;
+            // Used to create the checkmate pattern
+            bool isOffset = false;
+
+            WrapPanel wrapPanel = new WrapPanel()
+            {
+                Width = this.Width
+            };
 
             // Determine the number of buttons that can fit in a row based on the container's width
-            int buttonsPerRow = (int)ScrollViewerContainer.ActualWidth / (buttonSize + spacing);
-
-            WrapPanel wrapPanel = new WrapPanel
-            {
-                // Set the WrapPanel's properties if needed
-            };
+            int buttonsPerRow = (int)wrapPanel.Width / (buttonSize + spacing) - 1;
 
             int count = 1;
             foreach (var assignment in Assignments)
@@ -49,7 +54,7 @@ namespace Content_Player.Windows
                 if (isOffset && column == 0)
                 {
                     // Add an offset at the beginning of an offset row
-                    wrapPanel.Children.Add(new TextBlock { Width = buttonSize / 2 });
+                    wrapPanel.Children.Add(new TextBlock { Width = buttonSize });
                 }
 
                 wrapPanel.Children.Add(button);
@@ -58,9 +63,9 @@ namespace Content_Player.Windows
                 column++;
                 if (column >= buttonsPerRow)
                 {
+                    isOffset = !isOffset;
                     column = 0;
                     row++;
-                    isOffset = !isOffset; // Flip the offset for the next row
                 }
 
                 count++;
