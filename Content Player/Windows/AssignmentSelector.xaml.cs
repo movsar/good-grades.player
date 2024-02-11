@@ -1,4 +1,6 @@
 ﻿using Data.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
+using Shared.Services;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -7,7 +9,7 @@ namespace Content_Player.Windows
     public partial class AssignmentSelector : Window
     {
         private List<IAssignment> Assignments { get; } = new List<IAssignment>();
-
+        private StylingService _stylingService = App.AppHost.Services.GetRequiredService<StylingService>();
         public AssignmentSelector(List<IAssignment> assignments)
         {
             InitializeComponent();
@@ -17,10 +19,7 @@ namespace Content_Player.Windows
 
         private void GenerateAssignmentButtons()
         {
-            WrapPanel wrapPanel = new WrapPanel
-            {
-                // Set properties for the WrapPanel if needed, such as padding, item alignment, etc.
-            };
+            WrapPanel wrapPanel = new WrapPanel();
 
             int count = 1;
             foreach (var assignment in Assignments)
@@ -31,7 +30,7 @@ namespace Content_Player.Windows
                     Width = 100,
                     Height = 100,
                     Margin = new Thickness(5),
-
+                    Style = _stylingService.CircularButtonStyle
                 };
 
                 button.Click += AssignmentButton_Click;
