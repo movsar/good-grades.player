@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using Serilog;
 using System.IO;
 using Shared.Services;
+using Data.Services;
 
 namespace Content_Manager
 {
@@ -32,6 +33,7 @@ namespace Content_Manager
                         services.AddTransient<FileService>();
                         services.AddSingleton<Storage>();
                         services.AddSingleton<MainWindow>();
+                        services.AddSingleton<SettingsService>();
                         services.AddSingleton<StylingService>();
                         services.AddSingleton<ContentStore>();
                     }).Build();

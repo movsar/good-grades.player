@@ -12,9 +12,12 @@ namespace Content_Player.Pages
 {
     public partial class MainPage : Page
     {
-        private SettingsService _settingsService;
-        private readonly Storage _storage;
+        public string DbTitle { get; }
+        public List<Segment> Segments { get; }
 
+        private readonly SettingsService _settingsService;
+        private readonly Storage _storage;
+        private readonly DbMeta _dbInfo;
         public MainPage()
         {
             // Initialize fields
@@ -56,12 +59,6 @@ namespace Content_Player.Pages
             MessageBox.Show(Shared.Translations.Ru.DBFileChoose);
             return GetDatabasePath();
         }
-
-        public List<Segment> Segments { get; }
-
-        private readonly DbMeta _dbInfo;
-
-        public string DbTitle { get; }
 
         private void LoadSegment()
         {
