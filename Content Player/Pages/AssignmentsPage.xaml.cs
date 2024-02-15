@@ -1,6 +1,9 @@
-﻿using Data.Interfaces;
+﻿using Data.Entities;
+using Data;
+using Data.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Shared.Services;
+using Shared.Viewers;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -8,7 +11,7 @@ namespace Content_Player.Pages
 {
     public partial class AssignmentsPage : Page
     {
-   
+
         private List<IAssignment> Assignments { get; } = new List<IAssignment>();
         private StylingService _stylingService = App.AppHost.Services.GetRequiredService<StylingService>();
 
@@ -46,8 +49,10 @@ namespace Content_Player.Pages
                     Width = ButtonSize,
                     Height = ButtonSize,
                     Margin = new Thickness(ButtonSpacing),
-                    Style = _stylingService.CircularButtonStyle
+                    Style = _stylingService.CircularButtonStyle,
                 };
+
+                button.Click += AssignmentButton_Click;
 
                 // Add the button to the wrap panel at the correct position
                 if (isOffset && column == 0)
@@ -79,6 +84,32 @@ namespace Content_Player.Pages
         {
             var clickedButton = (Button)e.Source;
             var assignment = Assignments[int.Parse(clickedButton.Content.ToString()!) - 1];
+
+            Window viewer = null!;
+            switch (assignment)
+            {
+                case MatchingTaskAssignment:
+                    viewer = new MatchingViewer((MatchingTaskAssignment)assignment);
+                    break;
+
+                case TestingTaskAssignment:
+                    viewer = new TestingViewer((TestingTaskAssignment)assignment);
+                    break;
+
+                case FillingTaskAssignment:
+                    viewer = new FillingViewer((FillingTaskAssignment)assignment);
+                    break;
+
+                case SelectingTaskAssignment:
+                    viewer = new SelectingViewer((SelectingTaskAssignment)assignment);
+                    break;
+                case BuildingTaskAssignment:
+                    viewer = new BuildingViewer((BuildingTaskAssignment)assignment);
+                    break;
+            }
+
+            viewer.Show();
+
         }
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
