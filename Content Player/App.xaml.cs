@@ -26,7 +26,7 @@ namespace Content_Player
                     .ConfigureServices((hostContext, services) =>
                     {
                         services.AddSingleton<Storage>();
-                        services.AddSingleton<MainWindow>();
+                        services.AddSingleton<ShellWindow>();
                         services.AddSingleton<StylingService>();
                     }).Build();
         }
@@ -34,7 +34,7 @@ namespace Content_Player
         protected override void OnStartup(StartupEventArgs e)
         {
             AppHost.Start();
-            var startUpForm = AppHost!.Services.GetRequiredService<MainWindow>();
+            var startUpForm = AppHost!.Services.GetRequiredService<ShellWindow>();
             startUpForm.Show();
 
             base.OnStartup(e);
