@@ -1,41 +1,9 @@
-﻿using System;
-using System.IO;
-using System.Resources;
-using Shared.Translations;
+﻿using Shared.Translations;
 
 namespace Content_Manager.Services
 {
     public class FileService
     {
-        public string AppResourcesPath => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "GoodGrades");
-        internal void SetValue(string key, string value, string fileName = "Settings.resx")
-        {
-            string filePath = Path.Combine(AppResourcesPath, fileName);
-
-            if (!Directory.Exists(AppResourcesPath))
-            {
-                Directory.CreateDirectory(AppResourcesPath);
-            }
-
-            using ResourceWriter resourceWriter = new ResourceWriter(filePath);
-            resourceWriter.AddResource(key, value);
-        }
-        internal string GetValue(string key, string fileName = "Settings.resx")
-        {
-            string filePath = Path.Combine(AppResourcesPath, fileName);
-            if (!File.Exists(filePath))
-            {
-                return string.Empty;
-            }
-
-            using ResourceReader resourceReader = new ResourceReader(Path.Combine(AppResourcesPath, fileName));
-            string dataType = null;
-            byte[] data = null;
-            resourceReader.GetResourceData("lastOpenedDatabasePath", out dataType, out data);
-            using BinaryReader reader = new BinaryReader(new MemoryStream(data));
-            return reader.ReadString();
-        }
-
         internal static string SelectImageFilePath()
         {
             return OpenFilePath(Ru.ImageFiles, Ru.ImageFileChoose);

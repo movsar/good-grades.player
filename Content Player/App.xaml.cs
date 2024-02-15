@@ -1,4 +1,5 @@
 ﻿using Data;
+using Data.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
@@ -27,6 +28,7 @@ namespace Content_Player
                     {
                         services.AddSingleton<Storage>();
                         services.AddSingleton<ShellWindow>();
+                        services.AddSingleton<SettingsService>();
                         services.AddSingleton<StylingService>();
                     }).Build();
         }

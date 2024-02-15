@@ -14,27 +14,28 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using Shared.Translations;
+using Data.Services;
 
 namespace Content_Manager
 {
     public partial class MainWindow : Window
     {
         private readonly ContentStore _contentStore;
-        private readonly FileService _fileService;
+        private readonly SettingsService _settingsService;
         private ILogger _logger;
 
-        public MainWindow(ContentStore contentStore, FileService fileService, ILogger<MainWindow> logger)
+        public MainWindow(ContentStore contentStore, SettingsService fileService, ILogger<MainWindow> logger)
         {
             InitializeComponent();
             DataContext = this;
 
             _logger = logger;
-            _fileService = fileService;
+            _settingsService = fileService;
             _contentStore = contentStore;
             _contentStore.SelectedSegmentChanged += SelectedSegmentChanged;
             _contentStore.CurrentDatabaseChanged += OnDatabaseOpened;
 
-            var lastOpenedDatabasePath = _fileService.GetValue("lastOpenedDatabasePath");
+            var lastOpenedDatabasePath = _settingsService.GetValue("lastOpenedDatabasePath");
             if (!string.IsNullOrEmpty(lastOpenedDatabasePath) && File.Exists(lastOpenedDatabasePath))
             {
                 _contentStore.OpenDatabase(lastOpenedDatabasePath);

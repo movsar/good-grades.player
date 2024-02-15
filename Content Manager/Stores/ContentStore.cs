@@ -2,6 +2,7 @@
 using Data;
 using Data.Entities;
 using Data.Interfaces;
+using Data.Services;
 using Realms;
 using System;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace Content_Manager.Stores
 
         #region Events, Properties and Fields
         private readonly Storage _storage;
-        private readonly FileService _fileService;
+        private readonly SettingsService _fileService;
         public string DatabasePath { get; private set; }
         public Realm Database => _storage.Database;
 
@@ -47,10 +48,10 @@ namespace Content_Manager.Stores
         public event Action<IEntityBase>? ItemDeleted;
         #endregion
 
-        public ContentStore(Storage storage, FileService fileService)
+        public ContentStore(Storage storage, SettingsService appSettings)
         {
             _storage = storage;
-            _fileService = fileService;
+            _fileService = appSettings;
         }
 
         internal void OpenDatabase(string filePath)
