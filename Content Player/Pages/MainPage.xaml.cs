@@ -1,5 +1,4 @@
-﻿using Content_Player.Windows;
-using Data.Entities;
+﻿using Data.Entities;
 using Data;
 using System.IO;
 using System.Windows.Controls;
@@ -37,8 +36,7 @@ namespace Content_Player.Pages
                 return;
             }
 
-            var segmentWindow = new SegmentWindow(selectedSegment);
-            segmentWindow.ShowDialog();
+            this.NavigationService.Navigate(new SegmentPage(selectedSegment));
         }
 
         #region Event handlers
