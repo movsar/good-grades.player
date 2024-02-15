@@ -63,7 +63,6 @@ namespace Shared.Translations
         public static string NecessaryInfoForContent { get; } = "Укажите все необходимые данные для материала";
         public static string IncorrectAnswer { get; } = "Неправильный ответ(ы)";
         public static string Celebrating { get; } = "Ура!";
-        public static string BookForStudy { get; } = "ДІЕШІАРАН КІНІШКА";
-
+        public static string AreYouSureToExit { get; } = "Уверены что хотите уйти?";
     }
 }
