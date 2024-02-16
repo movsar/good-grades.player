@@ -6,6 +6,9 @@ using Shared.Services;
 using Shared.Viewers;
 using System.Windows;
 using System.Windows.Controls;
+using System.Collections.ObjectModel;
+using Shared.Interfaces;
+using System.Text.RegularExpressions;
 
 namespace Content_Player.Pages
 {
@@ -13,6 +16,7 @@ namespace Content_Player.Pages
     {
 
         private List<IAssignment> Assignments { get; } = new List<IAssignment>();
+        private Dictionary<string, bool> _assignmentCompletionStatus = new Dictionary<string, bool>();
         private StylingService _stylingService = App.AppHost.Services.GetRequiredService<StylingService>();
 
         const int ButtonSize = 100;
@@ -108,8 +112,39 @@ namespace Content_Player.Pages
                     break;
             }
 
-            viewer.Show();
+            ((IAssignmentViewer)viewer).CompletionStateChanged += AssignmentsPage_CompletionStateChanged;
+            viewer.ShowDialog();
 
+            // TODO: Check whether the user had solved anything, if so - set green
+        }
+
+        private void AssignmentsPage_CompletionStateChanged(IAssignment assignment, bool completionState)
+        {
+            if (!completionState)
+            {
+                return;
+            }
+
+            // Find the index of the received assignment in the Assignments list
+            var assignmentIndex = Assignments.IndexOf(assignment);
+            if (assignmentIndex == -1)
+            {
+                return;
+            }
+
+            // Assuming the WrapPanel is the only child of ScrollViewerContainer.Content
+            var wrapPanel = ScrollViewerContainer.Content as WrapPanel;
+            // Find the button with the content that matches the index + 1 (since you started counting from 1)
+            var buttonContentToFind = (assignmentIndex + 1).ToString();
+            var button = wrapPanel.Children
+                          .OfType<Button>()
+                          .FirstOrDefault(b => b.Content.ToString() == buttonContentToFind);
+
+            if (button != null)
+            {
+                // Change the background color of the button to Green
+                button.Background = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.Green);
+            }
         }
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)

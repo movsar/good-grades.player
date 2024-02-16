@@ -4,23 +4,31 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using Shared.Translations;
+using Shared.Interfaces;
+using Data.Interfaces;
 
 namespace Shared.Viewers
 {
-    public partial class FillingViewer : Window
+    public partial class FillingViewer : Window, IAssignmentViewer
     {
+        private readonly FillingTaskAssignment _assignment;
+
         public string TaskTitle { get; }
         public FillingViewer(FillingTaskAssignment fillingTask)
         {
             InitializeComponent();
             DataContext = this;
 
-            TaskTitle = fillingTask.Title;
-            GenerateItemsUI(fillingTask);
+            _assignment = fillingTask;
+            TaskTitle = _assignment.Title;
+            GenerateItemsUI();
         }
-        private void GenerateItemsUI(FillingTaskAssignment fillingTask)
+
+        public event Action<IAssignment, bool> CompletionStateChanged;
+
+        private void GenerateItemsUI()
         {
-            foreach (var item in fillingTask.Items)
+            foreach (var item in _assignment.Items)
             {
                 // Create a horizontal StackPanel for each item
                 var panel = new StackPanel { Orientation = Orientation.Horizontal };
@@ -65,6 +73,7 @@ namespace Shared.Viewers
                         if (!options.Contains(textBox.Text.ToLower().Trim()))
                         {
                             MessageBox.Show(Ru.Incorrect);
+                            CompletionStateChanged?.Invoke(_assignment, false);
                             return;
                         }
                     }
@@ -73,6 +82,7 @@ namespace Shared.Viewers
 
             // Show a message if all inputs are correct
             MessageBox.Show(Ru.Correct);
+            CompletionStateChanged?.Invoke(_assignment, true);
         }
     }
 }

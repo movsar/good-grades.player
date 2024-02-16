@@ -1,4 +1,6 @@
 ﻿using Data.Entities;
+using Data.Interfaces;
+using Shared.Interfaces;
 using Shared.Models;
 using Shared.Translations;
 using System;
@@ -14,9 +16,12 @@ using System.Xml.Linq;
 
 namespace Shared.Viewers
 {
-    public partial class MatchingViewer : Window
+    public partial class MatchingViewer : Window, IAssignmentViewer
     {
         private readonly Dictionary<string, BitmapImage> _matchingPairs = new Dictionary<string, BitmapImage>();
+        private readonly MatchingTaskAssignment _assignment;
+
+        public event Action<IAssignment, bool> CompletionStateChanged;
         #region Event Handlers
         private void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -34,11 +39,13 @@ namespace Shared.Viewers
                 if (image != null && textBlock != null && image.Name != textBlock.Name)
                 {
                     MessageBox.Show(Ru.ElementsDoNotMatch);
+                    CompletionStateChanged?.Invoke(_assignment, false);
                     return;
                 }
             }
 
             MessageBox.Show(Ru.AllElementsMatch);
+            CompletionStateChanged?.Invoke(_assignment, true);
         }
         private T? FindChildInGrid<T>(Grid grid, int row, int column) where T : FrameworkElement
         {
@@ -175,7 +182,8 @@ namespace Shared.Viewers
         {
             InitializeComponent();
 
-            foreach (var item in assignment.Items)
+            _assignment = assignment;
+            foreach (var item in _assignment.Items)
             {
                 _matchingPairs.Add(item.Text, ConvertByteArrayToBitmapImage(item.Image));
             }
@@ -189,7 +197,7 @@ namespace Shared.Viewers
             {
                 var text = _matchingPairs.Keys.ToList()[i];
                 var image = _matchingPairs.Values.ToList()[i];
-                
+
                 int pairIndex = i;
                 var imageUiElement = new Image { Source = image, Name = $"Pair_{pairIndex}" };
                 var textBlockUiElement = new TextBlock { Text = text, Name = $"Pair_{pairIndex}" };

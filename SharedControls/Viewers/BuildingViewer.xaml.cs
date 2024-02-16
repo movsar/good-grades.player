@@ -1,6 +1,8 @@
 ﻿using Data.Entities;
 using Data.Entities.TaskItems;
+using Data.Interfaces;
 using Shared.Controls;
+using Shared.Interfaces;
 using Shared.Translations;
 using System;
 using System.Collections.Generic;
@@ -10,17 +12,24 @@ using System.Windows.Controls;
 
 namespace Shared.Viewers
 {
-    public partial class BuildingViewer : Window
+    public partial class BuildingViewer : Window, IAssignmentViewer
     {
         IList<AssignmentItem> _items;
+
+        public event Action<IAssignment, bool> CompletionStateChanged;
+
+        private readonly BuildingTaskAssignment _assignment;
+
         public string TaskTitle { get; }
         public BuildingViewer(BuildingTaskAssignment taskAssignment)
         {
             InitializeComponent();
             DataContext = this;
 
-            TaskTitle = taskAssignment.Title;
-            _items = taskAssignment.Items; _items = taskAssignment.Items;
+            _assignment = taskAssignment;
+
+            TaskTitle = _assignment.Title;
+            _items = _assignment.Items;
 
             foreach (var item in _items)
             {
@@ -35,12 +44,14 @@ namespace Shared.Viewers
                 // Check if the user input matches one of the options
                 if (!buildingItemViewControl.IsCorrectlyArranged)
                 {
+                    CompletionStateChanged?.Invoke(_assignment, false);
                     MessageBox.Show(Ru.Incorrect);
                     return;
                 }
             }
 
             // Show a message if all inputs are correct
+            CompletionStateChanged?.Invoke(_assignment, true);
             MessageBox.Show(Ru.Correct);
         }
     }
