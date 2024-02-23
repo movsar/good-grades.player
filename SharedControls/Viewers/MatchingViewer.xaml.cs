@@ -19,6 +19,7 @@ namespace Shared.Viewers
     // Defines a MatchingViewer class as a specialized window for displaying matching tasks.
     public partial class MatchingViewer : Window, IAssignmentViewer
     {
+
         // A dictionary to hold matching pairs with string identifiers and corresponding images.
         private readonly Dictionary<string, BitmapImage> _matchingPairs = new Dictionary<string, BitmapImage>();
         // The matching task assignment to be completed in this viewer.
@@ -26,6 +27,62 @@ namespace Shared.Viewers
 
         // An event that signals when the completion state of the assignment changes.
         public event Action<IAssignment, bool> CompletionStateChanged;
+
+          #region Properties, Fields and Constructors
+        // Constructor initializes the MatchingViewer with a specific assignment.
+        public MatchingViewer(MatchingTaskAssignment assignment)
+        {
+            InitializeComponent();
+
+            _assignment = assignment;
+            // Load matching pairs from the assignment into the dictionary.
+            foreach (var item in _assignment.Items)
+            {
+                _matchingPairs.Add(item.Text, ConvertByteArrayToBitmapImage(item.Image));
+            }
+
+            // Set up the grid rows based on the number of items to match.
+            int numberOfRows = _assignment.Items.Count;
+            for (int i = 0; i < numberOfRows; i++)
+            {
+                gridMatchOptions.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+            }
+
+            // Shuffle the items to randomize their positions in the grid.
+            var randomRowIndexesForTexts = Enumerable.Range(0, numberOfRows).OrderBy(i => Guid.NewGuid()).ToArray();
+            var randomRowIndexesForImages = Enumerable.Range(0, numberOfRows).OrderBy(i => Guid.NewGuid()).ToArray();
+
+            var gridItems = new List<GridItem>();
+
+            // Create UI elements for each pair and assign them to random rows.
+            for (int i = 0; i < _matchingPairs.Count(); i++)
+            {
+                var text = _matchingPairs.Keys.ToList()[i];
+                var image = _matchingPairs.Values.ToList()[i];
+
+                int pairIndex = i;
+                var imageUiElement = new Image { Source = image, Name = $"Pair_{pairIndex}" };
+                var textBlockUiElement = new TextBlock { Text = text, Name = $"Pair_{pairIndex}" };
+
+                gridItems.Add(new GridItem
+                {
+                    Element = imageUiElement,
+                    Row = randomRowIndexesForImages[i],
+                    Column = 0
+                });
+
+                gridItems.Add(new GridItem
+                {
+                    Element = textBlockUiElement,
+                    Row = randomRowIndexesForTexts[i],
+                    Column = 1
+                });
+            }
+
+            // Add the elements to the grid.
+            AddElementsToGrid(gridMatchOptions, gridItems);
+        }
+        #endregion
 
         #region Event Handlers
         // Handles button click events to check for correct matches.
@@ -128,11 +185,7 @@ namespace Shared.Viewers
             {
                 bool isSameType = (draggedBorder.Child.GetType() == border.Child.GetType());
                 border.BorderBrush = isSameType ? Brushes.Green : Brushes.Red;
-                border.BorderThickness = new Thickness(3);
-
-                // Apply a scale transform for visual feedback.
-                var scaleTransform = new ScaleTransform(1.1, 1.1, 0.5, 0.5);
-                border.RenderTransform = scaleTransform;
+                border.BorderThickness = new Thickness(4);
             }
         }
 
@@ -143,8 +196,6 @@ namespace Shared.Viewers
             if (border != null)
             {
                 ResetBorderStyle(border);
-                // Reset transformations to normal.
-                border.RenderTransform = new ScaleTransform(1.0, 1.0);
             }
         }
 
@@ -153,11 +204,10 @@ namespace Shared.Viewers
         // Resets the border style to default settings.
         private void ResetBorderStyle(Border border)
         {
-            border.BorderBrush = Brushes.LightGray; // Set to a default or neutral color.
+            // Set to a default or neutral color.
+            border.BorderBrush = Brushes.LightGray; 
             border.BorderThickness = new Thickness(2);
             border.Background = Brushes.Transparent;
-            // Reset any transformations that were applied.
-            border.RenderTransform = new ScaleTransform(1.0, 1.0);
         }
 
         // Adds UI elements to the grid based on the list of GridItem objects.
@@ -214,65 +264,12 @@ namespace Shared.Viewers
                 bitmap.CacheOption = BitmapCacheOption.OnLoad;
                 bitmap.StreamSource = stream;
                 bitmap.EndInit();
-                bitmap.Freeze(); // Optimizes memory usage.
+                // Optimizes memory usage.
+                bitmap.Freeze(); 
                 return bitmap;
             }
         }
 
-        #region Properties, Fields and Constructors
-        // Constructor initializes the MatchingViewer with a specific assignment.
-        public MatchingViewer(MatchingTaskAssignment assignment)
-        {
-            InitializeComponent();
-
-            _assignment = assignment;
-            // Load matching pairs from the assignment into the dictionary.
-            foreach (var item in _assignment.Items)
-            {
-                _matchingPairs.Add(item.Text, ConvertByteArrayToBitmapImage(item.Image));
-            }
-
-            // Set up the grid rows based on the number of items to match.
-            int numberOfRows = _assignment.Items.Count;
-            for (int i = 0; i < numberOfRows; i++)
-            {
-                gridMatchOptions.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
-            }
-
-            // Shuffle the items to randomize their positions in the grid.
-            var randomRowIndexesForTexts = Enumerable.Range(0, numberOfRows).OrderBy(i => Guid.NewGuid()).ToArray();
-            var randomRowIndexesForImages = Enumerable.Range(0, numberOfRows).OrderBy(i => Guid.NewGuid()).ToArray();
-
-            var gridItems = new List<GridItem>();
-
-            // Create UI elements for each pair and assign them to random rows.
-            for (int i = 0; i < _matchingPairs.Count(); i++)
-            {
-                var text = _matchingPairs.Keys.ToList()[i];
-                var image = _matchingPairs.Values.ToList()[i];
-
-                int pairIndex = i;
-                var imageUiElement = new Image { Source = image, Name = $"Pair_{pairIndex}" };
-                var textBlockUiElement = new TextBlock { Text = text, Name = $"Pair_{pairIndex}" };
-
-                gridItems.Add(new GridItem
-                {
-                    Element = imageUiElement,
-                    Row = randomRowIndexesForImages[i],
-                    Column = 0
-                });
-
-                gridItems.Add(new GridItem
-                {
-                    Element = textBlockUiElement,
-                    Row = randomRowIndexesForTexts[i],
-                    Column = 1
-                });
-            }
-
-            // Add the elements to the grid.
-            AddElementsToGrid(gridMatchOptions, gridItems);
-        }
-        #endregion
+      
     }
 }
