@@ -110,27 +110,37 @@ namespace Shared.Viewers
 
             if (border != null && draggedBorder != null)
             {
-                // Check if the types of the children of the source and target borders are the same
                 bool isSameType = (draggedBorder.Child.GetType() == border.Child.GetType());
-
                 border.BorderBrush = isSameType ? Brushes.Green : Brushes.Red;
                 border.BorderThickness = new Thickness(3);
+
+                // Add a gentle scaling effect to indicate an active drop target
+                var scaleTransform = new ScaleTransform(1.1, 1.1, 0.5, 0.5);
+                border.RenderTransform = scaleTransform;
             }
         }
+
         private void Border_DragLeave(object sender, DragEventArgs e)
         {
             var border = sender as Border;
             if (border != null)
             {
                 ResetBorderStyle(border);
+
+                // Reset the scale transform
+                border.RenderTransform = new ScaleTransform(1.0, 1.0);
             }
         }
+
         #endregion
 
         private void ResetBorderStyle(Border border)
         {
-            border.BorderBrush = Brushes.Transparent;
-            border.BorderThickness = new Thickness(0);
+            border.BorderBrush = Brushes.LightGray; // Or any default color you prefer
+            border.BorderThickness = new Thickness(2);
+            border.Background = Brushes.Transparent;
+            // If any transformations were applied, reset them as well
+            border.RenderTransform = new ScaleTransform(1.0, 1.0);
         }
 
         private void AddElementsToGrid(Grid grid, List<GridItem> items)
@@ -148,21 +158,33 @@ namespace Shared.Viewers
         {
             var border = new Border
             {
-                Background = Brushes.Transparent,
                 AllowDrop = true,
                 Padding = new Thickness(10),
                 Child = child
             };
 
-            // AttachDragDropEvents
+            border.SetResourceReference(Border.StyleProperty, "RoundedBorderStyle");
+
+            // Attach event handlers for drag-and-drop functionality
             border.MouseLeftButtonDown += Element_MouseLeftButtonDown;
             border.Drop += Element_Drop;
             border.DragEnter += Border_DragEnter;
             border.DragLeave += Border_DragLeave;
 
+            // Attach event handlers for hover effects
+            border.MouseEnter += (s, e) =>
+            {
+                var b = s as Border;
+                b.Background = new SolidColorBrush(Color.FromArgb(255, 135, 206, 250)); // Light Sky Blue
+            };
+            border.MouseLeave += (s, e) =>
+            {
+                var b = s as Border;
+                b.Background = Brushes.Transparent;
+            };
+
             return border;
         }
-
         public BitmapImage ConvertByteArrayToBitmapImage(byte[] byteArray)
         {
             using (var stream = new MemoryStream(byteArray))
