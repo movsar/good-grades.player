@@ -16,26 +16,34 @@ using System.Xml.Linq;
 
 namespace Shared.Viewers
 {
+    // Defines a MatchingViewer class as a specialized window for displaying matching tasks.
     public partial class MatchingViewer : Window, IAssignmentViewer
     {
+        // A dictionary to hold matching pairs with string identifiers and corresponding images.
         private readonly Dictionary<string, BitmapImage> _matchingPairs = new Dictionary<string, BitmapImage>();
+        // The matching task assignment to be completed in this viewer.
         private readonly MatchingTaskAssignment _assignment;
 
+        // An event that signals when the completion state of the assignment changes.
         public event Action<IAssignment, bool> CompletionStateChanged;
+
         #region Event Handlers
+        // Handles button click events to check for correct matches.
         private void Button_Click(object sender, RoutedEventArgs e)
-        {            
-            // Assuming grid rows and columns are filled in pairs (Image in column 0 and TextBlock in column 1)
+        {
+            // Iterate through grid rows, assuming each row contains an image and text block pair.
             for (int row = 0; row < gridMatchOptions.RowDefinitions.Count; row++)
             {
                 var imageBorder = FindChildInGrid<Border>(gridMatchOptions, row, 0);
                 var textBlockBorder = FindChildInGrid<Border>(gridMatchOptions, row, 1);
 
+                // Skip the iteration if either image or text block is missing.
                 if (imageBorder == null || textBlockBorder == null) continue;
 
                 var image = imageBorder.Child as Image;
                 var textBlock = textBlockBorder.Child as TextBlock;
 
+                // Show a message and signal incomplete assignment if any pair does not match.
                 if (image != null && textBlock != null && image.Name != textBlock.Name)
                 {
                     MessageBox.Show(Ru.ElementsDoNotMatch);
@@ -44,9 +52,12 @@ namespace Shared.Viewers
                 }
             }
 
+            // If all pairs match, show a success message and signal assignment completion.
             MessageBox.Show(Ru.AllElementsMatch);
             CompletionStateChanged?.Invoke(_assignment, true);
         }
+
+        // Generic method to find a child element of a specific type in a grid cell.
         private T? FindChildInGrid<T>(Grid grid, int row, int column) where T : FrameworkElement
         {
             foreach (FrameworkElement child in grid.Children)
@@ -58,91 +69,98 @@ namespace Shared.Viewers
             }
             return null;
         }
+
+        // Handles the drop event during a drag-and-drop operation to swap elements.
         private void Element_Drop(object sender, DragEventArgs e)
         {
             var targetBorder = sender as Border;
             var sourceBorder = e.Data.GetData(typeof(Border)) as Border;
 
+            // Do nothing if the source or target elements are invalid.
             if (sourceBorder == null || targetBorder == null)
             {
                 return;
             }
 
+            // Reset styles for both the source and target borders.
             ResetBorderStyle(targetBorder);
             ResetBorderStyle(sourceBorder);
 
+            // Do nothing if attempting to drop an element onto itself.
             if (sourceBorder == targetBorder)
             {
                 return;
             }
 
-            // Get the contents of the Borders
+            // Swap contents only if both elements are of the same type.
             UIElement sourceContent = sourceBorder.Child;
             UIElement targetContent = targetBorder.Child;
-
-            // Only allow elements of the same type to be swapped
             if (sourceContent.GetType() != targetContent.GetType())
             {
                 return;
             }
 
-            // Disconnect the children from their current parent Borders
+            // Perform the swap of the children between the source and target borders.
             sourceBorder.Child = null;
             targetBorder.Child = null;
-
-            // Swap the contents of the Borders
             sourceBorder.Child = targetContent;
             targetBorder.Child = sourceContent;
         }
+
+        // Initiates a drag operation when a mouse button is pressed down on an element.
         private void Element_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            // This marks the start of the drag
             var border = sender as Border;
             if (border != null)
             {
                 DragDrop.DoDragDrop(border, new DataObject(typeof(Border), border), DragDropEffects.Move);
             }
         }
+
+        // Handles the drag enter event to provide visual feedback for a potential drop.
         private void Border_DragEnter(object sender, DragEventArgs e)
         {
             var border = sender as Border;
             var draggedBorder = e.Data.GetData(typeof(Border)) as Border;
 
+            // Change border style based on whether the dragged element can be dropped here.
             if (border != null && draggedBorder != null)
             {
                 bool isSameType = (draggedBorder.Child.GetType() == border.Child.GetType());
                 border.BorderBrush = isSameType ? Brushes.Green : Brushes.Red;
                 border.BorderThickness = new Thickness(3);
 
-                // Add a gentle scaling effect to indicate an active drop target
+                // Apply a scale transform for visual feedback.
                 var scaleTransform = new ScaleTransform(1.1, 1.1, 0.5, 0.5);
                 border.RenderTransform = scaleTransform;
             }
         }
 
+        // Resets the border style when the dragged element leaves the area.
         private void Border_DragLeave(object sender, DragEventArgs e)
         {
             var border = sender as Border;
             if (border != null)
             {
                 ResetBorderStyle(border);
-
-                // Reset the scale transform
+                // Reset transformations to normal.
                 border.RenderTransform = new ScaleTransform(1.0, 1.0);
             }
         }
 
         #endregion
 
+        // Resets the border style to default settings.
         private void ResetBorderStyle(Border border)
         {
-            border.BorderBrush = Brushes.LightGray; // Or any default color you prefer
+            border.BorderBrush = Brushes.LightGray; // Set to a default or neutral color.
             border.BorderThickness = new Thickness(2);
             border.Background = Brushes.Transparent;
-            // If any transformations were applied, reset them as well
+            // Reset any transformations that were applied.
             border.RenderTransform = new ScaleTransform(1.0, 1.0);
         }
 
+        // Adds UI elements to the grid based on the list of GridItem objects.
         private void AddElementsToGrid(Grid grid, List<GridItem> items)
         {
             foreach (var item in items)
@@ -154,6 +172,7 @@ namespace Shared.Viewers
             }
         }
 
+        // Creates a styled Border element containing a child UIElement.
         private Border CreateBorderWithChild(UIElement child)
         {
             var border = new Border
@@ -163,15 +182,14 @@ namespace Shared.Viewers
                 Child = child
             };
 
+            // Reference a predefined style for rounded borders.
             border.SetResourceReference(Border.StyleProperty, "RoundedBorderStyle");
 
-            // Attach event handlers for drag-and-drop functionality
+            // Attach event handlers for drag-and-drop and hover effects.
             border.MouseLeftButtonDown += Element_MouseLeftButtonDown;
             border.Drop += Element_Drop;
             border.DragEnter += Border_DragEnter;
             border.DragLeave += Border_DragLeave;
-
-            // Attach event handlers for hover effects
             border.MouseEnter += (s, e) =>
             {
                 var b = s as Border;
@@ -185,6 +203,8 @@ namespace Shared.Viewers
 
             return border;
         }
+
+        // Converts a byte array to a BitmapImage, useful for displaying images from binary data.
         public BitmapImage ConvertByteArrayToBitmapImage(byte[] byteArray)
         {
             using (var stream = new MemoryStream(byteArray))
@@ -194,35 +214,38 @@ namespace Shared.Viewers
                 bitmap.CacheOption = BitmapCacheOption.OnLoad;
                 bitmap.StreamSource = stream;
                 bitmap.EndInit();
-                bitmap.Freeze();
+                bitmap.Freeze(); // Optimizes memory usage.
                 return bitmap;
             }
         }
 
         #region Properties, Fields and Constructors
+        // Constructor initializes the MatchingViewer with a specific assignment.
         public MatchingViewer(MatchingTaskAssignment assignment)
         {
             InitializeComponent();
 
             _assignment = assignment;
+            // Load matching pairs from the assignment into the dictionary.
             foreach (var item in _assignment.Items)
             {
                 _matchingPairs.Add(item.Text, ConvertByteArrayToBitmapImage(item.Image));
             }
 
+            // Set up the grid rows based on the number of items to match.
             int numberOfRows = _assignment.Items.Count;
-
-            // Dynamically create rows for each matching pair.
             for (int i = 0; i < numberOfRows; i++)
             {
                 gridMatchOptions.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
             }
 
-            var randomRowIndexesForTexts = Enumerable.Range(0, 4).OrderBy(i => Guid.NewGuid()).ToArray();
-            var randomRowIndexesForImages = Enumerable.Range(0, 4).OrderBy(i => Guid.NewGuid()).ToArray();
+            // Shuffle the items to randomize their positions in the grid.
+            var randomRowIndexesForTexts = Enumerable.Range(0, numberOfRows).OrderBy(i => Guid.NewGuid()).ToArray();
+            var randomRowIndexesForImages = Enumerable.Range(0, numberOfRows).OrderBy(i => Guid.NewGuid()).ToArray();
 
             var gridItems = new List<GridItem>();
 
+            // Create UI elements for each pair and assign them to random rows.
             for (int i = 0; i < _matchingPairs.Count(); i++)
             {
                 var text = _matchingPairs.Keys.ToList()[i];
@@ -247,9 +270,9 @@ namespace Shared.Viewers
                 });
             }
 
+            // Add the elements to the grid.
             AddElementsToGrid(gridMatchOptions, gridItems);
         }
         #endregion
-
     }
 }
