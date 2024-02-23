@@ -24,7 +24,7 @@ namespace Shared.Viewers
         public event Action<IAssignment, bool> CompletionStateChanged;
         #region Event Handlers
         private void Button_Click(object sender, RoutedEventArgs e)
-        {
+        {            
             // Assuming grid rows and columns are filled in pairs (Image in column 0 and TextBlock in column 1)
             for (int row = 0; row < gridMatchOptions.RowDefinitions.Count; row++)
             {
@@ -208,6 +208,14 @@ namespace Shared.Viewers
             foreach (var item in _assignment.Items)
             {
                 _matchingPairs.Add(item.Text, ConvertByteArrayToBitmapImage(item.Image));
+            }
+
+            int numberOfRows = _assignment.Items.Count;
+
+            // Dynamically create rows for each matching pair.
+            for (int i = 0; i < numberOfRows; i++)
+            {
+                gridMatchOptions.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
             }
 
             var randomRowIndexesForTexts = Enumerable.Range(0, 4).OrderBy(i => Guid.NewGuid()).ToArray();

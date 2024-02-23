@@ -37,16 +37,7 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" x:Name="gridMatchOptions"
-              VerticalAlignment="Top" 
-              HorizontalAlignment="Stretch">
-
-            <Grid.RowDefinitions>
-                <RowDefinition Height="150"/>
-                <RowDefinition Height="150"/>
-                <RowDefinition Height="150"/>
-            </Grid.RowDefinitions>
-
+        <Grid Grid.Row="0" x:Name="gridMatchOptions" VerticalAlignment="Top" HorizontalAlignment="Stretch">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
