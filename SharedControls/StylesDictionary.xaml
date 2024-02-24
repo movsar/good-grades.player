@@ -1,6 +1,14 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
+    <Style TargetType="TextBlock" x:Key="LargeHeaderStyle">
+        <Setter Property="FontStyle" Value="Italic"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="Margin" Value="5"/>
+    </Style>
+    
     <Style x:Key="CircularButton" TargetType="Button">
         <Setter Property="Background" Value="#FFFFA500"/>
         <!-- Orange color for visibility, change to yellow if needed -->
@@ -48,11 +56,18 @@
         <Setter Property="Cursor" Value="Hand"/>
     </Style>
 
+    <Style x:Key="FillInLabelStyle" TargetType="Label">
+        <Setter Property="Padding" Value="0 0 0 0"/>
+        <Setter Property="Margin" Value="0 0 0 8"/>
+        <Setter Property="FontSize" Value="18"/>
+    </Style>
+    
     <Style x:Key="FillInTextBoxStyle" TargetType="TextBox">
         <Setter Property="BorderThickness" Value="0,0,0,1"/>
         <Setter Property="BorderBrush" Value="Black"/>
         <Setter Property="Padding" Value="0 0 0 0"/>
         <Setter Property="Margin" Value="0 0 0 8"/>
+        <Setter Property="FontSize" Value="18"/>
     </Style>
 
     <SolidColorBrush x:Key="StagedBrush">LightYellow</SolidColorBrush>

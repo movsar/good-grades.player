@@ -12,13 +12,13 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Xml.Linq;
 
 namespace Shared.Viewers
 {
     // Defines a MatchingViewer class as a specialized window for displaying matching tasks.
     public partial class MatchingViewer : Window, IAssignmentViewer
     {
+        public string TaskTitle { get; }
 
         // A dictionary to hold matching pairs with string identifiers and corresponding images.
         private readonly Dictionary<string, BitmapImage> _matchingPairs = new Dictionary<string, BitmapImage>();
@@ -28,13 +28,16 @@ namespace Shared.Viewers
         // An event that signals when the completion state of the assignment changes.
         public event Action<IAssignment, bool> CompletionStateChanged;
 
-          #region Properties, Fields and Constructors
+        #region Properties, Fields and Constructors
         // Constructor initializes the MatchingViewer with a specific assignment.
         public MatchingViewer(MatchingTaskAssignment assignment)
         {
-            InitializeComponent();
-
             _assignment = assignment;
+            TaskTitle = _assignment.Title;
+
+            InitializeComponent();
+            DataContext = this;
+
             // Load matching pairs from the assignment into the dictionary.
             foreach (var item in _assignment.Items)
             {
@@ -205,7 +208,7 @@ namespace Shared.Viewers
         private void ResetBorderStyle(Border border)
         {
             // Set to a default or neutral color.
-            border.BorderBrush = Brushes.LightGray; 
+            border.BorderBrush = Brushes.LightGray;
             border.BorderThickness = new Thickness(2);
             border.Background = Brushes.Transparent;
         }
@@ -265,11 +268,11 @@ namespace Shared.Viewers
                 bitmap.StreamSource = stream;
                 bitmap.EndInit();
                 // Optimizes memory usage.
-                bitmap.Freeze(); 
+                bitmap.Freeze();
                 return bitmap;
             }
         }
 
-      
+
     }
 }

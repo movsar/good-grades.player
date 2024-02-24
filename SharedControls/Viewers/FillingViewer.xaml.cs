@@ -41,7 +41,11 @@ namespace Shared.Viewers
                     if (i % 2 == 0)
                     {
                         // Add static text as TextBlock
-                        panel.Children.Add(new TextBlock { Text = parts[i] });
+                        panel.Children.Add(new Label
+                        {
+                            Content = parts[i],
+                            Style = (Style)FindResource("FillInLabelStyle")
+                        });
                     }
                     else
                     {

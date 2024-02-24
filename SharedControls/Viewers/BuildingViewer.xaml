@@ -16,7 +16,7 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <TextBlock Grid.Row="0" Text="{Binding TaskTitle}" Style="{StaticResource HeaderStyle}"/>
+            <TextBlock Grid.Row="0" Text="{Binding TaskTitle}" Style="{StaticResource LargeHeaderStyle}"/>
 
             <StackPanel Grid.Row="1" x:Name="spItems" Margin="0 10">
                 <!-- Dynamic content will be added here -->

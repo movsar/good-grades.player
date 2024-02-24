@@ -39,12 +39,12 @@ namespace Shared.Viewers
             if (questionViewControls.SelectedOptionId == _question.CorrectOptionId)
             {
                 MessageBox.Show(Ru.Correct);
-            CompletionStateChanged?.Invoke(_assignment, true);
+                CompletionStateChanged?.Invoke(_assignment, true);
             }
             else
             {
                 MessageBox.Show(Ru.Incorrect);
-            CompletionStateChanged?.Invoke(_assignment, false);
+                CompletionStateChanged?.Invoke(_assignment, false);
             }
 
         }

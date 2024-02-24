@@ -7,20 +7,21 @@
         xmlns:local="clr-namespace:Shared.Viewers"
         d:DataContext="{d:DesignInstance Type=local:SelectingViewer}"
         mc:Ignorable="d"
-        Title="SelectingViewer" Height="450" Width="800">
+        Title="Select Correct" Height="450" Width="800"
+        WindowStartupLocation="CenterScreen" Background="#FFF1F1F1">
+  
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" x:Name="spItems" Margin="0 10">
+        <StackPanel Grid.Row="0" x:Name="spItems" Margin="20">
             <!-- Dynamic content will be added here -->
         </StackPanel>
 
         <Button Grid.Row="1" HorizontalAlignment="Right" Margin="10"
                 Content="{x:Static translations:Ru.Check}" 
                 Click="btnCheck_Click" />
-
     </Grid>
 </Window>

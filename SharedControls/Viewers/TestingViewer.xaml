@@ -8,14 +8,16 @@
         d:DataContext="{d:DesignInstance Type = viewers:TestingViewer, IsDesignTimeCreatable=True}"
         Title="TestingViewer" Height="450" Width="800">
 
-    <Grid>
+    <Grid Margin="10">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" x:Name="spQuestions" Orientation="Vertical"/>
+        <ScrollViewer Grid.Row="0" >
+            <StackPanel x:Name="spQuestions"/>
+        </ScrollViewer>
 
         <Button Grid.Row="1" x:Name="btnOk" HorizontalAlignment="Right" Width="50" Content="Ok" Click="btnOk_Click"/>
 
