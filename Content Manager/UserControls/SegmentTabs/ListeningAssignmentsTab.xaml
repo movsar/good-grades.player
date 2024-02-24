@@ -11,7 +11,8 @@
 
         <TextBlock Margin="10 5 10 0"
                    FontWeight="Bold" Text="{x:Static translations:Ru.SetTitleAndDataForListeningMaterial}" />
-
-        <StackPanel Margin="0 20 0 0" x:Name="spListeningControls"></StackPanel>
+        <ScrollViewer>
+            <StackPanel Margin="0 20 0 0" x:Name="spListeningControls"></StackPanel>
+        </ScrollViewer>
     </Grid>
 </UserControl>

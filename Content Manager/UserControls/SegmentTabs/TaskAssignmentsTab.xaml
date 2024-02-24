@@ -6,11 +6,13 @@
              
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-        <Grid>
+    <Grid>
 
         <TextBlock Margin="10 5 10 0"
                    FontWeight="Bold">Выберите тип заданий и укажите необходимые данные</TextBlock>
 
+        <ScrollViewer>
             <StackPanel Margin="0 20 0 0" x:Name="spTaskAssignmentControls"></StackPanel>
+        </ScrollViewer>
     </Grid>
 </UserControl>
