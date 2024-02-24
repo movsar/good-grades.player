@@ -4,46 +4,55 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Content_Player.Pages"
+      xmlns:translations="clr-namespace:Shared.Translations;assembly=Shared"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="MainPage">
 
+    <DockPanel>        
+        <Grid>
+            <Grid.Background>
+                <ImageBrush ImageSource="/Images/main_background.jpg" 
+                      Stretch="None" AlignmentX="Left" AlignmentY="Bottom"/>
+            </Grid.Background>
 
-    <Grid>
-        <Grid.Background>
-            <ImageBrush ImageSource="/Images/main_background.jpg" 
-                        Stretch="None" AlignmentX="Left" AlignmentY="Bottom"/>
-        </Grid.Background>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Top"   
+             FontSize="26"
+             FontWeight="Bold"
+             Content="{Binding DbTitle}"/>
 
-        <Label Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Top"   
-               FontSize="26"
-               FontWeight="Bold"
-               Content="{Binding DbTitle}"/>
+            <Border CornerRadius="10" Background="White" Margin="5" Grid.Column="1">
+                <Border.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="{x:Static translations:Ru.OpenDB}" Click="mnuOpenDatabase_Click"/>
+                    </ContextMenu>
+                </Border.ContextMenu>
+                
+                <ListView x:Name="lvSegments" ItemsSource="{Binding Segments}" 
+                    HorizontalAlignment="Right"
+                    MouseDoubleClick="lvSegments_MouseDoubleClick"
+                    KeyUp="lvSegments_KeyUp"
+                    >
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderThickness="1"
+                              BorderBrush="AntiqueWhite" 
+                              Padding="5">
 
-        <Border CornerRadius="10" Background="White" Margin="5" Grid.Column="1">
-            <ListView x:Name="lvSegments" ItemsSource="{Binding Segments}" 
-                      HorizontalAlignment="Right"
-                      MouseDoubleClick="lvSegments_MouseDoubleClick"
-                      KeyUp="lvSegments_KeyUp"
-                      >
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <Border BorderThickness="1"
-                                BorderBrush="AntiqueWhite" 
-                                Padding="5">
+                                <Label Content="{Binding Title}"
+                                 HorizontalAlignment="Stretch"
+                                 Cursor="Hand"/>
+                            </Border>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Border>
+        </Grid>
+    </DockPanel>
 
-                            <Label Content="{Binding Title}"
-                                   HorizontalAlignment="Stretch"
-                                   Cursor="Hand"/>
-                        </Border>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-        </Border>
-    </Grid>
 </Page>

@@ -7,44 +7,59 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Win32;
 using System.Windows;
 using Data.Services;
+using System.Collections.ObjectModel;
 
 namespace Content_Player.Pages
 {
     public partial class MainPage : Page
     {
-        public string DbTitle { get; }
-        public List<Segment> Segments { get; }
+        public string DbTitle { get; set; }
+        public ObservableCollection<Segment> Segments { get; set; } = new ObservableCollection<Segment>();
 
+        private DbMeta _dbInfo;
         private readonly SettingsService _settingsService;
         private readonly Storage _storage;
-        private readonly DbMeta _dbInfo;
         public MainPage()
         {
+            // Intialize the visual elements
+            DataContext = this;
+            InitializeComponent();
+
             // Initialize fields
             _settingsService = App.AppHost!.Services.GetRequiredService<SettingsService>();
             _storage = App.AppHost!.Services.GetRequiredService<Storage>();
 
+            LoadDatabase();
+        }
+
+        private void LoadDatabase(bool restoreLatest = true)
+        {
             // Get the database path
             var dbAbsolutePath = _settingsService.GetValue("lastOpenedDatabasePath");
-            if (string.IsNullOrEmpty(dbAbsolutePath) || !File.Exists(dbAbsolutePath))
+            if (!restoreLatest || string.IsNullOrEmpty(dbAbsolutePath) || !File.Exists(dbAbsolutePath))
             {
                 dbAbsolutePath = GetDatabasePath();
             }
+
+            // If the user cancels and closes the window
+            if (string.IsNullOrEmpty(dbAbsolutePath))
+            {
+                return;
+            }
+
             _settingsService.SetValue("lastOpenedDatabasePath", dbAbsolutePath);
             _storage.SetDatabaseConfig(dbAbsolutePath);
 
             // Load Segments into the collection view
-            Segments = _storage.Database.All<Segment>().ToList();
+            foreach (var segment in _storage.Database.All<Segment>())
+            {
+                Segments.Add(segment);
+            };
 
             // Set the Title based on current database
             _dbInfo = _storage.Database.All<DbMeta>().First();
             DbTitle = _dbInfo.Title;
-
-            // Intialize the visual elements
-            DataContext = this;
-            InitializeComponent();
         }
-
         private string GetDatabasePath()
         {
             var ofd = new OpenFileDialog();
@@ -84,5 +99,12 @@ namespace Content_Player.Pages
             }
         }
         #endregion
+
+        private void mnuOpenDatabase_Click(object sender, RoutedEventArgs e)
+        {
+            Segments.Clear();
+            LoadDatabase(false);
+        }
+
     }
 }
