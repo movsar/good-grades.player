@@ -1,13 +1,10 @@
-﻿using Content_Manager.Models;
-using Content_Manager.Services;
+﻿using Content_Manager.Services;
 using Content_Manager.Stores;
 using Data;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Threading.Tasks;
 using System;
 using System.Windows;
-using Microsoft.Extensions.Logging;
 using Serilog;
 using System.IO;
 using Shared.Services;
@@ -20,14 +17,17 @@ namespace Content_Manager
         public static IHost? AppHost { get; private set; }
         public App()
         {
-            string logPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "GoodGrades", "logs.txt");
+            string logPath = Path.Combine("Logs", "logs.txt");
+            Log.Logger = new LoggerConfiguration()
+            .MinimumLevel.Debug()
+            .WriteTo.File(logPath, rollingInterval: RollingInterval.Day)
+            .CreateLogger();
+
+            // Handle unhandled exceptions
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+            DispatcherUnhandledException += App_DispatcherUnhandledException;
 
             AppHost = Host.CreateDefaultBuilder()
-                    .UseSerilog((host, loggerConfiguration) =>
-                    {
-                        loggerConfiguration.WriteTo
-                            .File(logPath, rollingInterval: RollingInterval.Day).MinimumLevel.Debug();
-                    })
                     .ConfigureServices((hostContext, services) =>
                     {
                         services.AddTransient<FileService>();
@@ -37,6 +37,21 @@ namespace Content_Manager
                         services.AddSingleton<StylingService>();
                         services.AddSingleton<ContentStore>();
                     }).Build();
+        }
+        private void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+        {
+            // Log the exception
+            Log.Error(e.Exception, "An unhandled exception occurred.");
+            e.Handled = true;
+        }
+
+        private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            if (e.ExceptionObject is Exception ex)
+            {
+                // Log the exception
+                Log.Error(ex, "An unhandled domain exception occurred.");
+            }
         }
 
         protected override void OnStartup(StartupEventArgs e)
@@ -50,6 +65,7 @@ namespace Content_Manager
 
         protected override void OnExit(ExitEventArgs e)
         {
+            Log.CloseAndFlush();
             AppHost!.StopAsync();
             base.OnExit(e);
         }

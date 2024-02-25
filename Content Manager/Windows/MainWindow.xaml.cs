@@ -40,6 +40,8 @@ namespace Content_Manager
             {
                 _contentStore.OpenDatabase(lastOpenedDatabasePath);
             }
+
+            throw new Exception("whata");
         }
 
         private void SelectedSegmentChanged(Segment segment)
