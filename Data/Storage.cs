@@ -18,7 +18,7 @@ namespace Data
         {
             try
             {
-                using (var context = new DataContext(databasePath))
+                using (var context = new DataContext() { DbPath = databasePath })
                 {
                     context.Database.EnsureCreated();
                 }
@@ -61,7 +61,7 @@ namespace Data
         }
         public void ImportDatabase(string filePath)
         {
-            var dbToImport = new DataContext(filePath);
+            var dbToImport = new DataContext() { DbPath = filePath };
             var segments = dbToImport.Segments;
 
             try

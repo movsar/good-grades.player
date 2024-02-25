@@ -6,13 +6,7 @@ namespace Data
 {
     public class DataContext : DbContext
     {
-        public string _dbPath = string.Empty;
-
-        public DataContext() { }
-        public DataContext(string filePath)
-        {
-            _dbPath = filePath;
-        }
+        public string DbPath { get; set; } = string.Empty;
 
         public DbSet<DbMeta> DbMetas { get; set; }
 
@@ -31,7 +25,9 @@ namespace Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            string connectionString = $"Data Source=" + _dbPath;
+            base.OnConfiguring(options);
+
+            string connectionString = $"Data Source=" + DbPath;
             options.UseSqlite(connectionString);
         }
     }
