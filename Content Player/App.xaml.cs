@@ -16,7 +16,7 @@ namespace Content_Player
         {
             string logPath = Path.Combine("logs", "logs.txt");
             Log.Logger = new LoggerConfiguration()
-            .MinimumLevel.Debug()
+            .MinimumLevel.Error()
             .WriteTo.File(logPath, rollingInterval: RollingInterval.Day)
             .CreateLogger();
 
@@ -25,11 +25,6 @@ namespace Content_Player
             DispatcherUnhandledException += App_DispatcherUnhandledException;
 
             AppHost = Host.CreateDefaultBuilder()
-                    .UseSerilog((host, loggerConfiguration) =>
-                    {
-                        loggerConfiguration.WriteTo
-                            .File(logPath, rollingInterval: RollingInterval.Day).MinimumLevel.Debug();
-                    })
                     .ConfigureServices((hostContext, services) =>
                     {
                         services.AddSingleton<Storage>();

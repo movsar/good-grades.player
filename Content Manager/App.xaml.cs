@@ -19,7 +19,7 @@ namespace Content_Manager
         {
             string logPath = Path.Combine("logs", "logs.txt");
             Log.Logger = new LoggerConfiguration()
-            .MinimumLevel.Debug()
+            .MinimumLevel.Error()
             .WriteTo.File(logPath, rollingInterval: RollingInterval.Day)
             .CreateLogger();
 
@@ -40,9 +40,10 @@ namespace Content_Manager
         }
         private void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
+            e.Handled = true;
+
             // Log the exception
             Log.Error(e.Exception, "An unhandled exception occurred.");
-            e.Handled = true;
             MessageBox.Show($"Произошла непредвиденная ошибка {e.Exception.Message}");
             Application.Current.Shutdown();
         }
