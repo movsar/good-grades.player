@@ -5,7 +5,7 @@ namespace Data.Entities
 {
     public class Segment : IEntityBase
     {
-        [Key] public string Id { get; } = Guid.NewGuid().ToString();
+        [Key] public string Id { get; set; } = Guid.NewGuid().ToString();
         public DateTimeOffset CreatedAt { get; } = DateTimeOffset.Now;
         public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;
         /******************************************************************/

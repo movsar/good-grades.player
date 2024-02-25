@@ -1,13 +1,11 @@
 ﻿using Data.Entities.TaskItems;
 using Data.Interfaces;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Data.Entities
 {
-    /*
-     * This one allows to set an image and a text for each item, then it could be used for 
-     * 2 types of tasks, matching image to text and text to image     
-     */
+    [Table("matching_tasks")]
     public class MatchingTaskAssignment : IEntityBase, IAssignment
     {
         [Key] public string Id { get; set; } = Guid.NewGuid().ToString();

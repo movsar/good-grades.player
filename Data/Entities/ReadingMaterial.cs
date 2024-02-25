@@ -1,8 +1,10 @@
 ﻿using Data.Interfaces;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Data.Entities
 {
+    [Table("reading_tasks")]
     public class ReadingMaterial : IEntityBase, IMaterial
     {
         [Key] public string Id { get; set; } = Guid.NewGuid().ToString();
