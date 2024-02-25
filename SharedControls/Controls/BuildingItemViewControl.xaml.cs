@@ -57,6 +57,9 @@ namespace Shared.Controls
             int targetIndex = _shuffledWords.IndexOf(target.Content as string);
             int sourceIndex = _shuffledWords.IndexOf(sourceWord);
 
+            if (sourceIndex < 0 || targetIndex < 0) {
+                return;
+            }
             // Swap words
             _shuffledWords[targetIndex] = sourceWord;
             _shuffledWords[sourceIndex] = target.Content as string;
