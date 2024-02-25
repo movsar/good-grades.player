@@ -12,7 +12,7 @@ namespace Data.Entities
         public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;
         /******************************************************************/
         public string Title { get; set; }
-        public string Description { get; set; }
+        public string? Description { get; set; }
         public string? AppVersion { get; set; }
 
     }

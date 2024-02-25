@@ -1,14 +1,15 @@
 ﻿using Data.Entities;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace Data
 {
     public class Storage
     {
-        public DataContext DbContext => new DataContext();
+        public DataContext DbContext;
 
         private ILogger _logger;
+        private string _databasePath;
+
         public Storage(ILogger<Storage> logger)
         {
             _logger = logger;
@@ -18,10 +19,8 @@ namespace Data
         {
             try
             {
-                using (var context = new DataContext() { DbPath = databasePath })
-                {
-                    context.Database.EnsureCreated();
-                }
+                DbContext = new DataContext() { DbPath = databasePath };
+                DbContext.Database.EnsureCreated();
             }
             catch (Exception ex)
             {
@@ -29,6 +28,8 @@ namespace Data
                 throw;
                 //return false;
             }
+
+            _databasePath = databasePath;
         }
         public void CreateDatabase(string databasePath, string? appVersion)
         {
