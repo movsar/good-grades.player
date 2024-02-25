@@ -1,16 +1,15 @@
 ﻿using Data.Interfaces;
-
-using Realms;
+using System.ComponentModel.DataAnnotations;
 
 namespace Data.Entities
 {
-    public class ListeningMaterial : RealmObject, IEntityBase, IMaterial
+    public class ListeningMaterial : IEntityBase, IMaterial
     {
-        [Required] public string Title { get; set; }
-        [Required][PrimaryKey] public string Id { get; set; } = Guid.NewGuid().ToString();
+        [Key] public string Id { get; set; } = Guid.NewGuid().ToString();
         public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.Now;
         public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;
         /******************************************************************/
+        public string Title { get; set; }
         public string Text { get; set; }
         public byte[] Audio { get; set; }
         public byte[] Image { get; set; }

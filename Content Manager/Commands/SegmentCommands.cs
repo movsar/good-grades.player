@@ -25,7 +25,8 @@ namespace Content_Manager.Commands
 
             if (result == MessageBoxResult.Yes)
             {
-                contentStore.Database.Write(() => contentStore.Database.Remove(selectedSegment));
+                contentStore.DbContext.Remove(selectedSegment);
+                contentStore.DbContext.SaveChanges();
                 contentStore.RaiseItemDeletedEvent(selectedSegment);
             }
         }

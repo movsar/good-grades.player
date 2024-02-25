@@ -49,11 +49,9 @@ namespace Content_Manager.UserControls.SegmentTabs
 
         private void Save()
         {
-            _contentStore.Database.Write(() =>
-            {
-                _contentStore.SelectedSegment!.Title = Title;
-                _contentStore.SelectedSegment!.Description = RtfService.GetRtfDescriptionAsText(rtbDescription);
-            });
+            _contentStore.SelectedSegment!.Title = Title;
+            _contentStore.SelectedSegment!.Description = RtfService.GetRtfDescriptionAsText(rtbDescription);
+            _contentStore.DbContext.SaveChanges();
         }
 
         #region Event Handler

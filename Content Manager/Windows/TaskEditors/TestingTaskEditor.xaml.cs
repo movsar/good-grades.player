@@ -60,11 +60,9 @@ namespace Content_Manager.Windows.Editors
 
         private void Question_Deleted(string id)
         {
-            ContentStore.Database.Write(() =>
-            {
-                var itemToRemove = _taskAssignment.Questions.First(i => i.Id == id);
-                _taskAssignment.Questions.Remove(itemToRemove);
-            });
+            var itemToRemove = _taskAssignment.Questions.First(i => i.Id == id);
+            _taskAssignment.Questions.Remove(itemToRemove);
+            ContentStore.DbContext.SaveChanges();
 
             RedrawUi();
         }
@@ -73,7 +71,8 @@ namespace Content_Manager.Windows.Editors
         {
             if (_taskAssignment != null)
             {
-                ContentStore.Database.Write(() => _taskAssignment.Title = txtTitle.Text);
+                _taskAssignment.Title = txtTitle.Text;
+                ContentStore.DbContext.SaveChanges();
             }
         }
 
@@ -88,9 +87,7 @@ namespace Content_Manager.Windows.Editors
                     e.Cancel = true;
                 }
             }
-
         }
-
     }
 }
 

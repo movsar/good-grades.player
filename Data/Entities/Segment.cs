@@ -1,17 +1,16 @@
 ﻿using Data.Interfaces;
-
-using Realms;
+using System.ComponentModel.DataAnnotations;
 
 namespace Data.Entities
 {
-    public class Segment : RealmObject, IEntityBase
+    public class Segment : IEntityBase
     {
-        [PrimaryKey] public string Id { get; } = Guid.NewGuid().ToString();
-        [Required] public string Title { get; set; }
-        public string Description { get; set; }
+        [Key] public string Id { get; } = Guid.NewGuid().ToString();
         public DateTimeOffset CreatedAt { get; } = DateTimeOffset.Now;
         public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;
         /******************************************************************/
+        [Required] public string Title { get; set; }
+        public string Description { get; set; }
         
         public IList<MatchingTaskAssignment> MatchingTasks { get; }
         public IList<SelectingTaskAssignment> SelectingTasks { get; }

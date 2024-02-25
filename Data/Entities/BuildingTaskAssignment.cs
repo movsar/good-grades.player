@@ -1,17 +1,16 @@
 ﻿using Data.Entities.TaskItems;
 using Data.Interfaces;
-
-using Realms;
+using System.ComponentModel.DataAnnotations;
 
 namespace Data.Entities
 {
-    public class BuildingTaskAssignment : RealmObject, IAssignment, IMaterial
+    public class BuildingTaskAssignment : IEntityBase, IAssignment, IMaterial
     {
-        [Required] public string Title { get; set; }
-        [Required][PrimaryKey] public string Id { get; set; } = Guid.NewGuid().ToString();
+        [Key] public string Id { get; set; } = Guid.NewGuid().ToString();
         public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.Now;
         public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;
         /******************************************************************/
+        public string Title { get; set; }
         public IList<AssignmentItem> Items { get; }
         public bool IsContentSet => Items.Count() > 0;
 

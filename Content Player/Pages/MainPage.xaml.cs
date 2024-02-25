@@ -60,13 +60,13 @@ namespace Content_Player.Pages
             _storage.SetDatabaseConfig(dbAbsolutePath);
 
             // Load Segments into the collection view
-            foreach (var segment in _storage.Database.All<Segment>())
+            foreach (var segment in _storage.DbContext.Segments)
             {
                 Segments.Add(segment);
             };
 
             // Set the Title based on current database
-            _dbInfo = _storage.Database.All<DbMeta>().First();
+            _dbInfo = _storage.DbContext.DbMetas.First();
             DbTitle = _dbInfo.Title;
         }
         private string GetDatabasePath()

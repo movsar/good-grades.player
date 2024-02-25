@@ -1,12 +1,11 @@
 ﻿using Data.Interfaces;
-
-using Realms;
+using System.ComponentModel.DataAnnotations;
 
 namespace Data.Entities
 {
-    public class DbMeta : RealmObject, IEntityBase
+    public class DbMeta : IEntityBase
     {
-        [PrimaryKey] public string Id { get; set; } = Guid.NewGuid().ToString();
+        [Key] public string Id { get; set; } = Guid.NewGuid().ToString();
         public DateTimeOffset CreatedAt { get; } = DateTimeOffset.Now;
         public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;
         /******************************************************************/

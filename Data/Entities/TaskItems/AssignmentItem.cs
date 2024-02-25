@@ -1,18 +1,15 @@
 ﻿using Data.Interfaces;
-
-using Realms;
+using System.ComponentModel.DataAnnotations;
 
 namespace Data.Entities.TaskItems
 {
-    public class AssignmentItem : RealmObject, IEntityBase
+    public class AssignmentItem : IEntityBase
     {
-        [Required]
-        [PrimaryKey]
-        public string Id { get; set; } = Guid.NewGuid().ToString();
+        [Key] public string Id { get; set; } = Guid.NewGuid().ToString();
         public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.Now;
         public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;
         /******************************************************************/
-        public byte[] Image { get; set; }
         public string Text { get; set; }
+        public byte[] Image { get; set; }
     }
 }

@@ -17,7 +17,7 @@ namespace Content_Manager.UserControls
             InitializeComponent();
             DataContext = this;
 
-            var dbMeta = _contentStore.Database.All<DbMeta>().First();
+            var dbMeta = _contentStore.DbContext.DbMetas.First();
             txtDbName.Text = dbMeta.Title;
             txtDbCreatedAt.Text = dbMeta.CreatedAt.ToString("R");
             txtDescription.Text = dbMeta.Description;
@@ -29,12 +29,10 @@ namespace Content_Manager.UserControls
             var newName = txtDbName.Text;
             var newDescription = txtDescription.Text;
 
-            var dbMeta = _contentStore.Database.All<DbMeta>().First();
-            _contentStore.Database.Write(() =>
-            {
-                dbMeta.Title = newName;
-                dbMeta.Description = newDescription;
-            });
+            var dbMeta = _contentStore.DbContext.DbMetas.First();
+            dbMeta.Title = newName;
+            dbMeta.Description = newDescription;
+            _contentStore.DbContext.SaveChanges();
 
             Saved?.Invoke();
         }

@@ -60,7 +60,7 @@ namespace Content_Manager
         private void SetTitle(string? title = null)
         {
             string _appVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            Title = $"Good Grades | {_appVersion} | {title ?? _contentStore.Database.All<DbMeta>().First().Title}";
+            Title = $"Good Grades | {_appVersion} | {title ?? _contentStore.DbContext.DbMetas.First().Title}";
         }
 
         #region Database Operations
@@ -98,7 +98,7 @@ namespace Content_Manager
 
         private void OnDatabaseOpened()
         {
-            _contentStore.SelectedSegment = _contentStore.Database.All<Segment>().FirstOrDefault();
+            _contentStore.SelectedSegment = _contentStore.DbContext.Segments.FirstOrDefault();
 
             lblChooseDb.Visibility = Visibility.Collapsed;
             lblChooseSegment.Visibility = Visibility.Visible;

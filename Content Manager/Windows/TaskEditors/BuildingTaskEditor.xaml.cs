@@ -5,6 +5,7 @@ using Data;
 using Data.Entities;
 using Data.Entities.TaskItems;
 using Data.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
 using System.Windows;
@@ -52,28 +53,25 @@ namespace Content_Manager.Windows.Editors
         {
             var itemEntity = (AssignmentItem)entity;
 
-            ContentStore.Database.Write(() =>
+            // Add the Task entity
+            var taskState = ContentStore.DbContext.Entry(_taskAssignment).State;
+            if (taskState == EntityState.Unchanged || taskState == EntityState.Modified)
             {
-                // Add the Task entity
-                if (_taskAssignment.IsManaged == false)
-                {
-                    ContentStore.SelectedSegment!.BuildingTasks.Add(_taskAssignment);
-                }
+                ContentStore.SelectedSegment!.BuildingTasks.Add(_taskAssignment);
+            }
 
-                // Add the Task item entity
-                _taskAssignment.Items.Add(itemEntity);
-            });
+            // Add the Task item entity
+            _taskAssignment.Items.Add(itemEntity);
 
+            ContentStore.DbContext.SaveChanges();
             RedrawUi();
         }
 
         private void Item_Delete(string id)
         {
-            ContentStore.Database.Write(() =>
-            {
-                var itemToRemove = _taskAssignment.Items.First(i => i.Id == id);
-                _taskAssignment.Items.Remove(itemToRemove);
-            });
+            var itemToRemove = _taskAssignment.Items.First(i => i.Id == id);
+            _taskAssignment.Items.Remove(itemToRemove);
+            ContentStore.DbContext.SaveChanges();
 
             RedrawUi();
         }
@@ -82,7 +80,8 @@ namespace Content_Manager.Windows.Editors
         {
             if (_taskAssignment != null)
             {
-                ContentStore.Database.Write(() => _taskAssignment.Title = txtTitle.Text);
+                _taskAssignment.Title = txtTitle.Text;
+                ContentStore.DbContext.SaveChanges();
             }
         }
     }

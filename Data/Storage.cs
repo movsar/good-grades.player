@@ -1,44 +1,34 @@
 ﻿using Data.Entities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Realms;
 
 namespace Data
 {
     public class Storage
     {
-        public Realm Database => Realm.GetInstance(_dbConfig);
+        public DataContext DbContext => new DataContext();
 
         private ILogger _logger;
-        private RealmConfiguration? _dbConfig;
         public Storage(ILogger<Storage> logger)
         {
             _logger = logger;
         }
-        public void CheckDatabaseConnection()
+
+        public void SetDatabaseConfig(string databasePath)
         {
             try
             {
-                Realm.GetInstance(_dbConfig);
+                using (var context = new DataContext(databasePath))
+                {
+                    context.Database.EnsureCreated();
+                }
             }
             catch (Exception ex)
             {
                 _logger.LogCritical(ex.Message, ex.Source, ex.StackTrace, ex.InnerException);
-                _dbConfig = null;
                 throw;
+                //return false;
             }
-        }
-        public void SetDatabaseConfig(string databasePath)
-        {
-            // Compacts the database if its size exceedes 30 MiB
-            _dbConfig = new RealmConfiguration(databasePath)
-            {
-                ShouldCompactOnLaunch = (totalBytes, usedBytes) =>
-                {
-                    ulong edgeSize = 30 * 1024 * 1024;
-                    return totalBytes > edgeSize && usedBytes / totalBytes < 0.5;
-                },
-                SchemaVersion = 8
-            };
         }
         public void CreateDatabase(string databasePath, string? appVersion)
         {
@@ -55,14 +45,14 @@ namespace Data
                 AppVersion = appVersion
             };
 
-            Database.Write(() => Database.Add(dbMeta));
+            DbContext.DbMetas.Add(dbMeta);
+            DbContext.SaveChanges();
         }
         public void DropDatabase(string dbPath)
         {
             try
             {
-                Realm.DeleteRealm(new RealmConfiguration(dbPath));
-                File.Delete(dbPath);
+                DbContext.Database.EnsureDeleted();
             }
             catch (Exception ex)
             {
@@ -71,19 +61,16 @@ namespace Data
         }
         public void ImportDatabase(string filePath)
         {
-            var realmToImport = Realm.GetInstance(filePath);
-
-            var segments = realmToImport.All<Segment>();
+            var dbToImport = new DataContext(filePath);
+            var segments = dbToImport.Segments;
 
             try
             {
-                Database.Write(() =>
+                foreach (Segment segment in segments)
                 {
-                    foreach (Segment segment in segments)
-                    {
-                        Database.Add(segment, true);
-                    }
-                });
+                    DbContext.Segments.Add(segment);
+                }
+                DbContext.SaveChanges();
             }
             catch (Exception ex)
             {

@@ -5,10 +5,8 @@ using Content_Manager.Stores;
 using Content_Manager.Windows.Editors;
 using Data;
 using Data.Entities;
-using Data.Entities.TaskItems;
 using Data.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
-using Realms;
 using Shared.Services;
 using Shared.Viewers;
 using System;
@@ -150,10 +148,8 @@ namespace Content_Manager.UserControls
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-            ContentStore.Database.Write(() =>
-            {
-                ContentStore.Database.Remove(_taskAssignment);
-            });
+            ContentStore.DbContext.Remove(_taskAssignment);
+            ContentStore.DbContext.SaveChanges();
 
             ContentStore.RaiseItemDeletedEvent(_taskAssignment);
         }

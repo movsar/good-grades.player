@@ -24,7 +24,7 @@ namespace Content_Manager.UserControls
         static string TitleHintText { get; } = Ru.SetMaterialTitle;
         ContentStore ContentStore => App.AppHost!.Services.GetRequiredService<ContentStore>();
         StylingService StylingService => App.AppHost!.Services.GetRequiredService<StylingService>();
-        
+
         public string LmTitle
         {
             get { return (string)GetValue(TitleProperty); }
@@ -217,29 +217,31 @@ namespace Content_Manager.UserControls
                     Image = LmImage
                 };
 
-                ContentStore.Database.Write(() => ContentStore.SelectedSegment?.ListeningMaterials.Add(lm));
-               
+                ContentStore.SelectedSegment?.ListeningMaterials.Add(lm);
+                ContentStore.DbContext.SaveChanges();
+
                 ContentStore.RaiseItemAddedEvent(lm);
             }
             else
             {
-                var lm = ContentStore.Database.All<ListeningMaterial>().First(lm => lm.Id == LmId);
-                ContentStore.Database.Write(() =>
-                {
-                    lm.Title = LmTitle;
-                    lm.Text = LmText;
-                    lm.Image = LmImage;
-                    lm.Audio = LmAudio;
-                });
-                
+                var lm = ContentStore.DbContext.ListeningMaterials.First(lm => lm.Id == LmId);
+                lm.Title = LmTitle;
+                lm.Text = LmText;
+                lm.Image = LmImage;
+                lm.Audio = LmAudio;
+
+                ContentStore.DbContext.SaveChanges();
+
                 ContentStore.RaiseItemUpdatedEvent(lm);
             }
         }
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-            var lm = ContentStore.Database.Find<ListeningMaterial>(LmId);
-            ContentStore.Database.Write(() => ContentStore.Database.Remove(lm));
+            var lm = ContentStore.DbContext.Find<ListeningMaterial>(LmId);
+            ContentStore.DbContext.ListeningMaterials.Remove(lm);
+            ContentStore.DbContext.SaveChanges();
+
             ContentStore.RaiseItemDeletedEvent(lm);
         }
         #endregion

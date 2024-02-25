@@ -5,6 +5,7 @@ using Data;
 using Data.Entities;
 using Data.Entities.TaskItems;
 using Data.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
 using System.Windows;
@@ -52,10 +53,8 @@ namespace Content_Manager.Windows.Editors
 
         private void ExistingQuizItemControl_SetAsCorrect(string itemId)
         {
-            ContentStore.Database.Write(() =>
-            {
-                _taskAssignment.Question.CorrectOptionId = itemId;
-            });
+            _taskAssignment.Question.CorrectOptionId = itemId;
+            ContentStore.DbContext.SaveChanges();
 
             RedrawUi();
         }
@@ -64,28 +63,25 @@ namespace Content_Manager.Windows.Editors
         {
             var itemEntity = (AssignmentItem)entity;
 
-            ContentStore.Database.Write(() =>
+            // Add the Task entity
+            var taskState = ContentStore.DbContext.Entry(_taskAssignment).State;
+            if (taskState == EntityState.Unchanged || taskState == EntityState.Modified)
             {
-                // Add the Task entity
-                if (_taskAssignment.IsManaged == false)
-                {
-                    ContentStore.SelectedSegment!.SelectingTasks.Add(_taskAssignment);
-                }
+                ContentStore.SelectedSegment!.SelectingTasks.Add(_taskAssignment);
+            }
 
-                // Add the Task item entity
-                _taskAssignment.Question.Options.Add(itemEntity);
-            });
+            // Add the Task item entity
+            _taskAssignment.Question.Options.Add(itemEntity);
+            ContentStore.DbContext.SaveChanges();
 
             RedrawUi();
         }
 
         private void Item_Delete(string id)
         {
-            ContentStore.Database.Write(() =>
-            {
-                var itemToRemove = _taskAssignment.Question.Options.First(i => i.Id == id);
-                _taskAssignment.Question.Options.Remove(itemToRemove);
-            });
+            var itemToRemove = _taskAssignment.Question.Options.First(i => i.Id == id);
+            _taskAssignment.Question.Options.Remove(itemToRemove);
+            ContentStore.DbContext.SaveChanges();
 
             RedrawUi();
         }
@@ -94,7 +90,8 @@ namespace Content_Manager.Windows.Editors
         {
             if (_taskAssignment != null)
             {
-                ContentStore.Database.Write(() => _taskAssignment.Question.Text = txtTitle.Text);
+                _taskAssignment.Question.Text = txtTitle.Text;
+                ContentStore.DbContext.SaveChanges();
             }
         }
     }

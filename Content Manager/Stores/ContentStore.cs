@@ -1,14 +1,10 @@
-﻿using Content_Manager.Services;
-using Data;
+﻿using Data;
 using Data.Entities;
 using Data.Interfaces;
 using Data.Services;
-using Realms;
 using Shared.Services;
 using System;
-using System.Linq;
 using System.Reflection;
-using System.Windows;
 
 namespace Content_Manager.Stores
 {
@@ -24,7 +20,7 @@ namespace Content_Manager.Stores
         private readonly Storage _storage;
         private readonly SettingsService _fileService;
         public string DatabasePath { get; private set; }
-        public Realm Database => _storage.Database;
+        public DataContext DbContext => _storage.DbContext;
 
         private Segment? _selectedSegment;
         public Segment? SelectedSegment
@@ -57,11 +53,9 @@ namespace Content_Manager.Stores
 
         internal void OpenDatabase(string filePath)
         {
-            _storage.SetDatabaseConfig(filePath);
-
             try
             {
-                _storage.CheckDatabaseConnection();
+                _storage.SetDatabaseConfig(filePath);
 
                 DatabasePath = filePath;
                 _fileService.SetValue("lastOpenedDatabasePath", filePath);

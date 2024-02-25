@@ -14,6 +14,7 @@ using System.Windows;
 using System.Windows.Controls;
 using Shared.Translations;
 using Shared.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace Content_Manager.UserControls
 {
@@ -26,7 +27,7 @@ namespace Content_Manager.UserControls
         #endregion
 
         #region Fields
-       static string Hint { get; } = Ru.SetDescription;
+        static string Hint { get; } = Ru.SetDescription;
         private FormCompletionInfo _formCompletionInfo;
         #endregion
 
@@ -146,16 +147,20 @@ namespace Content_Manager.UserControls
         #region Event Handlers
         private void Question_Option_SetAsCorrect(string itemId)
         {
-            ContentStore.Database.Write(() => _testingQuestion!.CorrectOptionId = itemId);
+            _testingQuestion!.CorrectOptionId = itemId;
+            ContentStore.DbContext.SaveChanges();
+
             ContentStore.RaiseItemUpdatedEvent(_testingQuestion);
-            
+
         }
         private void Option_Create(IEntityBase entity)
         {
             var newAnswer = (AssignmentItem)entity;
             var question = GetQuestionById(QuestionId);
 
-            ContentStore.Database.Write(() => _testingQuestion.Options.Add(newAnswer));
+            _testingQuestion.Options.Add(newAnswer);
+            ContentStore.DbContext.SaveChanges();
+
             QuestionUpdated?.Invoke(_testingQuestion);
         }
         private void Option_Save(IEntityBase model)
@@ -164,9 +169,11 @@ namespace Content_Manager.UserControls
         }
         private void Option_Delete(string itemId)
         {
-            var item = ContentStore.Database.Find<AssignmentItem>(itemId);
+            var item = ContentStore.DbContext.Find<AssignmentItem>(itemId);
 
-            ContentStore.Database.Write(() => _testingQuestion.Options.Remove(item));
+            _testingQuestion.Options.Remove(item);
+            ContentStore.DbContext.SaveChanges();
+
             QuestionUpdated?.Invoke(_testingQuestion);
         }
         #endregion
@@ -204,33 +211,35 @@ namespace Content_Manager.UserControls
         #region Button Handlers
         private void btnSaveQuestion_Click(object sender, RoutedEventArgs e)
         {
-            ContentStore.Database.Write(() =>
+            // If the TestingTaskAssignment is new - add to database
+            var taskState = ContentStore.DbContext.Entry(_task).State;
+            if (taskState == EntityState.Unchanged || taskState == EntityState.Modified)
             {
-                // If the TestingTaskAssignment is new - add to database
-                if (!_task.IsManaged)
-                {
-                    ContentStore.SelectedSegment!.TestingTasks.Add(_task);
-                }
+                ContentStore.SelectedSegment!.TestingTasks.Add(_task);
+            }
 
-                // Set testing question fields
-                _testingQuestion.Text = QuestionText;
-                _testingQuestion.Options.Clear();
-                foreach (var option in Options)
-                {
-                    _testingQuestion.Options.Add(option);
-                }
+            // Set testing question fields
+            _testingQuestion.Text = QuestionText;
+            _testingQuestion.Options.Clear();
+            foreach (var option in Options)
+            {
+                _testingQuestion.Options.Add(option);
+            }
 
-                // If testing question is new - add to database
-                if (!_testingQuestion.IsManaged)
-                {
-                    _task.Questions.Add(_testingQuestion);
-                    QuestionCreated?.Invoke(_testingQuestion);
-                }
-                else
-                {
-                    QuestionUpdated?.Invoke(_testingQuestion);
-                }
-            });
+            // If testing question is new - add to database
+            var questionState = ContentStore.DbContext.Entry(_testingQuestion).State;
+            if (questionState == EntityState.Unchanged || questionState == EntityState.Modified)
+            {
+                _task.Questions.Add(_testingQuestion);
+                QuestionCreated?.Invoke(_testingQuestion);
+            }
+            else
+            {
+                QuestionUpdated?.Invoke(_testingQuestion);
+            }
+
+            ContentStore.DbContext.SaveChanges();
+
         }
 
         private void btnDeleteQuestion_Click(object sender, RoutedEventArgs e)

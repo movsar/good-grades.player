@@ -198,28 +198,28 @@ namespace Content_Manager.UserControls
                     Text = RmText,
                     Image = RmImage
                 };
-                _contentStore.Database.Write(() => _contentStore.SelectedSegment?.ReadingMaterials.Add(rm));
 
+                _contentStore.SelectedSegment?.ReadingMaterials.Add(rm);
+                _contentStore.DbContext.SaveChanges();
                 _contentStore.RaiseItemAddedEvent(rm);
             }
             else
             {
-                var rm = _contentStore.Database.All<ReadingMaterial>().First(rm => rm.Id == RmId);
-                _contentStore.Database.Write(() =>
-                {
-                    rm.Title = RmTitle;
-                    rm.Text = RmText;
-                    rm.Image = RmImage;
-                });
-
+                var rm = _contentStore.DbContext.ReadingMaterials.First(rm => rm.Id == RmId);
+                rm.Title = RmTitle;
+                rm.Text = RmText;
+                rm.Image = RmImage;
+                
+                _contentStore.DbContext.SaveChanges();
                 _contentStore.RaiseItemUpdatedEvent(rm);
             }
         }
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-            var rm = _contentStore.Database.Find<ReadingMaterial>(RmId);
-            _contentStore.Database.Write(() => _contentStore.Database.Remove(rm));
+            var rm = _contentStore.DbContext.Find<ReadingMaterial>(RmId);
+            _contentStore.DbContext.ReadingMaterials.Remove(rm);
+            _contentStore.DbContext.SaveChanges();
             _contentStore.RaiseItemDeletedEvent(rm);
         }
         #endregion

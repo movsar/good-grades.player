@@ -239,12 +239,11 @@ namespace Content_Manager.UserControls
             }
             else
             {
-                var item = ContentStore.Database.Find<AssignmentItem>(ItemId);
-                ContentStore.Database.Write(() =>
-                {
-                    item.Image = ItemImage;
-                    item.Text = ItemText;
-                });
+                var item = ContentStore.DbContext.Find<AssignmentItem>(ItemId);
+                item.Image = ItemImage;
+                item.Text = ItemText;
+
+                ContentStore.DbContext.SaveChanges();
 
                 Update?.Invoke(item);
             }
