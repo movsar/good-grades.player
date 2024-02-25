@@ -4,6 +4,7 @@ using Data.Entities;
 using Data.Interfaces;
 using Data.Services;
 using Realms;
+using Shared.Services;
 using System;
 using System.Linq;
 using System.Reflection;
@@ -68,7 +69,7 @@ namespace Content_Manager.Stores
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Произошла ошибка с открытием Базы Данных предыдущей сессии");
+                ExceptionService.HandleError(ex, "Произошла ошибка с открытием Базы Данных предыдущей сессии");
             }
         }
         internal void CreateDatabase(string filePath)

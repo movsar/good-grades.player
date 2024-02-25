@@ -17,9 +17,6 @@
 		<PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
 		<PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.77" />
 		<PackageReference Include="MicrosoftExpressionInteractions" Version="3.0.40218" />
-		<PackageReference Include="Serilog" Version="3.1.1" />
-		<PackageReference Include="Serilog.Extensions.Hosting" Version="8.0.0" />
-		<PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
 		<PackageReference Include="Xam.Plugin.SimpleAudioPlayer.WPF" Version="1.6.0" />
 	</ItemGroup>
 

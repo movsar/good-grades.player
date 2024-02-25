@@ -9,6 +9,7 @@ using System.Windows;
 using Data.Services;
 using System.Collections.ObjectModel;
 using Serilog;
+using Shared.Services;
 
 namespace Content_Player.Pages
 {
@@ -36,7 +37,7 @@ namespace Content_Player.Pages
             }
             catch (Exception ex)
             {
-                Log.Write(Serilog.Events.LogEventLevel.Error, ex.Message);
+                ExceptionService.HandleError(ex, ex.Message);
             }
         }
 

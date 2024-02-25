@@ -42,9 +42,7 @@ namespace Content_Manager
         {
             e.Handled = true;
 
-            // Log the exception
-            Log.Error(e.Exception, "An unhandled exception occurred.");
-            MessageBox.Show($"Произошла непредвиденная ошибка {e.Exception.Message}");
+            ExceptionService.HandleError(e.Exception, e.Exception.Message);
             Application.Current.Shutdown();
         }
 
@@ -53,8 +51,7 @@ namespace Content_Manager
             if (e.ExceptionObject is Exception ex)
             {
                 // Log the exception
-                Log.Error(ex, "An unhandled domain exception occurred.");
-                MessageBox.Show($"Произошла непредвиденная ошибка {ex.Message}");
+                ExceptionService.HandleError(ex, "Произошла непредвиденная ошибка ");
                 Application.Current.Shutdown();
             }
         }

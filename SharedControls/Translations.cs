@@ -1,9 +1,8 @@
-﻿using System.Dynamic;
-
-namespace Shared.Translations
+﻿namespace Shared.Translations
 {
     public static class Ru
     {
+        public static string Error { get; } = "Ошибка";
         public static string OpenDB { get; } = "Открыть Базу Данных";
         public static string SetTitleAndDataForListeningMaterial { get; } = "Напишите название материала, выберите текст и аудио";
         public static string AllElementsMatch { get; } = "Все элементы совпадают!";

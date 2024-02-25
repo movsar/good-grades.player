@@ -223,7 +223,7 @@ namespace Content_Manager.UserControls
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                ExceptionService.HandleError(ex, ex.Message);
                 return;
             }
 

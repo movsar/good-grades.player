@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Shared.Translations;
 using Data.Services;
+using Shared.Services;
 
 namespace Content_Manager
 {
@@ -22,14 +23,12 @@ namespace Content_Manager
     {
         private readonly ContentStore _contentStore;
         private readonly SettingsService _settingsService;
-        private ILogger _logger;
 
-        public MainWindow(ContentStore contentStore, SettingsService fileService, ILogger<MainWindow> logger)
+        public MainWindow(ContentStore contentStore, SettingsService fileService)
         {
             InitializeComponent();
             DataContext = this;
 
-            _logger = logger;
             _settingsService = fileService;
             _contentStore = contentStore;
             _contentStore.SelectedSegmentChanged += SelectedSegmentChanged;
@@ -165,11 +164,11 @@ namespace Content_Manager
                 var newVersion = updateInfo.FutureReleaseEntry.Version;
                 var currentVersion = updateInfo.CurrentlyInstalledVersion.Version;
 
-                _logger.LogInformation($"Before Checking for updates");
+                //_logger.LogInformation($"Before Checking for updates");
 
-                _logger.LogDebug($"future: {newVersion}");
-                _logger.LogDebug($"current: {currentVersion}");
-                _logger.LogDebug($"");
+                //_logger.LogDebug($"future: {newVersion}");
+                //_logger.LogDebug($"current: {currentVersion}");
+                //_logger.LogDebug($"");
 
                 if (updateInfo?.FutureReleaseEntry != null && newVersion.CompareTo(currentVersion) <= 0)
                 {
@@ -186,8 +185,7 @@ namespace Content_Manager
             }
             catch (Exception ex)
             {
-                _logger.LogInformation($"An error occurred when trying to update the app");
-                _logger.LogError(ex.Message, ex.StackTrace, ex.InnerException);
+                ExceptionService.HandleError(ex, "Ошибка при попытаке обновления приложения");
             }
         }
 
