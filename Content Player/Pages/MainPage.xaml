@@ -11,6 +11,12 @@
 
     <DockPanel>        
         <Grid>
+            <Grid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="{x:Static translations:Ru.OpenDB}" Click="mnuOpenDatabase_Click"/>
+                </ContextMenu>
+            </Grid.ContextMenu>
+            
             <Grid.Background>
                 <ImageBrush ImageSource="/Images/main_background.jpg" 
                       Stretch="None" AlignmentX="Left" AlignmentY="Bottom"/>
@@ -18,7 +24,7 @@
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
             <Label Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Top"   
@@ -27,12 +33,6 @@
              Content="{Binding DbTitle}"/>
 
             <Border CornerRadius="10" Background="White" Margin="5" Grid.Column="1">
-                <Border.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="{x:Static translations:Ru.OpenDB}" Click="mnuOpenDatabase_Click"/>
-                    </ContextMenu>
-                </Border.ContextMenu>
-                
                 <ListView x:Name="lvSegments" ItemsSource="{Binding Segments}" 
                     HorizontalAlignment="Right"
                     MouseDoubleClick="lvSegments_MouseDoubleClick"

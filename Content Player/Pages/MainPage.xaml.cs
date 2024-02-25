@@ -8,6 +8,7 @@ using Microsoft.Win32;
 using System.Windows;
 using Data.Services;
 using System.Collections.ObjectModel;
+using Serilog;
 
 namespace Content_Player.Pages
 {
@@ -29,7 +30,14 @@ namespace Content_Player.Pages
             _settingsService = App.AppHost!.Services.GetRequiredService<SettingsService>();
             _storage = App.AppHost!.Services.GetRequiredService<Storage>();
 
-            LoadDatabase();
+            try
+            {
+                LoadDatabase();
+            }
+            catch (Exception ex)
+            {
+                Log.Write(Serilog.Events.LogEventLevel.Error, ex.Message);
+            }
         }
 
         private void LoadDatabase(bool restoreLatest = true)

@@ -17,7 +17,7 @@ namespace Content_Manager
         public static IHost? AppHost { get; private set; }
         public App()
         {
-            string logPath = Path.Combine("Logs", "logs.txt");
+            string logPath = Path.Combine("logs", "logs.txt");
             Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Debug()
             .WriteTo.File(logPath, rollingInterval: RollingInterval.Day)
@@ -43,6 +43,8 @@ namespace Content_Manager
             // Log the exception
             Log.Error(e.Exception, "An unhandled exception occurred.");
             e.Handled = true;
+            MessageBox.Show($"Произошла непредвиденная ошибка {e.Exception.Message}");
+            Application.Current.Shutdown();
         }
 
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
@@ -51,6 +53,8 @@ namespace Content_Manager
             {
                 // Log the exception
                 Log.Error(ex, "An unhandled domain exception occurred.");
+                MessageBox.Show($"Произошла непредвиденная ошибка {ex.Message}");
+                Application.Current.Shutdown();
             }
         }
 
