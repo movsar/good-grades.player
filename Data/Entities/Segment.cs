@@ -6,7 +6,7 @@ namespace Data.Entities
 {
     public class Segment : RealmObject, IEntityBase
     {
-        [PrimaryKey] public string Id { get; } = ObjectId.GenerateNewId().ToString();
+        [PrimaryKey] public string Id { get; } = Guid.NewGuid().ToString();
         [Required] public string Title { get; set; }
         public string Description { get; set; }
         public DateTimeOffset CreatedAt { get; } = DateTimeOffset.Now;

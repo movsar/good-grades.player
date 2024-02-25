@@ -6,7 +6,7 @@ namespace Data.Entities
 {
     public class DbMeta : RealmObject, IEntityBase
     {
-        [PrimaryKey] public string Id { get; set; } = ObjectId.GenerateNewId().ToString();
+        [PrimaryKey] public string Id { get; set; } = Guid.NewGuid().ToString();
         public DateTimeOffset CreatedAt { get; } = DateTimeOffset.Now;
         public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;
         /******************************************************************/
