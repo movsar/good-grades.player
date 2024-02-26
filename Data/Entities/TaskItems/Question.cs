@@ -13,6 +13,6 @@ namespace Data.Entities.TaskItems
         /******************************************************************/
         public string Text { get; set; }
         public string CorrectOptionId { get; set; }
-        public IList<AssignmentItem> Options { get; }
+        public virtual IList<AssignmentItem> Options { get; } = new List<AssignmentItem>();
     }
 }

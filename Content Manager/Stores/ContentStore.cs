@@ -19,7 +19,6 @@ namespace Content_Manager.Stores
         #region Events, Properties and Fields
         private readonly Storage _storage;
         private readonly SettingsService _fileService;
-        public string DatabasePath { get; private set; }
         public DataContext DbContext => _storage.DbContext;
 
         private Segment? _selectedSegment;
@@ -56,8 +55,6 @@ namespace Content_Manager.Stores
             try
             {
                 _storage.SetDatabaseConfig(filePath);
-
-                DatabasePath = filePath;
                 _fileService.SetValue("lastOpenedDatabasePath", filePath);
                 CurrentDatabaseChanged?.Invoke();
             }

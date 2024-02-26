@@ -13,7 +13,7 @@ namespace Data.Entities
         public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;
         /******************************************************************/
         [Required] public string Title { get; set; }
-        public Question Question { get; set; } = new Question();
+        public virtual Question Question { get; set; } = new Question();
         public bool IsContentSet => Question.Options.Count() > 0 && !string.IsNullOrEmpty(Question.CorrectOptionId);
     }
 }

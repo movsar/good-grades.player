@@ -28,6 +28,7 @@ namespace Data
             base.OnConfiguring(options);
 
             string connectionString = $"Data Source=" + DbPath;
+            options.UseLazyLoadingProxies();
             options.UseSqlite(connectionString);
         }
     }
