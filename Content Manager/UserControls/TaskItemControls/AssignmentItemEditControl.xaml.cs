@@ -240,7 +240,10 @@ namespace Content_Manager.UserControls
             else
             {
                 var item = ContentStore.DbContext.Find<AssignmentItem>(ItemId);
-                item.Image = ItemImage;
+                if (ItemImage != null)
+                {
+                    item.Image = ItemImage;
+                }
                 item.Text = ItemText;
 
                 ContentStore.DbContext.SaveChanges();
