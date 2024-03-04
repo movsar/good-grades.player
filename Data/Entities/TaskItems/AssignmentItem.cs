@@ -12,6 +12,6 @@ namespace Data.Entities.TaskItems
         public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;
         /******************************************************************/
         public string Text { get; set; }
-        public byte[] Image { get; set; }
+        public byte[]? Image { get; set; } = null;
     }
 }
