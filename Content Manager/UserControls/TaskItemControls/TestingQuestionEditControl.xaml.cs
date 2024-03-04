@@ -213,7 +213,7 @@ namespace Content_Manager.UserControls
         {
             // If the TestingTaskAssignment is new - add to database
             var taskState = ContentStore.DbContext.Entry(_task).State;
-            if (taskState == EntityState.Unchanged || taskState == EntityState.Detached|| taskState == EntityState.Modified)
+            if (taskState == EntityState.Detached || taskState == EntityState.Added)
             {
                 ContentStore.SelectedSegment!.TestingTasks.Add(_task);
             }
@@ -228,7 +228,7 @@ namespace Content_Manager.UserControls
 
             // If testing question is new - add to database
             var questionState = ContentStore.DbContext.Entry(_testingQuestion).State;
-            if (questionState == EntityState.Unchanged || taskState == EntityState.Detached|| questionState == EntityState.Modified)
+            if (questionState == EntityState.Detached || questionState == EntityState.Added)
             {
                 _task.Questions.Add(_testingQuestion);
                 QuestionCreated?.Invoke(_testingQuestion);

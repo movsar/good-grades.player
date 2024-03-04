@@ -30,7 +30,7 @@
 
         </StackPanel>
 
-        <ScrollViewer Grid.Row="1">
+        <ScrollViewer Grid.Row="1" Margin="10">
             <StackPanel x:Name="spItems"></StackPanel>
         </ScrollViewer>
     </Grid>
