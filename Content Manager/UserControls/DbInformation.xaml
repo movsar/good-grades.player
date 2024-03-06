@@ -30,26 +30,26 @@
             <Label Content="{x:Static translations:Ru.Title}"/>
             <TextBox Margin="0 0 10 0"
                      x:Name="txtDbName"
-                     VerticalAlignment="Top" />
+                     VerticalAlignment="Top" KeyUp="txtDbName_KeyUp" />
 
             <Label Content="{x:Static translations:Ru.Description}"/>
             <TextBox Margin="0 0 10 0"
                      Height="50"
                      AcceptsReturn="True"
                      x:Name="txtDescription"
-                     VerticalAlignment="Top" />
+                     VerticalAlignment="Top" KeyUp="txtDescription_KeyUp" />
 
             <Label Content="{x:Static translations:Ru.DateOfCreation}"/>
             <TextBox Margin="0 0 10 0"
                      IsEnabled="false"
                      x:Name="txtDbCreatedAt"
-                     VerticalAlignment="Top" />
+                     VerticalAlignment="Top" KeyUp="txtDbCreatedAt_KeyUp" />
 
             <Label Content="{x:Static translations:Ru.ProgramVersion}"/>
             <TextBox Margin="0 0 10 0"
                      IsEnabled="false"
                      x:Name="txtAppVersion"
-                     VerticalAlignment="Top" />
+                     VerticalAlignment="Top" KeyUp="txtAppVersion_KeyUp" />
         </StackPanel>
 
     </Grid>

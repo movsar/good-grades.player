@@ -23,7 +23,7 @@
                      VerticalContentAlignment="Center"
                      GotFocus="txtQuestionText_GotFocus"
                      LostFocus="txtQuestionText_LostFocus"
-                     TextChanged="txtQuestionText_TextChanged"
+                     TextChanged="txtQuestionText_TextChanged" KeyUp="txtQuestion_KeyUp"
                      />
 
                 <Button x:Name="btnSaveQuestion" 

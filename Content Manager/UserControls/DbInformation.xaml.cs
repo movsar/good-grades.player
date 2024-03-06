@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace Content_Manager.UserControls
 {
@@ -26,6 +27,11 @@ namespace Content_Manager.UserControls
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
+            Save();
+        }
+
+        private void Save()
+        {
             var newName = txtDbName.Text;
             var newDescription = txtDescription.Text;
 
@@ -37,5 +43,36 @@ namespace Content_Manager.UserControls
             Saved?.Invoke();
         }
 
+        private void txtDbName_KeyUp(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Enter)
+            {
+                Save();
+            }
+        }
+
+        private void txtDescription_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                Save();
+            }
+        }
+
+        private void txtDbCreatedAt_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                Save();
+            }
+        }
+
+        private void txtAppVersion_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                Save();
+            }
+        }
     }
 }

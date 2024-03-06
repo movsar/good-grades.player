@@ -13,6 +13,7 @@ using System.Windows;
 using System.Windows.Controls;
 using Shared.Translations;
 using Shared.Services;
+using System.Windows.Input;
 
 namespace Content_Manager.UserControls
 {
@@ -188,6 +189,11 @@ namespace Content_Manager.UserControls
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
+            Save();
+        }
+
+        private void Save()
+        {
             //MessageBox.Show("Ru.NecessaryInfoForContent");
 
             if (string.IsNullOrEmpty(RmId))
@@ -209,7 +215,7 @@ namespace Content_Manager.UserControls
                 rm.Title = RmTitle;
                 rm.Text = RmText;
                 rm.Image = RmImage;
-                
+
                 _contentStore.DbContext.SaveChanges();
                 _contentStore.RaiseItemUpdatedEvent(rm);
             }
@@ -224,5 +230,12 @@ namespace Content_Manager.UserControls
         }
         #endregion
 
+        private void txtTitle_KeyUp(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Enter)
+            {
+                Save();
+            }
+        }
     }
 }
