@@ -40,7 +40,7 @@
                      VerticalContentAlignment="Center"
                      GotFocus="txtItemText_GotFocus"
                      LostFocus="txtItemText_LostFocus"
-                     TextChanged="txtItemText_TextChanged"
+                     TextChanged="txtItemText_TextChanged" KeyUp="txtItemText_KeyUp"
                      />
 
             <Button x:Name="btnSave" 

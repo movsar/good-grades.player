@@ -19,7 +19,7 @@
                      VerticalContentAlignment="Center"
                      GotFocus="txtTitle_GotFocus"
                      LostFocus="txtTitle_LostFocus"
-                     TextChanged="txtTitle_TextChanged"
+                     TextChanged="txtTitle_TextChanged" KeyUp="txtTitle_KeyUp"
                      />
 
             <Button x:Name="btnUploadFromFile"

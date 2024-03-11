@@ -16,6 +16,7 @@ using System.Windows.Media.Imaging;
 using Image = System.Windows.Controls.Image;
 using Shared.Translations;
 using Shared.Services;
+using System.Windows.Input;
 
 namespace Content_Manager.UserControls
 {
@@ -217,6 +218,12 @@ namespace Content_Manager.UserControls
         }
         private void btnOk_Click(object sender, RoutedEventArgs e)
         {
+            Save();
+        }
+
+        private void Save()
+        {
+
             try
             {
                 ValidateInput();
@@ -283,6 +290,14 @@ namespace Content_Manager.UserControls
             }
 
             SetAsCorrect?.Invoke(ItemId);
+        }
+
+        private void txtItemText_KeyUp(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Enter)
+            {
+                Save();
+            }
         }
     }
 }

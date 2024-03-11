@@ -15,6 +15,7 @@ using System.Windows.Controls;
 using Shared.Translations;
 using Shared.Services;
 using Microsoft.EntityFrameworkCore;
+using System.Windows.Input;
 
 namespace Content_Manager.UserControls
 {
@@ -211,6 +212,12 @@ namespace Content_Manager.UserControls
         #region Button Handlers
         private void btnSaveQuestion_Click(object sender, RoutedEventArgs e)
         {
+            Save();
+        }
+        
+        private void Save()
+        {
+
             // If the TestingTaskAssignment is new - add to database
             var taskState = ContentStore.DbContext.Entry(_task).State;
             if (taskState == EntityState.Detached || taskState == EntityState.Added)
@@ -239,7 +246,6 @@ namespace Content_Manager.UserControls
             }
 
             ContentStore.DbContext.SaveChanges();
-
         }
 
         private void btnDeleteQuestion_Click(object sender, RoutedEventArgs e)
@@ -247,5 +253,13 @@ namespace Content_Manager.UserControls
             QuestionDeleted?.Invoke(QuestionId);
         }
         #endregion
+
+        private void txtQuestion_KeyUp(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Enter)
+            {
+                Save();
+            }
+        }
     }
 }

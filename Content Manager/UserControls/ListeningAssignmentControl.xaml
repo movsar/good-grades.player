@@ -18,7 +18,8 @@
                      VerticalContentAlignment="Center"
                      GotFocus="txtTitle_GotFocus"
                      LostFocus="txtTitle_LostFocus"
-                     TextChanged="txtTitle_TextChanged"/>
+                     TextChanged="txtTitle_TextChanged"
+                     KeyUp="txtTitle_KeyUp"/>
 
             <Button x:Name="btnChooseText" 
                     Margin="10 0 0 0" Padding="7 0 7 0" 
