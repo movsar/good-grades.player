@@ -10,7 +10,7 @@ using System.Windows.Media.Imaging;
 
 namespace Shared.Viewers
 {
-    public partial class ListeningViewer : Window
+    public partial class MaterialViewer : Window
     {
 
         #region Initialization
@@ -19,7 +19,7 @@ namespace Shared.Viewers
             PurgeCache();
             InitializeComponent();
         }
-        public ListeningViewer(string title, string text, byte[] image)
+        public MaterialViewer(string title, string text, byte[] image)
         {
             // Reading material presenter mode
 
@@ -29,7 +29,7 @@ namespace Shared.Viewers
             LoadDocument(text, image);
         }
 
-        public ListeningViewer(string title, string text, byte[] image, byte[] audio)
+        public MaterialViewer(string title, string text, byte[] image, byte[] audio)
         {
             // Listening material presenter mode
 

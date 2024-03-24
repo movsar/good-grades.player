@@ -46,7 +46,7 @@ namespace Content_Player.Pages
             {
                 case Material:
                     var listeningMaterial = segmentItem as Material;
-                    var listeningPresenter = new ListeningViewer(listeningMaterial.Title, listeningMaterial.Text, listeningMaterial.Image, listeningMaterial.Audio);
+                    var listeningPresenter = new MaterialViewer(listeningMaterial.Title, listeningMaterial.Text, listeningMaterial.Image, listeningMaterial.Audio);
                     listeningPresenter.ShowDialog();
 
                     break;
