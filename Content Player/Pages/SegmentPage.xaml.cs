@@ -19,7 +19,6 @@ namespace Content_Player.Pages
             Title = segment.Title;
 
             Materials.AddRange(segment.ListeningMaterials.Cast<IMaterial>());
-            Materials.AddRange(segment.ReadingMaterials.Cast<IMaterial>());
             Materials.Add(new FakeSegmentMaterial()
             {
                 Id = "tasks",
@@ -45,11 +44,6 @@ namespace Content_Player.Pages
 
             switch (segmentItem)
             {
-                case ReadingMaterial:
-                    var readingMaterial = segmentItem as ReadingMaterial;
-                    var readingPresenter = new ReadingViewer(readingMaterial.Title, readingMaterial.Text, readingMaterial.Image);
-                    readingPresenter.ShowDialog();
-                    break;
                 case ListeningMaterial:
                     var listeningMaterial = segmentItem as ListeningMaterial;
                     var listeningPresenter = new ListeningViewer(listeningMaterial.Title, listeningMaterial.Text, listeningMaterial.Image, listeningMaterial.Audio);

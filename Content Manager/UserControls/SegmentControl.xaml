@@ -13,9 +13,6 @@
             <TabItem Header="{x:Static translations:Ru.Chapter}">
                 <segmenttabs:SegmentInfoTab/>
             </TabItem>
-            <TabItem Header="{x:Static translations:Ru.Reading}">
-                <segmenttabs:ReadingAssignmentsTab/>
-            </TabItem>
             <TabItem Header="{x:Static translations:Ru.Listening}">
                 <segmenttabs:ListeningAssignmentsTab/>
             </TabItem>
