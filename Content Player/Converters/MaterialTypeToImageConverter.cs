@@ -13,7 +13,7 @@ namespace Content_Player.Converters
         {
             switch (material)
             {
-                case ListeningMaterial:
+                case Material:
                     return new BitmapImage(UriService.GetAbsoluteUri("/Images/listening.png", "Shared"));
                 case FakeSegmentMaterial:
                     return new BitmapImage(UriService.GetAbsoluteUri("/Images/testing.png", "Shared"));

@@ -13,11 +13,11 @@
             <TabItem Header="{x:Static translations:Ru.Chapter}">
                 <segmenttabs:SegmentInfoTab/>
             </TabItem>
-            <TabItem Header="{x:Static translations:Ru.Listening}">
-                <segmenttabs:ListeningAssignmentsTab/>
+            <TabItem Header="{x:Static translations:Ru.Materials}">
+                <segmenttabs:MaterialsTab/>
             </TabItem>
             <TabItem Header="{x:Static translations:Ru.Tasks}">
-                <segmenttabs:TaskAssignmentsTab/>
+                <segmenttabs:AssignmentsTab/>
             </TabItem>
         </TabControl>
     </Grid>

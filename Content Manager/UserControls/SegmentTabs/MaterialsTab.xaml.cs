@@ -1,16 +1,14 @@
 ﻿using Content_Manager.Stores;
 using Data.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Controls;
 
 namespace Content_Manager.UserControls.SegmentTabs
 {
-    public partial class TaskAssignmentsTab : UserControl
+    public partial class MaterialsTab : UserControl
     {
         private ContentStore ContentStore => App.AppHost!.Services.GetRequiredService<ContentStore>();
-        public TaskAssignmentsTab()
+        public MaterialsTab()
         {
             InitializeComponent();
             DataContext = this;
@@ -23,27 +21,22 @@ namespace Content_Manager.UserControls.SegmentTabs
         }
         public void RedrawUi()
         {
-            spTaskAssignmentControls.Children.Clear();
+            spListeningControls.Children.Clear();
 
             if (ContentStore.SelectedSegment == null)
             {
                 return;
             }
 
-            List<IAssignment> allTasks = ContentStore.SelectedSegment!.MatchingTasks.Cast<IAssignment>().ToList();
-            allTasks.AddRange(ContentStore.SelectedSegment!.FillingTasks);
-            allTasks.AddRange(ContentStore.SelectedSegment!.BuildingTasks);
-            allTasks.AddRange(ContentStore.SelectedSegment!.TestingTasks);
-            allTasks.AddRange(ContentStore.SelectedSegment!.SelectingTasks);
-
-            foreach (var material in allTasks.OrderBy(t => t.CreatedAt))
+            foreach (var material in ContentStore.SelectedSegment!.Materials)
             {
-                spTaskAssignmentControls.Children.Add(new TaskAssignmentControl(material));
+                var existingMaterial = new MaterialControl(material);
+                spListeningControls.Children.Add(existingMaterial);
             }
 
-            var newMaterial = new TaskAssignmentControl();
+            var newMaterial = new MaterialControl();
 
-            spTaskAssignmentControls.Children.Add(newMaterial);
+            spListeningControls.Children.Add(newMaterial);
         }
 
         private void ContentStore_ItemChanged(IEntityBase entity)

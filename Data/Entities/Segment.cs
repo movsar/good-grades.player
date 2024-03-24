@@ -17,6 +17,6 @@ namespace Data.Entities
         public virtual IList<BuildingTaskAssignment> BuildingTasks { get; set; } = new List<BuildingTaskAssignment>();
         public virtual IList<FillingTaskAssignment> FillingTasks { get; set; } = new List<FillingTaskAssignment>();
         public virtual IList<TestingTaskAssignment> TestingTasks { get; set; } = new List<TestingTaskAssignment>();
-        public virtual IList<ListeningMaterial> ListeningMaterials { get; set; } = new List<ListeningMaterial>();
+        public virtual IList<Material> Materials { get; set; } = new List<Material>();
     }
 }

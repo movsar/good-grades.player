@@ -2,10 +2,8 @@
 using Content_Manager.Services;
 using Content_Manager.Stores;
 using Data.Entities;
-using Data.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Shared.Viewers;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -17,7 +15,7 @@ using System.Windows.Input;
 
 namespace Content_Manager.UserControls
 {
-    public partial class ListeningAssignmentControl : UserControl
+    public partial class MaterialControl : UserControl
     {
 
         #region Properties
@@ -32,7 +30,7 @@ namespace Content_Manager.UserControls
             set { SetValue(TitleProperty, value); }
         }
         public static readonly DependencyProperty TitleProperty =
-            DependencyProperty.Register("LmTitle", typeof(string), typeof(ListeningAssignmentControl), new PropertyMetadata(""));
+            DependencyProperty.Register("LmTitle", typeof(string), typeof(MaterialControl), new PropertyMetadata(""));
 
         public string LmText { get; set; }
         public byte[] LmAudio { get; set; }
@@ -107,7 +105,7 @@ namespace Content_Manager.UserControls
             _formCompletionInfo = new FormCompletionInfo(propertiesToWatch, isExistingMaterial);
             _formCompletionInfo.StatusChanged += OnFormStatusChanged;
         }
-        public ListeningAssignmentControl()
+        public MaterialControl()
         {
             SharedInitialization();
             SetUiForNewMaterial();
@@ -115,7 +113,7 @@ namespace Content_Manager.UserControls
             LmTitle = TitleHintText;
         }
 
-        public ListeningAssignmentControl(ListeningMaterial material)
+        public MaterialControl(Material material)
         {
             SharedInitialization(true);
             SetUiForExistingMaterial();
@@ -216,7 +214,7 @@ namespace Content_Manager.UserControls
 
             if (string.IsNullOrEmpty(LmId))
             {
-                var lm = new ListeningMaterial
+                var lm = new Material
                 {
                     Title = LmTitle,
                     Text = LmText,
@@ -224,7 +222,7 @@ namespace Content_Manager.UserControls
                     Image = LmImage
                 };
 
-                ContentStore.SelectedSegment?.ListeningMaterials.Add(lm);
+                ContentStore.SelectedSegment?.Materials.Add(lm);
                 ContentStore.DbContext.SaveChanges();
 
                 ContentStore.RaiseItemAddedEvent(lm);
@@ -245,7 +243,7 @@ namespace Content_Manager.UserControls
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-            var lm = ContentStore.DbContext.Find<ListeningMaterial>(LmId);
+            var lm = ContentStore.DbContext.Find<Material>(LmId);
             ContentStore.DbContext.ListeningMaterials.Remove(lm);
             ContentStore.DbContext.SaveChanges();
 

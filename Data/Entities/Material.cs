@@ -4,8 +4,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Data.Entities
 {
-    [Table("listening_tasks")]
-    public class ListeningMaterial : IEntityBase, IMaterial
+    [Table("materials")]
+    public class Material : IEntityBase, IMaterial
     {
         [Key] public string Id { get; set; } = Guid.NewGuid().ToString();
         public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.Now;

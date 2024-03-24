@@ -18,7 +18,7 @@ namespace Content_Player.Pages
             RtfService.LoadRtfFromText(rtbDescription, segment.Description);
             Title = segment.Title;
 
-            Materials.AddRange(segment.ListeningMaterials.Cast<IMaterial>());
+            Materials.AddRange(segment.Materials.Cast<IMaterial>());
             Materials.Add(new FakeSegmentMaterial()
             {
                 Id = "tasks",
@@ -44,8 +44,8 @@ namespace Content_Player.Pages
 
             switch (segmentItem)
             {
-                case ListeningMaterial:
-                    var listeningMaterial = segmentItem as ListeningMaterial;
+                case Material:
+                    var listeningMaterial = segmentItem as Material;
                     var listeningPresenter = new ListeningViewer(listeningMaterial.Title, listeningMaterial.Text, listeningMaterial.Image, listeningMaterial.Audio);
                     listeningPresenter.ShowDialog();
 

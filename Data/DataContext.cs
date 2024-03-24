@@ -10,7 +10,7 @@ namespace Data
 
         public DbSet<DbMeta> DbMetas { get; set; }
 
-        public DbSet<ListeningMaterial> ListeningMaterials { get; set; }
+        public DbSet<Material> ListeningMaterials { get; set; }
 
         public DbSet<MatchingTaskAssignment> MatchingTaskAssignments { get; set; }
         public DbSet<FillingTaskAssignment> FillingTaskAssignments { get; set; }
