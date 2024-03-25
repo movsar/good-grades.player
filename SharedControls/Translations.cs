@@ -64,5 +64,6 @@
         public static string IncorrectAnswer { get; } = "Неправильный ответ(ы)";
         public static string Celebrating { get; } = "Ура!";
         public static string AreYouSureToExit { get; } = "Уверены что хотите уйти?";
+        public static string FilePath { get; } = "Путь к файлу:";
     }
 }

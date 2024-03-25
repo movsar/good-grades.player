@@ -50,6 +50,12 @@
                      IsEnabled="false"
                      x:Name="txtAppVersion"
                      VerticalAlignment="Top" KeyUp="txtAppVersion_KeyUp" />
+            
+            <Label Content="{x:Static translations:Ru.FilePath}"/>
+            <TextBox Margin="0 0 10 0"
+                     IsReadOnly="True"
+                     x:Name="txtFilePath"
+                     VerticalAlignment="Top" KeyUp="txtDbCreatedAt_KeyUp" />
         </StackPanel>
 
     </Grid>

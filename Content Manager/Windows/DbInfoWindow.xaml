@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Content_Manager.Windows" xmlns:usercontrols="clr-namespace:Content_Manager.UserControls"
         mc:Ignorable="d"
         xmlns:translations="clr-namespace:Shared.Translations;assembly=Shared"
-        Title="{x:Static translations:Ru.DataBase}" Height="300" Width="430" ResizeMode="NoResize" MinHeight="250" MinWidth="450">
+        Title="{x:Static translations:Ru.DataBase}" Height="350" Width="480" ResizeMode="NoResize" MinHeight="250" MinWidth="450">
     <Grid>
 
         <usercontrols:DbInformation 
