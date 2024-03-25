@@ -71,7 +71,7 @@ namespace Shared.Viewers
         }
         #endregion
 
-        private void LoadDocument(string rtf, byte[] image)
+        private void LoadDocument(string rtf, byte[]? image)
         {
             if (image != null)
             {

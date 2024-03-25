@@ -8,11 +8,11 @@
     <Grid>
 
         <FlowDocumentPageViewer>
-            <FlowDocument x:Name="flowDocument">
+            <FlowDocument x:Name="flowDocument" ColumnWidth="999999" TextAlignment="Left">
                 <Paragraph x:Name="flowImageParagraph">
                     <Figure>
                         <BlockUIContainer>
-                            <Image x:Name="imgMain" />
+                            <Image x:Name="imgMain" Width="450" />
                         </BlockUIContainer>
                     </Figure>
                 </Paragraph>
