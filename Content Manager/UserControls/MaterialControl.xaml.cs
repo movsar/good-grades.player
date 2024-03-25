@@ -33,8 +33,8 @@ namespace Content_Manager.UserControls
             DependencyProperty.Register("LmTitle", typeof(string), typeof(MaterialControl), new PropertyMetadata(""));
 
         public string LmText { get; set; }
-        public byte[] LmAudio { get; set; }
-        public byte[] LmImage { get; set; }
+        public byte[]? LmAudio { get; set; }
+        public byte[]? LmImage { get; set; }
         private string LmId { get; }
         #endregion
 
@@ -86,9 +86,16 @@ namespace Content_Manager.UserControls
         private void SetUiForExistingMaterial()
         {
             btnDelete.Visibility = Visibility.Visible;
+
             btnChooseText.Background = StylingService.ReadyBrush;
-            btnChooseAudio.Background = StylingService.ReadyBrush;
-            btnChooseImage.Background = StylingService.ReadyBrush;
+            if (LmAudio != null)
+            {
+                btnChooseAudio.Background = StylingService.ReadyBrush;
+            }
+            if (LmImage != null)
+            {
+                btnChooseImage.Background = StylingService.ReadyBrush;
+            }
         }
         private void SharedInitialization(bool isExistingMaterial = false)
         {
@@ -99,7 +106,6 @@ namespace Content_Manager.UserControls
             {
                 nameof(LmTitle),
                 nameof(LmText),
-                nameof(LmAudio)
             };
 
             _formCompletionInfo = new FormCompletionInfo(propertiesToWatch, isExistingMaterial);
@@ -116,13 +122,13 @@ namespace Content_Manager.UserControls
         public MaterialControl(Material material)
         {
             SharedInitialization(true);
-            SetUiForExistingMaterial();
 
             LmId = material.Id;
             LmTitle = material.Title;
             LmText = material.Text;
             LmAudio = material.Audio;
             LmImage = material.Image;
+            SetUiForExistingMaterial();
         }
         #endregion
 
@@ -229,7 +235,7 @@ namespace Content_Manager.UserControls
             }
             else
             {
-                var lm = ContentStore.DbContext.ListeningMaterials.First(lm => lm.Id == LmId);
+                var lm = ContentStore.DbContext.Materials.First(lm => lm.Id == LmId);
                 lm.Title = LmTitle;
                 lm.Text = LmText;
                 lm.Image = LmImage;
@@ -244,7 +250,7 @@ namespace Content_Manager.UserControls
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
             var lm = ContentStore.DbContext.Find<Material>(LmId);
-            ContentStore.DbContext.ListeningMaterials.Remove(lm);
+            ContentStore.DbContext.Materials.Remove(lm);
             ContentStore.DbContext.SaveChanges();
 
             ContentStore.RaiseItemDeletedEvent(lm);
@@ -253,7 +259,7 @@ namespace Content_Manager.UserControls
 
         private void txtTitle_KeyUp(object sender, KeyEventArgs e)
         {
-            if(e.Key == Key.Enter) 
+            if (e.Key == Key.Enter)
             {
                 Save();
             }

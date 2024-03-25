@@ -29,7 +29,7 @@ namespace Shared.Viewers
             LoadDocument(text, image);
         }
 
-        public MaterialViewer(string title, string text, byte[] image, byte[] audio)
+        public MaterialViewer(string title, string text, byte[]? image, byte[]? audio)
         {
             // Listening material presenter mode
 
@@ -38,8 +38,11 @@ namespace Shared.Viewers
 
             Title = title;
 
-            CrossSimpleAudioPlayer.Current.Load(new MemoryStream(audio));
-            spAudioControls.Visibility = Visibility.Visible;
+            if (audio != null)
+            {
+                CrossSimpleAudioPlayer.Current.Load(new MemoryStream(audio));
+                spAudioControls.Visibility = Visibility.Visible;
+            }            
         }
         #endregion
 

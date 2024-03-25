@@ -10,6 +10,11 @@ namespace Shared.Services
     {
         public static void LoadRtfFromText(RichTextBox richTextBox, string rtfString)
         {
+            if (string.IsNullOrWhiteSpace(rtfString))
+            {
+                return;
+            }
+
             var range = new TextRange(richTextBox.Document.ContentStart, richTextBox.Document.ContentEnd);
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(rtfString ?? "")))
             {
