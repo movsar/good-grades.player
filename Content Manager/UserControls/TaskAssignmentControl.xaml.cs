@@ -95,11 +95,11 @@ namespace Content_Manager.UserControls
             IAssignment taskAssignment;
             ITaskEditor taskEditor = _taskType switch
             {
-                TaskType.Matching => new MatchingTaskEditor(_taskAssignment as MatchingTaskAssignment),
-                TaskType.Filling => new FillingTaskEditor(_taskAssignment as FillingTaskAssignment),
-                TaskType.Selecting => new SelectingTaskEditor(_taskAssignment as SelectingTaskAssignment),
-                TaskType.Building => new BuildingTaskEditor(_taskAssignment as BuildingTaskAssignment),
-                TaskType.Test => new TestingTaskEditor(_taskAssignment as TestingTaskAssignment),
+                TaskType.Matching => new MatchingTaskEditor(_taskAssignment as MatchingAssignment),
+                TaskType.Filling => new FillingTaskEditor(_taskAssignment as FillingAssignment),
+                TaskType.Selecting => new SelectingTaskEditor(_taskAssignment as SelectingAssignment),
+                TaskType.Building => new BuildingTaskEditor(_taskAssignment as BuildingAssignment),
+                TaskType.Test => new TestingTaskEditor(_taskAssignment as TestingAssignment),
                 _ => throw new NotImplementedException()
             };
 
@@ -124,22 +124,22 @@ namespace Content_Manager.UserControls
             switch (_taskType)
             {
                 case TaskType.Matching:
-                    viewer = new MatchingViewer((MatchingTaskAssignment)_taskAssignment);
+                    viewer = new MatchingViewer((MatchingAssignment)_taskAssignment);
                     break;
 
                 case TaskType.Test:
-                    viewer = new TestingViewer((TestingTaskAssignment)_taskAssignment);
+                    viewer = new TestingViewer((TestingAssignment)_taskAssignment);
                     break;
 
                 case TaskType.Filling:
-                    viewer = new FillingViewer((FillingTaskAssignment)_taskAssignment);
+                    viewer = new FillingViewer((FillingAssignment)_taskAssignment);
                     break;
 
                 case TaskType.Selecting:
-                    viewer = new SelectingViewer((SelectingTaskAssignment)_taskAssignment);
+                    viewer = new SelectingViewer((SelectingAssignment)_taskAssignment);
                     break;
                 case TaskType.Building:
-                    viewer = new BuildingViewer((BuildingTaskAssignment)_taskAssignment);
+                    viewer = new BuildingViewer((BuildingAssignment)_taskAssignment);
                     break;
             }
 
@@ -203,11 +203,11 @@ namespace Content_Manager.UserControls
         {
             IEnumerable<object> items = _taskAssignment switch
             {
-                MatchingTaskAssignment mt => mt.Items,
-                FillingTaskAssignment ft => ft.Items,
-                SelectingTaskAssignment st => st.Question.Options,
-                TestingTaskAssignment tt => tt.Questions,
-                BuildingTaskAssignment bt => bt.Items,
+                MatchingAssignment mt => mt.Items,
+                FillingAssignment ft => ft.Items,
+                SelectingAssignment st => st.Question.Options,
+                TestingAssignment tt => tt.Questions,
+                BuildingAssignment bt => bt.Items,
                 _ => throw new NotImplementedException()
             };
 
@@ -217,11 +217,11 @@ namespace Content_Manager.UserControls
         {
             string selectedTaskName = _taskAssignment switch
             {
-                FillingTaskAssignment _ => Ru.FillingTaskName,
-                SelectingTaskAssignment _ => Ru.SelectingTaskName,
-                TestingTaskAssignment _ => Ru.TestTaskName,
-                BuildingTaskAssignment _ => Ru.BuildingTaskName,
-                MatchingTaskAssignment _ => Ru.MatchingTaskName,
+                FillingAssignment _ => Ru.FillingTaskName,
+                SelectingAssignment _ => Ru.SelectingTaskName,
+                TestingAssignment _ => Ru.TestTaskName,
+                BuildingAssignment _ => Ru.BuildingTaskName,
+                MatchingAssignment _ => Ru.MatchingTaskName,
                 _ => ""
             };
 

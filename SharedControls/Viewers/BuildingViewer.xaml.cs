@@ -18,10 +18,10 @@ namespace Shared.Viewers
 
         public event Action<IAssignment, bool> CompletionStateChanged;
 
-        private readonly BuildingTaskAssignment _assignment;
+        private readonly BuildingAssignment _assignment;
 
         public string TaskTitle { get; }
-        public BuildingViewer(BuildingTaskAssignment taskAssignment)
+        public BuildingViewer(BuildingAssignment taskAssignment)
         {
             InitializeComponent();
             DataContext = this;

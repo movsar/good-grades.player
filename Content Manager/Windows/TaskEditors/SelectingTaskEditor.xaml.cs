@@ -15,16 +15,16 @@ namespace Content_Manager.Windows.Editors
 {
     public partial class SelectingTaskEditor : Window, ITaskEditor
     {
-        private SelectingTaskAssignment _taskAssignment;
+        private SelectingAssignment _taskAssignment;
         public IAssignment TaskAssignment => _taskAssignment;
         private ContentStore ContentStore => App.AppHost!.Services.GetRequiredService<ContentStore>();
 
-        public SelectingTaskEditor(SelectingTaskAssignment? taskEntity = null)
+        public SelectingTaskEditor(SelectingAssignment? taskEntity = null)
         {
             InitializeComponent();
             DataContext = this;
 
-            _taskAssignment = taskEntity ?? new SelectingTaskAssignment()
+            _taskAssignment = taskEntity ?? new SelectingAssignment()
             {
                 Title = txtTitle.Text
             };

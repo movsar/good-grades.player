@@ -5,15 +5,16 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Data.Entities
 {
-    [Table("testing_tasks")]
-    public class TestingTaskAssignment : IEntityBase, IAssignment
+    [Table("building_assignments")]
+    public class BuildingAssignment : IEntityBase, IAssignment, IMaterial
     {
         [Key] public string Id { get; set; } = Guid.NewGuid().ToString();
         public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.Now;
         public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;
         /******************************************************************/
-        [Required] public string Title { get; set; }
-        public virtual IList<Question> Questions { get; } = new List<Question>();
-        public bool IsContentSet => Questions.Count() > 0;
+        public string Title { get; set; }
+        public virtual IList<AssignmentItem> Items { get; } = new List<AssignmentItem>();
+        public bool IsContentSet => Items.Count() > 0;
+
     }
 }

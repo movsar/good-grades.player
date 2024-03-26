@@ -11,7 +11,7 @@ namespace Shared.Viewers
 {
     public partial class SelectingViewer : Window, IAssignmentViewer
     {
-        private readonly SelectingTaskAssignment _assignment;
+        private readonly SelectingAssignment _assignment;
 
         public string TaskTitle { get; }
 
@@ -19,7 +19,7 @@ namespace Shared.Viewers
 
         public event Action<IAssignment, bool> CompletionStateChanged;
 
-        public SelectingViewer(SelectingTaskAssignment selectingTask)
+        public SelectingViewer(SelectingAssignment selectingTask)
         {
             InitializeComponent();
             DataContext = this;

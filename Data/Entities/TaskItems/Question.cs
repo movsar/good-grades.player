@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Data.Entities.TaskItems
 {
-    [Table("question_items")]
+    [Table("questions")]
     public class Question : IEntityBase
     {
         [Key] public string Id { get; set; } = Guid.NewGuid().ToString();

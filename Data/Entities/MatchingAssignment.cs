@@ -5,8 +5,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Data.Entities
 {
-    [Table("filling_tasks")]
-    public class FillingTaskAssignment : IEntityBase, IAssignment
+    [Table("matching_assignments")]
+    public class MatchingAssignment : IEntityBase, IAssignment
     {
         [Key] public string Id { get; set; } = Guid.NewGuid().ToString();
         public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.Now;

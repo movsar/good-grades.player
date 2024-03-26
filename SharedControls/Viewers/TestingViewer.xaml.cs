@@ -13,9 +13,9 @@ namespace Shared.Viewers
 {
     public partial class TestingViewer : Window, IAssignmentViewer
     {
-        private readonly TestingTaskAssignment _assignment;
+        private readonly TestingAssignment _assignment;
 
-        public TestingViewer(TestingTaskAssignment testingTask)
+        public TestingViewer(TestingAssignment testingTask)
         {
             InitializeComponent();
             DataContext = this;

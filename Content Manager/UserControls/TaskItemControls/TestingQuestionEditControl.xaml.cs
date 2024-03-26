@@ -45,7 +45,7 @@ namespace Content_Manager.UserControls
             set { SetValue(ItemTextProperty, value); }
         }
 
-        private TestingTaskAssignment _task;
+        private TestingAssignment _task;
         private readonly string _taskId;
         public static readonly DependencyProperty ItemTextProperty =
             DependencyProperty.Register("QuestionText", typeof(string), typeof(TestingQuestionEditControl), new PropertyMetadata(""));
@@ -95,7 +95,7 @@ namespace Content_Manager.UserControls
             _formCompletionInfo = new FormCompletionInfo(propertiesToWatch, isExistingMaterial);
             _formCompletionInfo.StatusChanged += OnFormStatusChanged;
         }
-        public TestingQuestionEditControl(TestingTaskAssignment task)
+        public TestingQuestionEditControl(TestingAssignment task)
         {
             SharedInitialization(false);
             SetUiForNewMaterial();
@@ -105,7 +105,7 @@ namespace Content_Manager.UserControls
             _task = task;
         }
 
-        public TestingQuestionEditControl(TestingTaskAssignment task, Question testingQuestion)
+        public TestingQuestionEditControl(TestingAssignment task, Question testingQuestion)
         {
             SharedInitialization(true);
             SetUiForExistingMaterial();

@@ -11,10 +11,10 @@ namespace Shared.Viewers
 {
     public partial class FillingViewer : Window, IAssignmentViewer
     {
-        private readonly FillingTaskAssignment _assignment;
+        private readonly FillingAssignment _assignment;
 
         public string TaskTitle { get; }
-        public FillingViewer(FillingTaskAssignment fillingTask)
+        public FillingViewer(FillingAssignment fillingTask)
         {
             InitializeComponent();
             DataContext = this;

@@ -12,11 +12,11 @@ namespace Data
 
         public DbSet<Material> Materials { get; set; }
 
-        public DbSet<MatchingTaskAssignment> MatchingTaskAssignments { get; set; }
-        public DbSet<FillingTaskAssignment> FillingTaskAssignments { get; set; }
-        public DbSet<BuildingTaskAssignment> BuildingTaskAssignmeents { get; set; }
-        public DbSet<SelectingTaskAssignment> SelectingTaskAssignments { get; set; }
-        public DbSet<TestingTaskAssignment> TestingTaskAssignments { get; set; }
+        public DbSet<MatchingAssignment> MatchingTaskAssignments { get; set; }
+        public DbSet<FillingAssignment> FillingTaskAssignments { get; set; }
+        public DbSet<BuildingAssignment> BuildingTaskAssignmeents { get; set; }
+        public DbSet<SelectingAssignment> SelectingTaskAssignments { get; set; }
+        public DbSet<TestingAssignment> TestingTaskAssignments { get; set; }
 
         public DbSet<Segment> Segments { get; set; }
         public DbSet<Question> TestingQuestions { get; set; }

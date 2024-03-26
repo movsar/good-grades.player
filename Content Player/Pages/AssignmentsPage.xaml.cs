@@ -92,23 +92,23 @@ namespace Content_Player.Pages
             Window viewer = null!;
             switch (assignment)
             {
-                case MatchingTaskAssignment:
-                    viewer = new MatchingViewer((MatchingTaskAssignment)assignment);
+                case MatchingAssignment:
+                    viewer = new MatchingViewer((MatchingAssignment)assignment);
                     break;
 
-                case TestingTaskAssignment:
-                    viewer = new TestingViewer((TestingTaskAssignment)assignment);
+                case TestingAssignment:
+                    viewer = new TestingViewer((TestingAssignment)assignment);
                     break;
 
-                case FillingTaskAssignment:
-                    viewer = new FillingViewer((FillingTaskAssignment)assignment);
+                case FillingAssignment:
+                    viewer = new FillingViewer((FillingAssignment)assignment);
                     break;
 
-                case SelectingTaskAssignment:
-                    viewer = new SelectingViewer((SelectingTaskAssignment)assignment);
+                case SelectingAssignment:
+                    viewer = new SelectingViewer((SelectingAssignment)assignment);
                     break;
-                case BuildingTaskAssignment:
-                    viewer = new BuildingViewer((BuildingTaskAssignment)assignment);
+                case BuildingAssignment:
+                    viewer = new BuildingViewer((BuildingAssignment)assignment);
                     break;
             }
 
