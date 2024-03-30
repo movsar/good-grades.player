@@ -41,7 +41,6 @@ namespace Content_Manager.Windows.Editors
                 var isSelected = _taskAssignment.Question.CorrectOptionId == item.Id;
                 var existingQuizItemControl = new AssignmentItemEditControl(TaskType.Selecting, item, isSelected);
                 existingQuizItemControl.Delete += Item_Delete;
-                existingQuizItemControl.SetAsCorrect += ExistingQuizItemControl_SetAsCorrect;
 
                 spItems.Children.Add(existingQuizItemControl);
             }

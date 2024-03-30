@@ -11,16 +11,15 @@
                     Orientation="Horizontal" 
                     Height="30">
 
-            <Button x:Name="btnSetAsCorrect"
+            <CheckBox x:Name="chkIsChecked"
+                    Margin="5"
                     Visibility="Collapsed"
-                    Margin="2 0 0 0"
-                    Width="30"
-                    Height="30"
-                    Click="btnSetAsDefault_Click"
-                    FontFamily="Segoe MDL2 Assets"
-                    FontWeight="Bold"
+                    BorderThickness="2"
+                    BorderBrush="Black"
+                    Checked="chkIsChecked_Checked"
+                    Unchecked="chkIsChecked_Unchecked"
                     Cursor="Hand">
-            </Button>
+            </CheckBox>
 
             <Button x:Name="btnChooseImage"
                     Visibility="Collapsed"

@@ -25,7 +25,6 @@ namespace Content_Manager.UserControls
         public event Action<IEntityBase> Create;
         public event Action<IEntityBase> Update;
         public event Action<string> Delete;
-        public event Action<string> SetAsCorrect;
 
         #region Fields
         private string Hint = Ru.SetDescription;
@@ -43,6 +42,8 @@ namespace Content_Manager.UserControls
         }
         public static readonly DependencyProperty ItemTextProperty =
             DependencyProperty.Register("ItemText", typeof(string), typeof(AssignmentItemEditControl), new PropertyMetadata(""));
+        private readonly AssignmentItem _item;
+
         public string ItemId { get; set; }
         public byte[] ItemImage { get; private set; }
         #endregion
@@ -117,23 +118,8 @@ namespace Content_Manager.UserControls
                     break;
                 case TaskType.Test:
                 case TaskType.Selecting:
-                    btnSetAsCorrect.Visibility = Visibility.Visible;
-
-                    if (isSelected)
-                    {
-                        btnSetAsCorrect.Content = "\uE73A";
-                        btnSetAsCorrect.Foreground = Brushes.DarkGreen;
-                    }
-                    else
-                    {
-                        btnSetAsCorrect.Content = "\uE739";
-                    }
-
-                    if (!isExistingMaterial)
-                    {
-                        btnSetAsCorrect.IsEnabled = false;
-                    }
-
+                    chkIsChecked.Visibility = Visibility.Visible;
+                    chkIsChecked.IsChecked = _item.IsChecked;
                     break;
                 default:
                     break;
@@ -146,21 +132,25 @@ namespace Content_Manager.UserControls
         }
         public AssignmentItemEditControl(TaskType taskType)
         {
+            _item = new AssignmentItem();
+
             SharedUiInitialization(taskType, false, false);
             SetUiForNewMaterial();
         }
         public AssignmentItemEditControl(TaskType taskType, AssignmentItem item, bool isSelected = false)
         {
+            _item = item;
+
             SharedUiInitialization(taskType, true, isSelected);
             SetUiForExistingMaterial();
 
-            ItemId = item.Id;
-            ItemImage = item.Image;
-            ItemText = item.Text;
+            ItemId = _item.Id;
+            ItemImage = _item.Image;
+            ItemText = _item.Text;
 
             OnTextSet(true);
 
-            if (item.Image != null)
+            if (_item.Image != null)
             {
                 OnImageSet(true);
             }
@@ -282,22 +272,22 @@ namespace Content_Manager.UserControls
         }
         #endregion
 
-        private void btnSetAsDefault_Click(object sender, RoutedEventArgs e)
-        {
-            if (ItemId == null)
-            {
-                return;
-            }
-
-            SetAsCorrect?.Invoke(ItemId);
-        }
-
         private void txtItemText_KeyUp(object sender, KeyEventArgs e)
         {
-            if(e.Key == Key.Enter)
+            if (e.Key == Key.Enter)
             {
                 Save();
             }
+        }
+
+        private void chkIsChecked_Checked(object sender, RoutedEventArgs e)
+        {
+            _item.IsChecked = true;
+        }
+
+        private void chkIsChecked_Unchecked(object sender, RoutedEventArgs e)
+        {
+            _item.IsChecked = false;
         }
     }
 }
