@@ -1,39 +1,29 @@
 ﻿using Content_Manager.Models;
 using Content_Manager.Services;
-using Content_Manager.Stores;
 using Data;
 using Data.Entities.TaskItems;
-using Data.Interfaces;
-using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Image = System.Windows.Controls.Image;
 using Shared.Translations;
-using Shared.Services;
-using System.Windows.Input;
+using Image = System.Windows.Controls.Image;
 
 namespace Content_Manager.UserControls
 {
     public partial class AssignmentItemEditControl : UserControl
     {
-        public event Action<string> Delete;
-
         #region Fields
         private string Hint = Ru.SetDescription;
         private FormCompletionInfo _formCompletionInfo;
         private TaskType _taskType;
         #endregion
 
-        #region Properties
-        ContentStore ContentStore => App.AppHost!.Services.GetRequiredService<ContentStore>();
-        StylingService StylingService => App.AppHost!.Services.GetRequiredService<StylingService>();
+        #region Properties and Events
         public AssignmentItem Item { get; }
+        public event Action<string> Delete;
         #endregion
 
         #region Reactions
@@ -58,15 +48,8 @@ namespace Content_Manager.UserControls
         #endregion
 
         #region Initialization
-        private void SetUiForNewMaterial()
-        {
-            btnDelete.Visibility = Visibility.Hidden;
-        }
-        private void SetUiForExistingMaterial()
-        {
-            btnDelete.Visibility = Visibility.Visible;
-        }
-        private void SharedUiInitialization(TaskType taskType, bool isExistingMaterial, bool isSelected)
+
+        private void SharedUiInitialization(TaskType taskType, bool isExistingMaterial)
         {
             InitializeComponent();
             DataContext = this;
@@ -101,7 +84,7 @@ namespace Content_Manager.UserControls
                     break;
             }
 
-            Item.Text = Hint;
+            txtItemText.Text = Hint;
 
             _formCompletionInfo = new FormCompletionInfo(propertiesToWatch, isExistingMaterial);
         }
@@ -109,15 +92,15 @@ namespace Content_Manager.UserControls
         {
             Item = new AssignmentItem();
 
-            SharedUiInitialization(taskType, false, false);
-            SetUiForNewMaterial();
+            SharedUiInitialization(taskType, false);
+            btnDelete.Visibility = Visibility.Hidden;
         }
-        public AssignmentItemEditControl(TaskType taskType, AssignmentItem item, bool isSelected = false)
+        public AssignmentItemEditControl(TaskType taskType, AssignmentItem item)
         {
             Item = item;
 
-            SharedUiInitialization(taskType, true, isSelected);
-            SetUiForExistingMaterial();
+            SharedUiInitialization(taskType, true);
+            btnDelete.Visibility = Visibility.Visible;
 
             txtItemText.Text = Item.Text;
             OnTextSet(true);
@@ -134,7 +117,7 @@ namespace Content_Manager.UserControls
         {
             if (txtItemText.Text == Hint)
             {
-                Item.Text = "";
+                txtItemText.Text = "";
             }
         }
 
@@ -142,18 +125,25 @@ namespace Content_Manager.UserControls
         {
             if (string.IsNullOrEmpty(txtItemText.Text))
             {
-                Item.Text = Hint;
+                txtItemText.Text = Hint;
             }
         }
 
         private void txtItemText_TextChanged(object sender, TextChangedEventArgs e)
         {
+            if (_formCompletionInfo == null)
+            {
+                // Not initialized yet
+                return;
+            }
+
             if (string.IsNullOrEmpty(txtItemText.Text) || txtItemText.Text.Equals(Hint))
             {
                 OnTextSet(false);
             }
             else
             {
+                Item.Text = txtItemText.Text;
                 OnTextSet(true);
             }
         }

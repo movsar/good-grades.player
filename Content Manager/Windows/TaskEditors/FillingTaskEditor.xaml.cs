@@ -98,8 +98,16 @@ namespace Content_Manager.Windows.Editors
 
             RedrawUi();
         }
-
-        private void txtTitle_TextChanged(object sender, TextChangedEventArgs e)
+    //       try
+    //        {
+    //            ValidateInput();
+    //}
+    //        catch (Exception ex)
+    //        {
+    //            ExceptionService.HandleError(ex, ex.Message);
+    //            return;
+    //        }
+private void txtTitle_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (_taskAssignment != null)
             {

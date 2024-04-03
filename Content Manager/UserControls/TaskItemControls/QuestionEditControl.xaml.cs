@@ -117,9 +117,7 @@ namespace Content_Manager.UserControls
 
             foreach (var answer in Options)
             {
-                var isSelected = ContentStore.SelectedSegment?.TestingTasks.SelectMany(t => t.Questions).Where(q => q.Id == QuestionId).FirstOrDefault()?.CorrectOptionId == answer.Id;
-
-                var existingItemControl = new AssignmentItemEditControl(TaskType.Test, answer, isSelected);
+                var existingItemControl = new AssignmentItemEditControl(TaskType.Test, answer);
                 existingItemControl.Delete += Option_Delete;
 
                 spItems.Children.Add(existingItemControl);

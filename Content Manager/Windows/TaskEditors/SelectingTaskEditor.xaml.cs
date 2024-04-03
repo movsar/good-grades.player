@@ -42,8 +42,7 @@ namespace Content_Manager.Windows.Editors
             spItems.Children.Clear();
             foreach (var item in _taskAssignment.Question.Options)
             {
-                var isSelected = _taskAssignment.Question.CorrectOptionId == item.Id;
-                var existingQuizItemControl = new AssignmentItemEditControl(TaskType.Selecting, item, isSelected);
+                var existingQuizItemControl = new AssignmentItemEditControl(TaskType.Selecting, item);
                 existingQuizItemControl.Delete += Item_Delete;
 
                 spItems.Children.Add(existingQuizItemControl);
@@ -108,45 +107,17 @@ namespace Content_Manager.Windows.Editors
                 {
                     continue;
                 }
+
+                if (string.IsNullOrWhiteSpace(aiEditControl.Item.Text))
+                {
+                    continue;
+                }
+
                 _taskAssignment.Question.Options.Add(aiEditControl.Item);
             }
 
+            ContentStore.DbContext.ChangeTracker.DetectChanges();
             ContentStore.DbContext.SaveChanges();
-
-            //try
-            //{
-            //    ValidateInput();
-            //}
-            //catch (Exception ex)
-            //{
-            //    ExceptionService.HandleError(ex, ex.Message);
-            //    return;
-            //}
-
-            //if (string.IsNullOrEmpty(Item.Id))
-            //{
-            //    var item = new AssignmentItem()
-            //    {
-            //        Text = Item.Text,
-            //        Image = Item.Image
-            //    };
-
-            //    Create?.Invoke(item);
-            //}
-            //else
-            //{
-            //    var item = ContentStore.DbContext.Find<AssignmentItem>(Item.Id);
-            //    if (Item.Image != null)
-            //    {
-            //        item.Image = Item.Image;
-            //    }
-            //    item.Text = Item.Text;
-
-            //    ContentStore.DbContext.SaveChanges();
-
-            //    Update?.Invoke(item);
-            //}
-
         }
     }
 }

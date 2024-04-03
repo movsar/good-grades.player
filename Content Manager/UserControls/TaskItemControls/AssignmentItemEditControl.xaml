@@ -34,7 +34,6 @@
             <TextBox x:Name="txtItemText"
                      Style="{StaticResource InputFieldStyle}"
                      Width="386"
-                     Text="{Binding Path=Item.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      TextAlignment="Left"
                      VerticalContentAlignment="Center"
                      GotFocus="txtItemText_GotFocus"
