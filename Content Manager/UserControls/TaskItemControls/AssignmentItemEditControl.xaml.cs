@@ -22,8 +22,6 @@ namespace Content_Manager.UserControls
 {
     public partial class AssignmentItemEditControl : UserControl
     {
-        public event Action<IEntityBase> Create;
-        public event Action<IEntityBase> Update;
         public event Action<string> Delete;
 
         #region Fields
@@ -35,40 +33,19 @@ namespace Content_Manager.UserControls
         #region Properties
         ContentStore ContentStore => App.AppHost!.Services.GetRequiredService<ContentStore>();
         StylingService StylingService => App.AppHost!.Services.GetRequiredService<StylingService>();
-        public string ItemText
-        {
-            get { return (string)GetValue(ItemTextProperty); }
-            set { SetValue(ItemTextProperty, value); }
-        }
-        public static readonly DependencyProperty ItemTextProperty =
-            DependencyProperty.Register("ItemText", typeof(string), typeof(AssignmentItemEditControl), new PropertyMetadata(""));
-        private readonly AssignmentItem _item;
-
-        public string ItemId { get; set; }
-        public byte[] ItemImage { get; private set; }
+        public AssignmentItem Item { get; }
         #endregion
 
         #region Reactions
-        private void OnFormStatusChanged(bool isReady)
-        {
-            if (isReady)
-            {
-                btnSave.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                btnSave.Visibility = Visibility.Collapsed;
-            }
-        }
         private void OnTextSet(bool isSet)
         {
-            _formCompletionInfo.Update(nameof(ItemText), isSet);
+            _formCompletionInfo.Update(nameof(Item.Text), isSet);
         }
         private void OnImageSet(bool isSet = true)
         {
             BitmapImage logo = new BitmapImage();
             logo.BeginInit();
-            logo.StreamSource = new MemoryStream(ItemImage);
+            logo.StreamSource = new MemoryStream(Item.Image);
             logo.EndInit();
 
             var imgControl = new Image();
@@ -76,7 +53,7 @@ namespace Content_Manager.UserControls
             imgControl.Source = logo;
             btnChooseImage.Content = imgControl;
 
-            _formCompletionInfo.Update(nameof(ItemImage), isSet);
+            _formCompletionInfo.Update(nameof(Item.Image), isSet);
         }
         #endregion
 
@@ -84,7 +61,6 @@ namespace Content_Manager.UserControls
         private void SetUiForNewMaterial()
         {
             btnDelete.Visibility = Visibility.Hidden;
-            btnSave.Visibility = Visibility.Hidden;
         }
         private void SetUiForExistingMaterial()
         {
@@ -99,7 +75,7 @@ namespace Content_Manager.UserControls
 
             var propertiesToWatch = new List<string>
             {
-                nameof(ItemText)
+                nameof(Item.Text)
             };
 
             // Decide what controls to make available
@@ -113,44 +89,40 @@ namespace Content_Manager.UserControls
 
                     btnChooseImage.Visibility = Visibility.Visible;
 
-                    propertiesToWatch.Add(nameof(ItemImage));
+                    propertiesToWatch.Add(nameof(Item.Image));
 
                     break;
                 case TaskType.Test:
                 case TaskType.Selecting:
                     chkIsChecked.Visibility = Visibility.Visible;
-                    chkIsChecked.IsChecked = _item.IsChecked;
+                    chkIsChecked.IsChecked = Item.IsChecked;
                     break;
                 default:
                     break;
             }
 
-            ItemText = Hint;
+            Item.Text = Hint;
 
             _formCompletionInfo = new FormCompletionInfo(propertiesToWatch, isExistingMaterial);
-            _formCompletionInfo.StatusChanged += OnFormStatusChanged;
         }
         public AssignmentItemEditControl(TaskType taskType)
         {
-            _item = new AssignmentItem();
+            Item = new AssignmentItem();
 
             SharedUiInitialization(taskType, false, false);
             SetUiForNewMaterial();
         }
         public AssignmentItemEditControl(TaskType taskType, AssignmentItem item, bool isSelected = false)
         {
-            _item = item;
+            Item = item;
 
             SharedUiInitialization(taskType, true, isSelected);
             SetUiForExistingMaterial();
 
-            ItemId = _item.Id;
-            ItemImage = _item.Image;
-            ItemText = _item.Text;
-
+            txtItemText.Text = Item.Text;
             OnTextSet(true);
 
-            if (_item.Image != null)
+            if (Item.Image != null)
             {
                 OnImageSet(true);
             }
@@ -160,17 +132,17 @@ namespace Content_Manager.UserControls
         #region TextHandlers
         private void txtItemText_GotFocus(object sender, RoutedEventArgs e)
         {
-            if (ItemText == Hint)
+            if (txtItemText.Text == Hint)
             {
-                ItemText = "";
+                Item.Text = "";
             }
         }
 
         private void txtItemText_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrEmpty(ItemText))
+            if (string.IsNullOrEmpty(txtItemText.Text))
             {
-                ItemText = Hint;
+                Item.Text = Hint;
             }
         }
 
@@ -197,97 +169,25 @@ namespace Content_Manager.UserControls
             var content = File.ReadAllBytes(filePath);
             if (content.Length == 0) return;
 
-            ItemImage = content;
+            Item.Image = content;
 
             OnImageSet(true);
         }
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-            Delete?.Invoke(ItemId);
-        }
-        private void btnOk_Click(object sender, RoutedEventArgs e)
-        {
-            Save();
-        }
-
-        private void Save()
-        {
-
-            try
-            {
-                ValidateInput();
-            }
-            catch (Exception ex)
-            {
-                ExceptionService.HandleError(ex, ex.Message);
-                return;
-            }
-
-            if (string.IsNullOrEmpty(ItemId))
-            {
-                var item = new AssignmentItem()
-                {
-                    Text = ItemText,
-                    Image = ItemImage
-                };
-
-                Create?.Invoke(item);
-            }
-            else
-            {
-                var item = ContentStore.DbContext.Find<AssignmentItem>(ItemId);
-                if (ItemImage != null)
-                {
-                    item.Image = ItemImage;
-                }
-                item.Text = ItemText;
-
-                ContentStore.DbContext.SaveChanges();
-
-                Update?.Invoke(item);
-            }
-        }
-        private void ValidateInput()
-        {
-            switch (_taskType)
-            {
-                case TaskType.Filling:
-                    var gapOpeners = Regex.Matches(ItemText, @"\{");
-                    var gapClosers = Regex.Matches(ItemText, @"\}");
-                    var gappedWords = Regex.Matches(ItemText, @"\{\W*\w+.*?\}");
-
-                    if (gapOpeners.Count != gapClosers.Count || gapOpeners.Count != gappedWords.Count)
-                    {
-                        throw new Exception(Ru.ExceptionUncorrectFormate);
-                    }
-
-                    if (gappedWords.Count == 0)
-                    {
-                        throw new Exception(Ru.ExceptionMinWords);
-                    }
-
-                    break;
-            }
+            Delete?.Invoke(Item.Id);
         }
         #endregion
 
-        private void txtItemText_KeyUp(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                Save();
-            }
-        }
-
         private void chkIsChecked_Checked(object sender, RoutedEventArgs e)
         {
-            _item.IsChecked = true;
+            Item.IsChecked = true;
         }
 
         private void chkIsChecked_Unchecked(object sender, RoutedEventArgs e)
         {
-            _item.IsChecked = false;
+            Item.IsChecked = false;
         }
     }
 }

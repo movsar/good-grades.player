@@ -7,9 +7,13 @@ using Data.Entities.TaskItems;
 using Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Shared.Services;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Content_Manager.Windows.Editors
 {
@@ -46,7 +50,6 @@ namespace Content_Manager.Windows.Editors
             }
 
             var newItemControl = new AssignmentItemEditControl(TaskType.Selecting);
-            newItemControl.Create += Item_Create;
             spItems.Children.Add(newItemControl);
         }
 
@@ -92,6 +95,58 @@ namespace Content_Manager.Windows.Editors
                 _taskAssignment.Question.Text = txtTitle.Text;
                 ContentStore.DbContext.SaveChanges();
             }
+        }
+
+        private void btnSave_Click(object sender, RoutedEventArgs e)
+        {
+            _taskAssignment.Question.Options.Clear();
+
+            foreach (var item in spItems.Children)
+            {
+                var aiEditControl = item as AssignmentItemEditControl;
+                if (aiEditControl == null)
+                {
+                    continue;
+                }
+                _taskAssignment.Question.Options.Add(aiEditControl.Item);
+            }
+
+            ContentStore.DbContext.SaveChanges();
+
+            //try
+            //{
+            //    ValidateInput();
+            //}
+            //catch (Exception ex)
+            //{
+            //    ExceptionService.HandleError(ex, ex.Message);
+            //    return;
+            //}
+
+            //if (string.IsNullOrEmpty(Item.Id))
+            //{
+            //    var item = new AssignmentItem()
+            //    {
+            //        Text = Item.Text,
+            //        Image = Item.Image
+            //    };
+
+            //    Create?.Invoke(item);
+            //}
+            //else
+            //{
+            //    var item = ContentStore.DbContext.Find<AssignmentItem>(Item.Id);
+            //    if (Item.Image != null)
+            //    {
+            //        item.Image = Item.Image;
+            //    }
+            //    item.Text = Item.Text;
+
+            //    ContentStore.DbContext.SaveChanges();
+
+            //    Update?.Invoke(item);
+            //}
+
         }
     }
 }

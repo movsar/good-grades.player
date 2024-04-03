@@ -34,20 +34,13 @@
             <TextBox x:Name="txtItemText"
                      Style="{StaticResource InputFieldStyle}"
                      Width="386"
-                     Text="{Binding Path=ItemText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                     Text="{Binding Path=Item.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      TextAlignment="Left"
                      VerticalContentAlignment="Center"
                      GotFocus="txtItemText_GotFocus"
                      LostFocus="txtItemText_LostFocus"
-                     TextChanged="txtItemText_TextChanged" KeyUp="txtItemText_KeyUp"
+                     TextChanged="txtItemText_TextChanged"
                      />
-
-            <Button x:Name="btnSave" 
-                    Background="LightSeaGreen"
-                    Margin="10 0 0 0" Padding="7 0 7 0" 
-                    Cursor="Hand"
-                    FontFamily="Segoe MDL2 Assets" Content="&#xE74E;" 
-                    Click="btnOk_Click"/>
 
             <Button x:Name="btnDelete" 
                     Background="IndianRed"

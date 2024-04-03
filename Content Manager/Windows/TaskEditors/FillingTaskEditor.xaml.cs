@@ -7,7 +7,10 @@ using Data.Entities.TaskItems;
 using Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Shared.Translations;
+using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -45,10 +48,30 @@ namespace Content_Manager.Windows.Editors
             }
 
             var newItemControl = new AssignmentItemEditControl(TaskType.Filling);
-            newItemControl.Create += Item_Create;
             spItems.Children.Add(newItemControl);
         }
+        private void ValidateInput()
+        {
+            //switch (_taskType)
+            //{
+            //    case TaskType.Filling:
+            //        var gapOpeners = Regex.Matches(Item.Text, @"\{");
+            //        var gapClosers = Regex.Matches(Item.Text, @"\}");
+            //        var gappedWords = Regex.Matches(Item.Text, @"\{\W*\w+.*?\}");
 
+            //        if (gapOpeners.Count != gapClosers.Count || gapOpeners.Count != gappedWords.Count)
+            //        {
+            //            throw new Exception(Ru.ExceptionUncorrectFormate);
+            //        }
+
+            //        if (gappedWords.Count == 0)
+            //        {
+            //            throw new Exception(Ru.ExceptionMinWords);
+            //        }
+
+            //        break;
+            //}
+        }
         private void Item_Create(IEntityBase entity)
         {
             var itemEntity = (AssignmentItem)entity;

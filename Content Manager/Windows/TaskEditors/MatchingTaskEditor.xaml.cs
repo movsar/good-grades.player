@@ -45,7 +45,6 @@ namespace Content_Manager.Windows.Editors
             }
 
             var newItemControl = new AssignmentItemEditControl(TaskType.Matching);
-            newItemControl.Create += Item_Create;
             spItems.Children.Add(newItemControl);
         }
 
