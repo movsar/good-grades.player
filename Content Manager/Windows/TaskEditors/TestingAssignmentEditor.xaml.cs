@@ -4,7 +4,9 @@ using Content_Manager.UserControls;
 using Data.Entities;
 using Data.Entities.TaskItems;
 using Data.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using System;
 using System.Linq;
 using System.Windows;
@@ -13,13 +15,13 @@ using System.Xml.Schema;
 
 namespace Content_Manager.Windows.Editors
 {
-    public partial class TestingTaskEditor : Window, ITaskEditor
+    public partial class TestingAssignmentEditor : Window, ITaskEditor
     {
         private TestingAssignment _taskAssignment;
         public IAssignment Assignment => _taskAssignment;
         private ContentStore ContentStore => App.AppHost!.Services.GetRequiredService<ContentStore>();
 
-        public TestingTaskEditor(TestingAssignment? taskEntity = null)
+        public TestingAssignmentEditor(TestingAssignment? taskEntity = null)
         {
             InitializeComponent();
             DataContext = this;
@@ -30,8 +32,6 @@ namespace Content_Manager.Windows.Editors
             };
             txtTitle.Text = _taskAssignment.Title;
             RedrawUi();
-
-
         }
 
         public void RedrawUi()
@@ -51,6 +51,15 @@ namespace Content_Manager.Windows.Editors
             spItems.Children.Add(newItemControl);
 
             ContentStore.ItemUpdated += Question_Updated;
+        }
+        private void btnSave_Click(object sender, RoutedEventArgs e)
+        {
+            Save();
+        }
+
+        private void Save()
+        {
+
         }
 
         private void Question_Updated(IEntityBase quiestion)

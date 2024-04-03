@@ -99,7 +99,7 @@ namespace Content_Manager.UserControls
                 TaskType.Filling => new FillingTaskEditor(_taskAssignment as FillingAssignment),
                 TaskType.Selecting => new SelectionAssignmentEditor(_taskAssignment as SelectingAssignment),
                 TaskType.Building => new BuildingTaskEditor(_taskAssignment as BuildingAssignment),
-                TaskType.Test => new TestingTaskEditor(_taskAssignment as TestingAssignment),
+                TaskType.Test => new TestingAssignmentEditor(_taskAssignment as TestingAssignment),
                 _ => throw new NotImplementedException()
             };
 

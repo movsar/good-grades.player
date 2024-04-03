@@ -19,54 +19,24 @@ namespace Content_Manager.UserControls
 {
     public partial class QuestionEditControl : UserControl
     {
-        #region Events
-        public event Action<IEntityBase> QuestionCreated;
-        public event Action<IEntityBase> QuestionUpdated;
-        public event Action<string> QuestionDeleted;
-        #endregion
-
         #region Fields
         static string Hint { get; } = Ru.SetDescription;
         private FormCompletionInfo _formCompletionInfo;
+        private readonly ContentStore ContentStore = App.AppHost!.Services.GetRequiredService<ContentStore>();
         #endregion
 
-        #region Properties
-        private readonly ContentStore ContentStore = App.AppHost!.Services.GetRequiredService<ContentStore>();
+        #region Properties and Events
         StylingService StylingService => App.AppHost!.Services.GetRequiredService<StylingService>();
-        private List<AssignmentItem> Options { get; set; } = new List<AssignmentItem>();
-
-        private readonly Question _testingQuestion;
-
-        public string QuestionText
-        {
-            get { return (string)GetValue(ItemTextProperty); }
-            set { SetValue(ItemTextProperty, value); }
-        }
-
-        private TestingAssignment _task;
-        private readonly string _taskId;
-        public static readonly DependencyProperty ItemTextProperty =
-            DependencyProperty.Register("QuestionText", typeof(string), typeof(QuestionEditControl), new PropertyMetadata(""));
-
-        public string QuestionId { get; }
-
+        public Question Question { get; }
+        public event Action<Question> Discarded;
+        public event Action<Question> Committed;
+        public event Action<Question> Updated;
         #endregion
 
         #region Reactions
-        private void OnFormStatusChanged(bool isReady)
-        {
-            if (isReady)
-            {
-                btnSaveQuestion.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                btnSaveQuestion.Visibility = Visibility.Collapsed;
-            }
-        }
         private void OnTextSet(bool isSet)
         {
-            _formCompletionInfo.Update(nameof(QuestionText), isSet);
+            _formCompletionInfo.Update(nameof(Question.Text), isSet);
         }
         #endregion
 
@@ -139,14 +109,7 @@ namespace Content_Manager.UserControls
         }
 
         #region Event Handlers
-        private void Question_Option_SetAsCorrect(string itemId)
-        {
-            _testingQuestion!.CorrectOptionId = itemId;
-            ContentStore.DbContext.SaveChanges();
-
-            ContentStore.RaiseItemUpdatedEvent(_testingQuestion);
-
-        }
+      
         private void Option_Create(IEntityBase entity)
         {
             var newAnswer = (AssignmentItem)entity;
@@ -203,56 +166,16 @@ namespace Content_Manager.UserControls
         #endregion
 
         #region Button Handlers
-        private void btnSaveQuestion_Click(object sender, RoutedEventArgs e)
-        {
-            Save();
-        }
-        
-        private void Save()
-        {
-
-            // If the TestingTaskAssignment is new - add to database
-            var taskState = ContentStore.DbContext.Entry(_task).State;
-            if (taskState == EntityState.Detached || taskState == EntityState.Added)
-            {
-                ContentStore.SelectedSegment!.TestingTasks.Add(_task);
-            }
-
-            // Set testing question fields
-            _testingQuestion.Text = QuestionText;
-            _testingQuestion.Options.Clear();
-            foreach (var option in Options)
-            {
-                _testingQuestion.Options.Add(option);
-            }
-
-            // If testing question is new - add to database
-            var questionState = ContentStore.DbContext.Entry(_testingQuestion).State;
-            if (questionState == EntityState.Detached || questionState == EntityState.Added)
-            {
-                _task.Questions.Add(_testingQuestion);
-                QuestionCreated?.Invoke(_testingQuestion);
-            }
-            else
-            {
-                QuestionUpdated?.Invoke(_testingQuestion);
-            }
-
-            ContentStore.DbContext.SaveChanges();
-        }
-
+      
         private void btnDeleteQuestion_Click(object sender, RoutedEventArgs e)
         {
             QuestionDeleted?.Invoke(QuestionId);
         }
         #endregion
 
-        private void txtQuestion_KeyUp(object sender, KeyEventArgs e)
+        private void btnDiscard_Click(object sender, RoutedEventArgs e)
         {
-            if(e.Key == Key.Enter)
-            {
-                Save();
-            }
+            Discarded?.Invoke(Item);
         }
     }
 }

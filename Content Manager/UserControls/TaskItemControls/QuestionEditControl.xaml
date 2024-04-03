@@ -13,8 +13,7 @@
                         Height="30">
 
                 <TextBox x:Name="txtQuestion"
-                     Foreground="Azure"
-                     Background="Gray"
+                     Background="Honeydew"
                      Margin="10 0 0 0" 
                      Padding="5 0 0 0"
                      Width="510" 
@@ -26,19 +25,19 @@
                      TextChanged="txtQuestionText_TextChanged" KeyUp="txtQuestion_KeyUp"
                      />
 
-                <Button x:Name="btnSaveQuestion" 
-                    Background="LightSeaGreen"
-                    Margin="2 0 0 0" Padding="7 0 7 0" 
-                    Cursor="Hand"
-                    FontFamily="Segoe MDL2 Assets" Content="&#xE74E;" 
-                    Click="btnSaveQuestion_Click"/>
+                <Button x:Name="btnCommit" 
+                      Background="LightSeaGreen"
+                      Margin="2 0 0 0" Padding="7 0 7 0" 
+                      Cursor="Hand"
+                      FontFamily="Segoe MDL2 Assets" Content="&#xECC8;" 
+                      Click="btnCommit_Click"/>
 
-                <Button x:Name="btnDeleteQuestion" 
-                    Background="IndianRed"
-                    Margin="2 0 0 0" Padding="7 0 7 0" 
-                    Cursor="Hand"
-                    FontFamily="Segoe MDL2 Assets" Content="&#xE74D;" 
-                    Click="btnDeleteQuestion_Click"/>
+                <Button x:Name="btnDiscard"
+                      Background="IndianRed"
+                      Margin="2 0 0 0" Padding="7 0 7 0" 
+                      Cursor="Hand"
+                      FontFamily="Segoe MDL2 Assets" Content="&#xECC9;" 
+                      Click="btnDiscard_Click"/>
             </StackPanel>
 
             <StackPanel x:Name="spItems" Margin="40 0 0 0"></StackPanel>
