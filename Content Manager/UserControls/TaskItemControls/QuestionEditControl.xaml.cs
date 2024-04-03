@@ -21,7 +21,6 @@ namespace Content_Manager.UserControls
     {
         #region Fields
         static string Hint { get; } = Ru.SetDescription;
-        private FormCompletionInfo _formCompletionInfo;
         private readonly ContentStore ContentStore = App.AppHost!.Services.GetRequiredService<ContentStore>();
         #endregion
 
@@ -33,122 +32,88 @@ namespace Content_Manager.UserControls
         public event Action<Question> Updated;
         #endregion
 
-        #region Reactions
-        private void OnTextSet(bool isSet)
-        {
-            _formCompletionInfo.Update(nameof(Question.Text), isSet);
-        }
-        #endregion
-
         #region Initialization
         private void SetUiForNewMaterial()
         {
-            btnDeleteQuestion.Visibility = Visibility.Hidden;
-            btnSaveQuestion.Visibility = Visibility.Hidden;
+            btnDiscard.Visibility = Visibility.Hidden;
+            btnCommit.Visibility = Visibility.Visible;
         }
         private void SetUiForExistingMaterial()
         {
-            btnDeleteQuestion.Visibility = Visibility.Visible;
+            btnDiscard.Visibility = Visibility.Visible;
+            btnCommit.Visibility = Visibility.Hidden;
         }
-        private void SharedInitialization(bool isExistingMaterial)
+        private void SharedUiInitialization()
         {
             InitializeComponent();
             DataContext = this;
-
-            var propertiesToWatch = new List<string>
-            {
-                nameof(QuestionText)
-            };
-
-            _formCompletionInfo = new FormCompletionInfo(propertiesToWatch, isExistingMaterial);
-            _formCompletionInfo.StatusChanged += OnFormStatusChanged;
         }
-        public QuestionEditControl(TestingAssignment task)
+        public QuestionEditControl()
         {
-            SharedInitialization(false);
+            SharedUiInitialization();
             SetUiForNewMaterial();
 
-            QuestionText = Hint;
-            _testingQuestion = new Question();
-            _task = task;
+            Question = new Question()
+            {
+                Text = Hint
+            };
+         
+            RedrawOptions();
         }
 
-        public QuestionEditControl(TestingAssignment task, Question testingQuestion)
+        public QuestionEditControl(Question question)
         {
-            SharedInitialization(true);
+            SharedUiInitialization();
             SetUiForExistingMaterial();
 
-            _testingQuestion = testingQuestion;
-            _task = task;
+            Question = question;
 
-            QuestionId = testingQuestion.Id!;
-            QuestionText = testingQuestion.Text;
-            Options = testingQuestion.Options.ToList();
+            RedrawOptions();
+        }
+        #endregion
 
-            foreach (var answer in Options)
+        private void RedrawOptions()
+        {
+            spItems.Children.Clear();
+            foreach (var option in Question.Options)
             {
-                var existingItemControl = new AssignmentItemEditControl(TaskType.Test, answer);
-                //existingItemControl.Removed += Option_Delete;
+                var existingItemControl = new AssignmentItemEditControl(TaskType.Test, option);
+                existingItemControl.Discarded += OnOptionDiscarded;
 
                 spItems.Children.Add(existingItemControl);
             }
 
             var newItemControl = new AssignmentItemEditControl(TaskType.Test);
-
+            newItemControl.Committed += OnOptionCommitted;
             spItems.Children.Add(newItemControl);
-
-            OnTextSet(true);
         }
-
-
-        #endregion
-
-        private Question GetQuestionById(string questionId)
+        private void OnOptionCommitted(AssignmentItem optionItem)
         {
-            return ContentStore.SelectedSegment!.TestingTasks.SelectMany(t => t.Questions).Where(q => q.Id == questionId).First();
+            Question.Options.Add(optionItem);
+            RedrawOptions();
         }
 
+        private void OnOptionDiscarded(AssignmentItem optionItem)
+        {
+            Question.Options.Remove(optionItem);
+            RedrawOptions();
+        }
+
+     
         #region Event Handlers
-      
-        private void Option_Create(IEntityBase entity)
-        {
-            var newAnswer = (AssignmentItem)entity;
-            var question = GetQuestionById(QuestionId);
-
-            _testingQuestion.Options.Add(newAnswer);
-            ContentStore.DbContext.SaveChanges();
-
-            QuestionUpdated?.Invoke(_testingQuestion);
-        }
-        private void Option_Save(IEntityBase model)
-        {
-            QuestionUpdated?.Invoke(_testingQuestion);
-        }
-        private void Option_Delete(string itemId)
-        {
-            var item = ContentStore.DbContext.Find<AssignmentItem>(itemId);
-
-            _testingQuestion.Options.Remove(item);
-            ContentStore.DbContext.SaveChanges();
-
-            QuestionUpdated?.Invoke(_testingQuestion);
-        }
-        #endregion
-
-        #region TextHandlers
         private void txtQuestionText_GotFocus(object sender, RoutedEventArgs e)
         {
-            if (QuestionText == Hint)
+            if (txtQuestion.Text == Hint)
             {
-                QuestionText = "";
+                txtQuestion.Text = "";
             }
         }
 
         private void txtQuestionText_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrEmpty(QuestionText))
+            if (string.IsNullOrEmpty(Question.Text))
             {
-                QuestionText = Hint;
+                txtQuestion.Text = Hint;
             }
         }
 
@@ -156,26 +121,39 @@ namespace Content_Manager.UserControls
         {
             if (string.IsNullOrEmpty(txtQuestion.Text) || txtQuestion.Text.Equals(Hint))
             {
-                OnTextSet(false);
+                return;
             }
-            else
-            {
-                OnTextSet(true);
-            }
-        }
-        #endregion
 
-        #region Button Handlers
-      
-        private void btnDeleteQuestion_Click(object sender, RoutedEventArgs e)
-        {
-            QuestionDeleted?.Invoke(QuestionId);
+            Question.Text = txtQuestion.Text;
         }
-        #endregion
-
         private void btnDiscard_Click(object sender, RoutedEventArgs e)
         {
-            Discarded?.Invoke(Item);
+            Discarded?.Invoke(Question);
+        }
+
+        private void txtQuestion_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                RaiseQuestionCommitEvent();
+            }
+        }
+
+        #endregion
+
+        private void btnCommit_Click(object sender, RoutedEventArgs e)
+        {
+            RaiseQuestionCommitEvent();
+        }
+
+        private void RaiseQuestionCommitEvent()
+        {
+            if (string.IsNullOrWhiteSpace(Question.Text) || Question.Options.Count == 0)
+            {
+                return;
+            }
+
+            Committed?.Invoke(Question);
         }
     }
 }

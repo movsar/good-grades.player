@@ -37,21 +37,33 @@ namespace Content_Manager.Windows.Editors
         public void RedrawUi()
         {
             spItems.Children.Clear();
-            foreach (var item in _taskAssignment.Questions)
+            foreach (var question in _taskAssignment.Questions)
             {
-                var existingQuestionControl = new QuestionEditControl(_taskAssignment, item);
-                existingQuestionControl.QuestionDeleted += Question_Deleted;
-                existingQuestionControl.QuestionUpdated += Question_Updated;
+                var existingQuestionControl = new QuestionEditControl(question);
+                existingQuestionControl.Discarded += OnQuestionDiscarded;
 
                 spItems.Children.Add(existingQuestionControl);
             }
 
-            var newItemControl = new QuestionEditControl(_taskAssignment);
-            newItemControl.QuestionCreated += Question_Updated;
-            spItems.Children.Add(newItemControl);
+            var newQuestionControl = new QuestionEditControl();
+            newQuestionControl.Committed += OnQuestionCommitted;
+            spItems.Children.Add(newQuestionControl);
 
-            ContentStore.ItemUpdated += Question_Updated;
+            //ContentStore.ItemUpdated += Question_Updated;
         }
+
+        private void OnQuestionCommitted(Question question)
+        {
+            _taskAssignment.Questions.Add(question);
+            RedrawUi();
+        }
+
+        private void OnQuestionDiscarded(Question question)
+        {
+            _taskAssignment.Questions.Remove(question);
+            RedrawUi();
+        }
+
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
             Save();
@@ -59,21 +71,6 @@ namespace Content_Manager.Windows.Editors
 
         private void Save()
         {
-
-        }
-
-        private void Question_Updated(IEntityBase quiestion)
-        {
-            RedrawUi();
-        }
-
-        private void Question_Deleted(string id)
-        {
-            var itemToRemove = _taskAssignment.Questions.First(i => i.Id == id);
-            _taskAssignment.Questions.Remove(itemToRemove);
-            ContentStore.DbContext.SaveChanges();
-
-            RedrawUi();
         }
 
         private void txtTitle_TextChanged(object sender, TextChangedEventArgs e)
