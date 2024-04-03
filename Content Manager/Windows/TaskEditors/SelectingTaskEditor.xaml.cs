@@ -52,7 +52,7 @@ namespace Content_Manager.Windows.Editors
             newItemControl.Committed += OnAssignmentItemCommitted;
             spItems.Children.Add(newItemControl);
         }
-        
+
         private void OnAssignmentItemDiscarded(AssignmentItem item)
         {
             _taskAssignment.Question.Options.Remove(item);
@@ -85,13 +85,18 @@ namespace Content_Manager.Windows.Editors
 
         private void txtTitle_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (_taskAssignment != null && !string.IsNullOrWhiteSpace(_taskAssignment.Question.Text))
-            {
-                _taskAssignment.Question.Text = txtTitle.Text;
-            }
+
         }
         private void Save()
         {
+            if (_taskAssignment == null || string.IsNullOrWhiteSpace(txtTitle.Text))
+            {
+                return;
+            }
+
+            _taskAssignment.Title = txtTitle.Text;
+            _taskAssignment.Question.Text = txtTitle.Text;
+
             // If it's a new task, add it to the selected segment
             var existingTaskAssignment = ContentStore.SelectedSegment!.SelectingTasks.FirstOrDefault(st => st.Id == _taskAssignment.Id);
             if (existingTaskAssignment == null)
