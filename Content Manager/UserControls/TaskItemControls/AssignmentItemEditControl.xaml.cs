@@ -23,7 +23,8 @@ namespace Content_Manager.UserControls
 
         #region Properties and Events
         public AssignmentItem Item { get; }
-        public event Action<string> Delete;
+        public event Action<AssignmentItem> Discarded;
+        public event Action<AssignmentItem> Committed;
         #endregion
 
         #region Reactions
@@ -93,14 +94,16 @@ namespace Content_Manager.UserControls
             Item = new AssignmentItem();
 
             SharedUiInitialization(taskType, false);
-            btnDelete.Visibility = Visibility.Hidden;
+            btnCommit.Visibility = Visibility.Visible;
+            btnDiscard.Visibility = Visibility.Collapsed;
         }
         public AssignmentItemEditControl(TaskType taskType, AssignmentItem item)
         {
             Item = item;
 
             SharedUiInitialization(taskType, true);
-            btnDelete.Visibility = Visibility.Visible;
+            btnDiscard.Visibility = Visibility.Visible;
+            btnCommit.Visibility = Visibility.Collapsed;
 
             txtItemText.Text = Item.Text;
             OnTextSet(true);
@@ -164,9 +167,9 @@ namespace Content_Manager.UserControls
             OnImageSet(true);
         }
 
-        private void btnDelete_Click(object sender, RoutedEventArgs e)
+        private void btnDiscard_Click(object sender, RoutedEventArgs e)
         {
-            Delete?.Invoke(Item.Id);
+            Discarded?.Invoke(Item);
         }
         #endregion
 
@@ -179,5 +182,19 @@ namespace Content_Manager.UserControls
         {
             Item.IsChecked = false;
         }
+
+        private void btnCommit_Click(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(Item.Text))
+            {
+                return;
+            }
+
+            btnCommit.Visibility = Visibility.Collapsed;
+            btnDiscard.Visibility = Visibility.Visible;
+
+            Committed?.Invoke(Item);
+        }
+
     }
 }

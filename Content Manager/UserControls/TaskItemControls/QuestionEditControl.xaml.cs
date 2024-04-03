@@ -118,7 +118,7 @@ namespace Content_Manager.UserControls
             foreach (var answer in Options)
             {
                 var existingItemControl = new AssignmentItemEditControl(TaskType.Test, answer);
-                existingItemControl.Delete += Option_Delete;
+                //existingItemControl.Removed += Option_Delete;
 
                 spItems.Children.Add(existingItemControl);
             }

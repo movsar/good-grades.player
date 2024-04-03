@@ -39,7 +39,7 @@ namespace Content_Manager.Windows.Editors
             foreach (var item in _taskAssignment.Items)
             {
                 var existingQuizItemControl = new AssignmentItemEditControl(TaskType.Building, item);
-                existingQuizItemControl.Delete += Item_Delete;
+                //existingQuizItemControl.Removed += Item_Delete;
 
                 spItems.Children.Add(existingQuizItemControl);
             }

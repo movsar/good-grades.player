@@ -7,13 +7,9 @@ using Data.Entities.TaskItems;
 using Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Shared.Services;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Content_Manager.Windows.Editors
 {
@@ -28,11 +24,15 @@ namespace Content_Manager.Windows.Editors
             InitializeComponent();
             DataContext = this;
 
-            _taskAssignment = taskEntity ?? new SelectingAssignment()
+            if (taskEntity == null)
             {
-                Title = txtTitle.Text
-            };
-            txtTitle.Text = _taskAssignment.Question.Text;
+                _taskAssignment = new SelectingAssignment();
+            }
+            else
+            {
+                _taskAssignment = taskEntity;
+                txtTitle.Text = _taskAssignment.Question.Text;
+            }
 
             RedrawUi();
         }
@@ -43,20 +43,25 @@ namespace Content_Manager.Windows.Editors
             foreach (var item in _taskAssignment.Question.Options)
             {
                 var existingQuizItemControl = new AssignmentItemEditControl(TaskType.Selecting, item);
-                existingQuizItemControl.Delete += Item_Delete;
-
+                existingQuizItemControl.Committed += OnAssignmentItemCommitted;
+                existingQuizItemControl.Discarded += OnAssignmentItemDiscarded;
                 spItems.Children.Add(existingQuizItemControl);
             }
 
             var newItemControl = new AssignmentItemEditControl(TaskType.Selecting);
+            newItemControl.Committed += OnAssignmentItemCommitted;
             spItems.Children.Add(newItemControl);
         }
-
-        private void ExistingQuizItemControl_SetAsCorrect(string itemId)
+        
+        private void OnAssignmentItemDiscarded(AssignmentItem item)
         {
-            _taskAssignment.Question.CorrectOptionId = itemId;
-            ContentStore.DbContext.SaveChanges();
+            _taskAssignment.Question.Options.Remove(item);
+            RedrawUi();
+        }
 
+        private void OnAssignmentItemCommitted(AssignmentItem item)
+        {
+            _taskAssignment.Question.Options.Add(item);
             RedrawUi();
         }
 
@@ -78,26 +83,23 @@ namespace Content_Manager.Windows.Editors
             RedrawUi();
         }
 
-        private void Item_Delete(string id)
-        {
-            var itemToRemove = _taskAssignment.Question.Options.First(i => i.Id == id);
-            _taskAssignment.Question.Options.Remove(itemToRemove);
-            ContentStore.DbContext.SaveChanges();
-
-            RedrawUi();
-        }
-
         private void txtTitle_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (_taskAssignment != null)
+            if (_taskAssignment != null && !string.IsNullOrWhiteSpace(_taskAssignment.Question.Text))
             {
                 _taskAssignment.Question.Text = txtTitle.Text;
-                ContentStore.DbContext.SaveChanges();
             }
         }
-
-        private void btnSave_Click(object sender, RoutedEventArgs e)
+        private void Save()
         {
+            // If it's a new task, add it to the selected segment
+            var existingTaskAssignment = ContentStore.SelectedSegment!.SelectingTasks.FirstOrDefault(st => st.Id == _taskAssignment.Id);
+            if (existingTaskAssignment == null)
+            {
+                ContentStore.SelectedSegment!.SelectingTasks.Add(_taskAssignment);
+            }
+
+            // Update question with its options
             _taskAssignment.Question.Options.Clear();
 
             foreach (var item in spItems.Children)
@@ -118,6 +120,10 @@ namespace Content_Manager.Windows.Editors
 
             ContentStore.DbContext.ChangeTracker.DetectChanges();
             ContentStore.DbContext.SaveChanges();
+        }
+        private void btnSave_Click(object sender, RoutedEventArgs e)
+        {
+            Save();
         }
     }
 }
