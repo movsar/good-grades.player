@@ -1,0 +1,125 @@
+﻿using Content_Manager.Interfaces;
+using Content_Manager.Stores;
+using Content_Manager.UserControls;
+using Data;
+using Data.Entities;
+using Data.Entities.TaskItems;
+using Data.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
+
+namespace Content_Manager.Windows.Editors
+{
+    public partial class SelectionAssignmentEditor : Window, ITaskEditor
+    {
+        private SelectingAssignment _assignment;
+        public IAssignment Assignment => _assignment;
+        private ContentStore ContentStore => App.AppHost!.Services.GetRequiredService<ContentStore>();
+
+        public SelectionAssignmentEditor(SelectingAssignment? taskEntity = null)
+        {
+            InitializeComponent();
+            DataContext = this;
+
+            if (taskEntity == null)
+            {
+                _assignment = new SelectingAssignment();
+            }
+            else
+            {
+                _assignment = taskEntity;
+                txtTitle.Text = _assignment.Question.Text;
+            }
+
+            RedrawAssignmentItems();
+        }
+
+        public void RedrawAssignmentItems()
+        {
+            spItems.Children.Clear();
+            foreach (var item in _assignment.Question.Options)
+            {
+                var existingQuizItemControl = new AssignmentItemEditControl(TaskType.Selecting, item);
+                existingQuizItemControl.Discarded += OnAssignmentItemDiscarded;
+                spItems.Children.Add(existingQuizItemControl);
+            }
+
+            var newItemControl = new AssignmentItemEditControl(TaskType.Selecting);
+            newItemControl.Committed += OnAssignmentItemCommitted;
+            spItems.Children.Add(newItemControl);
+        }
+
+        private void SaveAssignment()
+        {
+            if (_assignment == null || string.IsNullOrWhiteSpace(txtTitle.Text))
+            {
+                return;
+            }
+
+            // Update assignment data
+            _assignment.Title = txtTitle.Text;
+            _assignment.Question.Text = txtTitle.Text;
+            _assignment.Question.Options.Clear();
+
+            // Extract Assignment Items from UI
+            foreach (var item in spItems.Children)
+            {
+                var aiEditControl = item as AssignmentItemEditControl;
+                if (aiEditControl == null)
+                {
+                    continue;
+                }
+
+                if (string.IsNullOrWhiteSpace(aiEditControl.Item.Text))
+                {
+                    continue;
+                }
+
+                _assignment.Question.Options.Add(aiEditControl.Item);
+            }
+
+            // If it's a new task, add it to the selected segment
+            var existingTaskAssignment = ContentStore.SelectedSegment!.SelectingTasks.FirstOrDefault(st => st.Id == _assignment.Id);
+            if (existingTaskAssignment == null)
+            {
+                ContentStore.SelectedSegment!.SelectingTasks.Add(_assignment);
+            }
+
+            // Save and notify the changes
+            ContentStore.DbContext.ChangeTracker.DetectChanges();
+            ContentStore.DbContext.SaveChanges();
+
+            if (existingTaskAssignment == null)
+            {
+                ContentStore.RaiseItemAddedEvent(_assignment);
+            }
+            else
+            {
+                ContentStore.RaiseItemUpdatedEvent(_assignment);
+            }
+
+            Close();
+        }
+
+        #region Event Handlers
+        private void OnAssignmentItemDiscarded(AssignmentItem item)
+        {
+            _assignment.Question.Options.Remove(item);
+            RedrawAssignmentItems();
+        }
+
+        private void OnAssignmentItemCommitted(AssignmentItem item)
+        {
+            _assignment.Question.Options.Add(item);
+            RedrawAssignmentItems();
+        }
+        private void btnSave_Click(object sender, RoutedEventArgs e)
+        {
+            SaveAssignment();
+        }
+        #endregion
+    }
+}

@@ -4,7 +4,7 @@ namespace Content_Manager.Interfaces
 {
     public interface ITaskEditor
     {
-        IAssignment TaskAssignment { get; }
+        IAssignment Assignment { get; }
         bool? ShowDialog();
     }
 }

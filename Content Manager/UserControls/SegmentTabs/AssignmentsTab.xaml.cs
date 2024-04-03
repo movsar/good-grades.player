@@ -38,10 +38,10 @@ namespace Content_Manager.UserControls.SegmentTabs
 
             foreach (var material in allTasks.OrderBy(t => t.CreatedAt))
             {
-                spTaskAssignmentControls.Children.Add(new TaskAssignmentControl(material));
+                spTaskAssignmentControls.Children.Add(new AssignmentControl(material));
             }
 
-            var newMaterial = new TaskAssignmentControl();
+            var newMaterial = new AssignmentControl();
 
             spTaskAssignmentControls.Children.Add(newMaterial);
         }

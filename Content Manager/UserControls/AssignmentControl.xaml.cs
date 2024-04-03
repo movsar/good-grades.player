@@ -18,7 +18,7 @@ using Ru = Shared.Translations.Ru;
 
 namespace Content_Manager.UserControls
 {
-    public partial class TaskAssignmentControl : UserControl
+    public partial class AssignmentControl : UserControl
     {
         #region Properties and Fields
         private FormCompletionInfo _formCompletionInfo;
@@ -58,7 +58,7 @@ namespace Content_Manager.UserControls
             _formCompletionInfo.StatusChanged += OnFormStatusChanged;
         }
 
-        public TaskAssignmentControl()
+        public AssignmentControl()
         {
             SharedInitialization();
 
@@ -66,7 +66,7 @@ namespace Content_Manager.UserControls
             SetUiForNewMaterial();
         }
 
-        public TaskAssignmentControl(IAssignment taskMaterial)
+        public AssignmentControl(IAssignment taskMaterial)
         {
             _taskAssignment = taskMaterial;
             IsContentSet = GetCurrentTaskItems().Count() > 0;
@@ -97,14 +97,14 @@ namespace Content_Manager.UserControls
             {
                 TaskType.Matching => new MatchingTaskEditor(_taskAssignment as MatchingAssignment),
                 TaskType.Filling => new FillingTaskEditor(_taskAssignment as FillingAssignment),
-                TaskType.Selecting => new SelectingTaskEditor(_taskAssignment as SelectingAssignment),
+                TaskType.Selecting => new SelectionAssignmentEditor(_taskAssignment as SelectingAssignment),
                 TaskType.Building => new BuildingTaskEditor(_taskAssignment as BuildingAssignment),
                 TaskType.Test => new TestingTaskEditor(_taskAssignment as TestingAssignment),
                 _ => throw new NotImplementedException()
             };
 
             taskEditor.ShowDialog();
-            taskAssignment = taskEditor.TaskAssignment;
+            taskAssignment = taskEditor.Assignment;
 
             if (_taskAssignment != null)
             {

@@ -36,7 +36,7 @@ namespace Content_Manager.UserControls
         {
             BitmapImage logo = new BitmapImage();
             logo.BeginInit();
-            logo.StreamSource = new MemoryStream(Item.Image);
+            logo.StreamSource = new MemoryStream(Item.Image!);
             logo.EndInit();
 
             var imgControl = new Image();
@@ -50,7 +50,7 @@ namespace Content_Manager.UserControls
 
         #region Initialization
 
-        private void SharedUiInitialization(TaskType taskType, bool isExistingMaterial)
+        private void SharedUiInitialization(TaskType taskType, bool isExistingItem)
         {
             InitializeComponent();
             DataContext = this;
@@ -87,12 +87,13 @@ namespace Content_Manager.UserControls
 
             txtItemText.Text = Hint;
 
-            _formCompletionInfo = new FormCompletionInfo(propertiesToWatch, isExistingMaterial);
+            _formCompletionInfo = new FormCompletionInfo(propertiesToWatch, isExistingItem);
         }
         public AssignmentItemEditControl(TaskType taskType)
         {
             Item = new AssignmentItem();
 
+            // Prepare UI for a new Assignment Item
             SharedUiInitialization(taskType, false);
             btnCommit.Visibility = Visibility.Visible;
             btnDiscard.Visibility = Visibility.Collapsed;
@@ -101,6 +102,7 @@ namespace Content_Manager.UserControls
         {
             Item = item;
 
+            // Prepare UI for an existing Assignment Item
             SharedUiInitialization(taskType, true);
             btnDiscard.Visibility = Visibility.Visible;
             btnCommit.Visibility = Visibility.Collapsed;
@@ -115,7 +117,7 @@ namespace Content_Manager.UserControls
         }
         #endregion
 
-        #region TextHandlers
+        #region Event Handlers
         private void txtItemText_GotFocus(object sender, RoutedEventArgs e)
         {
             if (txtItemText.Text == Hint)
@@ -150,9 +152,7 @@ namespace Content_Manager.UserControls
                 OnTextSet(true);
             }
         }
-        #endregion
 
-        #region ButtonHandlers
         private void btnChooseImage_Click(object sender, RoutedEventArgs e)
         {
             string filePath = FileService.SelectImageFilePath();
@@ -171,7 +171,6 @@ namespace Content_Manager.UserControls
         {
             Discarded?.Invoke(Item);
         }
-        #endregion
 
         private void chkIsChecked_Checked(object sender, RoutedEventArgs e)
         {
@@ -195,6 +194,6 @@ namespace Content_Manager.UserControls
 
             Committed?.Invoke(Item);
         }
-
+        #endregion
     }
 }
