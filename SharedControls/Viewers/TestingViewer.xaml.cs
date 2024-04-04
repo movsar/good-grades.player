@@ -3,6 +3,7 @@ using Data.Entities.TaskItems;
 using Data.Interfaces;
 using Shared.Controls;
 using Shared.Interfaces;
+using Shared.Services;
 using Shared.Translations;
 using System;
 using System.Collections.Generic;
@@ -38,22 +39,24 @@ namespace Shared.Viewers
             {
                 if (view is QuestionViewControl)
                 {
-                    questionViewControls.Add(view as QuestionViewControl);
+                    questionViewControls.Add((QuestionViewControl)view);
                 }
             }
 
-            //var useSelections = questionViewControls.ToDictionary(qv => (qv.Question.Id), qv => qv.SelectedOptionIds);
-            //foreach (var question in _assignment.Questions)
-            //{
-            //    if (useSelections[question.Id] != question.CorrectOptionId)
-            //    {
-            //        MessageBox.Show(Ru.IncorrectAnswer);
-            //        CompletionStateChanged?.Invoke(_assignment, false);
-            //        return;
-            //    }
-            //}
+            foreach (var questionViewControl in questionViewControls)
+            {
+                var selections = questionViewControl!.SelectedOptionIds;
+                var areAnswersCorrect = QuestionService.CheckUserAnswers(questionViewControl.Question, selections);
 
-            MessageBox.Show(Ru.Celebrating);
+                if (!areAnswersCorrect)
+                {
+                    MessageBox.Show(Ru.Incorrect);
+                    CompletionStateChanged?.Invoke(_assignment, false);
+                    return;
+                }
+            }
+
+            MessageBox.Show(Ru.Correct);
             CompletionStateChanged?.Invoke(_assignment, true);
         }
     }
