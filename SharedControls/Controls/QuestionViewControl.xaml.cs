@@ -1,4 +1,6 @@
 ﻿using Data.Entities.TaskItems;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -7,72 +9,83 @@ namespace Shared.Controls
 {
     public partial class QuestionViewControl : UserControl
     {
-        public string SelectedOptionId { get; set; }
         public Question Question { get; }
+        public List<string> SelectedOptionIds => GetUserSelections();
 
-        public QuestionViewControl(Question testingQuestion)
+        private List<string> GetUserSelections()
         {
+            var selections = new List<string>();
+
+            foreach (var item in spOptions.Children)
+            {
+                if (item is CheckBox)
+                {
+                    var checkboxOption = item as CheckBox;
+                    if (checkboxOption!.IsChecked == true)
+                    {
+                        selections.Add(checkboxOption.Tag.ToString()!);
+                    }
+                }
+
+                if (item is RadioButton)
+                {
+                    var radioButtonOption = item as RadioButton;
+                    if (radioButtonOption!.IsChecked == true)
+                    {
+                        selections.Add(radioButtonOption.Tag.ToString()!);
+                    }
+                }
+            }
+
+            return selections;
+        }
+
+        public QuestionViewControl(Question question)
+        {
+            Question = question;
+
+            // Initialize UI
             InitializeComponent();
             DataContext = this;
 
-            Question = testingQuestion;
-
+            // Add options UI
             var isMultichoice = Question.Options.Where(o => o.IsChecked).Count() > 1;
             spOptions.Children.Clear();
             foreach (var option in Question.Options)
             {
-                var spOption = isMultichoice ? GenerateCheckboxOptionView(option) : GenerateRadioButtonOptionView(option, Question.Id);
-                spOptions.Children.Add(spOption);
+                if (isMultichoice)
+                {
+                    spOptions.Children.Add(GenerateCheckboxOptionView(option));
+                }
+                else
+                {
+                    spOptions.Children.Add(GenerateRadioButtonOptionView(option, Question.Id));
+                }
             }
         }
 
-        private StackPanel GenerateRadioButtonOptionView(AssignmentItem option, string groupName)
+        private RadioButton GenerateRadioButtonOptionView(AssignmentItem option, string groupName)
         {
-            var spOption = new StackPanel()
-            {
-                Tag = option.Id,
-                Orientation = Orientation.Horizontal
-            };
-
             var radioButton = new RadioButton()
             {
+                Tag = option.Id,
                 GroupName = groupName,
                 Content = option.Text,
                 Style = (Style)FindResource("RadioOptionStyle"),
             };
 
-            spOption.Children.Add(radioButton);
-
-            return spOption;
+            return radioButton;
         }
-
-        private StackPanel GenerateCheckboxOptionView(AssignmentItem option)
+        private CheckBox GenerateCheckboxOptionView(AssignmentItem option)
         {
-            var spOption = new StackPanel()
-            {
-                Tag = option.Id,
-                Orientation = Orientation.Horizontal
-            };
-
             var checkbox = new CheckBox()
             {
+                Tag = option.Id,
                 Content = option.Text,
                 Style = (Style)FindResource("CheckboxOptionStyle"),
             };
 
-            spOption.Children.Add(checkbox);
-
-            return spOption;
-        }
-
-
-        private void RadioButton_Checked(object sender, System.Windows.RoutedEventArgs e)
-        {
-            var radioButton = sender as RadioButton;
-            if (radioButton != null && radioButton.DataContext is AssignmentItem)
-            {
-                SelectedOptionId = ((AssignmentItem)radioButton.DataContext).Id;
-            }
+            return checkbox;
         }
     }
 }

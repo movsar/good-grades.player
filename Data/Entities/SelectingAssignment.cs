@@ -1,4 +1,5 @@
-﻿using Data.Entities.TaskItems;
+﻿using Castle.Core.Internal;
+using Data.Entities.TaskItems;
 using Data.Interfaces;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -14,6 +15,6 @@ namespace Data.Entities
         /******************************************************************/
         [Required] public string Title { get; set; }
         public virtual Question Question { get; set; } = new Question();
-        public bool IsContentSet => Question.Options.Count() > 0 && !string.IsNullOrEmpty(Question.CorrectOptionId);
+        public bool IsContentSet => Question.Options.Count() > 1 && Question.Options.Any(o => o.IsChecked) == true;
     }
 }

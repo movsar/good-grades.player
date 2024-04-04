@@ -42,16 +42,16 @@ namespace Shared.Viewers
                 }
             }
 
-            var useSelections = questionViewControls.ToDictionary(qv => (qv.Question.Id), qv => qv.SelectedOptionId);
-            foreach (var question in _assignment.Questions)
-            {
-                if (useSelections[question.Id] != question.CorrectOptionId)
-                {
-                    MessageBox.Show(Ru.IncorrectAnswer);
-                    CompletionStateChanged?.Invoke(_assignment, false);
-                    return;
-                }
-            }
+            //var useSelections = questionViewControls.ToDictionary(qv => (qv.Question.Id), qv => qv.SelectedOptionIds);
+            //foreach (var question in _assignment.Questions)
+            //{
+            //    if (useSelections[question.Id] != question.CorrectOptionId)
+            //    {
+            //        MessageBox.Show(Ru.IncorrectAnswer);
+            //        CompletionStateChanged?.Invoke(_assignment, false);
+            //        return;
+            //    }
+            //}
 
             MessageBox.Show(Ru.Celebrating);
             CompletionStateChanged?.Invoke(_assignment, true);
