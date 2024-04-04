@@ -24,6 +24,8 @@ namespace Content_Manager.UserControls
 
         #region Properties and Events
         public AssignmentItem Item { get; }
+        public bool IsValid { get; private set; } = true;
+
         public event Action<AssignmentItem> Discarded;
         public event Action<AssignmentItem> Committed;
         #endregion
@@ -117,7 +119,7 @@ namespace Content_Manager.UserControls
             }
         }
         #endregion
-        private bool Validate()
+        private void Validate()
         {
             try
             {
@@ -128,6 +130,13 @@ namespace Content_Manager.UserControls
 
                 switch (_assignmentType)
                 {
+                    case AssignmentType.Matching:
+                        if (Item.Image == null)
+                        {
+                            throw new Exception(Ru.SetMatchingImage);
+                        }
+
+                        break;
                     case AssignmentType.Filling:
                         var gapOpeners = Regex.Matches(Item.Text, @"\{");
                         var gapClosers = Regex.Matches(Item.Text, @"\}");
@@ -146,12 +155,12 @@ namespace Content_Manager.UserControls
                         break;
                 }
 
-                return true;
+                IsValid = true;
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
-                return false;
+                IsValid = false;
             }
         }
 
@@ -227,7 +236,9 @@ namespace Content_Manager.UserControls
 
         private void Commit()
         {
-            if (!Validate())
+            Validate();
+
+            if (!IsValid)
             {
                 return;
             }

@@ -5,18 +5,16 @@ using Data;
 using Data.Entities;
 using Data.Entities.TaskItems;
 using Data.Interfaces;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace Content_Manager.Windows.Editors
 {
     public partial class MatchingAssignmentEditor : Window, IAssignmentEditor
     {
-        private MatchingAssignment _taskAssignment;
-        public IAssignment Assignment => _taskAssignment;
+        private MatchingAssignment _assignment;
+        public IAssignment Assignment => _assignment;
         private ContentStore ContentStore => App.AppHost!.Services.GetRequiredService<ContentStore>();
 
         public MatchingAssignmentEditor(MatchingAssignment? matchingTaskEntity = null)
@@ -24,63 +22,101 @@ namespace Content_Manager.Windows.Editors
             InitializeComponent();
             DataContext = this;
 
-            _taskAssignment = matchingTaskEntity ?? new MatchingAssignment()
+            _assignment = matchingTaskEntity ?? new MatchingAssignment()
             {
                 Title = txtTitle.Text
             };
-            txtTitle.Text = _taskAssignment.Title;
+            txtTitle.Text = _assignment.Title;
 
-            RedrawUi();
+            RedrawItems();
         }
 
-        public void RedrawUi()
+        public void RedrawItems()
         {
             spItems.Children.Clear();
-            foreach (var item in _taskAssignment.Items)
+            foreach (var item in _assignment.Items)
             {
-                var existingQuizItemControl = new AssignmentItemEditControl(AssignmentType.Matching, item);
-                //existingQuizItemControl.Removed += Item_Delete;
+                var existingItemControl = new AssignmentItemEditControl(AssignmentType.Matching, item);
+                existingItemControl.Discarded += OnAssignmentItemDiscarded;
 
-                spItems.Children.Add(existingQuizItemControl);
+                spItems.Children.Add(existingItemControl);
             }
 
             var newItemControl = new AssignmentItemEditControl(AssignmentType.Matching);
+            newItemControl.Committed += OnAssignmentItemCommitted;
+
             spItems.Children.Add(newItemControl);
         }
 
-        private void Item_Create(IEntityBase entity)
+        private void OnAssignmentItemCommitted(AssignmentItem item)
         {
-            var itemEntity = (AssignmentItem)entity;
-
-            // Add the Task entity
-            var taskState = ContentStore.DbContext.Entry(_taskAssignment).State;
-            if (taskState == EntityState.Detached || taskState == EntityState.Added)
-            {
-                ContentStore.SelectedSegment!.MatchingAssignments.Add(_taskAssignment);
-            }
-
-            // Add the Task item entity
-            _taskAssignment.Items.Add(itemEntity);
-            ContentStore.DbContext.SaveChanges();
-
-            RedrawUi();
+            _assignment.Items.Add(item);
+            RedrawItems();
+        }
+        private void OnAssignmentItemDiscarded(AssignmentItem item)
+        {
+            _assignment.Items.Remove(item);
+            RedrawItems();
         }
 
-        private void Item_Delete(string id)
+        private void SaveAndClose()
         {
-            var itemToRemove = _taskAssignment.Items.First(i => i.Id == id);
-            _taskAssignment.Items.Remove(itemToRemove);
+            if (_assignment == null || string.IsNullOrWhiteSpace(txtTitle.Text))
+            {
+                MessageBox.Show("Введите заголовок");
+                return;
+            }
+
+            // Update assignment data
+            _assignment.Title = txtTitle.Text;
+
+            // Extract Assignment Items from UI
+            _assignment.Items.Clear();
+            foreach (var item in spItems.Children)
+            {
+                var aiEditControl = item as AssignmentItemEditControl;
+                if (aiEditControl == null)
+                {
+                    continue;
+                }
+
+                if (string.IsNullOrWhiteSpace(aiEditControl.Item.Text))
+                {
+                    continue;
+                }
+
+                if (!aiEditControl.IsValid)
+                {
+                    continue;
+                }
+
+                _assignment.Items.Add(aiEditControl.Item);
+            }
+
+            var existingAssignment = ContentStore.SelectedSegment!.MatchingAssignments.FirstOrDefault(a => a.Id == _assignment.Id);
+            if (existingAssignment == null)
+            {
+                ContentStore.SelectedSegment!.MatchingAssignments.Add(_assignment);
+            }
+
+            // Save and notify the changes
+            ContentStore.DbContext.ChangeTracker.DetectChanges();
             ContentStore.DbContext.SaveChanges();
 
-            RedrawUi();
-        }
-        private void txtTitle_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (_taskAssignment != null)
+            if (existingAssignment == null)
             {
-                _taskAssignment.Title = txtTitle.Text;
-                ContentStore.DbContext.SaveChanges();
+                ContentStore.RaiseItemAddedEvent(_assignment);
             }
+            else
+            {
+                ContentStore.RaiseItemUpdatedEvent(_assignment);
+            }
+
+            Close();
+        }
+        private void btnSave_Click(object sender, RoutedEventArgs e)
+        {
+            SaveAndClose();
         }
 
     }

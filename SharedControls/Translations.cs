@@ -66,5 +66,6 @@
         public static string AreYouSureToExit { get; } = "Уверены что хотите уйти?";
         public static string Materials { get; } = "Материалы";
         public static string FilePath { get; } = "Путь к файлу:";
+        public static string? SetMatchingImage { get; } = "Выберите изображение";
     }
 }
