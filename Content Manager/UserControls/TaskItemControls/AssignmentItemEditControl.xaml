@@ -39,6 +39,7 @@
                      GotFocus="txtItemText_GotFocus"
                      LostFocus="txtItemText_LostFocus"
                      TextChanged="txtItemText_TextChanged"
+                     KeyUp="txtItemText_KeyUp"
                      />
             <Button x:Name="btnCommit" 
                     Background="LightSeaGreen"

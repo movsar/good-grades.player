@@ -16,9 +16,6 @@ namespace Shared.Controls
             Question = testingQuestion;
         }
 
-        // Just for the DesignContext to work
-        public QuestionViewControl() { }
-
         private void RadioButton_Checked(object sender, System.Windows.RoutedEventArgs e)
         {
             var radioButton = sender as RadioButton;

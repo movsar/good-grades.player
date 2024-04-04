@@ -184,8 +184,14 @@ namespace Content_Manager.UserControls
 
         private void btnCommit_Click(object sender, RoutedEventArgs e)
         {
+            Commit();
+        }
+
+        private void Commit()
+        {
             if (string.IsNullOrWhiteSpace(Item.Text))
             {
+                MessageBox.Show("Введите текст");
                 return;
             }
 
@@ -195,5 +201,13 @@ namespace Content_Manager.UserControls
             Committed?.Invoke(Item);
         }
         #endregion
+
+        private void txtItemText_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == System.Windows.Input.Key.Enter)
+            {
+                Commit();
+            }
+        }
     }
 }
