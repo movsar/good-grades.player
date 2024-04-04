@@ -35,16 +35,16 @@
 			<AutoGen>True</AutoGen>
 			<DependentUpon>Settings.settings</DependentUpon>
 		</Compile>
-		<Compile Update="Windows\TaskEditors\TestingTaskEditor.xaml.cs">
+		<Compile Update="Windows\TaskEditors\TestingAssignmentEditor.xaml.cs">
 		  <SubType>Code</SubType>
 		</Compile>
-		<Compile Update="Windows\TaskEditors\SelectingTaskEditor.xaml.cs">
+		<Compile Update="Windows\TaskEditors\SelectionAssignmentEditor.xaml.cs">
 		  <SubType>Code</SubType>
 		</Compile>
-		<Compile Update="Windows\TaskEditors\BuildingTaskEditor.xaml.cs">
+		<Compile Update="Windows\TaskEditors\BuildingAssignmentEditor.xaml.cs">
 		  <SubType>Code</SubType>
 		</Compile>
-		<Compile Update="Windows\TaskEditors\FillingTaskEditor.xaml.cs">
+		<Compile Update="Windows\TaskEditors\FillingAssignmentEditor.xaml.cs">
 		  <SubType>Code</SubType>
 		</Compile>
 	</ItemGroup>

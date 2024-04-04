@@ -1,74 +1,45 @@
 ﻿using Content_Manager.Models;
 using Content_Manager.Services;
-using Content_Manager.Stores;
 using Data;
 using Data.Entities.TaskItems;
-using Data.Interfaces;
-using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Image = System.Windows.Controls.Image;
 using Shared.Translations;
-using Shared.Services;
-using System.Windows.Input;
+using Image = System.Windows.Controls.Image;
+using System.Text.RegularExpressions;
 
 namespace Content_Manager.UserControls
 {
     public partial class AssignmentItemEditControl : UserControl
     {
-        public event Action<IEntityBase> Create;
-        public event Action<IEntityBase> Update;
-        public event Action<string> Delete;
-
         #region Fields
         private string Hint = Ru.SetDescription;
         private FormCompletionInfo _formCompletionInfo;
-        private TaskType _taskType;
+        private AssignmentType _assignmentType;
         #endregion
 
-        #region Properties
-        ContentStore ContentStore => App.AppHost!.Services.GetRequiredService<ContentStore>();
-        StylingService StylingService => App.AppHost!.Services.GetRequiredService<StylingService>();
-        public string ItemText
-        {
-            get { return (string)GetValue(ItemTextProperty); }
-            set { SetValue(ItemTextProperty, value); }
-        }
-        public static readonly DependencyProperty ItemTextProperty =
-            DependencyProperty.Register("ItemText", typeof(string), typeof(AssignmentItemEditControl), new PropertyMetadata(""));
-        private readonly AssignmentItem _item;
+        #region Properties and Events
+        public AssignmentItem Item { get; }
+        public bool IsValid { get; private set; } = true;
 
-        public string ItemId { get; set; }
-        public byte[] ItemImage { get; private set; }
+        public event Action<AssignmentItem> Discarded;
+        public event Action<AssignmentItem> Committed;
         #endregion
 
         #region Reactions
-        private void OnFormStatusChanged(bool isReady)
-        {
-            if (isReady)
-            {
-                btnSave.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                btnSave.Visibility = Visibility.Collapsed;
-            }
-        }
         private void OnTextSet(bool isSet)
         {
-            _formCompletionInfo.Update(nameof(ItemText), isSet);
+            _formCompletionInfo.Update(nameof(Item.Text), isSet);
         }
         private void OnImageSet(bool isSet = true)
         {
             BitmapImage logo = new BitmapImage();
             logo.BeginInit();
-            logo.StreamSource = new MemoryStream(ItemImage);
+            logo.StreamSource = new MemoryStream(Item.Image!);
             logo.EndInit();
 
             var imgControl = new Image();
@@ -76,118 +47,159 @@ namespace Content_Manager.UserControls
             imgControl.Source = logo;
             btnChooseImage.Content = imgControl;
 
-            _formCompletionInfo.Update(nameof(ItemImage), isSet);
+            _formCompletionInfo.Update(nameof(Item.Image), isSet);
         }
         #endregion
 
         #region Initialization
-        private void SetUiForNewMaterial()
-        {
-            btnDelete.Visibility = Visibility.Hidden;
-            btnSave.Visibility = Visibility.Hidden;
-        }
-        private void SetUiForExistingMaterial()
-        {
-            btnDelete.Visibility = Visibility.Visible;
-        }
-        private void SharedUiInitialization(TaskType taskType, bool isExistingMaterial, bool isSelected)
+
+        private void SharedUiInitialization(AssignmentType assignmentType, bool isExistingItem)
         {
             InitializeComponent();
             DataContext = this;
 
-            _taskType = taskType;
+            _assignmentType = assignmentType;
 
             var propertiesToWatch = new List<string>
             {
-                nameof(ItemText)
+                nameof(Item.Text)
             };
 
             // Decide what controls to make available
-            switch (_taskType)
+            switch (_assignmentType)
             {
-                case TaskType.Filling:
+                case AssignmentType.Filling:
                     Hint = Ru.FillingQuestion;
                     break;
-                case TaskType.Matching:
+                case AssignmentType.Matching:
                     Hint = Ru.SetImageDescription;
 
                     btnChooseImage.Visibility = Visibility.Visible;
 
-                    propertiesToWatch.Add(nameof(ItemImage));
+                    propertiesToWatch.Add(nameof(Item.Image));
 
                     break;
-                case TaskType.Test:
-                case TaskType.Selecting:
+                case AssignmentType.Test:
+                case AssignmentType.Selecting:
                     chkIsChecked.Visibility = Visibility.Visible;
-                    chkIsChecked.IsChecked = _item.IsChecked;
+                    chkIsChecked.IsChecked = Item.IsChecked;
                     break;
                 default:
                     break;
             }
 
-            ItemText = Hint;
+            txtItemText.Text = Hint;
 
-            _formCompletionInfo = new FormCompletionInfo(propertiesToWatch, isExistingMaterial);
-            _formCompletionInfo.StatusChanged += OnFormStatusChanged;
+            _formCompletionInfo = new FormCompletionInfo(propertiesToWatch, isExistingItem);
         }
-        public AssignmentItemEditControl(TaskType taskType)
+        public AssignmentItemEditControl(AssignmentType taskType)
         {
-            _item = new AssignmentItem();
+            Item = new AssignmentItem();
 
-            SharedUiInitialization(taskType, false, false);
-            SetUiForNewMaterial();
+            // Prepare UI for a new Assignment Item
+            SharedUiInitialization(taskType, false);
+            btnCommit.Visibility = Visibility.Visible;
+            btnDiscard.Visibility = Visibility.Collapsed;
         }
-        public AssignmentItemEditControl(TaskType taskType, AssignmentItem item, bool isSelected = false)
+        public AssignmentItemEditControl(AssignmentType taskType, AssignmentItem item)
         {
-            _item = item;
+            Item = item;
 
-            SharedUiInitialization(taskType, true, isSelected);
-            SetUiForExistingMaterial();
+            // Prepare UI for an existing Assignment Item
+            SharedUiInitialization(taskType, true);
+            btnDiscard.Visibility = Visibility.Visible;
+            btnCommit.Visibility = Visibility.Collapsed;
 
-            ItemId = _item.Id;
-            ItemImage = _item.Image;
-            ItemText = _item.Text;
-
+            txtItemText.Text = Item.Text;
             OnTextSet(true);
 
-            if (_item.Image != null)
+            if (Item.Image != null)
             {
                 OnImageSet(true);
             }
         }
         #endregion
+        private void Validate()
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(Item.Text))
+                {
+                    throw new Exception("Введите текст");
+                }
 
-        #region TextHandlers
+                switch (_assignmentType)
+                {
+                    case AssignmentType.Matching:
+                        if (Item.Image == null)
+                        {
+                            throw new Exception(Ru.SetMatchingImage);
+                        }
+
+                        break;
+                    case AssignmentType.Filling:
+                        var gapOpeners = Regex.Matches(Item.Text, @"\{");
+                        var gapClosers = Regex.Matches(Item.Text, @"\}");
+                        var gappedWords = Regex.Matches(Item.Text, @"\{\W*\w+.*?\}");
+
+                        if (gapOpeners.Count != gapClosers.Count || gapOpeners.Count != gappedWords.Count)
+                        {
+                            throw new Exception(Ru.ExceptionUncorrectFormate);
+                        }
+
+                        if (gappedWords.Count == 0)
+                        {
+                            throw new Exception(Ru.ExceptionMinWords);
+                        }
+
+                        break;
+                }
+
+                IsValid = true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                IsValid = false;
+            }
+        }
+
+        #region Event Handlers
         private void txtItemText_GotFocus(object sender, RoutedEventArgs e)
         {
-            if (ItemText == Hint)
+            if (txtItemText.Text == Hint)
             {
-                ItemText = "";
+                txtItemText.Text = "";
             }
         }
 
         private void txtItemText_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrEmpty(ItemText))
+            if (string.IsNullOrEmpty(txtItemText.Text))
             {
-                ItemText = Hint;
+                txtItemText.Text = Hint;
             }
         }
 
         private void txtItemText_TextChanged(object sender, TextChangedEventArgs e)
         {
+            if (_formCompletionInfo == null)
+            {
+                // Not initialized yet
+                return;
+            }
+
             if (string.IsNullOrEmpty(txtItemText.Text) || txtItemText.Text.Equals(Hint))
             {
                 OnTextSet(false);
             }
             else
             {
+                Item.Text = txtItemText.Text;
                 OnTextSet(true);
             }
         }
-        #endregion
 
-        #region ButtonHandlers
         private void btnChooseImage_Click(object sender, RoutedEventArgs e)
         {
             string filePath = FileService.SelectImageFilePath();
@@ -197,97 +209,53 @@ namespace Content_Manager.UserControls
             var content = File.ReadAllBytes(filePath);
             if (content.Length == 0) return;
 
-            ItemImage = content;
+            Item.Image = content;
 
             OnImageSet(true);
         }
 
-        private void btnDelete_Click(object sender, RoutedEventArgs e)
+        private void btnDiscard_Click(object sender, RoutedEventArgs e)
         {
-            Delete?.Invoke(ItemId);
-        }
-        private void btnOk_Click(object sender, RoutedEventArgs e)
-        {
-            Save();
-        }
-
-        private void Save()
-        {
-
-            try
-            {
-                ValidateInput();
-            }
-            catch (Exception ex)
-            {
-                ExceptionService.HandleError(ex, ex.Message);
-                return;
-            }
-
-            if (string.IsNullOrEmpty(ItemId))
-            {
-                var item = new AssignmentItem()
-                {
-                    Text = ItemText,
-                    Image = ItemImage
-                };
-
-                Create?.Invoke(item);
-            }
-            else
-            {
-                var item = ContentStore.DbContext.Find<AssignmentItem>(ItemId);
-                if (ItemImage != null)
-                {
-                    item.Image = ItemImage;
-                }
-                item.Text = ItemText;
-
-                ContentStore.DbContext.SaveChanges();
-
-                Update?.Invoke(item);
-            }
-        }
-        private void ValidateInput()
-        {
-            switch (_taskType)
-            {
-                case TaskType.Filling:
-                    var gapOpeners = Regex.Matches(ItemText, @"\{");
-                    var gapClosers = Regex.Matches(ItemText, @"\}");
-                    var gappedWords = Regex.Matches(ItemText, @"\{\W*\w+.*?\}");
-
-                    if (gapOpeners.Count != gapClosers.Count || gapOpeners.Count != gappedWords.Count)
-                    {
-                        throw new Exception(Ru.ExceptionUncorrectFormate);
-                    }
-
-                    if (gappedWords.Count == 0)
-                    {
-                        throw new Exception(Ru.ExceptionMinWords);
-                    }
-
-                    break;
-            }
-        }
-        #endregion
-
-        private void txtItemText_KeyUp(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                Save();
-            }
+            Discarded?.Invoke(Item);
         }
 
         private void chkIsChecked_Checked(object sender, RoutedEventArgs e)
         {
-            _item.IsChecked = true;
+            Item.IsChecked = true;
         }
 
         private void chkIsChecked_Unchecked(object sender, RoutedEventArgs e)
         {
-            _item.IsChecked = false;
+            Item.IsChecked = false;
+        }
+
+        private void btnCommit_Click(object sender, RoutedEventArgs e)
+        {
+            Commit();
+        }
+
+        private void Commit()
+        {
+            Validate();
+
+            if (!IsValid)
+            {
+                return;
+            }
+
+            btnCommit.Visibility = Visibility.Collapsed;
+            btnDiscard.Visibility = Visibility.Visible;
+
+            Committed?.Invoke(Item);
+        }
+        #endregion
+
+        private void txtItemText_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == System.Windows.Input.Key.Enter)
+            {
+                Commit();
+            }
         }
     }
 }

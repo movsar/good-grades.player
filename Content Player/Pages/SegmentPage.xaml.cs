@@ -59,11 +59,11 @@ namespace Content_Player.Pages
 
         private List<IAssignment> GetAllAssignments()
         {
-            List<IAssignment> allAssignments = _segment!.MatchingTasks.Cast<IAssignment>().ToList();
-            allAssignments.AddRange(_segment!.FillingTasks);
-            allAssignments.AddRange(_segment!.BuildingTasks);
-            allAssignments.AddRange(_segment!.TestingTasks);
-            allAssignments.AddRange(_segment!.SelectingTasks);
+            List<IAssignment> allAssignments = _segment!.MatchingAssignments.Cast<IAssignment>().ToList();
+            allAssignments.AddRange(_segment!.FillingAssignments);
+            allAssignments.AddRange(_segment!.BuildingAssignments);
+            allAssignments.AddRange(_segment!.TestingAssignments);
+            allAssignments.AddRange(_segment!.SelectionAssignments);
 
             return allAssignments;
         }

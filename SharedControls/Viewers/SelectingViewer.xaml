@@ -16,7 +16,7 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" x:Name="spItems" Margin="20">
+        <StackPanel Grid.Row="0" x:Name="spQuestion" Margin="20">
             <!-- Dynamic content will be added here -->
         </StackPanel>
 

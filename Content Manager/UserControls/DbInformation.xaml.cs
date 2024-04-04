@@ -1,5 +1,6 @@
 ﻿using Content_Manager.Stores;
 using Data.Entities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
@@ -23,6 +24,7 @@ namespace Content_Manager.UserControls
             txtDbCreatedAt.Text = dbMeta.CreatedAt.ToString("R");
             txtDescription.Text = dbMeta.Description;
             txtAppVersion.Text = dbMeta.AppVersion;
+            txtFilePath.Text = _contentStore.DbContext.Database.GetDbConnection().DataSource;
         }
 
         private void btnSave_Click(object sender, RoutedEventArgs e)

@@ -8,7 +8,33 @@
         <Setter Property="TextWrapping" Value="Wrap"/>
         <Setter Property="Margin" Value="5"/>
     </Style>
-    
+
+    <Style x:Key="CheckboxOptionStyle" TargetType="CheckBox">
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Margin" Value="5"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Style.Triggers>
+            <Trigger Property="IsChecked" Value="True">
+                <Setter Property="Foreground" Value="DarkBlue"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="RadioOptionStyle" TargetType="RadioButton">
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Margin" Value="5"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Style.Triggers>
+            <Trigger Property="IsChecked" Value="True">
+                <Setter Property="Foreground" Value="DarkBlue"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
     <Style x:Key="CircularButton" TargetType="Button">
         <Setter Property="Background" Value="#FFFFA500"/>
         <!-- Orange color for visibility, change to yellow if needed -->
@@ -63,7 +89,7 @@
         <Setter Property="Margin" Value="0 0 0 8"/>
         <Setter Property="FontSize" Value="18"/>
     </Style>
-    
+
     <Style x:Key="FillInTextBoxStyle" TargetType="TextBox">
         <Setter Property="BorderThickness" Value="0,0,0,1"/>
         <Setter Property="BorderBrush" Value="Black"/>
