@@ -54,6 +54,7 @@ namespace Content_Manager.Windows.Editors
         {
             if (_assignment == null || string.IsNullOrWhiteSpace(txtTitle.Text))
             {
+                MessageBox.Show("Введите заголовок");
                 return;
             }
 
@@ -77,6 +78,12 @@ namespace Content_Manager.Windows.Editors
                 }
 
                 _assignment.Question.Options.Add(aiEditControl.Item);
+            }
+
+            if (_assignment.Question.Options.Count < 2 || _assignment.Question.Options.FirstOrDefault(o => o.IsChecked == true) == null)
+            {
+                MessageBox.Show("Добавьте хотя бы два варианта ответа и хотя бы один выберите как правильный");
+                return;
             }
 
             // If it's a new task, add it to the selected segment

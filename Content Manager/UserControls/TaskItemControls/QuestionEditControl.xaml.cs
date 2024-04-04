@@ -155,7 +155,7 @@ namespace Content_Manager.UserControls
                 return;
             }
 
-            if (Question.Options.Count == 0 || Question.Options.FirstOrDefault(o => o.IsChecked == true) == null)
+            if (Question.Options.Count < 2 || Question.Options.FirstOrDefault(o => o.IsChecked == true) == null)
             {
                 MessageBox.Show("Добавьте хотя бы два варианта ответа и хотя бы один выберите как правильный");
                 return;
