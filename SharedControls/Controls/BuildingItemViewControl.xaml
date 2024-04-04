@@ -6,9 +6,20 @@
              xmlns:local="clr-namespace:Shared.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    
-    <StackPanel Orientation="Horizontal" x:Name="spItems" Margin="5">
-        <!-- Buttons will be added here dynamically -->
+
+    <StackPanel>
+        <StackPanel x:Name="spItemDropZone"
+                    Orientation="Horizontal"
+                    Margin="10" Height="40" 
+                    Background="Honeydew">
+            <!-- Dynamic content will be added here -->
+        </StackPanel>
+
+        <StackPanel x:Name="spItemSource"
+                    Orientation="Horizontal"
+                    Margin="10" Height="40">
+            <!-- Dynamic content will be added here -->
+        </StackPanel>
     </StackPanel>
-    
+
 </UserControl>

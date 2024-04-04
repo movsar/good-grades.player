@@ -14,26 +14,23 @@ namespace Shared.Viewers
 {
     public partial class BuildingViewer : Window, IAssignmentViewer
     {
-        IList<AssignmentItem> _items;
-
         public event Action<IAssignment, bool> CompletionStateChanged;
 
         private readonly BuildingAssignment _assignment;
 
         public string TaskTitle { get; }
-        public BuildingViewer(BuildingAssignment taskAssignment)
+        public BuildingViewer(BuildingAssignment assignment)
         {
             InitializeComponent();
             DataContext = this;
 
-            _assignment = taskAssignment;
+            _assignment = assignment;
 
             TaskTitle = _assignment.Title;
-            _items = _assignment.Items;
 
-            foreach (var item in _items)
+            foreach (var item in _assignment.Items)
             {
-                var buildingItemViewControl = new BuildingItemViewControl(item.Text);
+                var buildingItemViewControl = new BuildingItemViewControl(item) { Tag = item.Text };
                 spItems.Children.Add(buildingItemViewControl);
             }
         }
@@ -41,8 +38,10 @@ namespace Shared.Viewers
         {
             foreach (BuildingItemViewControl buildingItemViewControl in spItems.Children)
             {
+                var arrangedPhrase = GetUserArrangedPhrase(buildingItemViewControl);
+
                 // Check if the user input matches one of the options
-                if (!buildingItemViewControl.IsCorrectlyArranged)
+                if (arrangedPhrase != buildingItemViewControl.Tag.ToString())
                 {
                     CompletionStateChanged?.Invoke(_assignment, false);
                     MessageBox.Show(Ru.Incorrect);
@@ -53,6 +52,17 @@ namespace Shared.Viewers
             // Show a message if all inputs are correct
             CompletionStateChanged?.Invoke(_assignment, true);
             MessageBox.Show(Ru.Correct);
+        }
+
+        private string GetUserArrangedPhrase(BuildingItemViewControl buildingItemViewControl)
+        {
+            var words = new List<string>();
+            foreach (Button btnWord in buildingItemViewControl.spItemDropZone.Children)
+            {
+                words.Add(btnWord.Content.ToString());
+            }
+
+            return string.Join(" ", words);
         }
     }
 }
