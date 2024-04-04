@@ -53,7 +53,7 @@ namespace Content_Player.Pages
                     Width = ButtonSize,
                     Height = ButtonSize,
                     Margin = new Thickness(ButtonSpacing),
-                    Style = _stylingService.CircularButtonStyle,
+                    Style = (Style)FindResource("CircularButtonStyle"),
                 };
 
                 button.Click += AssignmentButton_Click;
