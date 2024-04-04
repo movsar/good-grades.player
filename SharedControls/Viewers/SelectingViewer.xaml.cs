@@ -5,8 +5,10 @@ using Shared.Controls;
 using Shared.Interfaces;
 using Shared.Translations;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using System.Windows.Documents;
 
 namespace Shared.Viewers
 {
@@ -33,16 +35,12 @@ namespace Shared.Viewers
             spQuestion.Children.Add(questionViewControl);
         }
 
-        private void btnCheck_Click(object sender, RoutedEventArgs e)
+        private void CheckQuestionAnswers(Question question, List<string> userSelectedOptionIds)
         {
-            // Collect user answers
-            var questionViewControl = spQuestion.Children[0] as QuestionViewControl;
-            var selections = questionViewControl!.SelectedOptionIds;
-
             // Check user answers
-            foreach (var option in _question.Options)
+            foreach (var option in question.Options)
             {
-                if (option.IsChecked && !selections.Contains(option.Id))
+                if (option.IsChecked && !userSelectedOptionIds.Contains(option.Id))
                 {
                     MessageBox.Show(Ru.Incorrect);
                     CompletionStateChanged?.Invoke(_assignment, false);
@@ -52,6 +50,15 @@ namespace Shared.Viewers
 
             MessageBox.Show(Ru.Correct);
             CompletionStateChanged?.Invoke(_assignment, true);
+        }
+
+        private void btnCheck_Click(object sender, RoutedEventArgs e)
+        {
+            // Collect user answers
+            var questionViewControl = spQuestion.Children[0] as QuestionViewControl;
+            var userSelections = questionViewControl!.SelectedOptionIds;
+
+            CheckQuestionAnswers(_question, userSelections);
         }
     }
 }
