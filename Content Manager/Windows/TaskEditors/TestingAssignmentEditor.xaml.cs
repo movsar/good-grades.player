@@ -4,40 +4,38 @@ using Content_Manager.UserControls;
 using Data.Entities;
 using Data.Entities.TaskItems;
 using Data.Interfaces;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
-using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Xml.Schema;
 
 namespace Content_Manager.Windows.Editors
 {
     public partial class TestingAssignmentEditor : Window, ITaskEditor
     {
-        private TestingAssignment _taskAssignment;
-        public IAssignment Assignment => _taskAssignment;
+        private TestingAssignment _assignment;
+        public IAssignment Assignment => _assignment;
         private ContentStore ContentStore => App.AppHost!.Services.GetRequiredService<ContentStore>();
 
-        public TestingAssignmentEditor(TestingAssignment? taskEntity = null)
+        public TestingAssignmentEditor(TestingAssignment? assignment = null)
         {
             InitializeComponent();
             DataContext = this;
 
-            _taskAssignment = taskEntity ?? new TestingAssignment()
+            _assignment = assignment ?? new TestingAssignment()
             {
                 Title = txtTitle.Text
             };
-            txtTitle.Text = _taskAssignment.Title;
-            RedrawUi();
+
+            txtTitle.Text = _assignment.Title;
+
+            RedrawQuestions();
         }
 
-        public void RedrawUi()
+        public void RedrawQuestions()
         {
             spItems.Children.Clear();
-            foreach (var question in _taskAssignment.Questions)
+            foreach (var question in _assignment.Questions)
             {
                 var existingQuestionControl = new QuestionEditControl(question);
                 existingQuestionControl.Discarded += OnQuestionDiscarded;
@@ -54,14 +52,14 @@ namespace Content_Manager.Windows.Editors
 
         private void OnQuestionCommitted(Question question)
         {
-            _taskAssignment.Questions.Add(question);
-            RedrawUi();
+            _assignment.Questions.Add(question);
+            RedrawQuestions();
         }
 
         private void OnQuestionDiscarded(Question question)
         {
-            _taskAssignment.Questions.Remove(question);
-            RedrawUi();
+            _assignment.Questions.Remove(question);
+            RedrawQuestions();
         }
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
@@ -71,28 +69,54 @@ namespace Content_Manager.Windows.Editors
 
         private void Save()
         {
-        }
-
-        private void txtTitle_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (_taskAssignment != null)
+            if (_assignment == null || !_assignment.Questions.Any() || string.IsNullOrWhiteSpace(txtTitle.Text))
             {
-                _taskAssignment.Title = txtTitle.Text;
-                ContentStore.DbContext.SaveChanges();
+                MessageBox.Show("Убедитесь что вы заполнили заголовок и добавили вопросы!");
+                return;
             }
-        }
 
-        //ошибка при неправильном заполнении, где item - созданный вариант с вопросом, CorrectOptionId-правильный вариант ответа, а Options.Count-количество ответов в вопросе
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            foreach (var item in _taskAssignment.Questions)
+            // Update assignment data
+            _assignment.Title = txtTitle.Text;
+
+            // Extract Questions from UI
+            _assignment.Questions.Clear();
+            foreach (var item in spItems.Children)
             {
-                if (string.IsNullOrEmpty(item.CorrectOptionId) == true || item.Options.Count < 2)
+                var questionEditControl = item as QuestionEditControl;
+                if (questionEditControl == null)
                 {
-                    MessageBox.Show("Вы неправильно заполнили данные! У вопроса должны быть минимум 2 варианта ответа и один правильный!");
-                    e.Cancel = true;
+                    continue;
                 }
+
+                if (string.IsNullOrWhiteSpace(questionEditControl.Question.Text))
+                {
+                    continue;
+                }
+
+                _assignment.Questions.Add(questionEditControl.Question);
             }
+
+            // If it's a new task, add it to the selected segment
+            var existingAssignment = ContentStore.SelectedSegment!.TestingTasks.FirstOrDefault(st => st.Id == _assignment.Id);
+            if (existingAssignment == null)
+            {
+                ContentStore.SelectedSegment!.TestingTasks.Add(_assignment);
+            }
+
+            // Save and notify the changes
+            ContentStore.DbContext.ChangeTracker.DetectChanges();
+            ContentStore.DbContext.SaveChanges();
+
+            if (existingAssignment == null)
+            {
+                ContentStore.RaiseItemAddedEvent(_assignment);
+            }
+            else
+            {
+                ContentStore.RaiseItemUpdatedEvent(_assignment);
+            }
+
+            Close();
         }
     }
 }

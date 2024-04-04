@@ -35,13 +35,13 @@ namespace Content_Manager.UserControls
         #region Initialization
         private void SetUiForNewMaterial()
         {
-            btnDiscard.Visibility = Visibility.Hidden;
+            btnDiscard.Visibility = Visibility.Collapsed;
             btnCommit.Visibility = Visibility.Visible;
         }
         private void SetUiForExistingMaterial()
         {
             btnDiscard.Visibility = Visibility.Visible;
-            btnCommit.Visibility = Visibility.Hidden;
+            btnCommit.Visibility = Visibility.Collapsed;
         }
         private void SharedUiInitialization()
         {
@@ -53,11 +53,10 @@ namespace Content_Manager.UserControls
             SharedUiInitialization();
             SetUiForNewMaterial();
 
-            Question = new Question()
-            {
-                Text = Hint
-            };
-         
+            Question = new Question();
+
+            txtQuestion.Text = Hint;
+
             RedrawOptions();
         }
 
@@ -67,6 +66,8 @@ namespace Content_Manager.UserControls
             SetUiForExistingMaterial();
 
             Question = question;
+
+            txtQuestion.Text = Question.Text;
 
             RedrawOptions();
         }
@@ -99,7 +100,7 @@ namespace Content_Manager.UserControls
             RedrawOptions();
         }
 
-     
+
         #region Event Handlers
         private void txtQuestionText_GotFocus(object sender, RoutedEventArgs e)
         {
@@ -148,8 +149,15 @@ namespace Content_Manager.UserControls
 
         private void RaiseQuestionCommitEvent()
         {
-            if (string.IsNullOrWhiteSpace(Question.Text) || Question.Options.Count == 0)
+            if (string.IsNullOrWhiteSpace(Question.Text))
             {
+                MessageBox.Show("Пожалуйста введите текст вопроса");
+                return;
+            }
+
+            if (Question.Options.Count == 0 || Question.Options.FirstOrDefault(o => o.IsChecked == true) == null)
+            {
+                MessageBox.Show("Добавьте хотя бы два варианта ответа и хотя бы один выберите как правильный");
                 return;
             }
 

@@ -5,11 +5,9 @@ using Data;
 using Data.Entities;
 using Data.Entities.TaskItems;
 using Data.Interfaces;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace Content_Manager.Windows.Editors
 {
@@ -19,18 +17,18 @@ namespace Content_Manager.Windows.Editors
         public IAssignment Assignment => _assignment;
         private ContentStore ContentStore => App.AppHost!.Services.GetRequiredService<ContentStore>();
 
-        public SelectionAssignmentEditor(SelectingAssignment? taskEntity = null)
+        public SelectionAssignmentEditor(SelectingAssignment? assignment = null)
         {
             InitializeComponent();
             DataContext = this;
 
-            if (taskEntity == null)
+            if (assignment == null)
             {
                 _assignment = new SelectingAssignment();
             }
             else
             {
-                _assignment = taskEntity;
+                _assignment = assignment;
                 txtTitle.Text = _assignment.Question.Text;
             }
 
@@ -82,8 +80,8 @@ namespace Content_Manager.Windows.Editors
             }
 
             // If it's a new task, add it to the selected segment
-            var existingTaskAssignment = ContentStore.SelectedSegment!.SelectingTasks.FirstOrDefault(st => st.Id == _assignment.Id);
-            if (existingTaskAssignment == null)
+            var existingAssignment = ContentStore.SelectedSegment!.SelectingTasks.FirstOrDefault(st => st.Id == _assignment.Id);
+            if (existingAssignment == null)
             {
                 ContentStore.SelectedSegment!.SelectingTasks.Add(_assignment);
             }
@@ -92,7 +90,7 @@ namespace Content_Manager.Windows.Editors
             ContentStore.DbContext.ChangeTracker.DetectChanges();
             ContentStore.DbContext.SaveChanges();
 
-            if (existingTaskAssignment == null)
+            if (existingAssignment == null)
             {
                 ContentStore.RaiseItemAddedEvent(_assignment);
             }
