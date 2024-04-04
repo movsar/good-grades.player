@@ -30,11 +30,11 @@ namespace Content_Manager.UserControls.SegmentTabs
                 return;
             }
 
-            List<IAssignment> allTasks = ContentStore.SelectedSegment!.MatchingTasks.Cast<IAssignment>().ToList();
-            allTasks.AddRange(ContentStore.SelectedSegment!.FillingTasks);
-            allTasks.AddRange(ContentStore.SelectedSegment!.BuildingTasks);
-            allTasks.AddRange(ContentStore.SelectedSegment!.TestingTasks);
-            allTasks.AddRange(ContentStore.SelectedSegment!.SelectingTasks);
+            List<IAssignment> allTasks = ContentStore.SelectedSegment!.MatchingAssignments.Cast<IAssignment>().ToList();
+            allTasks.AddRange(ContentStore.SelectedSegment!.FillingAssignments);
+            allTasks.AddRange(ContentStore.SelectedSegment!.BuildingAssignments);
+            allTasks.AddRange(ContentStore.SelectedSegment!.TestingAssignments);
+            allTasks.AddRange(ContentStore.SelectedSegment!.SelectionAssignments);
 
             foreach (var material in allTasks.OrderBy(t => t.CreatedAt))
             {

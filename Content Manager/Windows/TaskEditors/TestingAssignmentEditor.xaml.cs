@@ -97,10 +97,10 @@ namespace Content_Manager.Windows.Editors
             }
 
             // If it's a new task, add it to the selected segment
-            var existingAssignment = ContentStore.SelectedSegment!.TestingTasks.FirstOrDefault(st => st.Id == _assignment.Id);
+            var existingAssignment = ContentStore.SelectedSegment!.TestingAssignments.FirstOrDefault(st => st.Id == _assignment.Id);
             if (existingAssignment == null)
             {
-                ContentStore.SelectedSegment!.TestingTasks.Add(_assignment);
+                ContentStore.SelectedSegment!.TestingAssignments.Add(_assignment);
             }
 
             // Save and notify the changes

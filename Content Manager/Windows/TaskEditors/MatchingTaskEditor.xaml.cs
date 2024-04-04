@@ -56,7 +56,7 @@ namespace Content_Manager.Windows.Editors
             var taskState = ContentStore.DbContext.Entry(_taskAssignment).State;
             if (taskState == EntityState.Detached || taskState == EntityState.Added)
             {
-                ContentStore.SelectedSegment!.MatchingTasks.Add(_taskAssignment);
+                ContentStore.SelectedSegment!.MatchingAssignments.Add(_taskAssignment);
             }
 
             // Add the Task item entity

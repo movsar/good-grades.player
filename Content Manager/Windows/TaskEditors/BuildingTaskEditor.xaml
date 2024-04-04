@@ -12,6 +12,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0"  Margin="10,5,10,0" Orientation="Vertical">
@@ -22,7 +23,6 @@
             <TextBox 
                 x:Name="txtTitle"
                 Style="{StaticResource InputFieldStyle}" 
-                TextChanged="txtTitle_TextChanged"
                 Text="{x:Static translations:Ru.BuildingTaskText}">
             </TextBox>
 
@@ -35,5 +35,14 @@
         <ScrollViewer Grid.Row="1">
             <StackPanel x:Name="spItems"></StackPanel>
         </ScrollViewer>
+
+        <Button Grid.Row="2" x:Name="btnSave" 
+               Background="LightSeaGreen"
+               Margin="10" Padding="7" 
+               Cursor="Hand"
+               FontFamily="Segoe MDL2 Assets" Content="&#xE74E;"
+               HorizontalAlignment="Right"
+               Click="btnSave_Click"/>
+
     </Grid>
 </Window>
