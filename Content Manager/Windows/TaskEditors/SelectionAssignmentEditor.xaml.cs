@@ -62,23 +62,7 @@ namespace Content_Manager.Windows.Editors
             _assignment.Title = txtTitle.Text;
             _assignment.Question.Text = txtTitle.Text;
             _assignment.Question.Options.Clear();
-
-            // Extract Assignment Items from UI
-            foreach (var item in spItems.Children)
-            {
-                var aiEditControl = item as AssignmentItemEditControl;
-                if (aiEditControl == null)
-                {
-                    continue;
-                }
-
-                if (string.IsNullOrWhiteSpace(aiEditControl.Item.Text))
-                {
-                    continue;
-                }
-
-                _assignment.Question.Options.Add(aiEditControl.Item);
-            }
+            IAssignmentEditor.SetAssignmentItems(_assignment.Question.Options, spItems);
 
             if (_assignment.Question.Options.Count < 2 || _assignment.Question.Options.FirstOrDefault(o => o.IsChecked == true) == null)
             {

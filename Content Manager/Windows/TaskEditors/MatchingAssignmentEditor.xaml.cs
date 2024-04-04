@@ -61,7 +61,7 @@ namespace Content_Manager.Windows.Editors
 
         private void SaveAndClose()
         {
-            if (_assignment == null || string.IsNullOrWhiteSpace(txtTitle.Text))
+            if (string.IsNullOrWhiteSpace(txtTitle.Text))
             {
                 MessageBox.Show("Введите заголовок");
                 return;
@@ -69,29 +69,7 @@ namespace Content_Manager.Windows.Editors
 
             // Update assignment data
             _assignment.Title = txtTitle.Text;
-
-            // Extract Assignment Items from UI
-            _assignment.Items.Clear();
-            foreach (var item in spItems.Children)
-            {
-                var aiEditControl = item as AssignmentItemEditControl;
-                if (aiEditControl == null)
-                {
-                    continue;
-                }
-
-                if (string.IsNullOrWhiteSpace(aiEditControl.Item.Text))
-                {
-                    continue;
-                }
-
-                if (!aiEditControl.IsValid)
-                {
-                    continue;
-                }
-
-                _assignment.Items.Add(aiEditControl.Item);
-            }
+            IAssignmentEditor.SetAssignmentItems(_assignment.Items, spItems);
 
             var existingAssignment = ContentStore.SelectedSegment!.MatchingAssignments.FirstOrDefault(a => a.Id == _assignment.Id);
             if (existingAssignment == null)
