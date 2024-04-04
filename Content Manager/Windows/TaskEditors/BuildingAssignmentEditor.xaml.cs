@@ -13,12 +13,12 @@ using System.Windows.Controls;
 
 namespace Content_Manager.Windows.Editors
 {
-    public partial class BuildingTaskEditor : Window, ITaskEditor
+    public partial class BuildingAssignmentEditor : Window, ITaskEditor
     {
         private BuildingAssignment _assignment;
         public IAssignment Assignment => _assignment;
         private ContentStore ContentStore => App.AppHost!.Services.GetRequiredService<ContentStore>();
-        public BuildingTaskEditor(BuildingAssignment? assignment = null)
+        public BuildingAssignmentEditor(BuildingAssignment? assignment = null)
         {
             InitializeComponent();
             DataContext = this;

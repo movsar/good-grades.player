@@ -95,10 +95,10 @@ namespace Content_Manager.UserControls
             IAssignment taskAssignment;
             ITaskEditor taskEditor = _taskType switch
             {
-                TaskType.Matching => new MatchingTaskEditor(_taskAssignment as MatchingAssignment),
-                TaskType.Filling => new FillingTaskEditor(_taskAssignment as FillingAssignment),
+                TaskType.Matching => new MatchingAssignmentEditor(_taskAssignment as MatchingAssignment),
+                TaskType.Filling => new FillingAssignmentEditor(_taskAssignment as FillingAssignment),
                 TaskType.Selecting => new SelectionAssignmentEditor(_taskAssignment as SelectingAssignment),
-                TaskType.Building => new BuildingTaskEditor(_taskAssignment as BuildingAssignment),
+                TaskType.Building => new BuildingAssignmentEditor(_taskAssignment as BuildingAssignment),
                 TaskType.Test => new TestingAssignmentEditor(_taskAssignment as TestingAssignment),
                 _ => throw new NotImplementedException()
             };

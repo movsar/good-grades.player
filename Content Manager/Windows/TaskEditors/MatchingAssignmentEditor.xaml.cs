@@ -13,13 +13,13 @@ using System.Windows.Controls;
 
 namespace Content_Manager.Windows.Editors
 {
-    public partial class MatchingTaskEditor : Window, ITaskEditor
+    public partial class MatchingAssignmentEditor : Window, ITaskEditor
     {
         private MatchingAssignment _taskAssignment;
         public IAssignment Assignment => _taskAssignment;
         private ContentStore ContentStore => App.AppHost!.Services.GetRequiredService<ContentStore>();
 
-        public MatchingTaskEditor(MatchingAssignment? matchingTaskEntity = null)
+        public MatchingAssignmentEditor(MatchingAssignment? matchingTaskEntity = null)
         {
             InitializeComponent();
             DataContext = this;

@@ -41,10 +41,10 @@
 		<Compile Update="Windows\TaskEditors\SelectionAssignmentEditor.xaml.cs">
 		  <SubType>Code</SubType>
 		</Compile>
-		<Compile Update="Windows\TaskEditors\BuildingTaskEditor.xaml.cs">
+		<Compile Update="Windows\TaskEditors\BuildingAssignmentEditor.xaml.cs">
 		  <SubType>Code</SubType>
 		</Compile>
-		<Compile Update="Windows\TaskEditors\FillingTaskEditor.xaml.cs">
+		<Compile Update="Windows\TaskEditors\FillingAssignmentEditor.xaml.cs">
 		  <SubType>Code</SubType>
 		</Compile>
 	</ItemGroup>
