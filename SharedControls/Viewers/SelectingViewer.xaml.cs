@@ -3,6 +3,7 @@ using Data.Entities.TaskItems;
 using Data.Interfaces;
 using Shared.Controls;
 using Shared.Interfaces;
+using Shared.Services;
 using Shared.Translations;
 using System;
 using System.Collections.Generic;
@@ -35,30 +36,23 @@ namespace Shared.Viewers
             spQuestion.Children.Add(questionViewControl);
         }
 
-        private void CheckQuestionAnswers(Question question, List<string> userSelectedOptionIds)
-        {
-            // Check user answers
-            foreach (var option in question.Options)
-            {
-                if (option.IsChecked && !userSelectedOptionIds.Contains(option.Id))
-                {
-                    MessageBox.Show(Ru.Incorrect);
-                    CompletionStateChanged?.Invoke(_assignment, false);
-                    return;
-                }
-            }
-
-            MessageBox.Show(Ru.Correct);
-            CompletionStateChanged?.Invoke(_assignment, true);
-        }
-
         private void btnCheck_Click(object sender, RoutedEventArgs e)
         {
             // Collect user answers
             var questionViewControl = spQuestion.Children[0] as QuestionViewControl;
-            var userSelections = questionViewControl!.SelectedOptionIds;
+            var selections = questionViewControl!.SelectedOptionIds;
 
-            CheckQuestionAnswers(_question, userSelections);
+            var areAnswersCorrect = QuestionService.CheckUserAnswers(_question, selections);
+            if (areAnswersCorrect)
+            {
+                MessageBox.Show(Ru.Correct);
+            }
+            else
+            {
+                MessageBox.Show(Ru.Incorrect);
+            }
+
+            CompletionStateChanged?.Invoke(_assignment, areAnswersCorrect);
         }
     }
 }
