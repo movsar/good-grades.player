@@ -22,7 +22,7 @@ namespace Content_Manager.UserControls
     {
         #region Properties and Fields
         private FormCompletionInfo _formCompletionInfo;
-        private TaskType _taskType;
+        private AssignmentType _taskType;
         ContentStore ContentStore => App.AppHost!.Services.GetRequiredService<ContentStore>();
         StylingService StylingService => App.AppHost!.Services.GetRequiredService<StylingService>();
 
@@ -93,13 +93,13 @@ namespace Content_Manager.UserControls
         private void btnSetData_Click(object sender, RoutedEventArgs e)
         {
             IAssignment taskAssignment;
-            ITaskEditor taskEditor = _taskType switch
+            IAssignmentEditor taskEditor = _taskType switch
             {
-                TaskType.Matching => new MatchingAssignmentEditor(_taskAssignment as MatchingAssignment),
-                TaskType.Filling => new FillingAssignmentEditor(_taskAssignment as FillingAssignment),
-                TaskType.Selecting => new SelectionAssignmentEditor(_taskAssignment as SelectingAssignment),
-                TaskType.Building => new BuildingAssignmentEditor(_taskAssignment as BuildingAssignment),
-                TaskType.Test => new TestingAssignmentEditor(_taskAssignment as TestingAssignment),
+                AssignmentType.Matching => new MatchingAssignmentEditor(_taskAssignment as MatchingAssignment),
+                AssignmentType.Filling => new FillingAssignmentEditor(_taskAssignment as FillingAssignment),
+                AssignmentType.Selecting => new SelectionAssignmentEditor(_taskAssignment as SelectingAssignment),
+                AssignmentType.Building => new BuildingAssignmentEditor(_taskAssignment as BuildingAssignment),
+                AssignmentType.Test => new TestingAssignmentEditor(_taskAssignment as TestingAssignment),
                 _ => throw new NotImplementedException()
             };
 
@@ -123,22 +123,22 @@ namespace Content_Manager.UserControls
             Window viewer = null!;
             switch (_taskType)
             {
-                case TaskType.Matching:
+                case AssignmentType.Matching:
                     viewer = new MatchingViewer((MatchingAssignment)_taskAssignment);
                     break;
 
-                case TaskType.Test:
+                case AssignmentType.Test:
                     viewer = new TestingViewer((TestingAssignment)_taskAssignment);
                     break;
 
-                case TaskType.Filling:
+                case AssignmentType.Filling:
                     viewer = new FillingViewer((FillingAssignment)_taskAssignment);
                     break;
 
-                case TaskType.Selecting:
+                case AssignmentType.Selecting:
                     viewer = new SelectingViewer((SelectingAssignment)_taskAssignment);
                     break;
-                case TaskType.Building:
+                case AssignmentType.Building:
                     viewer = new BuildingViewer((BuildingAssignment)_taskAssignment);
                     break;
             }
@@ -229,27 +229,27 @@ namespace Content_Manager.UserControls
                                 .Cast<ComboBoxItem>()
                                 .FirstOrDefault(item => item.Content.ToString() == selectedTaskName);
         }
-        private TaskType GetSelectedTaskType(string selectedTaskTypeTitle)
+        private AssignmentType GetSelectedTaskType(string selectedTaskTypeTitle)
         {
             if (selectedTaskTypeTitle.Equals(Ru.FillingTaskName))
             {
-                return TaskType.Filling;
+                return AssignmentType.Filling;
             }
             else if (selectedTaskTypeTitle.Equals(Ru.TestTaskName))
             {
-                return TaskType.Test;
+                return AssignmentType.Test;
             }
             else if (selectedTaskTypeTitle.Equals(Ru.BuildingTaskName))
             {
-                return TaskType.Building;
+                return AssignmentType.Building;
             }
             else if (selectedTaskTypeTitle.Equals(Ru.SelectingTaskName))
             {
-                return TaskType.Selecting;
+                return AssignmentType.Selecting;
             }
             else if (selectedTaskTypeTitle.Equals(Ru.MatchingTaskName))
             {
-                return TaskType.Matching;
+                return AssignmentType.Matching;
             }
             else
             {

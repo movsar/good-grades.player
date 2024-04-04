@@ -13,7 +13,7 @@ using System.Windows.Controls;
 
 namespace Content_Manager.Windows.Editors
 {
-    public partial class MatchingAssignmentEditor : Window, ITaskEditor
+    public partial class MatchingAssignmentEditor : Window, IAssignmentEditor
     {
         private MatchingAssignment _taskAssignment;
         public IAssignment Assignment => _taskAssignment;
@@ -38,13 +38,13 @@ namespace Content_Manager.Windows.Editors
             spItems.Children.Clear();
             foreach (var item in _taskAssignment.Items)
             {
-                var existingQuizItemControl = new AssignmentItemEditControl(TaskType.Matching, item);
+                var existingQuizItemControl = new AssignmentItemEditControl(AssignmentType.Matching, item);
                 //existingQuizItemControl.Removed += Item_Delete;
 
                 spItems.Children.Add(existingQuizItemControl);
             }
 
-            var newItemControl = new AssignmentItemEditControl(TaskType.Matching);
+            var newItemControl = new AssignmentItemEditControl(AssignmentType.Matching);
             spItems.Children.Add(newItemControl);
         }
 

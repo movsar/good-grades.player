@@ -78,13 +78,13 @@ namespace Content_Manager.UserControls
             spItems.Children.Clear();
             foreach (var option in Question.Options)
             {
-                var existingItemControl = new AssignmentItemEditControl(TaskType.Test, option);
+                var existingItemControl = new AssignmentItemEditControl(AssignmentType.Test, option);
                 existingItemControl.Discarded += OnOptionDiscarded;
 
                 spItems.Children.Add(existingItemControl);
             }
 
-            var newItemControl = new AssignmentItemEditControl(TaskType.Test);
+            var newItemControl = new AssignmentItemEditControl(AssignmentType.Test);
             newItemControl.Committed += OnOptionCommitted;
             spItems.Children.Add(newItemControl);
         }

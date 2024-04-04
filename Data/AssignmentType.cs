@@ -1,6 +1,6 @@
 ﻿namespace Data
 {
-    public enum TaskType
+    public enum AssignmentType
     {
         Building,
         Matching,

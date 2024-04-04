@@ -11,7 +11,7 @@ using System.Windows;
 
 namespace Content_Manager.Windows.Editors
 {
-    public partial class SelectionAssignmentEditor : Window, ITaskEditor
+    public partial class SelectionAssignmentEditor : Window, IAssignmentEditor
     {
         private SelectingAssignment _assignment;
         public IAssignment Assignment => _assignment;
@@ -40,12 +40,12 @@ namespace Content_Manager.Windows.Editors
             spItems.Children.Clear();
             foreach (var item in _assignment.Question.Options)
             {
-                var existingQuizItemControl = new AssignmentItemEditControl(TaskType.Selecting, item);
+                var existingQuizItemControl = new AssignmentItemEditControl(AssignmentType.Selecting, item);
                 existingQuizItemControl.Discarded += OnAssignmentItemDiscarded;
                 spItems.Children.Add(existingQuizItemControl);
             }
 
-            var newItemControl = new AssignmentItemEditControl(TaskType.Selecting);
+            var newItemControl = new AssignmentItemEditControl(AssignmentType.Selecting);
             newItemControl.Committed += OnAssignmentItemCommitted;
             spItems.Children.Add(newItemControl);
         }

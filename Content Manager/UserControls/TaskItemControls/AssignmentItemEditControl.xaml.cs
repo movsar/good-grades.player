@@ -10,6 +10,7 @@ using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using Shared.Translations;
 using Image = System.Windows.Controls.Image;
+using System.Text.RegularExpressions;
 
 namespace Content_Manager.UserControls
 {
@@ -18,7 +19,7 @@ namespace Content_Manager.UserControls
         #region Fields
         private string Hint = Ru.SetDescription;
         private FormCompletionInfo _formCompletionInfo;
-        private TaskType _taskType;
+        private AssignmentType _assignmentType;
         #endregion
 
         #region Properties and Events
@@ -50,12 +51,12 @@ namespace Content_Manager.UserControls
 
         #region Initialization
 
-        private void SharedUiInitialization(TaskType taskType, bool isExistingItem)
+        private void SharedUiInitialization(AssignmentType assignmentType, bool isExistingItem)
         {
             InitializeComponent();
             DataContext = this;
 
-            _taskType = taskType;
+            _assignmentType = assignmentType;
 
             var propertiesToWatch = new List<string>
             {
@@ -63,12 +64,12 @@ namespace Content_Manager.UserControls
             };
 
             // Decide what controls to make available
-            switch (_taskType)
+            switch (_assignmentType)
             {
-                case TaskType.Filling:
+                case AssignmentType.Filling:
                     Hint = Ru.FillingQuestion;
                     break;
-                case TaskType.Matching:
+                case AssignmentType.Matching:
                     Hint = Ru.SetImageDescription;
 
                     btnChooseImage.Visibility = Visibility.Visible;
@@ -76,8 +77,8 @@ namespace Content_Manager.UserControls
                     propertiesToWatch.Add(nameof(Item.Image));
 
                     break;
-                case TaskType.Test:
-                case TaskType.Selecting:
+                case AssignmentType.Test:
+                case AssignmentType.Selecting:
                     chkIsChecked.Visibility = Visibility.Visible;
                     chkIsChecked.IsChecked = Item.IsChecked;
                     break;
@@ -89,7 +90,7 @@ namespace Content_Manager.UserControls
 
             _formCompletionInfo = new FormCompletionInfo(propertiesToWatch, isExistingItem);
         }
-        public AssignmentItemEditControl(TaskType taskType)
+        public AssignmentItemEditControl(AssignmentType taskType)
         {
             Item = new AssignmentItem();
 
@@ -98,7 +99,7 @@ namespace Content_Manager.UserControls
             btnCommit.Visibility = Visibility.Visible;
             btnDiscard.Visibility = Visibility.Collapsed;
         }
-        public AssignmentItemEditControl(TaskType taskType, AssignmentItem item)
+        public AssignmentItemEditControl(AssignmentType taskType, AssignmentItem item)
         {
             Item = item;
 
@@ -116,6 +117,43 @@ namespace Content_Manager.UserControls
             }
         }
         #endregion
+        private bool Validate()
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(Item.Text))
+                {
+                    throw new Exception("Введите текст");
+                }
+
+                switch (_assignmentType)
+                {
+                    case AssignmentType.Filling:
+                        var gapOpeners = Regex.Matches(Item.Text, @"\{");
+                        var gapClosers = Regex.Matches(Item.Text, @"\}");
+                        var gappedWords = Regex.Matches(Item.Text, @"\{\W*\w+.*?\}");
+
+                        if (gapOpeners.Count != gapClosers.Count || gapOpeners.Count != gappedWords.Count)
+                        {
+                            throw new Exception(Ru.ExceptionUncorrectFormate);
+                        }
+
+                        if (gappedWords.Count == 0)
+                        {
+                            throw new Exception(Ru.ExceptionMinWords);
+                        }
+
+                        break;
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return false;
+            }
+        }
 
         #region Event Handlers
         private void txtItemText_GotFocus(object sender, RoutedEventArgs e)
@@ -189,9 +227,8 @@ namespace Content_Manager.UserControls
 
         private void Commit()
         {
-            if (string.IsNullOrWhiteSpace(Item.Text))
+            if (!Validate())
             {
-                MessageBox.Show("Введите текст");
                 return;
             }
 

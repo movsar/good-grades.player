@@ -5,15 +5,13 @@ using Data;
 using Data.Entities;
 using Data.Entities.TaskItems;
 using Data.Interfaces;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace Content_Manager.Windows.Editors
 {
-    public partial class BuildingAssignmentEditor : Window, ITaskEditor
+    public partial class BuildingAssignmentEditor : Window, IAssignmentEditor
     {
         private BuildingAssignment _assignment;
         public IAssignment Assignment => _assignment;
@@ -37,13 +35,13 @@ namespace Content_Manager.Windows.Editors
             spItems.Children.Clear();
             foreach (var item in _assignment.Items)
             {
-                var existingItemControl = new AssignmentItemEditControl(TaskType.Building, item);
+                var existingItemControl = new AssignmentItemEditControl(AssignmentType.Building, item);
                 existingItemControl.Discarded += OnAssignmentItemDiscarded;
 
                 spItems.Children.Add(existingItemControl);
             }
 
-            var newItemControl = new AssignmentItemEditControl(TaskType.Building);
+            var newItemControl = new AssignmentItemEditControl(AssignmentType.Building);
             newItemControl.Committed += OnAssignmentItemCommitted;
 
             spItems.Children.Add(newItemControl);
@@ -58,7 +56,7 @@ namespace Content_Manager.Windows.Editors
             _assignment.Items.Remove(item);
             RedrawItems();
         }
-        private void btnSave_Click(object sender, RoutedEventArgs e)
+        private void SaveAndClose()
         {
             if (_assignment == null || string.IsNullOrWhiteSpace(txtTitle.Text))
             {
@@ -107,6 +105,10 @@ namespace Content_Manager.Windows.Editors
             }
 
             Close();
+        }
+        private void btnSave_Click(object sender, RoutedEventArgs e)
+        {
+            SaveAndClose();
         }
     }
 }

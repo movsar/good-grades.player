@@ -11,7 +11,7 @@ using System.Windows.Controls;
 
 namespace Content_Manager.Windows.Editors
 {
-    public partial class TestingAssignmentEditor : Window, ITaskEditor
+    public partial class TestingAssignmentEditor : Window, IAssignmentEditor
     {
         private TestingAssignment _assignment;
         public IAssignment Assignment => _assignment;

@@ -2,9 +2,9 @@
 
 namespace Content_Manager.Interfaces
 {
-    public interface ITaskEditor
+    public interface IAssignmentEditor
     {
-        IAssignment Assignment { get; }
         bool? ShowDialog();
+        IAssignment Assignment { get; }
     }
 }
