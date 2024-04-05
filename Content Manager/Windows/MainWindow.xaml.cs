@@ -164,8 +164,6 @@ namespace GGManager
 
         private async Task UpdateMyApp()
         {
-            //var token = "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";
-
             IUpdateSource girHubSource = new GithubSource(_repositoryUrl, "", false);
             var mgr = new UpdateManager(girHubSource);
 
