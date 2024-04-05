@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Data.Services;
+using System;
 using Velopack;
 
 namespace GGManager
@@ -8,7 +9,7 @@ namespace GGManager
         [STAThread]
         public static void Main(string[] args)
         {
-            VelopackApp.Build().Run();
+            VelopackApp.Build().WithFirstRun(v => AssetService.CopyFonts()).Run();
             var application = new App();
             application.InitializeComponent();
             application.Run();

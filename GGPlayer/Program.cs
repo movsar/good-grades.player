@@ -1,4 +1,5 @@
-﻿using Velopack;
+﻿using Data.Services;
+using Velopack;
 
 namespace GGPlayer
 {
@@ -7,7 +8,7 @@ namespace GGPlayer
         [STAThread]
         public static void Main(string[] args)
         {
-            VelopackApp.Build().Run();
+            VelopackApp.Build().WithFirstRun(v => AssetService.CopyFonts()).Run();
             var application = new App();
             application.InitializeComponent();
             application.Run();
