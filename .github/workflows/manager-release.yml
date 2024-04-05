@@ -27,6 +27,6 @@ jobs:
      - name: Create Velopack Release
        run: |
           dotnet tool install -g vpk
-          vpk download github --repoUrl https://github.com/movsar/good-grades
+          vpk download github --repoUrl https://github.com/movsar/good-grades --token ${{ secrets.AUTOMATION_TOKEN }}
           vpk pack -u GGManager -v ${{ steps.get-version.outputs.version }} -p publish
-          vpk upload github --repoUrl https://github.com/movsar/good-grades --publish --releaseName "GGManager ${{ steps.get-version.outputs.version }}" --tag v${{ steps.get-version.outputs.version }}
+          vpk upload github --repoUrl https://github.com/movsar/good-grades --token ${{ secrets.AUTOMATION_TOKEN }} --publish --releaseName "GGManager ${{ steps.get-version.outputs.version }}" --tag v${{ steps.get-version.outputs.version }}
