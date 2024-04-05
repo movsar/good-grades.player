@@ -9,6 +9,7 @@ using Serilog;
 using System.IO;
 using Shared.Services;
 using Data.Services;
+using Velopack;
 
 namespace Content_Manager
 {
@@ -22,6 +23,8 @@ namespace Content_Manager
             .MinimumLevel.Error()
             .WriteTo.File(logPath, rollingInterval: RollingInterval.Day)
             .CreateLogger();
+
+            VelopackApp.Build().Run();
 
             // Handle unhandled exceptions
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
@@ -38,6 +41,15 @@ namespace Content_Manager
                         services.AddSingleton<ContentStore>();
                     }).Build();
         }
+        //private static void OnAppInstall(SemanticVersion version, IAppTools tools)
+        //{
+        //    tools.CreateShortcutForThisExe(ShortcutLocation.StartMenu | ShortcutLocation.Desktop);
+        //}
+
+        //private static void OnAppUninstall(SemanticVersion version, IAppTools tools)
+        //{
+        //    tools.RemoveShortcutForThisExe(ShortcutLocation.StartMenu | ShortcutLocation.Desktop);
+        //}
         private void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
             e.Handled = true;

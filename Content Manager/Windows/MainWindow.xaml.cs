@@ -5,8 +5,6 @@ using Content_Manager.Windows;
 using Data.Entities;
 using Data.Interfaces;
 using Microsoft.Extensions.Logging;
-using Squirrel;
-using Squirrel.Sources;
 using System;
 using System.IO;
 using System.Linq;
@@ -16,6 +14,8 @@ using System.Windows;
 using Shared.Translations;
 using Data.Services;
 using Shared.Services;
+using Velopack;
+using Velopack.Sources;
 
 namespace Content_Manager
 {
@@ -120,73 +120,66 @@ namespace Content_Manager
         #endregion
 
         #region App Install, Update and Uninstall
-        private static void OnAppInstall(SemanticVersion version, IAppTools tools)
-        {
-            tools.CreateShortcutForThisExe(ShortcutLocation.StartMenu | ShortcutLocation.Desktop);
-        }
 
-        private static void OnAppUninstall(SemanticVersion version, IAppTools tools)
-        {
-            tools.RemoveShortcutForThisExe(ShortcutLocation.StartMenu | ShortcutLocation.Desktop);
-        }
+        //private async Task UpdateMyApp()
+        //{
+        //    var repositoryUrl = "https://github.com/movsar/good-grades";
+        //    IUpdateSource girHubSource = new GithubSource(repositoryUrl, "", false);
+        //    string tmpLocalSource = @"D:\temp\content-manager";
 
-        private static void OnAppRun(SemanticVersion version, IAppTools tools, bool firstRun)
-        {
-            tools.SetProcessAppUserModelId();
-            // show a welcome message when the app is first installed
-            if (firstRun)
-            {
-                MessageBox.Show(Ru.Welcome);
-            }
-        }
+        //    try
+        //    {
+        //        using var mgr = new UpdateManager(girHubSource);
+        //        var updateInfo = await mgr.CheckForUpdate();
 
-        protected override void OnInitialized(EventArgs e)
-        {
-            base.OnInitialized(e);
+        //        var newVersion = updateInfo.FutureReleaseEntry.Version;
+        //        var currentVersion = updateInfo.CurrentlyInstalledVersion.Version;
 
-            // run Squirrel first, as the app may exit after these run
-            SquirrelAwareApp.HandleEvents(
-                onInitialInstall: OnAppInstall,
-                onAppUninstall: OnAppUninstall,
-                onEveryRun: OnAppRun);
-        }
-        private async Task UpdateMyApp()
+        //        //_logger.LogInformation($"Before Checking for updates");
+
+        //        //_logger.LogDebug($"future: {newVersion}");
+        //        //_logger.LogDebug($"current: {currentVersion}");
+        //        //_logger.LogDebug($"");
+
+        //        if (updateInfo?.FutureReleaseEntry != null && newVersion.CompareTo(currentVersion) <= 0)
+        //        {
+        //            MessageBox.Show(Ru.LastVersionInstalled, "Good Grades");
+        //            return;
+        //        }
+
+        //        if (MessageBox.Show(String.Format(Ru.AvailableNewVersion, newVersion), "Good Grades", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
+        //        {
+        //            IsEnabled = false;
+        //            await mgr.UpdateApp();
+        //            UpdateManager.RestartApp();
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        ExceptionService.HandleError(ex, "Ошибка при попытаке обновления приложения");
+        //    }
+        //}
+
+        private static async Task UpdateMyApp()
         {
             var repositoryUrl = "https://github.com/movsar/good-grades";
-            IUpdateSource girHubSource = new GithubSource(repositoryUrl, "", false);
-            string tmpLocalSource = @"D:\temp\content-manager";
+            var token = "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";
 
-            try
+            IUpdateSource girHubSource = new GithubSource(repositoryUrl, token, false);
+            var mgr = new UpdateManager(girHubSource);
+
+            // Check for new version
+            var newVersion = await mgr.CheckForUpdatesAsync();
+            if (newVersion == null)
             {
-                using var mgr = new UpdateManager(girHubSource);
-                var updateInfo = await mgr.CheckForUpdate();
-
-                var newVersion = updateInfo.FutureReleaseEntry.Version;
-                var currentVersion = updateInfo.CurrentlyInstalledVersion.Version;
-
-                //_logger.LogInformation($"Before Checking for updates");
-
-                //_logger.LogDebug($"future: {newVersion}");
-                //_logger.LogDebug($"current: {currentVersion}");
-                //_logger.LogDebug($"");
-
-                if (updateInfo?.FutureReleaseEntry != null && newVersion.CompareTo(currentVersion) <= 0)
-                {
-                    MessageBox.Show(Ru.LastVersionInstalled, "Good Grades");
-                    return;
-                }
-
-                if (MessageBox.Show(String.Format(Ru.AvailableNewVersion, newVersion), "Good Grades", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
-                {
-                    IsEnabled = false;
-                    await mgr.UpdateApp();
-                    UpdateManager.RestartApp();
-                }
+                return;
             }
-            catch (Exception ex)
-            {
-                ExceptionService.HandleError(ex, "Ошибка при попытаке обновления приложения");
-            }
+
+            // Download new version
+            await mgr.DownloadUpdatesAsync(newVersion);
+
+            // Install new version and restart app
+            mgr.ApplyUpdatesAndRestart(newVersion);
         }
 
         private async void mnuCheckUpdates_Click(object sender, RoutedEventArgs e)

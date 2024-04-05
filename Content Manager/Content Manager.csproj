@@ -13,10 +13,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Clowd.Squirrel" Version="2.11.1" />
 		<PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
 		<PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.77" />
 		<PackageReference Include="MicrosoftExpressionInteractions" Version="3.0.40218" />
+		<PackageReference Include="Velopack" Version="0.0.359" />
 		<PackageReference Include="Xam.Plugin.SimpleAudioPlayer.WPF" Version="1.6.0" />
 	</ItemGroup>
 
