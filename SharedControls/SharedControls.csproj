@@ -4,6 +4,8 @@
 		<TargetFramework>net6.0-windows</TargetFramework>
 		<Nullable>enable</Nullable>
 		<UseWPF>true</UseWPF>
+		<AssemblyName>Shared</AssemblyName>
+		<RootNamespace>Shared</RootNamespace>
 	</PropertyGroup>
 
 	<ItemGroup>

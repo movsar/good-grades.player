@@ -6,7 +6,7 @@
 		<RootNamespace>GGManager</RootNamespace>
 		<Nullable>enable</Nullable>
 		<UseWPF>true</UseWPF>
-		<Version>0.5.3</Version>
+		<Version>0.5.4</Version>
 		<StartupObject>GGManager.Program</StartupObject>
 		<ApplicationManifest>app.manifest</ApplicationManifest>
 	</PropertyGroup>
@@ -20,7 +20,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\SharedControls\Shared.csproj" />
+		<ProjectReference Include="..\SharedControls\SharedControls.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
