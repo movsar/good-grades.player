@@ -153,7 +153,7 @@ namespace Content_Manager
         private async Task UpdateMyApp()
         {
             var repositoryUrl = "https://github.com/movsar/good-grades";
-            IUpdateSource girHubSource = new GithubSource(repositoryUrl, "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", true);
+            IUpdateSource girHubSource = new GithubSource(repositoryUrl, "", false);
             string tmpLocalSource = @"D:\temp\content-manager";
 
             try

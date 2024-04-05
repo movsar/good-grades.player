@@ -1,12 +1,10 @@
 ﻿using Data.Entities;
-using Data.Entities.TaskItems;
 using Data.Interfaces;
 using Shared.Controls;
 using Shared.Interfaces;
 using Shared.Translations;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
