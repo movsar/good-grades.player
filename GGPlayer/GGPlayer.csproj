@@ -10,6 +10,7 @@
 		<AssemblyVersion>0.5.1</AssemblyVersion>
 		<FileVersion>0.5.1</FileVersion>
 		<Version>0.5.1</Version>
+		<StartupObject>GGPlayer.Program</StartupObject>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -17,6 +18,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Velopack" Version="0.0.359" />
 		<PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
 	</ItemGroup>
 
