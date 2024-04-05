@@ -4,7 +4,7 @@
     {
         public static void CopyFonts()
         {
-            var destinationDirectory = Environment.SpecialFolder.Fonts.ToString();
+            var destinationDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Fonts);
             var appFonts = Directory.GetFiles(Path.Combine("Assets", "Fonts"), "*");
             foreach (var file in appFonts)
             {
@@ -12,8 +12,12 @@
                 string fileName = Path.GetFileName(file);
                 string destFile = Path.Combine(destinationDirectory, fileName);
 
-                // Copy the file.
-                File.Copy(file, destFile, true);
+                if (File.Exists(destFile))
+                {
+                    continue;
+                }
+
+                File.Copy(file, destFile);
             }
         }
     }
