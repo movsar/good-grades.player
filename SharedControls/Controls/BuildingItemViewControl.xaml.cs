@@ -21,7 +21,6 @@ namespace Shared.Controls
                 {
                     Content = word,
                     Style = (Style)FindResource("BuilderItemButtonStyle"),
-                    AllowDrop = true
                 };
 
                 // Event handlers for drag and drop

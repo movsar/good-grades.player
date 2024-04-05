@@ -35,7 +35,7 @@
         </Style.Triggers>
     </Style>
 
-    <Style x:Key="CircularButton" TargetType="Button">
+    <Style x:Key="CircularButtonStyle" TargetType="Button">
         <Setter Property="Background" Value="#FFFFA500"/>
         <!-- Orange color for visibility, change to yellow if needed -->
         <Setter Property="Foreground" Value="Black"/>
