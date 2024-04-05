@@ -1,8 +1,8 @@
-﻿using Content_Player.Pages;
+﻿using GGPlayer.Pages;
 using Shared.Translations;
 using System.Windows;
 
-namespace Content_Player
+namespace GGPlayer
 {
     public partial class ShellWindow : Window
     {

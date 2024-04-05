@@ -1,4 +1,4 @@
-﻿using Content_Player.Models;
+﻿using GGPlayer.Models;
 using Data.Entities;
 using Data.Interfaces;
 using Shared.Services;
@@ -6,7 +6,7 @@ using Shared.Viewers;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace Content_Player.Pages
+namespace GGPlayer.Pages
 {
     public partial class SegmentPage : Page
     {

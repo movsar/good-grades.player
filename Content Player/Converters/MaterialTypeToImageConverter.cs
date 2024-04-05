@@ -1,11 +1,11 @@
-﻿using Content_Player.Models;
+﻿using GGPlayer.Models;
 using Data.Entities;
 using Shared.Services;
 using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
 
-namespace Content_Player.Converters
+namespace GGPlayer.Converters
 {
     public class MaterialTypeToImageConverter : IValueConverter
     {

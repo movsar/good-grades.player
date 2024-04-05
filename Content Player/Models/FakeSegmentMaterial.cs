@@ -1,6 +1,6 @@
 ﻿using Data.Interfaces;
 
-namespace Content_Player.Models
+namespace GGPlayer.Models
 {
     internal class FakeSegmentMaterial : IMaterial
     {

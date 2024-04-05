@@ -7,7 +7,7 @@ using Shared.Services;
 using System.IO;
 using System.Windows;
 
-namespace Content_Player
+namespace GGPlayer
 {
     public partial class App : Application
     {

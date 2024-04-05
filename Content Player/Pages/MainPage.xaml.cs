@@ -11,7 +11,7 @@ using System.Collections.ObjectModel;
 using Serilog;
 using Shared.Services;
 
-namespace Content_Player.Pages
+namespace GGPlayer.Pages
 {
     public partial class MainPage : Page
     {

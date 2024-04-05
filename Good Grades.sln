@@ -10,11 +10,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Dev Notes.txt = Dev Notes.txt
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Content Manager", "Content Manager\Content Manager.csproj", "{4240FB4B-F6E9-4D6F-852C-EE305E515A92}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GGManager", "Content Manager\GGManager.csproj", "{4240FB4B-F6E9-4D6F-852C-EE305E515A92}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "SharedControls\Shared.csproj", "{07C2F059-D0B6-4455-A41B-22FE2791CD60}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Content Player", "Content Player\Content Player.csproj", "{595C0CAB-A757-4D6B-8EC5-151F73434B94}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GGPlayer", "Content Player\GGPlayer.csproj", "{595C0CAB-A757-4D6B-8EC5-151F73434B94}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

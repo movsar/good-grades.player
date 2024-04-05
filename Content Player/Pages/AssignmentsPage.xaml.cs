@@ -10,7 +10,7 @@ using System.Collections.ObjectModel;
 using Shared.Interfaces;
 using System.Text.RegularExpressions;
 
-namespace Content_Player.Pages
+namespace GGPlayer.Pages
 {
     public partial class AssignmentsPage : Page
     {
