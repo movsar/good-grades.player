@@ -1,6 +1,6 @@
 ﻿using Shared.Translations;
 
-namespace Content_Manager.Services
+namespace GGManager.Services
 {
     public class FileService
     {

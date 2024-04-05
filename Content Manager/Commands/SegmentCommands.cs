@@ -1,12 +1,12 @@
-﻿using Content_Manager.Stores;
-using Content_Manager.UserControls;
+﻿using GGManager.Stores;
+using GGManager.UserControls;
 using Data.Entities;
 using System;
 using System.Linq;
 using System.Windows;
 using Shared.Translations;
 
-namespace Content_Manager.Commands
+namespace GGManager.Commands
 {
     internal class SegmentCommands
     {

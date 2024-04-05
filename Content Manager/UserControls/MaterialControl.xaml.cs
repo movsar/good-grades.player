@@ -1,6 +1,6 @@
-﻿using Content_Manager.Models;
-using Content_Manager.Services;
-using Content_Manager.Stores;
+﻿using GGManager.Models;
+using GGManager.Services;
+using GGManager.Stores;
 using Data.Entities;
 using Microsoft.Extensions.DependencyInjection;
 using Shared.Viewers;
@@ -13,7 +13,7 @@ using Shared.Translations;
 using Shared.Services;
 using System.Windows.Input;
 
-namespace Content_Manager.UserControls
+namespace GGManager.UserControls
 {
     public partial class MaterialControl : UserControl
     {

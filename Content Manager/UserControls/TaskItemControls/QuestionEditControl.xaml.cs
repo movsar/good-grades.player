@@ -1,5 +1,5 @@
-﻿using Content_Manager.Models;
-using Content_Manager.Stores;
+﻿using GGManager.Models;
+using GGManager.Stores;
 using Data;
 using Data.Entities;
 using Data.Entities.TaskItems;
@@ -15,7 +15,7 @@ using Shared.Services;
 using Microsoft.EntityFrameworkCore;
 using System.Windows.Input;
 
-namespace Content_Manager.UserControls
+namespace GGManager.UserControls
 {
     public partial class QuestionEditControl : UserControl
     {

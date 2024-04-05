@@ -1,9 +1,9 @@
-﻿<UserControl x:Class="Content_Manager.UserControls.SegmentListControl"
+﻿<UserControl x:Class="GGManager.UserControls.SegmentListControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Content_Manager.UserControls"
+             xmlns:local="clr-namespace:GGManager.UserControls"
              xmlns:translations="clr-namespace:Shared.Translations;assembly=Shared"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">

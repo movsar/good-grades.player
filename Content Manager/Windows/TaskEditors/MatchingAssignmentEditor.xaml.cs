@@ -1,6 +1,6 @@
-﻿using Content_Manager.Interfaces;
-using Content_Manager.Stores;
-using Content_Manager.UserControls;
+﻿using GGManager.Interfaces;
+using GGManager.Stores;
+using GGManager.UserControls;
 using Data;
 using Data.Entities;
 using Data.Entities.TaskItems;
@@ -9,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
 using System.Windows;
 
-namespace Content_Manager.Windows.Editors
+namespace GGManager.Windows.Editors
 {
     public partial class MatchingAssignmentEditor : Window, IAssignmentEditor
     {

@@ -1,9 +1,9 @@
-﻿<Window x:Class="Content_Manager.Windows.DbInfoWindow"
+﻿<Window x:Class="GGManager.Windows.DbInfoWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Content_Manager.Windows" xmlns:usercontrols="clr-namespace:Content_Manager.UserControls"
+        xmlns:local="clr-namespace:GGManager.Windows" xmlns:usercontrols="clr-namespace:GGManager.UserControls"
         mc:Ignorable="d"
         xmlns:translations="clr-namespace:Shared.Translations;assembly=Shared"
         Title="{x:Static translations:Ru.DataBase}" Height="350" Width="480" ResizeMode="NoResize" MinHeight="250" MinWidth="450">

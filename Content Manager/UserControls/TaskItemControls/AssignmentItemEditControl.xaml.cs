@@ -1,5 +1,5 @@
-﻿using Content_Manager.Models;
-using Content_Manager.Services;
+﻿using GGManager.Models;
+using GGManager.Services;
 using Data;
 using Data.Entities.TaskItems;
 using System;
@@ -12,7 +12,7 @@ using Shared.Translations;
 using Image = System.Windows.Controls.Image;
 using System.Text.RegularExpressions;
 
-namespace Content_Manager.UserControls
+namespace GGManager.UserControls
 {
     public partial class AssignmentItemEditControl : UserControl
     {

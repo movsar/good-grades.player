@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows;
 
-namespace Content_Manager.Commands
+namespace GGManager.Commands
 {
     internal abstract class CommandBase : ICommand
     {

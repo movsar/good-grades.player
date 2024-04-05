@@ -1,8 +1,8 @@
-﻿<Window x:Class="Content_Manager.MainWindow"
+﻿<Window x:Class="GGManager.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Good Grades" Height="600" Width="900" MinHeight="600" MinWidth="900"
-        xmlns:usercontrols="clr-namespace:Content_Manager.UserControls"
+        xmlns:usercontrols="clr-namespace:GGManager.UserControls"
         xmlns:translations="clr-namespace:Shared.Translations;assembly=Shared"
         x:Name="mainWindow">
 

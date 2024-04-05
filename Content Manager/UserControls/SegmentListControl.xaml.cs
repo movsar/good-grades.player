@@ -1,5 +1,5 @@
-﻿using Content_Manager.Commands;
-using Content_Manager.Stores;
+﻿using GGManager.Commands;
+using GGManager.Stores;
 using Data.Entities;
 using Data.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,7 +10,7 @@ using System.Windows.Input;
 using Shared.Translations;
 using Microsoft.EntityFrameworkCore;
 
-namespace Content_Manager.UserControls
+namespace GGManager.UserControls
 {
     public partial class SegmentListControl : UserControl
     {

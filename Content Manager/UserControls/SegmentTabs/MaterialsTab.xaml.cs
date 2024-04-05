@@ -1,9 +1,9 @@
-﻿using Content_Manager.Stores;
+﻿using GGManager.Stores;
 using Data.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using System.Windows.Controls;
 
-namespace Content_Manager.UserControls.SegmentTabs
+namespace GGManager.UserControls.SegmentTabs
 {
     public partial class MaterialsTab : UserControl
     {

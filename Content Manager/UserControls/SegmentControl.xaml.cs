@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Content_Manager.UserControls
+namespace GGManager.UserControls
 {
     /// <summary>
     /// Interaction logic for SegmentControl.xaml

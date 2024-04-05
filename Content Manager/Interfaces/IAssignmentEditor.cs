@@ -1,11 +1,11 @@
-﻿using Content_Manager.UserControls;
+﻿using GGManager.UserControls;
 using Data.Entities.TaskItems;
 using Data.Interfaces;
 using System.Collections.Generic;
 using System.Windows.Controls;
 using System.Windows.Documents;
 
-namespace Content_Manager.Interfaces
+namespace GGManager.Interfaces
 {
     public interface IAssignmentEditor
     {

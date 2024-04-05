@@ -1,5 +1,5 @@
-﻿using Content_Manager.Services;
-using Content_Manager.Stores;
+﻿using GGManager.Services;
+using GGManager.Stores;
 using Data;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -11,7 +11,7 @@ using Shared.Services;
 using Data.Services;
 using Velopack;
 
-namespace Content_Manager
+namespace GGManager
 {
     public partial class App : Application
     {
@@ -23,8 +23,6 @@ namespace Content_Manager
             .MinimumLevel.Error()
             .WriteTo.File(logPath, rollingInterval: RollingInterval.Day)
             .CreateLogger();
-
-            VelopackApp.Build().Run();
 
             // Handle unhandled exceptions
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
@@ -41,15 +39,7 @@ namespace Content_Manager
                         services.AddSingleton<ContentStore>();
                     }).Build();
         }
-        //private static void OnAppInstall(SemanticVersion version, IAppTools tools)
-        //{
-        //    tools.CreateShortcutForThisExe(ShortcutLocation.StartMenu | ShortcutLocation.Desktop);
-        //}
-
-        //private static void OnAppUninstall(SemanticVersion version, IAppTools tools)
-        //{
-        //    tools.RemoveShortcutForThisExe(ShortcutLocation.StartMenu | ShortcutLocation.Desktop);
-        //}
+      
         private void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
             e.Handled = true;

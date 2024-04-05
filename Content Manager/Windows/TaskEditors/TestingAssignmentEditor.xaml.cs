@@ -1,6 +1,6 @@
-﻿using Content_Manager.Interfaces;
-using Content_Manager.Stores;
-using Content_Manager.UserControls;
+﻿using GGManager.Interfaces;
+using GGManager.Stores;
+using GGManager.UserControls;
 using Data.Entities;
 using Data.Entities.TaskItems;
 using Data.Interfaces;
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace Content_Manager.Windows.Editors
+namespace GGManager.Windows.Editors
 {
     public partial class TestingAssignmentEditor : Window, IAssignmentEditor
     {

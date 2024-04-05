@@ -1,4 +1,4 @@
-﻿using Content_Manager.Stores;
+﻿using GGManager.Stores;
 using Microsoft.Extensions.DependencyInjection;
 using Shared.Services;
 using System.IO;
@@ -8,7 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 
-namespace Content_Manager.UserControls.SegmentTabs
+namespace GGManager.UserControls.SegmentTabs
 {
     public partial class SegmentInfoTab : UserControl
     {

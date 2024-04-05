@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Content_Manager.Models
+namespace GGManager.Models
 {
     // A nice way to capture the progress of completion for simple forms
     public class FormCompletionInfo

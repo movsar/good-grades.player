@@ -1,7 +1,7 @@
-﻿using Content_Manager.Services;
-using Content_Manager.Stores;
-using Content_Manager.UserControls;
-using Content_Manager.Windows;
+﻿using GGManager.Services;
+using GGManager.Stores;
+using GGManager.UserControls;
+using GGManager.Windows;
 using Data.Entities;
 using Data.Interfaces;
 using Microsoft.Extensions.Logging;
@@ -16,13 +16,15 @@ using Data.Services;
 using Shared.Services;
 using Velopack;
 using Velopack.Sources;
+using System.Diagnostics;
 
-namespace Content_Manager
+namespace GGManager
 {
     public partial class MainWindow : Window
     {
         private readonly ContentStore _contentStore;
         private readonly SettingsService _settingsService;
+        private readonly string _repositoryUrl = "https://github.com/movsar/good-grades";
 
         public MainWindow(ContentStore contentStore, SettingsService fileService)
         {
@@ -160,12 +162,11 @@ namespace Content_Manager
         //    }
         //}
 
-        private static async Task UpdateMyApp()
+        private async Task UpdateMyApp()
         {
-            var repositoryUrl = "https://github.com/movsar/good-grades";
-            var token = "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";
+            //var token = "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";
 
-            IUpdateSource girHubSource = new GithubSource(repositoryUrl, token, false);
+            IUpdateSource girHubSource = new GithubSource(_repositoryUrl, "", false);
             var mgr = new UpdateManager(girHubSource);
 
             // Check for new version
@@ -184,7 +185,11 @@ namespace Content_Manager
 
         private async void mnuCheckUpdates_Click(object sender, RoutedEventArgs e)
         {
-            await UpdateMyApp();
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = _repositoryUrl,
+                UseShellExecute = true
+            });
         }
 
         #endregion

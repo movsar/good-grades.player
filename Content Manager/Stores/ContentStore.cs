@@ -6,7 +6,7 @@ using Shared.Services;
 using System;
 using System.Reflection;
 
-namespace Content_Manager.Stores
+namespace GGManager.Stores
 {
     /*
      * This is needed for cross-window UI statefulness and reactivity, 

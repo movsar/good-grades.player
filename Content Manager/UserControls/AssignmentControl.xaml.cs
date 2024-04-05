@@ -1,8 +1,8 @@
-﻿using Content_Manager.Interfaces;
-using Content_Manager.Models;
-using Content_Manager.Services;
-using Content_Manager.Stores;
-using Content_Manager.Windows.Editors;
+﻿using GGManager.Interfaces;
+using GGManager.Models;
+using GGManager.Services;
+using GGManager.Stores;
+using GGManager.Windows.Editors;
 using Data;
 using Data.Entities;
 using Data.Interfaces;
@@ -16,7 +16,7 @@ using System.Windows;
 using System.Windows.Controls;
 using Ru = Shared.Translations.Ru;
 
-namespace Content_Manager.UserControls
+namespace GGManager.UserControls
 {
     public partial class AssignmentControl : UserControl
     {

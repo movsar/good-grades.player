@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Content_Manager.Windows
+namespace GGManager.Windows
 {
     public partial class DbInfoWindow : Window
     {

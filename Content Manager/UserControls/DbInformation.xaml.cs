@@ -1,4 +1,4 @@
-﻿using Content_Manager.Stores;
+﻿using GGManager.Stores;
 using Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,7 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace Content_Manager.UserControls
+namespace GGManager.UserControls
 {
     public partial class DbInformation : UserControl
     {
