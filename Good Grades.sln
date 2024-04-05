@@ -8,6 +8,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D9369D19-B300-4A92-90B6-0A1BECB48D3D}"
 	ProjectSection(SolutionItems) = preProject
 		Dev Notes.txt = Dev Notes.txt
+		.github\workflows\manager-release.yml = .github\workflows\manager-release.yml
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "SharedControls\Shared.csproj", "{07C2F059-D0B6-4455-A41B-22FE2791CD60}"

@@ -22,7 +22,7 @@ jobs:
          dotnet-version: 6.0.x
 
      - name: Publish Application
-       run: dotnet publish MyProject/MyProject.csproj -c Release -o publish -r win-x64 --self-contained true
+       run: dotnet publish GGManager/GGManager.csproj -c Release -o publish -r win-x64 --self-contained true
 
      - name: Create Velopack Release
        run: |
