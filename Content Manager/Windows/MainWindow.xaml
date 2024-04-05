@@ -30,7 +30,7 @@
                     </MenuItem.Icon>
                 </MenuItem>
 
-                <MenuItem Header="_Импортировать" Click="mnuImportDatabase_Click">
+                <!--<MenuItem Header="_Импортировать" Click="mnuImportDatabase_Click">
                     <MenuItem.Icon>
                         <TextBlock
                             HorizontalAlignment="Center" 
@@ -39,7 +39,7 @@
                             &#xE8B6;
                         </TextBlock>
                     </MenuItem.Icon>
-                </MenuItem>
+                </MenuItem>-->
 
                 <Separator />
                 <MenuItem Header="_Информация"

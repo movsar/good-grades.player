@@ -8,13 +8,8 @@
         xmlns:translations="clr-namespace:Shared.Translations;assembly=Shared"
         Title="{x:Static translations:Ru.DataBase}" Height="350" Width="480" ResizeMode="NoResize" MinHeight="250" MinWidth="450">
     
-    <Grid>
-
         <usercontrols:DbInformation 
-                Grid.Column="1"
                 x:Name="ucDbInformation"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
                 BorderThickness="1" />
-    </Grid>
+            
 </Window>
