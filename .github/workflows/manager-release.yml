@@ -1,9 +1,8 @@
-name: Deploy to GitHub Releases
+name: Deploy GGManager to GitHub Releases
 
 on:
-  push:
-    branches:
-      - master
+   workflow_run:     
+
 jobs:
   deploy-to-github-releases:
     runs-on: windows-latest
@@ -15,12 +14,7 @@ jobs:
        id: get-manager-version
        shell: bash
        run: echo "version=$(grep -oE '<Version>[^<]+' GGManager/GGManager.csproj | sed 's/<Version>//')" >> $GITHUB_OUTPUT
-       
-     - name: Get Manager Version from Project File
-       id: get-player-version
-       shell: bash
-       run: echo "version=$(grep -oE '<Version>[^<]+' GGPlayer/GGPlayer.csproj | sed 's/<Version>//')" >> $GITHUB_OUTPUT
-    
+  
      - name: Install .NET
        uses: actions/setup-dotnet@v4
        with:
@@ -29,13 +23,8 @@ jobs:
      - name: Publish GGManager
        run: dotnet publish GGManager/GGManager.csproj -c Release -o publish-manager -r win-x86 -p:PublishReadyToRun=true
 
-     - name: Publish GGPlayer
-       run: dotnet publish GGPlayer/GGPlayer.csproj -c Release -o publish-player -r win-x86 -p:PublishReadyToRun=true
-
-     - name: Create and upload releases
+     - name: Create and upload release
        run: |
           dotnet tool install -g vpk
           vpk pack -u GGManager -v ${{ steps.get-manager-version.outputs.version }} -p publish-manager
           vpk upload github --repoUrl https://github.com/movsar/good-grades --token ${{ secrets.AUTOMATION_TOKEN }} --publish --releaseName "GGManager ${{ steps.get-manager-version.outputs.version }}" --tag v${{ steps.get-manager-version.outputs.version }}m
-          vpk pack -u GGPlayer -v ${{ steps.get-player-version.outputs.version }} -p publish-player
-          vpk upload github --repoUrl https://github.com/movsar/good-grades --token ${{ secrets.AUTOMATION_TOKEN }} --publish --releaseName "GGPlayer ${{ steps.get-player-version.outputs.version }}" --tag v${{ steps.get-player-version.outputs.version }}p

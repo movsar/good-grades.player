@@ -1,0 +1,34 @@
+name: Deploy GGPlayer to GitHub Releases
+
+on:
+   workflow_run:  
+
+# on:
+#   push:
+#     branches:
+#       - master
+jobs:
+  deploy-to-github-releases:
+    runs-on: windows-latest
+    steps:
+     - name: Checkout Repository
+       uses: actions/checkout@v4
+       
+     - name: Get Player Version from Project File
+       id: get-player-version
+       shell: bash
+       run: echo "version=$(grep -oE '<Version>[^<]+' GGPlayer/GGPlayer.csproj | sed 's/<Version>//')" >> $GITHUB_OUTPUT
+    
+     - name: Install .NET
+       uses: actions/setup-dotnet@v4
+       with:
+         dotnet-version: 6.0.x
+
+     - name: Publish GGPlayer
+       run: dotnet publish GGPlayer/GGPlayer.csproj -c Release -o publish-player -r win-x86 -p:PublishReadyToRun=true
+
+     - name: Create and upload releases
+       run: |
+          dotnet tool install -g vpk
+          vpk pack -u GGPlayer -v ${{ steps.get-player-version.outputs.version }} -p publish-player
+          vpk upload github --repoUrl https://github.com/movsar/good-grades --token ${{ secrets.AUTOMATION_TOKEN }} --publish --releaseName "GGPlayer ${{ steps.get-player-version.outputs.version }}" --tag v${{ steps.get-player-version.outputs.version }}p
