@@ -3,7 +3,7 @@ name: Deploy GGPlayer to GitHub Releases
 on:
   push:
     branches:
-      - fake-branch
+      - master
 jobs:
   deploy-to-github-releases:
     runs-on: windows-latest
