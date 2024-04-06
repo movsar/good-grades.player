@@ -1,12 +1,9 @@
 name: Deploy GGPlayer to GitHub Releases
 
 on:
-   workflow_run:  
-
-# on:
-#   push:
-#     branches:
-#       - master
+  push:
+    branches:
+      - fake-branch
 jobs:
   deploy-to-github-releases:
     runs-on: windows-latest
