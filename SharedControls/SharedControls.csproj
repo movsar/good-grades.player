@@ -6,6 +6,7 @@
 		<UseWPF>true</UseWPF>
 		<AssemblyName>Shared</AssemblyName>
 		<RootNamespace>Shared</RootNamespace>
+		<Platforms>AnyCPU;x86</Platforms>
 	</PropertyGroup>
 
 	<ItemGroup>

@@ -9,6 +9,7 @@
 		<UseWPF>true</UseWPF>
 		<Version>0.5.5</Version>
 		<StartupObject>GGPlayer.Program</StartupObject>
+		<Platforms>AnyCPU;x86</Platforms>
 	</PropertyGroup>
 
 	<ItemGroup>

@@ -8,7 +8,14 @@ namespace GGPlayer
         [STAThread]
         public static void Main(string[] args)
         {
-            VelopackApp.Build().WithFirstRun(v => AssetService.CopyFonts()).Run();
+            VelopackApp.Build().Run();
+
+            var osVersion = Environment.OSVersion.Version.Major;
+            if (osVersion < 10)
+            {
+                AssetService.CopyFonts();
+            }
+
             var application = new App();
             application.InitializeComponent();
             application.Run();

@@ -9,6 +9,7 @@
 		<Version>0.5.5</Version>
 		<StartupObject>GGManager.Program</StartupObject>
 		<ApplicationManifest>app.manifest</ApplicationManifest>
+		<Platforms>AnyCPU;x86</Platforms>
 	</PropertyGroup>
 
 	<ItemGroup>
