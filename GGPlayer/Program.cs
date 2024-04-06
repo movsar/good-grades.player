@@ -10,12 +10,6 @@ namespace GGPlayer
         {
             VelopackApp.Build().Run();
 
-            var osVersion = Environment.OSVersion.Version.Major;
-            if (osVersion < 10)
-            {
-                AssetService.CopyFonts();
-            }
-
             var application = new App();
             application.InitializeComponent();
             application.Run();

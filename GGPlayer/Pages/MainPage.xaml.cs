@@ -10,6 +10,8 @@ using Data.Services;
 using System.Collections.ObjectModel;
 using Serilog;
 using Shared.Services;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace GGPlayer.Pages
 {

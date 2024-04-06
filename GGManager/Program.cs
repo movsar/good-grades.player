@@ -10,12 +10,6 @@ namespace GGManager
         public static void Main(string[] args)
         {
             VelopackApp.Build().Run();
-           
-            var osVersion = Environment.OSVersion.Version.Major;
-            if (osVersion < 10)
-            {
-                AssetService.CopyFonts();
-            }
 
             var application = new App();
             application.InitializeComponent();
