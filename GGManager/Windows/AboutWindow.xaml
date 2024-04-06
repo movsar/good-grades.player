@@ -9,7 +9,7 @@
         Title="{x:Static translations:Ru.AboutProgram}" Height="250" Width="400" MinHeight="250" MinWidth="450">
     <Grid Margin="20 20 20 20">
         <TextBlock FontSize="17">
-            (c) 2022 ГКУ «Институт чеченского языка»
+            (c) 2024 ГКУ «Институт чеченского языка»
         </TextBlock>
         <TextBlock>
             <LineBreak/>

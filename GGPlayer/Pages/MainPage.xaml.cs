@@ -1,5 +1,5 @@
-﻿using Data.Entities;
-using Data;
+﻿using Data;
+using Data.Entities;
 using System.IO;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -8,10 +8,7 @@ using Microsoft.Win32;
 using System.Windows;
 using Data.Services;
 using System.Collections.ObjectModel;
-using Serilog;
 using Shared.Services;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
 
 namespace GGPlayer.Pages
 {

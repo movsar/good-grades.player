@@ -1,5 +1,4 @@
-﻿using Data.Services;
-using Velopack;
+﻿using Velopack;
 
 namespace GGPlayer
 {

@@ -1,5 +1,4 @@
-﻿using Data.Services;
-using System;
+﻿using System;
 using Velopack;
 
 namespace GGManager
