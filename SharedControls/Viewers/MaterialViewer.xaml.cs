@@ -1,4 +1,5 @@
 ﻿using Plugin.SimpleAudioPlayer;
+using Serilog;
 using Shared.Interfaces;
 using System;
 using System.IO;
@@ -21,8 +22,6 @@ namespace Shared.Viewers
         }
         public MaterialViewer(string title, string text, byte[] image)
         {
-            // Reading material presenter mode
-
             Title = title;
 
             SharedInitialization();
@@ -31,8 +30,6 @@ namespace Shared.Viewers
 
         public MaterialViewer(string title, string text, byte[]? image, byte[]? audio)
         {
-            // Listening material presenter mode
-
             SharedInitialization();
             LoadDocument(text, image);
 
@@ -42,7 +39,7 @@ namespace Shared.Viewers
             {
                 CrossSimpleAudioPlayer.Current.Load(new MemoryStream(audio));
                 spAudioControls.Visibility = Visibility.Visible;
-            }            
+            }
         }
         #endregion
 
@@ -63,10 +60,8 @@ namespace Shared.Viewers
         }
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
-            //do my stuff before closing
             CrossSimpleAudioPlayer.Current.Stop();
             CrossSimpleAudioPlayer.Current.Dispose();
-            PurgeCache();
             base.OnClosing(e);
         }
         #endregion
@@ -100,7 +95,14 @@ namespace Shared.Viewers
             {
                 if (potentialFileNames.Contains(Path.GetFileName(file)))
                 {
-                    File.Delete(file);
+                    try
+                    {
+                        File.Delete(file);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Error(ex, ex.Message);
+                    }
                 }
             }
         }
