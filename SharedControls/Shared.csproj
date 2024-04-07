@@ -42,4 +42,22 @@
 		<Resource Include="Images\testing.png" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Compile Update="GgLocalization.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>GgLocalization.resx</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Update="GgLocalization.ce.resx">
+	    <Generator>PublicResXFileCodeGenerator</Generator>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="GgLocalization.resx">
+	    <Generator>PublicResXFileCodeGenerator</Generator>
+	    <LastGenOutput>GgLocalization.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	</ItemGroup>
+
 </Project>

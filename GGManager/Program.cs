@@ -1,7 +1,9 @@
 ﻿using Microsoft.Extensions.Logging;
 using Serilog;
 using System;
+using System.Globalization;
 using System.IO;
+using System.Threading;
 using Velopack;
 
 namespace GGManager
@@ -18,10 +20,20 @@ namespace GGManager
             .CreateLogger();
 
             VelopackApp.Build().Run(LoggingInstance<Program>());
-
+            
             var application = new App();
             application.InitializeComponent();
             application.Run();
+        }
+
+        private void SetToChechenCulture()
+        {
+            // Set the culture to Chechen ("ce")
+            CultureInfo cultureInfo = new CultureInfo("ce");
+
+            // Set both the current culture and the current UI culture
+            Thread.CurrentThread.CurrentCulture = cultureInfo;
+            Thread.CurrentThread.CurrentUICulture = cultureInfo;
         }
 
         public static Microsoft.Extensions.Logging.ILogger LoggingInstance<T>()

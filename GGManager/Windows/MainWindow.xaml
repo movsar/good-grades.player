@@ -4,11 +4,12 @@
         Title="Good Grades" Height="600" Width="900" MinHeight="600" MinWidth="900"
         xmlns:usercontrols="clr-namespace:GGManager.UserControls"
         xmlns:translations="clr-namespace:Shared.Translations;assembly=Shared"
+        xmlns:shared="clr-namespace:Shared;assembly=Shared"
         x:Name="mainWindow">
 
     <DockPanel>
         <Menu DockPanel.Dock="Top" Height="21">
-            <MenuItem Header="_База Данных">
+            <MenuItem Header="{x:Static shared:GgLocalization.DataBase}">
                 <MenuItem Header="_Создать" Click="mnuCreateDatabase_Click">
                     <MenuItem.Icon>
                         <TextBlock
