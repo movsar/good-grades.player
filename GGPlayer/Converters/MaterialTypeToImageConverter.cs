@@ -14,7 +14,15 @@ namespace GGPlayer.Converters
             switch (material)
             {
                 case Material:
-                    return new BitmapImage(UriService.GetAbsoluteUri("/Images/listening.png", "Shared"));
+                    var m = material as Material;
+                    if (m.Audio != null)
+                    {
+                        return new BitmapImage(UriService.GetAbsoluteUri("/Images/listening.png", "Shared"));
+                    }
+                    else
+                    {
+                        return new BitmapImage(UriService.GetAbsoluteUri("/Images/reading.png", "Shared"));
+                    }
                 case FakeSegmentMaterial:
                     return new BitmapImage(UriService.GetAbsoluteUri("/Images/testing.png", "Shared"));
             }

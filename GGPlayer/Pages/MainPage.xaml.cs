@@ -35,7 +35,6 @@ namespace GGPlayer.Pages
                 ExceptionService.HandleError(ex, ex.Message);
             }
 
-
             // Intialize the visual elements
             DataContext = this;
             InitializeComponent();
