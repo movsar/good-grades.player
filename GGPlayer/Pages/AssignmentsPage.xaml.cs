@@ -4,6 +4,7 @@ using Shared.Viewers;
 using System.Windows;
 using System.Windows.Controls;
 using Shared.Interfaces;
+using System.Windows.Input;
 
 namespace GGPlayer.Pages
 {
@@ -46,6 +47,7 @@ namespace GGPlayer.Pages
                     Height = ButtonSize,
                     Margin = new Thickness(ButtonSpacing),
                     Style = (Style)FindResource("CircularButtonStyle"),
+                    Cursor = Cursors.Hand
                 };
 
                 button.Click += AssignmentButton_Click;
