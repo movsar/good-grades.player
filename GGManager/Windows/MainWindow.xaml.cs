@@ -126,15 +126,15 @@ namespace GGManager
         {
             string repositoryUrl = "https://github.com/movsar/good-grades";
 
-            IsEnabled = false;
-            await UpdateService.UpdateMyApp(repositoryUrl);
-            IsEnabled = true;
+            //IsEnabled = false;
+            //await UpdateService.UpdateMyApp(repositoryUrl);
+            //IsEnabled = true;
 
-            //Process.Start(new ProcessStartInfo
-            //{
-            //    FileName = _repositoryUrl,
-            //    UseShellExecute = true
-            //});
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = repositoryUrl,
+                UseShellExecute = true
+            });
         }
     }
 }
