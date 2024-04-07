@@ -9,6 +9,9 @@
         d:DataContext="{d:DesignInstance Type=local:ShellWindow}"
         Height="500" Width="850" MinHeight="500" MinWidth="850"
         Title="Good Grades" Closing="Window_Closing">
-
-    <Frame x:Name="CurrentFrame"/>
+    
+    <DockPanel>
+        <Frame x:Name="CurrentFrame"/>
+    </DockPanel>
+    
 </Window>
