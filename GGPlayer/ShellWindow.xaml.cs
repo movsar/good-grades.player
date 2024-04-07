@@ -9,7 +9,7 @@ namespace GGPlayer
         public ShellWindow()
         {
             InitializeComponent();
-            MainFrame.Navigate(new MainPage());
+            CurrentFrame.Navigate(new MainPage());
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)

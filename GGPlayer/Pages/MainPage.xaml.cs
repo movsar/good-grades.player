@@ -22,10 +22,6 @@ namespace GGPlayer.Pages
         private readonly Storage _storage;
         public MainPage()
         {
-            // Intialize the visual elements
-            DataContext = this;
-            InitializeComponent();
-
             // Initialize fields
             _settingsService = App.AppHost!.Services.GetRequiredService<SettingsService>();
             _storage = App.AppHost!.Services.GetRequiredService<Storage>();
@@ -38,6 +34,11 @@ namespace GGPlayer.Pages
             {
                 ExceptionService.HandleError(ex, ex.Message);
             }
+
+
+            // Intialize the visual elements
+            DataContext = this;
+            InitializeComponent();
         }
 
         private void LoadDatabase(bool restoreLatest = true)

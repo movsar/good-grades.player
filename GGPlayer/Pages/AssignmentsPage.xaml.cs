@@ -1,23 +1,15 @@
 ﻿using Data.Entities;
-using Data;
 using Data.Interfaces;
-using Microsoft.Extensions.DependencyInjection;
-using Shared.Services;
 using Shared.Viewers;
 using System.Windows;
 using System.Windows.Controls;
-using System.Collections.ObjectModel;
 using Shared.Interfaces;
-using System.Text.RegularExpressions;
 
 namespace GGPlayer.Pages
 {
     public partial class AssignmentsPage : Page
     {
-
         private List<IAssignment> Assignments { get; } = new List<IAssignment>();
-        private Dictionary<string, bool> _assignmentCompletionStatus = new Dictionary<string, bool>();
-        private StylingService _stylingService = App.AppHost.Services.GetRequiredService<StylingService>();
 
         const int ButtonSize = 100;
         const int ButtonSpacing = 50;
@@ -82,7 +74,6 @@ namespace GGPlayer.Pages
             ScrollViewerContainer.Content = wrapPanel;
             ScrollViewerContainer.UpdateLayout();
         }
-
 
         private void AssignmentButton_Click(object sender, RoutedEventArgs e)
         {
@@ -149,8 +140,8 @@ namespace GGPlayer.Pages
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            var widthDifference = this.ActualWidth - e.PreviousSize.Width;
-            var heightDifference = this.ActualHeight - e.PreviousSize.Height;
+            var widthDifference = ActualWidth - e.PreviousSize.Width;
+            var heightDifference = ActualHeight - e.PreviousSize.Height;
 
             if (widthDifference < ButtonSize && heightDifference < ButtonSize)
             {

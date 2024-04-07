@@ -10,7 +10,5 @@
         Height="500" Width="850" MinHeight="500" MinWidth="850"
         Title="Good Grades" Closing="Window_Closing">
 
-    <Grid>
-        <Frame x:Name="MainFrame"/>
-    </Grid>
+    <Frame x:Name="CurrentFrame"/>
 </Window>

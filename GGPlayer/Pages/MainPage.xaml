@@ -9,50 +9,53 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="MainPage">
 
-    <DockPanel>        
-        <Grid>
-            <Grid.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Header="{x:Static translations:Ru.OpenDB}" Click="mnuOpenDatabase_Click"/>
-                </ContextMenu>
-            </Grid.ContextMenu>
-            
-            <Grid.Background>
-                <ImageBrush ImageSource="/Images/main_background.jpg" 
-                      Stretch="None" AlignmentX="Left" AlignmentY="Bottom"/>
-            </Grid.Background>
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="300"/>
+        </Grid.ColumnDefinitions>
 
-            <Label Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Top"   
-             FontSize="26"
-             FontWeight="Bold"
-             Content="{Binding DbTitle}"/>
+        <Grid.ContextMenu>
+            <ContextMenu>
+                <MenuItem Header="{x:Static translations:Ru.OpenDB}" Click="mnuOpenDatabase_Click"/>
+            </ContextMenu>
+        </Grid.ContextMenu>
 
-            <Border CornerRadius="10" Background="White" Margin="5" Grid.Column="1">
-                <ListView x:Name="lvSegments" ItemsSource="{Binding Segments}" 
-                    HorizontalAlignment="Right"
+        <StackPanel Grid.Column="0">
+            <StackPanel.Background>
+                <ImageBrush 
+                    ImageSource="/Images/main_background.jpg" 
+                    Stretch="UniformToFill" 
+                    AlignmentX="Center" 
+                    AlignmentY="Bottom"/>
+            </StackPanel.Background>
+
+            <Label  HorizontalAlignment="Center" VerticalAlignment="Top" 
+                    FontSize="26"
+                    FontWeight="Bold"
+                    Content="{Binding DbTitle, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}"/>
+        </StackPanel>
+
+        <Border Grid.Column="1" CornerRadius="10" Background="White" Margin="5">
+            <ListView x:Name="lvSegments" ItemsSource="{Binding Segments}"
                     MouseDoubleClick="lvSegments_MouseDoubleClick"
-                    KeyUp="lvSegments_KeyUp"
-                    >
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <Border BorderThickness="1"
+                    KeyUp="lvSegments_KeyUp">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderThickness="1"
                               BorderBrush="AntiqueWhite" 
                               Padding="5">
 
-                                <Label Content="{Binding Title}"
-                                 HorizontalAlignment="Stretch"
+                            <Label Content="{Binding Title}"
+                                 FontWeight="Bold"
+                                 FontSize="14"
                                  Cursor="Hand"/>
-                            </Border>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </Border>
-        </Grid>
-    </DockPanel>
+                        </Border>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Border>
+    </Grid>
 
 </Page>
