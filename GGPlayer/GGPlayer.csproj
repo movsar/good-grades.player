@@ -17,7 +17,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Velopack" Version="0.0.359" />
 		<PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
 	</ItemGroup>
 

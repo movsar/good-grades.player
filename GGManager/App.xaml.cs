@@ -18,12 +18,6 @@ namespace GGManager
         public static IHost? AppHost { get; private set; }
         public App()
         {
-            string logPath = Path.Combine("logs", "logs.txt");
-            Log.Logger = new LoggerConfiguration()
-            .MinimumLevel.Error()
-            .WriteTo.File(logPath, rollingInterval: RollingInterval.Day)
-            .CreateLogger();
-
             // Handle unhandled exceptions
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             DispatcherUnhandledException += App_DispatcherUnhandledException;

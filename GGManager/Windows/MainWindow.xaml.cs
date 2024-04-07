@@ -17,6 +17,8 @@ using Shared.Services;
 using Velopack;
 using Velopack.Sources;
 using System.Diagnostics;
+using Serilog;
+using System.Text.Json;
 
 namespace GGManager
 {
@@ -24,7 +26,6 @@ namespace GGManager
     {
         private readonly ContentStore _contentStore;
         private readonly SettingsService _settingsService;
-        private readonly string _repositoryUrl = "https://github.com/movsar/good-grades";
 
         public MainWindow(ContentStore contentStore, SettingsService fileService)
         {
@@ -61,7 +62,7 @@ namespace GGManager
 
         private void SetTitle(string? title = null)
         {
-            string _appVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            string? _appVersion = Assembly.GetExecutingAssembly().GetName()?.Version?.ToString();
             Title = $"Good Grades | {_appVersion} | {title ?? _contentStore.DbContext.DbMetas.First().Title}";
         }
 
@@ -121,75 +122,17 @@ namespace GGManager
         }
         #endregion
 
-        #region App Install, Update and Uninstall
-
-        //private async Task UpdateMyApp()
-        //{
-        //    var repositoryUrl = "https://github.com/movsar/good-grades";
-        //    IUpdateSource girHubSource = new GithubSource(repositoryUrl, "", false);
-        //    string tmpLocalSource = @"D:\temp\content-manager";
-
-        //    try
-        //    {
-        //        using var mgr = new UpdateManager(girHubSource);
-        //        var updateInfo = await mgr.CheckForUpdate();
-
-        //        var newVersion = updateInfo.FutureReleaseEntry.Version;
-        //        var currentVersion = updateInfo.CurrentlyInstalledVersion.Version;
-
-        //        //_logger.LogInformation($"Before Checking for updates");
-
-        //        //_logger.LogDebug($"future: {newVersion}");
-        //        //_logger.LogDebug($"current: {currentVersion}");
-        //        //_logger.LogDebug($"");
-
-        //        if (updateInfo?.FutureReleaseEntry != null && newVersion.CompareTo(currentVersion) <= 0)
-        //        {
-        //            MessageBox.Show(Ru.LastVersionInstalled, "Good Grades");
-        //            return;
-        //        }
-
-        //        if (MessageBox.Show(String.Format(Ru.AvailableNewVersion, newVersion), "Good Grades", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
-        //        {
-        //            IsEnabled = false;
-        //            await mgr.UpdateApp();
-        //            UpdateManager.RestartApp();
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        ExceptionService.HandleError(ex, "Ошибка при попытаке обновления приложения");
-        //    }
-        //}
-
-        private async Task UpdateMyApp()
-        {
-            IUpdateSource girHubSource = new GithubSource(_repositoryUrl, "", false);
-            var mgr = new UpdateManager(girHubSource);
-
-            // Check for new version
-            var newVersion = await mgr.CheckForUpdatesAsync();
-            if (newVersion == null)
-            {
-                return;
-            }
-
-            // Download new version
-            await mgr.DownloadUpdatesAsync(newVersion);
-
-            // Install new version and restart app
-            mgr.ApplyUpdatesAndRestart(newVersion);
-        }
-
         private async void mnuCheckUpdates_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start(new ProcessStartInfo
-            {
-                FileName = _repositoryUrl,
-                UseShellExecute = true
-            });
-        }
+            IsEnabled = false;
+            await UpdateService.UpdateMyApp();
+            IsEnabled = true;
 
-        #endregion
+            //Process.Start(new ProcessStartInfo
+            //{
+            //    FileName = _repositoryUrl,
+            //    UseShellExecute = true
+            //});
+        }
     }
 }
