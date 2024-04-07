@@ -9,6 +9,7 @@ using System.Windows;
 using Data.Services;
 using System.Collections.ObjectModel;
 using Shared.Services;
+using Shared.Translations;
 
 namespace GGPlayer.Pages
 {

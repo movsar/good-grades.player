@@ -67,5 +67,8 @@
         public static string Materials { get; } = "Материалы";
         public static string FilePath { get; } = "Путь к файлу:";
         public static string SetMatchingImage { get; } = "Выберите изображение";
+        public static string MainPage { get; } = "Главная";
+        public static string AssignmentsPage { get; } = "Задания";
+        public static string SegmentPage { get; } = "Раздел";
     }
 }
