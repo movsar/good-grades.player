@@ -64,6 +64,12 @@ namespace GGManager.Windows.Editors
                 return;
             }
 
+            if (_assignment.Items.Count == 0)
+            {
+                MessageBox.Show("Нужно добавить элементы");
+                return;
+            }
+
             // Update assignment data
             _assignment.Title = txtTitle.Text;
             IAssignmentEditor.SetAssignmentItems(_assignment.Items, spItems);

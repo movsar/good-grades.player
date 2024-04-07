@@ -33,6 +33,9 @@ namespace GGManager
             {
                 _contentStore.OpenDatabase(lastOpenedDatabasePath);
             }
+
+            string? _appVersion = Assembly.GetExecutingAssembly().GetName()?.Version?.ToString();
+            Title += " " + _appVersion;
         }
 
         private void SelectedSegmentChanged(Segment segment)

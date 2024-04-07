@@ -57,16 +57,6 @@
                 </MenuItem>
             </MenuItem>
             <MenuItem Header="_Справка">
-                <MenuItem Header="_О Программе" Click="mnuAbout_Click">
-                    <MenuItem.Icon>
-                        <TextBlock
-                            HorizontalAlignment="Center" 
-                            VerticalAlignment="Center" 
-                            FontFamily="Segoe MDL2 Assets">
-                            &#xF167;
-                        </TextBlock>
-                    </MenuItem.Icon>
-                </MenuItem>
                 <MenuItem Header="_Проверить обновления" Click="mnuCheckUpdates_Click">
                     <MenuItem.Icon>
                         <TextBlock
@@ -74,6 +64,16 @@
                             VerticalAlignment="Center" 
                             FontFamily="Segoe MDL2 Assets">
                             &#xECC5;
+                        </TextBlock>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="_О Программе" Click="mnuAbout_Click">
+                    <MenuItem.Icon>
+                        <TextBlock
+                          HorizontalAlignment="Center" 
+                          VerticalAlignment="Center" 
+                          FontFamily="Segoe MDL2 Assets">
+                          &#xF167;
                         </TextBlock>
                     </MenuItem.Icon>
                 </MenuItem>
