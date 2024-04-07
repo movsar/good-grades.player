@@ -124,8 +124,10 @@ namespace GGManager
 
         private async void mnuCheckUpdates_Click(object sender, RoutedEventArgs e)
         {
+            string repositoryUrl = "https://github.com/movsar/good-grades";
+
             IsEnabled = false;
-            await UpdateService.UpdateMyApp();
+            await UpdateService.UpdateMyApp(repositoryUrl);
             IsEnabled = true;
 
             //Process.Start(new ProcessStartInfo

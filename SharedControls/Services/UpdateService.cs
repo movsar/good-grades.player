@@ -11,13 +11,11 @@ namespace Shared.Services
 {
     public static class UpdateService
     {
-        public static async Task UpdateMyApp()
+        public static async Task UpdateMyApp(string repoUrl)
         {
-            string repositoryUrl = "https://github.com/movsar/good-grades";
-
             try
             {
-                IUpdateSource girHubSource = new GithubSource(repositoryUrl, "", true);
+                IUpdateSource girHubSource = new GithubSource(repoUrl, "", true);
                 var mgr = new UpdateManager(girHubSource, new UpdateOptions() { ExplicitChannel = "win" });
 
                 // Check for new version
