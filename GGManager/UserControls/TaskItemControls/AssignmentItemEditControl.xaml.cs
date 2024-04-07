@@ -236,6 +236,8 @@ namespace GGManager.UserControls
 
         private void Commit()
         {
+            Item.Text = Item.Text.Trim();
+
             Validate();
 
             if (!IsValid)

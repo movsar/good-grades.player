@@ -57,7 +57,7 @@ namespace GGManager
         private void SetTitle(string? title = null)
         {
             string? _appVersion = Assembly.GetExecutingAssembly().GetName()?.Version?.ToString();
-            Title = $"Good Grades | {_appVersion} | {title ?? _contentStore.DbContext.DbMetas.First().Title}";
+            Title = $"Good Grades | {title ?? _contentStore.DbContext.DbMetas.First().Title}";
         }
 
         #region Database Operations
