@@ -13,7 +13,7 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="310"/>
         </Grid.ColumnDefinitions>
 
         <Grid.ContextMenu>
