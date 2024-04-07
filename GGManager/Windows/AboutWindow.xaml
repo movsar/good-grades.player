@@ -6,10 +6,10 @@
         xmlns:local="clr-namespace:GGManager.Windows"
         xmlns:translations="clr-namespace:Shared.Translations;assembly=Shared"
         mc:Ignorable="d"
-        Title="{x:Static translations:Ru.AboutProgram}" Height="250" Width="400" MinHeight="250" MinWidth="450">
+        Title="Good Grades" Height="250" Width="400" MinHeight="250" MinWidth="450">
     <Grid Margin="20 20 20 20">
-        <TextBlock FontSize="17">
-            (c) 2024 ГКУ «Институт чеченского языка»
+        <TextBlock FontSize="17">            
+            ГКУ «Институт чеченского языка»
         </TextBlock>
         <TextBlock>
             <LineBreak/>

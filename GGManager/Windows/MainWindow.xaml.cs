@@ -3,22 +3,13 @@ using GGManager.Stores;
 using GGManager.UserControls;
 using GGManager.Windows;
 using Data.Entities;
-using Data.Interfaces;
-using Microsoft.Extensions.Logging;
-using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
-using Shared.Translations;
 using Data.Services;
-using Shared.Services;
-using Velopack;
-using Velopack.Sources;
 using System.Diagnostics;
-using Serilog;
-using System.Text.Json;
 
 namespace GGManager
 {
@@ -132,7 +123,7 @@ namespace GGManager
 
             Process.Start(new ProcessStartInfo
             {
-                FileName = repositoryUrl,
+                FileName = $"{repositoryUrl}/releases",
                 UseShellExecute = true
             });
         }
