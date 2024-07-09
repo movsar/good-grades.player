@@ -1,4 +1,5 @@
-﻿using Data;
+﻿using Content_Manager.Windows;
+using Data;
 using Data.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -52,7 +53,6 @@ namespace Content_Player
                 Application.Current.Shutdown();
             }
         }
-
         protected override void OnStartup(StartupEventArgs e)
         {
             AppHost.Start();

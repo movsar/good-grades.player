@@ -4,7 +4,8 @@
         Title="Good Grades" Height="600" Width="900" MinHeight="600" MinWidth="900"
         xmlns:usercontrols="clr-namespace:Content_Manager.UserControls"
         xmlns:translations="clr-namespace:Shared.Translations;assembly=Shared"
-        x:Name="mainWindow">
+        x:Name="mainWindow"
+        WindowState="Maximized">
 
     <DockPanel>
         <Menu DockPanel.Dock="Top" Height="21">
@@ -100,7 +101,7 @@
                    VerticalAlignment="Center"               
                    BorderThickness="1"/>
 
-            <usercontrols:SegmentListControl 
+            <usercontrols:SegmentListControl
                 Grid.Column="0"
                 x:Name="ucSegmentList"
                 Visibility="Collapsed">

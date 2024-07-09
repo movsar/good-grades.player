@@ -19,7 +19,7 @@
             
             <Grid.Background>
                 <ImageBrush ImageSource="/Images/main_background.jpg" 
-                      Stretch="None" AlignmentX="Left" AlignmentY="Bottom"/>
+                      Stretch="None" AlignmentX="Left" />
             </Grid.Background>
 
             <Grid.ColumnDefinitions>

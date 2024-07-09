@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:translations="clr-namespace:Shared.Translations;assembly=Shared"
         mc:Ignorable="d"
-        Title="{x:Static translations:Ru.FillingTaskName}" Height="450" Width="800" MinHeight="250" MinWidth="450">
+        Title="{x:Static translations:Ru.FillingTaskName}" Height="450" Width="800" MinHeight="250" MinWidth="450"
+        WindowState="Maximized">
     <Grid>
 
         <Grid.RowDefinitions>

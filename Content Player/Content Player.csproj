@@ -22,11 +22,18 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\Content Manager\Content Manager.csproj" />
 		<ProjectReference Include="..\SharedControls\Shared.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <Resource Include="Images\main_background.jpg" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="StartWindow.xaml.cs">
+	    <SubType>Code</SubType>
+	  </Compile>
 	</ItemGroup>
 
 </Project>

@@ -8,7 +8,9 @@
         d:DataContext="{d:DesignInstance Type=local:SelectingViewer}"
         mc:Ignorable="d"
         Title="Select Correct" Height="450" Width="800"
-        WindowStartupLocation="CenterScreen" Background="#FFF1F1F1">
+        WindowStartupLocation="CenterScreen" Background="#FFF1F1F1"
+        WindowState="Maximized"
+        >
   
     <Grid>
         <Grid.RowDefinitions>

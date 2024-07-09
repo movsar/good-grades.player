@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:Content_Manager.Windows.Editors"
         mc:Ignorable="d"
         xmlns:translations="clr-namespace:Shared.Translations;assembly=Shared"
-        Title="{x:Static translations:Ru.TestTaskName}" Height="450" Width="800" MinHeight="250" MinWidth="450" Closing="Window_Closing">
+        Title="{x:Static translations:Ru.TestTaskName}" Height="450" Width="800" MinHeight="250" MinWidth="450" Closing="Window_Closing"
+        WindowState="Maximized">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>

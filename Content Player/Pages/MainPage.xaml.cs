@@ -10,6 +10,7 @@ using Data.Services;
 using System.Collections.ObjectModel;
 using Serilog;
 using Shared.Services;
+using Content_Manager.Windows;
 
 namespace Content_Player.Pages
 {
@@ -87,12 +88,15 @@ namespace Content_Player.Pages
         private void LoadSegment()
         {
             var selectedSegment = (Segment)lvSegments.SelectedItem;
+
             if (selectedSegment == null)
             {
                 return;
             }
 
-            this.NavigationService.Navigate(new SegmentPage(selectedSegment));
+            // Открытие StartWindow с выбранным сегментом и передачей NavigationService
+            var startWindow = new StartWindow(selectedSegment, this.NavigationService);
+            startWindow.ShowDialog(); // Используем ShowDialog, чтобы заблокировать основное окно до закрытия стартового окна
         }
 
         #region Event handlers

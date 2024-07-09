@@ -6,7 +6,9 @@
         xmlns:local="clr-namespace:Shared.Viewers"
         xmlns:translations="clr-namespace:Shared.Translations;assembly=Shared"
         mc:Ignorable="d"
-        Title="{x:Static translations:Ru.Task}" Height="450" Width="800">
+        Title="{x:Static translations:Ru.Task}" Height="450" Width="800"
+        WindowState="Maximized"
+        >
     
     <Grid Margin="10">
         <Grid.RowDefinitions>
