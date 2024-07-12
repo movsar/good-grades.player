@@ -1,4 +1,5 @@
-﻿using GGManager.Stores;
+﻿using GGManager.Services;
+using GGManager.Stores;
 using Microsoft.Extensions.DependencyInjection;
 using Shared.Services;
 using System.IO;
@@ -67,5 +68,7 @@ namespace GGManager.UserControls.SegmentTabs
             }
         }
         #endregion
+
+      
     }
 }

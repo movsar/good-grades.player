@@ -4,9 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GGManager.Windows.Editors"
+        xmlns:shared="clr-namespace:Shared;assembly=Shared"
         mc:Ignorable="d"
-        xmlns:translations="clr-namespace:Shared.Translations;assembly=Shared"
-        Title="{x:Static translations:Ru.TestTaskName}" Height="450" Width="800" MinHeight="250" MinWidth="450">
+        Title="{x:Static shared:GgLocalization.TestTaskName}" Height="450" Width="800" MinHeight="250" MinWidth="450">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -22,7 +22,7 @@
             <TextBox 
                 x:Name="txtTitle"
                 Style="{StaticResource InputFieldStyle}" 
-                Text="{x:Static translations:Ru.TestTaskText}">
+                Text="{x:Static shared:GgLocalization.TestTaskText}">
             </TextBox>
 
             <TextBlock Margin="10 5 10 0"

@@ -318,4 +318,7 @@
   <data name="SegmentPage" xml:space="preserve">
     <value>Раздел</value>
   </data>
+  <data name="BackgroundImage" xml:space="preserve">
+    <value>Фоновое изображение</value>
+  </data>
 </root>

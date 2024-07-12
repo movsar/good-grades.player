@@ -4,13 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GGManager.UserControls"
-             xmlns:translations="clr-namespace:Shared.Translations;assembly=Shared"
+             xmlns:shared="clr-namespace:Shared;assembly=Shared"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
 
         <TextBlock Margin="10 5 10 0"
-                   FontWeight="Bold" Text="{x:Static translations:Ru.SetTitleAndDataForListeningMaterial}" />
+                   FontWeight="Bold" Text="{x:Static shared:GgLocalization.SetTitleAndDataForListeningMaterial}" />
         <ScrollViewer>
             <StackPanel Margin="0 20 0 0" x:Name="spListeningControls"></StackPanel>
         </ScrollViewer>

@@ -4,12 +4,8 @@ using Data.Interfaces;
 using Shared.Controls;
 using Shared.Interfaces;
 using Shared.Services;
-using Shared.Translations;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
-using System.Windows.Documents;
 
 namespace Shared.Viewers
 {
@@ -45,11 +41,11 @@ namespace Shared.Viewers
             var areAnswersCorrect = QuestionService.CheckUserAnswers(_question, selections);
             if (areAnswersCorrect)
             {
-                MessageBox.Show(Ru.Correct);
+                MessageBox.Show(Translations.GetValue("Correct"));
             }
             else
             {
-                MessageBox.Show(Ru.Incorrect);
+                MessageBox.Show(Translations.GetValue("Incorrect"));
             }
 
             CompletionStateChanged?.Invoke(_assignment, areAnswersCorrect);

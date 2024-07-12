@@ -9,7 +9,7 @@ using System.Windows;
 using Data.Services;
 using System.Collections.ObjectModel;
 using Shared.Services;
-using Shared.Translations;
+using Shared;
 
 namespace GGPlayer.Pages
 {
@@ -72,7 +72,7 @@ namespace GGPlayer.Pages
         private string GetDatabasePath()
         {
             var ofd = new OpenFileDialog();
-            ofd.Filter = Shared.Translations.Ru.DBFiles;
+            ofd.Filter = Translations.GetValue("DBFiles");
             ofd.Multiselect = false;
             var result = ofd.ShowDialog();
             if (result.HasValue)
@@ -80,7 +80,7 @@ namespace GGPlayer.Pages
                 return ofd.FileName;
             }
 
-            MessageBox.Show(Shared.Translations.Ru.DBFileChoose);
+            MessageBox.Show(Translations.GetValue("DBFileChoose"));
             return GetDatabasePath();
         }
 

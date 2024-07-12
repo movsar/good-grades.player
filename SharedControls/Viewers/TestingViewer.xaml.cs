@@ -4,7 +4,7 @@ using Data.Interfaces;
 using Shared.Controls;
 using Shared.Interfaces;
 using Shared.Services;
-using Shared.Translations;
+using Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,13 +50,13 @@ namespace Shared.Viewers
 
                 if (!areAnswersCorrect)
                 {
-                    MessageBox.Show(Ru.Incorrect);
+                    MessageBox.Show(Translations.GetValue("Incorrect"));
                     CompletionStateChanged?.Invoke(_assignment, false);
                     return;
                 }
             }
 
-            MessageBox.Show(Ru.Correct);
+            MessageBox.Show(Translations.GetValue("Correct"));
             CompletionStateChanged?.Invoke(_assignment, true);
         }
     }

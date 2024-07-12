@@ -9,7 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using Shared.Translations;
+using Shared;
 using Shared.Services;
 using System.Windows.Input;
 
@@ -20,7 +20,7 @@ namespace GGManager.UserControls
 
         #region Properties
         private FormCompletionInfo _formCompletionInfo;
-        static string TitleHintText { get; } = Ru.SetMaterialTitle;
+        static string TitleHintText { get; } = Translations.GetValue("SetMaterialTitle");
         ContentStore ContentStore => App.AppHost!.Services.GetRequiredService<ContentStore>();
         StylingService StylingService => App.AppHost!.Services.GetRequiredService<StylingService>();
 
