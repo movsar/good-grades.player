@@ -11,17 +11,40 @@
     <Grid>
     
     <DockPanel>
-        <Frame x:Name="CurrentFrame"/>
-    </DockPanel>
+            <Menu DockPanel.Dock="Top">
+                <MenuItem Header="Файл">
+                    <MenuItem Header="_О Программе" Click="AboutMenuItem_Click">
+                        <MenuItem.Icon>
+                            <TextBlock
+              HorizontalAlignment="Center" 
+              VerticalAlignment="Center" 
+              FontFamily="Segoe MDL2 Assets">
+              &#xF167;
+                            </TextBlock>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    
+                    <MenuItem Header="_Открыть" Click="OpenDatabase_Click">
+                        <MenuItem.Icon>
+                            <TextBlock
+            HorizontalAlignment="Center" 
+            VerticalAlignment="Center" 
+            FontFamily="Segoe MDL2 Assets">
+            &#xE8E5;
+                            </TextBlock>
+                        </MenuItem.Icon>
+                    </MenuItem>
 
-        <TextBlock Text="О приложении"
-                   Foreground="Blue"
-                   Cursor="Hand"
-                   FontSize="16"
-                   VerticalAlignment="Top"
-                   HorizontalAlignment="Left"
-                   Margin="20"
-                   MouseLeftButtonUp="AboutTextBlock_MouseLeftButtonUp"
-                   />
+                    <MenuItem Header="_Выход" Click="CloseProgram_Click">
+                        
+                    </MenuItem>
+                </MenuItem>
+                
+                
+                
+            </Menu>
+            <Frame x:Name="CurrentFrame"/>
+        </DockPanel>
+
     </Grid>
 </Window>
