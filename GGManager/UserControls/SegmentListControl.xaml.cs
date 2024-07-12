@@ -7,8 +7,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Shared.Translations;
-using Microsoft.EntityFrameworkCore;
+using Shared;
 
 namespace GGManager.UserControls
 {
@@ -55,7 +54,7 @@ namespace GGManager.UserControls
 
         private void BtnNewSection_Click(object sender, RoutedEventArgs e)
         {
-            Segment segment = new Segment() { Title = Ru.NewChapter };
+            Segment segment = new Segment() { Title = Translations.GetValue("NewChapter") };
             _contentStore.DbContext.Add(segment);
             _contentStore.DbContext.SaveChanges();
 

@@ -3,7 +3,7 @@ using System.Linq;
 using System;
 using System.Windows;
 using System.Windows.Controls;
-using Shared.Translations;
+using Shared;
 using Shared.Interfaces;
 using Data.Interfaces;
 
@@ -76,7 +76,7 @@ namespace Shared.Viewers
                         // Check if the user input matches one of the options
                         if (!options.Contains(textBox.Text.ToLower().Trim()))
                         {
-                            MessageBox.Show(Ru.Incorrect);
+                            MessageBox.Show(Translations.GetValue("Incorrect"));
                             CompletionStateChanged?.Invoke(_assignment, false);
                             return;
                         }
@@ -85,7 +85,7 @@ namespace Shared.Viewers
             }
 
             // Show a message if all inputs are correct
-            MessageBox.Show(Ru.Correct);
+            MessageBox.Show(Translations.GetValue("Correct"));
             CompletionStateChanged?.Invoke(_assignment, true);
         }
     }

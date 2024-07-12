@@ -2,7 +2,7 @@
 using Data.Interfaces;
 using Shared.Controls;
 using Shared.Interfaces;
-using Shared.Translations;
+using Shared;
 using System;
 using System.Collections.Generic;
 using System.Windows;
@@ -42,14 +42,14 @@ namespace Shared.Viewers
                 if (arrangedPhrase != buildingItemViewControl.Tag.ToString())
                 {
                     CompletionStateChanged?.Invoke(_assignment, false);
-                    MessageBox.Show(Ru.Incorrect);
+                    MessageBox.Show(Translations.GetValue("Incorrect"));
                     return;
                 }
             }
 
             // Show a message if all inputs are correct
             CompletionStateChanged?.Invoke(_assignment, true);
-            MessageBox.Show(Ru.Correct);
+            MessageBox.Show(Translations.GetValue("Correct"));
         }
 
         private string GetUserArrangedPhrase(BuildingItemViewControl buildingItemViewControl)

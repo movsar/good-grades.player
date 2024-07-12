@@ -4,7 +4,7 @@ using Data.Entities;
 using System;
 using System.Linq;
 using System.Windows;
-using Shared.Translations;
+using Shared;
 
 namespace GGManager.Commands
 {
@@ -18,7 +18,7 @@ namespace GGManager.Commands
                 return;
             }
 
-            var result = MessageBox.Show(string.Format(Ru.ConfirmingDelete, selectedSegment.Title),
+            var result = MessageBox.Show(string.Format(Translations.GetValue("ConfirmingDelete"), selectedSegment.Title),
                                              "Good Grades",
                                              MessageBoxButton.YesNo,
                                              MessageBoxImage.Question);

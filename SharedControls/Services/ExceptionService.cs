@@ -9,7 +9,7 @@ namespace Shared.Services
         public static void HandleError(Exception ex, string message)
         {
             Log.Error(ex, "An exception occurred");
-            MessageBox.Show($"{Translations.Ru.Error} : {message}", "Good Grades", MessageBoxButton.OK, MessageBoxImage.Error);
+            MessageBox.Show($"{Translations.GetValue("Error")} : {message}", "Good Grades", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 }

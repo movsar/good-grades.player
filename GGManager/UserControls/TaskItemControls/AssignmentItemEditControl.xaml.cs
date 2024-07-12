@@ -8,7 +8,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
-using Shared.Translations;
+using Shared;
 using Image = System.Windows.Controls.Image;
 using System.Text.RegularExpressions;
 
@@ -17,7 +17,7 @@ namespace GGManager.UserControls
     public partial class AssignmentItemEditControl : UserControl
     {
         #region Fields
-        private string Hint = Ru.SetDescription;
+        private string Hint = Translations.GetValue("SetDescription");
         private FormCompletionInfo _formCompletionInfo;
         private AssignmentType _assignmentType;
         #endregion
@@ -69,10 +69,10 @@ namespace GGManager.UserControls
             switch (_assignmentType)
             {
                 case AssignmentType.Filling:
-                    Hint = Ru.FillingQuestion;
+                    Hint = Translations.GetValue("FillingQuestion"); 
                     break;
                 case AssignmentType.Matching:
-                    Hint = Ru.SetImageDescription;
+                    Hint = Translations.GetValue("SetImageDescription"); 
 
                     btnChooseImage.Visibility = Visibility.Visible;
 
@@ -133,7 +133,7 @@ namespace GGManager.UserControls
                     case AssignmentType.Matching:
                         if (Item.Image == null)
                         {
-                            throw new Exception(Ru.SetMatchingImage);
+                            throw new Exception(Translations.GetValue("SetMatchingImage"));
                         }
 
                         break;
@@ -144,12 +144,12 @@ namespace GGManager.UserControls
 
                         if (gapOpeners.Count != gapClosers.Count || gapOpeners.Count != gappedWords.Count)
                         {
-                            throw new Exception(Ru.ExceptionUncorrectFormate);
+                            throw new Exception(Translations.GetValue("ExceptionUncorrectFormate"));
                         }
 
                         if (gappedWords.Count == 0)
                         {
-                            throw new Exception(Ru.ExceptionMinWords);
+                            throw new Exception(Translations.GetValue("ExceptionMinWords"));
                         }
 
                         break;
