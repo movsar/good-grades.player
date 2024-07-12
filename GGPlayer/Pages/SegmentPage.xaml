@@ -7,10 +7,10 @@
       xmlns:converters="clr-namespace:GGPlayer.Converters"
       xmlns:data="clr-namespace:Data.Entities;assembly=Data"
       mc:Ignorable="d" 
-      xmlns:translations="clr-namespace:Shared.Translations;assembly=Shared"
+      xmlns:shared="clr-namespace:Shared;assembly=Shared"
       d:DataContext="{d:DesignInstance Type=pages:SegmentPage}"
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="{x:Static translations:Ru.SegmentPage }">
+      Title="{x:Static shared:GgLocalization.SegmentPage }">
 
     <Page.Resources>
         <converters:MaterialTypeToImageConverter x:Key="MaterialTypeToImageConverter"/>

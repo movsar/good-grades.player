@@ -2,7 +2,7 @@
 using Data.Interfaces;
 using Shared.Interfaces;
 using Shared.Models;
-using Shared.Translations;
+using Shared;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -106,14 +106,14 @@ namespace Shared.Viewers
                 // Show a message and signal incomplete assignment if any pair does not match.
                 if (image != null && textBlock != null && image.Name != textBlock.Name)
                 {
-                    MessageBox.Show(Ru.ElementsDoNotMatch);
+                    MessageBox.Show(Translations.GetValue("ElementsDoNotMatch"));
                     CompletionStateChanged?.Invoke(_assignment, false);
                     return;
                 }
             }
 
             // If all pairs match, show a success message and signal assignment completion.
-            MessageBox.Show(Ru.AllElementsMatch);
+            MessageBox.Show(Translations.GetValue("AllElementsMatch"));
             CompletionStateChanged?.Invoke(_assignment, true);
         }
 

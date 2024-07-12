@@ -1,4 +1,4 @@
-﻿using Shared.Translations;
+﻿using Shared;
 
 namespace GGManager.Services
 {
@@ -6,19 +6,19 @@ namespace GGManager.Services
     {
         internal static string SelectImageFilePath()
         {
-            return OpenFilePath(Ru.ImageFiles, Ru.ImageFileChoose);
+            return OpenFilePath(Translations.GetValue("ImageFiles"), Translations.GetValue("ImageFileChoose"));
         }
         internal static string SelectDatabaseFilePath()
         {
-            return OpenFilePath(Ru.DBFiles, Ru.DBFileChoose);
+            return OpenFilePath(Translations.GetValue("DBFiles"), Translations.GetValue("DBFileChoose"));
         }
         internal static string SelectTextFilePath()
         {
-            return OpenFilePath(Ru.RtfFiles, Ru.RtfFileChoose);
+            return OpenFilePath(Translations.GetValue("RtfFiles"), Translations.GetValue("RtfFileChoose"));
         }
         internal static string SelectAudioFilePath()
         {
-            return OpenFilePath(Ru.AudioFiles, Ru.AudioFileChoose);
+            return OpenFilePath(Translations.GetValue("AudioFiles"), Translations.GetValue("AudioFileChoose"));
         }
 
         internal static string OpenFilePath(string filter, string title)
@@ -52,7 +52,7 @@ namespace GGManager.Services
 
         internal static string SelectNewDatabaseFilePath()
         {
-            return SaveFilePath(Ru.DBFiles, Ru.DBFileChoose);
+            return SaveFilePath(Translations.GetValue("DBFiles"), Translations.GetValue("DBFileChoose"));
         }
     }
 }

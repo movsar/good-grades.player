@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using Shared.Translations;
+using Shared;
 using Shared.Services;
 using Microsoft.EntityFrameworkCore;
 using System.Windows.Input;
@@ -20,7 +20,7 @@ namespace GGManager.UserControls
     public partial class QuestionEditControl : UserControl
     {
         #region Fields
-        static string Hint { get; } = Ru.SetDescription;
+        static string Hint { get; } = Translations.GetValue("SetDescription");
         private readonly ContentStore ContentStore = App.AppHost!.Services.GetRequiredService<ContentStore>();
         #endregion
 

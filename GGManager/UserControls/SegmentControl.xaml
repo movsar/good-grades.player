@@ -4,19 +4,19 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GGManager.UserControls"
+             xmlns:shared="clr-namespace:Shared;assembly=Shared"
              xmlns:segmenttabs="clr-namespace:GGManager.UserControls.SegmentTabs"
-             xmlns:translations="clr-namespace:Shared.Translations;assembly=Shared"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <TabControl Grid.Column="1" Grid.Row="0" x:Name="tbcMain">
-            <TabItem Header="{x:Static translations:Ru.Chapter}">
+            <TabItem Header="{x:Static shared:GgLocalization.Chapter}">
                 <segmenttabs:SegmentInfoTab/>
             </TabItem>
-            <TabItem Header="{x:Static translations:Ru.Materials}">
+            <TabItem Header="{x:Static shared:GgLocalization.Materials}">
                 <segmenttabs:MaterialsTab/>
             </TabItem>
-            <TabItem Header="{x:Static translations:Ru.Tasks}">
+            <TabItem Header="{x:Static shared:GgLocalization.Tasks}">
                 <segmenttabs:AssignmentsTab/>
             </TabItem>
         </TabControl>

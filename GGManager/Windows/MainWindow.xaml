@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Good Grades" Height="600" Width="900" MinHeight="600" MinWidth="900"
         xmlns:usercontrols="clr-namespace:GGManager.UserControls"
-        xmlns:translations="clr-namespace:Shared.Translations;assembly=Shared"
         xmlns:shared="clr-namespace:Shared;assembly=Shared"
         x:Name="mainWindow">
 
@@ -89,14 +88,14 @@
             </Grid.ColumnDefinitions>
 
             <Label Grid.Column="1" x:Name="lblChooseSegment" 
-                   Content="{x:Static translations:Ru.ChoosingChapterToWork}"
+                   Content="{x:Static shared:GgLocalization.ChoosingChapterToWork}"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center" 
                    BorderThickness="1"
                    Visibility="Hidden"/>
 
             <Label Grid.Column="0" Grid.ColumnSpan="2" x:Name="lblChooseDb" 
-                   Content="{x:Static translations:Ru.OpenOrCreateDB}"
+                   Content="{x:Static shared:GgLocalization.OpenOrCreateDB}"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"               
                    BorderThickness="1"/>

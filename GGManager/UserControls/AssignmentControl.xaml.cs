@@ -14,7 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using Ru = Shared.Translations.Ru;
+using Shared;
 
 namespace GGManager.UserControls
 {
@@ -170,27 +170,27 @@ namespace GGManager.UserControls
         {
             var fillingTaskType = new ComboBoxItem()
             {
-                Content = Ru.FillingTaskName
+                Content = Translations.GetValue("FillingTaskName")
             };
 
             var selectingTaskType = new ComboBoxItem()
             {
-                Content = Ru.SelectingTaskName
+                Content = Translations.GetValue("SelectingTaskName")
             };
 
             var testingTaskType = new ComboBoxItem()
             {
-                Content = Ru.TestTaskName
+                Content = Translations.GetValue("TestTaskName")
             };
 
             var matchingTaskType = new ComboBoxItem()
             {
-                Content = Ru.MatchingTaskName
+                Content = Translations.GetValue("MatchingTaskName")
             };
 
             var buildingTaskMaterial = new ComboBoxItem()
             {
-                Content = Ru.BuildingTaskName
+                Content = Translations.GetValue("BuildingTaskName")
             };
 
             cmbTaskType.Items.Add(fillingTaskType);
@@ -217,11 +217,11 @@ namespace GGManager.UserControls
         {
             string selectedTaskName = _taskAssignment switch
             {
-                FillingAssignment _ => Ru.FillingTaskName,
-                SelectingAssignment _ => Ru.SelectingTaskName,
-                TestingAssignment _ => Ru.TestTaskName,
-                BuildingAssignment _ => Ru.BuildingTaskName,
-                MatchingAssignment _ => Ru.MatchingTaskName,
+                FillingAssignment _ => Translations.GetValue("FillingTaskName"),
+                SelectingAssignment _ => Translations.GetValue("SelectingTaskName"),
+                TestingAssignment _ => Translations.GetValue("TestTaskName"),
+                BuildingAssignment _ => Translations.GetValue("BuildingTaskName"),
+                MatchingAssignment _ => Translations.GetValue("MatchingTaskName"),
                 _ => ""
             };
 
@@ -231,23 +231,23 @@ namespace GGManager.UserControls
         }
         private AssignmentType GetSelectedTaskType(string selectedTaskTypeTitle)
         {
-            if (selectedTaskTypeTitle.Equals(Ru.FillingTaskName))
+            if (selectedTaskTypeTitle.Equals(Translations.GetValue("FillingTaskName")))
             {
                 return AssignmentType.Filling;
             }
-            else if (selectedTaskTypeTitle.Equals(Ru.TestTaskName))
+            else if (selectedTaskTypeTitle.Equals(Translations.GetValue("TestTaskName")))
             {
                 return AssignmentType.Test;
             }
-            else if (selectedTaskTypeTitle.Equals(Ru.BuildingTaskName))
+            else if (selectedTaskTypeTitle.Equals(Translations.GetValue("BuildingTaskName")))
             {
                 return AssignmentType.Building;
             }
-            else if (selectedTaskTypeTitle.Equals(Ru.SelectingTaskName))
+            else if (selectedTaskTypeTitle.Equals(Translations.GetValue("SelectingTaskName")))
             {
                 return AssignmentType.Selecting;
             }
-            else if (selectedTaskTypeTitle.Equals(Ru.MatchingTaskName))
+            else if (selectedTaskTypeTitle.Equals(Translations.GetValue("MatchingTaskName")))
             {
                 return AssignmentType.Matching;
             }
