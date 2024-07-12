@@ -1,6 +1,7 @@
 ﻿using GGPlayer.Pages;
 using Shared.Translations;
 using System.Windows;
+using System.Windows.Input;
 
 namespace GGPlayer
 {
@@ -18,6 +19,11 @@ namespace GGPlayer
             {
                 e.Cancel = true;
             }
+        }
+        private void AboutTextBlock_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            AboutWindow aboutWindow = new AboutWindow();
+            aboutWindow.Show();
         }
     }
 }

@@ -93,6 +93,8 @@ namespace GGPlayer.Pages
             }
 
             this.NavigationService.Navigate(new SegmentPage(selectedSegment));
+            var StartWindow = new StartWindow(selectedSegment, this.NavigationService);
+            StartWindow.ShowDialog();
         }
 
         #region Event handlers
