@@ -11,6 +11,7 @@ namespace Data.Entities
         public DateTimeOffset CreatedAt { get; } = DateTimeOffset.Now;
         public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;
         /******************************************************************/
+        public byte[]? BackgroundImage { get; set; } = null;
         public string Title { get; set; }
         public string? Description { get; set; }
         public string? AppVersion { get; set; }

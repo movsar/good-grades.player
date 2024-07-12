@@ -36,6 +36,10 @@
                      x:Name="txtDescription"
                      VerticalAlignment="Top" KeyUp="txtDescription_KeyUp" />
 
+            <Label Content="{x:Static shared:GgLocalization.BackgroundImage}"/>
+            <Button x:Name="btnChooseBackground" Content="{x:Static shared:GgLocalization.ImageFileChoose}"
+                    Click="btnChooseBackground_Click" />
+
             <Label Content="{x:Static shared:GgLocalization.DateOfCreation}"/>
             <TextBox Margin="0 0 10 0"
                      IsEnabled="false"

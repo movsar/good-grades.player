@@ -318,4 +318,7 @@
   <data name="OpenDB" xml:space="preserve">
     <value>Хаамийн къепе схьаяьлла</value>
   </data>
+  <data name="BackgroundImage" xml:space="preserve">
+    <value>Фоновое изображение</value>
+  </data>
 </root>

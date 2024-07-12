@@ -142,6 +142,15 @@ namespace Shared {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Фоновое изображение.
+        /// </summary>
+        public static string BackgroundImage {
+            get {
+                return ResourceManager.GetString("BackgroundImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Построение.
         /// </summary>
         public static string BuildingTaskName {
