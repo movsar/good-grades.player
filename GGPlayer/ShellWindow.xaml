@@ -5,12 +5,23 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GGPlayer"
         mc:Ignorable="d"
-        d:DataContext="{d:DesignInstance Type=local:ShellWindow}"
         Height="500" Width="850" MinHeight="500" MinWidth="850"
-        Title="Good Grades" Closing="Window_Closing">
+        Title="Good Grades" Closing="Window_Closing"
+        WindowState="Maximized">
+    <Grid>
     
     <DockPanel>
         <Frame x:Name="CurrentFrame"/>
     </DockPanel>
-    
+
+        <TextBlock Text="О приложении"
+                   Foreground="Blue"
+                   Cursor="Hand"
+                   FontSize="16"
+                   VerticalAlignment="Top"
+                   HorizontalAlignment="Left"
+                   Margin="20"
+                   MouseLeftButtonUp="AboutTextBlock_MouseLeftButtonUp"
+                   />
+    </Grid>
 </Window>

@@ -7,7 +7,8 @@
         xmlns:viewers="clr-namespace:Shared.Viewers"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type = viewers:TestingViewer, IsDesignTimeCreatable=True}"
-        Title="TestingViewer" Height="450" Width="800">
+        Title="TestingViewer" Height="450" Width="800"
+        WindowState="Maximized">
 
     <Grid Margin="10">
 

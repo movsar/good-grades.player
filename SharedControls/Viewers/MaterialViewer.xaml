@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:shared="clr-namespace:Shared;assembly=Shared"
         xmlns:local="clr-namespace:Shared.Viewers"
-        mc:Ignorable="d" Height="450" Width="800">
+        mc:Ignorable="d" Height="450" Width="800"
+        WindowState="Maximized">
     <Grid>
 
         <FlowDocumentPageViewer>

@@ -9,6 +9,7 @@
              d:DataContext="{d:DesignInstance Type=local:MatchingViewer}"
              d:DesignHeight="700" d:DesignWidth="1000"
             Height="700" Width="1100"
+            WindowState="Maximized"
         >
     <Window.Resources>
         <!-- Rounded corner style for borders -->
