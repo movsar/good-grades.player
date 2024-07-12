@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:translations="clr-namespace:Shared.Translations"
+        xmlns:shared="clr-namespace:Shared;assembly=Shared"      
         xmlns:local="clr-namespace:Shared.Viewers"
         d:DataContext="{d:DesignInstance Type=local:SelectingViewer}"
         mc:Ignorable="d"
@@ -21,7 +21,7 @@
         </StackPanel>
 
         <Button Grid.Row="1" HorizontalAlignment="Right" Margin="10"
-                Content="{x:Static translations:Ru.Check}" 
+                Content="{x:Static shared:GgLocalization.Check}" 
                 Click="btnCheck_Click" />
     </Grid>
 </Window>

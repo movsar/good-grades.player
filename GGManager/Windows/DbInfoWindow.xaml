@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GGManager.Windows" xmlns:usercontrols="clr-namespace:GGManager.UserControls"
         mc:Ignorable="d"
-        xmlns:translations="clr-namespace:Shared.Translations;assembly=Shared"
-        Title="{x:Static translations:Ru.DataBase}" Height="350" Width="480" ResizeMode="NoResize" MinHeight="250" MinWidth="450">
+        xmlns:shared="clr-namespace:Shared;assembly=Shared"        
+        Title="{x:Static shared:GgLocalization.DataBase}" Height="350" Width="480" ResizeMode="NoResize" MinHeight="250" MinWidth="450">
     
         <usercontrols:DbInformation 
                 x:Name="ucDbInformation"

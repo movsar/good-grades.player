@@ -3,8 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:shared="clr-namespace:Shared;assembly=Shared"
              xmlns:local="clr-namespace:GGManager.UserControls"
-             xmlns:translations="clr-namespace:Shared.Translations;assembly=Shared"
              mc:Ignorable="d">
     <Grid>
         <Button x:Name="btnSave" 
@@ -24,30 +24,30 @@
 
         <StackPanel Margin="10 40 0 0">
 
-            <Label Content="{x:Static translations:Ru.Title}"/>
+            <Label Content="{x:Static shared:GgLocalization.Title}"/>
             <TextBox Margin="0 0 10 0"
                      x:Name="txtDbName"
                      VerticalAlignment="Top" KeyUp="txtDbName_KeyUp" />
 
-            <Label Content="{x:Static translations:Ru.Description}"/>
+            <Label Content="{x:Static shared:GgLocalization.Description}"/>
             <TextBox Margin="0 0 10 0"
                      Height="50"
                      AcceptsReturn="True"
                      x:Name="txtDescription"
                      VerticalAlignment="Top" KeyUp="txtDescription_KeyUp" />
 
-            <Label Content="{x:Static translations:Ru.DateOfCreation}"/>
+            <Label Content="{x:Static shared:GgLocalization.DateOfCreation}"/>
             <TextBox Margin="0 0 10 0"
                      IsEnabled="false"
                      x:Name="txtDbCreatedAt"
                      VerticalAlignment="Top" KeyUp="txtDbCreatedAt_KeyUp" />
 
-            <Label Content="{x:Static translations:Ru.ProgramVersion}"/>
+            <Label Content="{x:Static shared:GgLocalization.ProgramVersion}"/>
             <TextBox Margin="0 0 10 0"
                      IsEnabled="false"
                      x:Name="txtAppVersion"
                      VerticalAlignment="Top" KeyUp="txtAppVersion_KeyUp" />
-            <Label Content="{x:Static translations:Ru.FilePath}"/>
+            <Label Content="{x:Static shared:GgLocalization.FilePath}"/>
             <TextBox Margin="0 0 10 0"
                      IsReadOnly="True"
                      x:Name="txtFilePath"
