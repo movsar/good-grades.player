@@ -3,11 +3,45 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Height="200" Width="300"
         WindowState="Maximized">
-    <Grid>
-        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-            <TextBlock Text="Нохчийн халкъан барт кхолларалла" FontSize="24" Margin="10" HorizontalAlignment="Center"/>
-            <TextBlock Text="1/2/3/4 класс" FontSize="20" Margin="10" HorizontalAlignment="Center"/>
-            <Button Content="Дуьло!" FontSize="18" Margin="10" HorizontalAlignment="Center" Click="Button_Click"/>
-        </StackPanel>
-    </Grid>
+    <DockPanel x:Name="pnlMain">
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Файл">
+                <MenuItem Header="_О Программе" Click="AboutMenuItem_Click">
+                    <MenuItem.Icon>
+                        <TextBlock
+     HorizontalAlignment="Center" 
+     VerticalAlignment="Center" 
+     FontFamily="Segoe MDL2 Assets">
+     &#xF167;
+                        </TextBlock>
+                    </MenuItem.Icon>
+                </MenuItem>
+
+                <MenuItem Header="_Открыть" Click="OpenDatabase_Click">
+                    <MenuItem.Icon>
+                        <TextBlock
+   HorizontalAlignment="Center" 
+   VerticalAlignment="Center" 
+   FontFamily="Segoe MDL2 Assets">
+   &#xE8E5;
+                        </TextBlock>
+                    </MenuItem.Icon>
+                </MenuItem>
+
+                <MenuItem Header="_Выход" Click="CloseProgram_Click">
+
+                </MenuItem>
+            </MenuItem>
+
+
+
+        </Menu>
+        
+        <Button Content="Дуьло!" 
+                FontSize="14" 
+                Margin="10" 
+                HorizontalAlignment="Center" 
+                Height="40"
+                Click="Button_Click"/>
+    </DockPanel>
 </Window>

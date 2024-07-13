@@ -9,40 +9,8 @@
         Title="Good Grades" Closing="Window_Closing"
         WindowState="Maximized">
     <Grid>
-    
-    <DockPanel>
-            <Menu DockPanel.Dock="Top">
-                <MenuItem Header="Файл">
-                    <MenuItem Header="_О Программе" Click="AboutMenuItem_Click">
-                        <MenuItem.Icon>
-                            <TextBlock
-              HorizontalAlignment="Center" 
-              VerticalAlignment="Center" 
-              FontFamily="Segoe MDL2 Assets">
-              &#xF167;
-                            </TextBlock>
-                        </MenuItem.Icon>
-                    </MenuItem>
-                    
-                    <MenuItem Header="_Открыть" Click="OpenDatabase_Click">
-                        <MenuItem.Icon>
-                            <TextBlock
-            HorizontalAlignment="Center" 
-            VerticalAlignment="Center" 
-            FontFamily="Segoe MDL2 Assets">
-            &#xE8E5;
-                            </TextBlock>
-                        </MenuItem.Icon>
-                    </MenuItem>
 
-                    <MenuItem Header="_Выход" Click="CloseProgram_Click">
-                        
-                    </MenuItem>
-                </MenuItem>
-                
-                
-                
-            </Menu>
+        <DockPanel>
             <Frame x:Name="CurrentFrame"/>
         </DockPanel>
 

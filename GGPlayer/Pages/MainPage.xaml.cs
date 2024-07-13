@@ -1,15 +1,10 @@
 ﻿using Data;
 using Data.Entities;
-using System.IO;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Win32;
-using System.Windows;
 using Data.Services;
 using System.Collections.ObjectModel;
-using Shared.Services;
-using Shared;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace GGPlayer.Pages
 {
@@ -23,42 +18,9 @@ namespace GGPlayer.Pages
         private readonly Storage _storage;
         public MainPage()
         {
-            // Initialize fields
-            _settingsService = App.AppHost!.Services.GetRequiredService<SettingsService>();
-            _storage = App.AppHost!.Services.GetRequiredService<Storage>();
-
-            try
-            {
-                LoadDatabase();
-            }
-            catch (Exception ex)
-            {
-                ExceptionService.HandleError(ex, ex.Message);
-            }
-
-            // Intialize the visual elements
             DataContext = this;
-            InitializeComponent();
-        }
-
-        public void LoadDatabase(bool restoreLatest = true)
-        {
-            // Get the database path
-            var dbAbsolutePath = _settingsService.GetValue("lastOpenedDatabasePath");
-            if (!restoreLatest || string.IsNullOrEmpty(dbAbsolutePath) || !File.Exists(dbAbsolutePath))
-            {
-                dbAbsolutePath = GetDatabasePath();
-            }
-
-            // If the user cancels and closes the window
-            if (string.IsNullOrEmpty(dbAbsolutePath))
-            {
-                return;
-            }
-
-            _settingsService.SetValue("lastOpenedDatabasePath", dbAbsolutePath);
-            _storage.SetDatabaseConfig(dbAbsolutePath);
-
+            _storage = App.AppHost!.Services.GetRequiredService<Storage>();
+         
             // Load Segments into the collection view
             foreach (var segment in _storage.DbContext.Segments)
             {
@@ -68,21 +30,11 @@ namespace GGPlayer.Pages
             // Set the Title based on current database
             _dbInfo = _storage.DbContext.DbMetas.First();
             DbTitle = _dbInfo.Title;
-        }
-        private string GetDatabasePath()
-        {
-            var ofd = new OpenFileDialog();
-            ofd.Filter = Translations.GetValue("DBFiles");
-            ofd.Multiselect = false;
-            var result = ofd.ShowDialog();
-            if (result.HasValue)
-            {
-                return ofd.FileName;
-            }
 
-            MessageBox.Show(Translations.GetValue("DBFileChoose"));
-            return GetDatabasePath();
+            // Intialize the visual elements
+            InitializeComponent();
         }
+
 
         private void LoadSegment()
         {
@@ -109,11 +61,11 @@ namespace GGPlayer.Pages
         }
         #endregion
 
-        private void mnuOpenDatabase_Click(object sender, RoutedEventArgs e)
-        {
-            Segments.Clear();
-            LoadDatabase(false);
-        }
+        //private void mnuOpenDatabase_Click(object sender, RoutedEventArgs e)
+        //{
+        //    Segments.Clear();
+        //    LoadDatabase(false);
+        //}
 
     }
 }

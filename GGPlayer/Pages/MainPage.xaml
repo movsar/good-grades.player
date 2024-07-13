@@ -15,12 +15,6 @@
             <ColumnDefinition Width="310"/>
         </Grid.ColumnDefinitions>
 
-        <Grid.ContextMenu>
-            <ContextMenu>
-                <MenuItem Header="{x:Static shared:GgLocalization.OpenDB}" Click="mnuOpenDatabase_Click"/>
-            </ContextMenu>
-        </Grid.ContextMenu>
-
         <StackPanel Grid.Column="0">
             <StackPanel.Background>
                 <ImageBrush 
