@@ -41,7 +41,7 @@ namespace GGPlayer.Pages
             InitializeComponent();
         }
 
-        private void LoadDatabase(bool restoreLatest = true)
+        public void LoadDatabase(bool restoreLatest = true)
         {
             // Get the database path
             var dbAbsolutePath = _settingsService.GetValue("lastOpenedDatabasePath");
@@ -93,8 +93,6 @@ namespace GGPlayer.Pages
             }
 
             this.NavigationService.Navigate(new SegmentPage(selectedSegment));
-            var StartWindow = new StartWindow(selectedSegment, this.NavigationService);
-            StartWindow.ShowDialog();
         }
 
         #region Event handlers

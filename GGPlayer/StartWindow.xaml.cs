@@ -2,6 +2,8 @@
 using Data;
 using Data.Entities;
 using Data.Services;
+using GGManager;
+using GGManager.Stores;
 using GGPlayer.Pages;
 using Microsoft.Extensions.Logging;
 using System;
@@ -23,22 +25,26 @@ namespace GGPlayer
 {
     public partial class StartWindow : Window
     {
-        private readonly Segment _selectedSegment;
-        private readonly NavigationService _navigationService;
 
-        public StartWindow(Segment selectedSegment, NavigationService navigationService)
+        public StartWindow()
         {
             InitializeComponent();
-            _selectedSegment = selectedSegment;
-            _navigationService = navigationService;
+            
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            
-            var segmentPage = new SegmentPage(_selectedSegment);
-            _navigationService.Navigate(segmentPage);
 
+            var logger = new Logger<Storage>(new LoggerFactory());
+            var storage = new Storage(logger);
+            var settingsService = new SettingsService();
+            var contentStore = new ContentStore(storage, settingsService);
+
+            // Создание и показ основного окна
+            var shellWindow = new ShellWindow();
+            shellWindow.Show();
+
+            // Закрытие стартового окна
             this.Close();
         }
     }

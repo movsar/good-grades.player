@@ -7,6 +7,7 @@ using Shared.Services;
 using System.IO;
 using System.Windows;
 
+
 namespace GGPlayer
 {
     public partial class App : Application
@@ -30,6 +31,7 @@ namespace GGPlayer
                         services.AddSingleton<Storage>();
                         services.AddSingleton<ShellWindow>();
                         services.AddSingleton<SettingsService>();
+                        services.AddSingleton<StartWindow>();
                         services.AddSingleton<StylingService>();
                     }).Build();
         }
@@ -56,7 +58,7 @@ namespace GGPlayer
         protected override void OnStartup(StartupEventArgs e)
         {
             AppHost.Start();
-            var startUpForm = AppHost!.Services.GetRequiredService<ShellWindow>();
+            var startUpForm = AppHost!.Services.GetRequiredService<StartWindow>();
             startUpForm.Show();
 
             base.OnStartup(e);
@@ -68,6 +70,7 @@ namespace GGPlayer
             AppHost!.StopAsync();
             base.OnExit(e);
         }
+        
     }
 
 }
