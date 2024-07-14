@@ -3,21 +3,26 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
-        xmlns:shared="clr-namespace:Shared;assembly=Shared"
+        xmlns:controls="clr-namespace:Shared.Controls"
         xmlns:local="clr-namespace:Shared.Viewers"
         mc:Ignorable="d" Height="450" Width="800"
         WindowState="Maximized">
     <Grid>
 
-        <wv2:WebView2 Name="webView" />
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <controls:WebViewControl x:Name="webView" Grid.Row="0"/>
 
         <StackPanel x:Name="spAudioControls" 
+                    Grid.Row="1"
                     Orientation="Horizontal" 
                     VerticalAlignment="Bottom" 
                     HorizontalAlignment="Left"
                     Margin="5"
-                    Visibility="Hidden">
+                    Visibility="Collapsed">
 
             <Button Width="30" Height="30"
                     Margin="2"                    
