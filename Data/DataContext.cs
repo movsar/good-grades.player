@@ -24,11 +24,11 @@ namespace Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            base.OnConfiguring(options);
 
             string connectionString = $"Data Source=" + DbPath;
             options.UseLazyLoadingProxies();
             options.UseSqlite(connectionString);
+            base.OnConfiguring(options);
         }
     }
 }

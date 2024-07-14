@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using Shared.Interfaces;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace GGPlayer.Pages
 {
@@ -13,7 +14,7 @@ namespace GGPlayer.Pages
         private List<IAssignment> Assignments { get; } = new List<IAssignment>();
 
         const int ButtonSize = 150;
-        const int ButtonSpacing = 75;
+        const int ButtonSpacing = 50;
         public AssignmentsPage(List<IAssignment> assignments)
         {
             InitializeComponent();
@@ -21,20 +22,17 @@ namespace GGPlayer.Pages
         }
         private void GenerateAssignmentButtons()
         {
+            // Clear previous content
+            ScrollViewerContainer.Content = null;
 
-            // Track the current row and column
-            int row = 0, column = 0;
-            // Used to create the checkmate pattern
-            bool isOffset = false;
+            // Determine the number of buttons that can fit in a row based on the container's width
+            int buttonsPerRow = (int)(ScrollViewerContainer.ActualWidth / (ButtonSize + ButtonSpacing));
 
             WrapPanel wrapPanel = new WrapPanel()
             {
-                HorizontalAlignment = HorizontalAlignment.Left,
-                Width = this.ActualWidth
+                HorizontalAlignment = HorizontalAlignment.Center,
+                Width = ScrollViewerContainer.ActualWidth
             };
-
-            // Determine the number of buttons that can fit in a row based on the container's width
-            int buttonsPerRow = (int)wrapPanel.Width / (ButtonSize + ButtonSpacing) - 1;
 
             int count = 1;
             foreach (var assignment in Assignments)
@@ -52,30 +50,14 @@ namespace GGPlayer.Pages
 
                 button.Click += AssignmentButton_Click;
 
-                // Add the button to the wrap panel at the correct position
-                if (isOffset && column == 0)
-                {
-                    // Add an offset at the beginning of an offset row
-                    wrapPanel.Children.Add(new TextBlock { Width = ButtonSize });
-                }
-
                 wrapPanel.Children.Add(button);
-
-                // Update the row and column for the next button
-                column++;
-                if (column >= buttonsPerRow)
-                {
-                    isOffset = !isOffset;
-                    column = 0;
-                    row++;
-                }
 
                 count++;
             }
 
             ScrollViewerContainer.Content = wrapPanel;
-            ScrollViewerContainer.UpdateLayout();
         }
+
 
         private void AssignmentButton_Click(object sender, RoutedEventArgs e)
         {
@@ -118,25 +100,20 @@ namespace GGPlayer.Pages
                 return;
             }
 
-            // Find the index of the received assignment in the Assignments list
             var assignmentIndex = Assignments.IndexOf(assignment);
             if (assignmentIndex == -1)
             {
                 return;
             }
 
-            // Assuming the WrapPanel is the only child of ScrollViewerContainer.Content
             var wrapPanel = ScrollViewerContainer.Content as WrapPanel;
-            // Find the button with the content that matches the index + 1 (since you started counting from 1)
             var buttonContentToFind = (assignmentIndex + 1).ToString();
-            var button = wrapPanel.Children
-                          .OfType<Button>()
-                          .FirstOrDefault(b => b.Content.ToString() == buttonContentToFind);
+            var button = wrapPanel.Children.OfType<Button>()
+                              .FirstOrDefault(b => b.Content.ToString() == buttonContentToFind);
 
             if (button != null)
             {
-                // Change the background color of the button to Green
-                button.Background = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.Green);
+                button.Background = new SolidColorBrush(Colors.Green);
             }
         }
 
