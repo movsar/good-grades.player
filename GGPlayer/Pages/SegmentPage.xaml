@@ -29,7 +29,9 @@
             HorizontalAlignment="Center"
             Content="{Binding SegmentTitle }"/>
 
-        <RichTextBox x:Name="rtbDescription" Grid.Row="1" Grid.Column="0" IsReadOnly="True"/>
+        <RichTextBox x:Name="rtbDescription" Grid.Row="1" Grid.Column="0" IsReadOnly="True"
+                     FontSize="26" />
+        
         <ListView x:Name="lvMaterials" Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Materials}"
                KeyUp="lvMaterials_KeyUp">
             <ListView.ItemContainerStyle>
@@ -40,8 +42,12 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
-                        <Image Width="16" Height="16" Source="{Binding Converter={StaticResource MaterialTypeToImageConverter}}" />
-                        <Label Content="{Binding Title}" Margin="5,0,0,0"/>
+                        <Image Width="26" Height="26" Source="{Binding Converter={StaticResource MaterialTypeToImageConverter}}" />
+                        <Label Content="{Binding Title}" 
+                               Margin="5,0,0,0" 
+                               FontSize="26"
+                               Cursor="Hand"
+                               />
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>

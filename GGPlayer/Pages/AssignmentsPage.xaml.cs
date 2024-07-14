@@ -12,8 +12,8 @@ namespace GGPlayer.Pages
     {
         private List<IAssignment> Assignments { get; } = new List<IAssignment>();
 
-        const int ButtonSize = 100;
-        const int ButtonSpacing = 50;
+        const int ButtonSize = 150;
+        const int ButtonSpacing = 75;
         public AssignmentsPage(List<IAssignment> assignments)
         {
             InitializeComponent();

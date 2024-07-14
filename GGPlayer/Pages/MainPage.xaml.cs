@@ -11,6 +11,7 @@ namespace GGPlayer.Pages
     public partial class MainPage : Page
     {
         public string DbTitle { get; set; }
+        public string DbDescription { get; set; }
         public ObservableCollection<Segment> Segments { get; set; } = new ObservableCollection<Segment>();
 
         private DbMeta _dbInfo;
@@ -20,7 +21,7 @@ namespace GGPlayer.Pages
         {
             DataContext = this;
             _storage = App.AppHost!.Services.GetRequiredService<Storage>();
-         
+
             // Load Segments into the collection view
             foreach (var segment in _storage.DbContext.Segments)
             {
@@ -30,11 +31,11 @@ namespace GGPlayer.Pages
             // Set the Title based on current database
             _dbInfo = _storage.DbContext.DbMetas.First();
             DbTitle = _dbInfo.Title;
+            DbDescription = _dbInfo.Description ?? string.Empty;
 
             // Intialize the visual elements
             InitializeComponent();
         }
-
 
         private void LoadSegment()
         {

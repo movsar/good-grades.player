@@ -19,7 +19,7 @@ namespace Shared.Services
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(rtfString ?? "")))
             {
                 range.Load(stream, DataFormats.Rtf);
-            }
+            }            
         }
         public static string GetRtfDescriptionAsText(RichTextBox richTextBox)
         {

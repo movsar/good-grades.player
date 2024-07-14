@@ -12,7 +12,7 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="310"/>
+            <ColumnDefinition Width="400"/>
         </Grid.ColumnDefinitions>
 
         <StackPanel Grid.Column="0">
@@ -25,9 +25,13 @@
             </StackPanel.Background>
 
             <Label  HorizontalAlignment="Center" VerticalAlignment="Top" 
-                    FontSize="26"
+                    FontSize="36"
                     FontWeight="Bold"
                     Content="{Binding DbTitle, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <Label  HorizontalAlignment="Center" VerticalAlignment="Top" 
+                    FontSize="26"
+                    Content="{Binding DbDescription, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}"/>
         </StackPanel>
 
         <Border Grid.Column="1" CornerRadius="10" Background="White" Margin="5">
@@ -40,9 +44,11 @@
                               BorderBrush="AntiqueWhite" 
                               Padding="5">
 
-                            <Label Content="{Binding Title}"
+                            <TextBlock  
+                                 Text="{Binding Title}"
+                                 TextWrapping="Wrap"
                                  FontWeight="Bold"
-                                 FontSize="14"
+                                 FontSize="18"
                                  Cursor="Hand"/>
                         </Border>
                     </DataTemplate>
