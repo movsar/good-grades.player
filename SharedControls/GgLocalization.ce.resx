@@ -198,10 +198,10 @@
   <data name="SelectingTaskName" xml:space="preserve">
     <value>Къастор</value>
   </data>
-  <data name="RtfFiles" xml:space="preserve">
-    <value>Текст йолу RTF файлаш (.rtf) | *.rtf;</value>
+  <data name="PdfFiles" xml:space="preserve">
+    <value>Текст йолу PDF файлаш (.pdf) | *.pdf;</value>
   </data>
-  <data name="RtfFileChoose" xml:space="preserve">
+  <data name="ChooseMaterialFile" xml:space="preserve">
     <value>Текст йолу файл къастор</value>
   </data>
   <data name="Reading" xml:space="preserve">

@@ -24,7 +24,7 @@ namespace GGManager.UserControls
         ContentStore ContentStore => App.AppHost!.Services.GetRequiredService<ContentStore>();
         StylingService StylingService => App.AppHost!.Services.GetRequiredService<StylingService>();
 
-        public string LmTitle
+        public string Title
         {
             get { return (string)GetValue(TitleProperty); }
             set { SetValue(TitleProperty, value); }
@@ -32,10 +32,9 @@ namespace GGManager.UserControls
         public static readonly DependencyProperty TitleProperty =
             DependencyProperty.Register("LmTitle", typeof(string), typeof(MaterialControl), new PropertyMetadata(""));
 
-        public string LmText { get; set; }
-        public byte[]? LmAudio { get; set; }
-        public byte[]? LmImage { get; set; }
-        private string LmId { get; }
+        public byte[]? PdfData { get; set; }
+        public byte[]? Audio { get; set; }
+        private string Id { get; }
         #endregion
 
         #region Reactions
@@ -54,25 +53,19 @@ namespace GGManager.UserControls
         }
         private void OnTitleSet(bool isSet)
         {
-            _formCompletionInfo.Update(nameof(LmTitle), isSet);
+            _formCompletionInfo.Update(nameof(Title), isSet);
         }
         private void OnTextSet(bool isSet = true)
         {
             btnChooseText.Background = StylingService.StagedBrush;
 
-            _formCompletionInfo.Update(nameof(LmText), isSet);
-        }
-        private void OnImageSet(bool isSet = true)
-        {
-            btnChooseImage.Background = StylingService.StagedBrush;
-
-            _formCompletionInfo.Update(nameof(LmImage), isSet);
+            _formCompletionInfo.Update(nameof(PdfData), isSet);
         }
         private void OnAudioSet(bool isSet = true)
         {
             btnChooseAudio.Background = StylingService.StagedBrush;
 
-            _formCompletionInfo.Update(nameof(LmAudio), isSet);
+            _formCompletionInfo.Update(nameof(Audio), isSet);
         }
         #endregion
 
@@ -88,13 +81,9 @@ namespace GGManager.UserControls
             btnDelete.Visibility = Visibility.Visible;
 
             btnChooseText.Background = StylingService.ReadyBrush;
-            if (LmAudio != null)
+            if (Audio != null)
             {
                 btnChooseAudio.Background = StylingService.ReadyBrush;
-            }
-            if (LmImage != null)
-            {
-                btnChooseImage.Background = StylingService.ReadyBrush;
             }
         }
         private void SharedInitialization(bool isExistingMaterial = false)
@@ -104,8 +93,8 @@ namespace GGManager.UserControls
 
             var propertiesToWatch = new List<string>
             {
-                nameof(LmTitle),
-                nameof(LmText),
+                nameof(Title),
+                nameof(PdfData),
             };
 
             _formCompletionInfo = new FormCompletionInfo(propertiesToWatch, isExistingMaterial);
@@ -116,18 +105,17 @@ namespace GGManager.UserControls
             SharedInitialization();
             SetUiForNewMaterial();
 
-            LmTitle = TitleHintText;
+            Title = TitleHintText;
         }
 
         public MaterialControl(Material material)
         {
             SharedInitialization(true);
 
-            LmId = material.Id;
-            LmTitle = material.Title;
-            LmText = material.Text;
-            LmAudio = material.Audio;
-            LmImage = material.Image;
+            Id = material.Id;
+            Title = material.Title;
+            PdfData = material.PdfData;
+            Audio = material.Audio;
             SetUiForExistingMaterial();
         }
         #endregion
@@ -135,17 +123,17 @@ namespace GGManager.UserControls
         #region TitleHandlers
         private void txtTitle_GotFocus(object sender, RoutedEventArgs e)
         {
-            if (LmTitle == TitleHintText)
+            if (Title == TitleHintText)
             {
-                LmTitle = "";
+                Title = "";
             }
         }
 
         private void txtTitle_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrEmpty(LmTitle))
+            if (string.IsNullOrEmpty(Title))
             {
-                LmTitle = TitleHintText;
+                Title = TitleHintText;
             }
         }
 
@@ -165,28 +153,15 @@ namespace GGManager.UserControls
         #region ButtonHandlers
         private void btnChooseText_Click(object sender, RoutedEventArgs e)
         {
-            string filePath = FileService.SelectTextFilePath();
-            if (string.IsNullOrEmpty(filePath)) return;
-
-            // Read, load contents to the object and add to collection
-            var content = File.ReadAllText(filePath, System.Text.Encoding.UTF8);
-            if (string.IsNullOrEmpty(filePath)) return;
-
-            LmText = content;
-            OnTextSet(true);
-        }
-
-        private void btnChooseImage_Click(object sender, RoutedEventArgs e)
-        {
-            string filePath = FileService.SelectImageFilePath();
+            string filePath = FileService.SelectPdfFilePath();
             if (string.IsNullOrEmpty(filePath)) return;
 
             // Read, load contents to the object and add to collection
             var content = File.ReadAllBytes(filePath);
-            if (content.Length == 0) return;
+            if (string.IsNullOrEmpty(filePath)) return;
 
-            LmImage = content;
-            OnImageSet(true);
+            PdfData = content;
+            OnTextSet(true);
         }
 
         private void btnChooseAudio_Click(object sender, RoutedEventArgs e)
@@ -199,13 +174,13 @@ namespace GGManager.UserControls
             var content = File.ReadAllBytes(filePath);
             if (content.Length == 0) return;
 
-            LmAudio = content;
+            Audio = content;
             OnAudioSet(true);
         }
 
         private void btnPreview_Click(object sender, RoutedEventArgs e)
         {
-            var materialPreviewWindow = new MaterialViewer(LmTitle, LmText, LmImage, LmAudio);
+            var materialPreviewWindow = new MaterialViewer(Title, PdfData, Audio);
             materialPreviewWindow.ShowDialog();
         }
         private void btnSave_Click(object sender, RoutedEventArgs e)
@@ -218,14 +193,13 @@ namespace GGManager.UserControls
 
             //MessageBox.Show(Ru.NecessaryInfoForContent);
 
-            if (string.IsNullOrEmpty(LmId))
+            if (string.IsNullOrEmpty(Id))
             {
                 var lm = new Material
                 {
-                    Title = LmTitle,
-                    Text = LmText,
-                    Audio = LmAudio,
-                    Image = LmImage
+                    Title = Title,
+                    PdfData = PdfData,
+                    Audio = Audio,
                 };
 
                 ContentStore.SelectedSegment?.Materials.Add(lm);
@@ -235,11 +209,10 @@ namespace GGManager.UserControls
             }
             else
             {
-                var lm = ContentStore.DbContext.Materials.First(lm => lm.Id == LmId);
-                lm.Title = LmTitle;
-                lm.Text = LmText;
-                lm.Image = LmImage;
-                lm.Audio = LmAudio;
+                var lm = ContentStore.DbContext.Materials.First(lm => lm.Id == Id);
+                lm.Title = Title;
+                lm.PdfData = PdfData;
+                lm.Audio = Audio;
 
                 ContentStore.DbContext.SaveChanges();
 
@@ -249,7 +222,7 @@ namespace GGManager.UserControls
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-            var lm = ContentStore.DbContext.Find<Material>(LmId);
+            var lm = ContentStore.DbContext.Find<Material>(Id);
             ContentStore.DbContext.Materials.Remove(lm);
             ContentStore.DbContext.SaveChanges();
 

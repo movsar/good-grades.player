@@ -12,8 +12,7 @@ namespace Data.Entities
         public DateTimeOffset ModifiedAt { get; set; } = DateTimeOffset.Now;
         /******************************************************************/
         public string Title { get; set; }
-        public string Text { get; set; }
+        public byte[]? PdfData { get; set; }
         public byte[]? Audio { get; set; } = null;
-        public byte[]? Image { get; set; } = null;
     }
 }

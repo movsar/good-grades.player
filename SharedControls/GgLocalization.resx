@@ -276,10 +276,10 @@
   <data name="DBFileChoose" xml:space="preserve">
     <value>Выбор файла баз данных</value>
   </data>
-  <data name="RtfFiles" xml:space="preserve">
-    <value>Файлы с RTF текстом (.rtf) | *.rtf;</value>
+  <data name="PdfFiles" xml:space="preserve">
+    <value>Файлы с PDF текстом (.pdf) | *.pdf;</value>
   </data>
-  <data name="RtfFileChoose" xml:space="preserve">
+  <data name="ChooseMaterialFile" xml:space="preserve">
     <value>Выбор файла с текстом</value>
   </data>
   <data name="AudioFiles" xml:space="preserve">

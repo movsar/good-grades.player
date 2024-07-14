@@ -3,25 +3,14 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
         xmlns:shared="clr-namespace:Shared;assembly=Shared"
         xmlns:local="clr-namespace:Shared.Viewers"
         mc:Ignorable="d" Height="450" Width="800"
         WindowState="Maximized">
     <Grid>
 
-        <FlowDocumentPageViewer>
-            <FlowDocument x:Name="flowDocument" ColumnWidth="999999" TextAlignment="Left">
-                <Paragraph x:Name="flowImageParagraph">
-                    <Figure>
-                        <BlockUIContainer>
-                            <Image x:Name="imgMain" Width="450" />
-                        </BlockUIContainer>
-                    </Figure>
-                </Paragraph>
-                <Paragraph x:Name="flowContentParagraph">
-                </Paragraph>
-            </FlowDocument>
-        </FlowDocumentPageViewer>
+        <wv2:WebView2 Name="webView" />
 
         <StackPanel x:Name="spAudioControls" 
                     Orientation="Horizontal" 

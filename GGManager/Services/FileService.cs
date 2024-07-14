@@ -12,9 +12,9 @@ namespace GGManager.Services
         {
             return OpenFilePath(Translations.GetValue("DBFiles"), Translations.GetValue("DBFileChoose"));
         }
-        internal static string SelectTextFilePath()
+        internal static string SelectPdfFilePath()
         {
-            return OpenFilePath(Translations.GetValue("RtfFiles"), Translations.GetValue("RtfFileChoose"));
+            return OpenFilePath(Translations.GetValue("PdfFiles"), Translations.GetValue("ChooseMaterialFile"));
         }
         internal static string SelectAudioFilePath()
         {

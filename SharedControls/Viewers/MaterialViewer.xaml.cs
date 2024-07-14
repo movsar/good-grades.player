@@ -1,37 +1,37 @@
-﻿using Plugin.SimpleAudioPlayer;
+﻿using Microsoft.Web.WebView2.Core;
+using Plugin.SimpleAudioPlayer;
 using Serilog;
-using Shared.Interfaces;
 using System;
 using System.IO;
 using System.Linq;
-using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Documents;
-using System.Windows.Media.Imaging;
 
 namespace Shared.Viewers
 {
     public partial class MaterialViewer : Window
     {
+        private string _pdfBase64;
+        private bool _isWebViewReady = false;
 
         #region Initialization
         private void SharedInitialization()
         {
             PurgeCache();
             InitializeComponent();
+            webView.CoreWebView2InitializationCompleted += WebView_CoreWebView2InitializationCompleted;
         }
-        public MaterialViewer(string title, string text, byte[] image)
+        public MaterialViewer(string title, byte[] data)
         {
             Title = title;
 
             SharedInitialization();
-            LoadDocument(text, image);
+            LoadPdfAsync(data);
         }
 
-        public MaterialViewer(string title, string text, byte[]? image, byte[]? audio)
+        public MaterialViewer(string title, byte[] data, byte[]? audio)
         {
             SharedInitialization();
-            LoadDocument(text, image);
 
             Title = title;
 
@@ -40,6 +40,8 @@ namespace Shared.Viewers
                 CrossSimpleAudioPlayer.Current.Load(new MemoryStream(audio));
                 spAudioControls.Visibility = Visibility.Visible;
             }
+
+            LoadPdfAsync(data);
         }
         #endregion
 
@@ -65,27 +67,38 @@ namespace Shared.Viewers
             base.OnClosing(e);
         }
         #endregion
-
-        private void LoadDocument(string rtf, byte[]? image)
+        private async void WebView_CoreWebView2InitializationCompleted(object sender, CoreWebView2InitializationCompletedEventArgs e)
         {
-            if (image != null)
+            if (e.IsSuccess)
             {
-                BitmapImage logo = new BitmapImage();
-                logo.BeginInit();
-                logo.StreamSource = new MemoryStream(image);
-                logo.EndInit();
-
-                imgMain.Source = logo;
+                _isWebViewReady = true;
             }
             else
             {
-                flowDocument.Blocks.Remove(flowImageParagraph);
+                MessageBox.Show($"WebView2 initialization failed. Error: {e.InitializationException.Message}");
             }
-
-            MemoryStream stream = new MemoryStream(ASCIIEncoding.Default.GetBytes(rtf));
-            var txtRange = new TextRange(flowContentParagraph.ContentStart, flowContentParagraph.ContentEnd);
-            txtRange.Load(stream, DataFormats.Rtf);
         }
+
+        private async Task LoadPdfAsync(byte[] pdfBytes)
+        {
+            try
+            {
+                await webView.EnsureCoreWebView2Async();
+
+                // Convert PDF bytes to Base64 string
+                string pdfBase64 = Convert.ToBase64String(pdfBytes);
+                string pdfDataUri = $"data:application/pdf;base64,{pdfBase64}";
+
+                // Navigate to the PDF data URI
+                webView.CoreWebView2.Navigate(pdfDataUri);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to load PDF: {ex.Message}");
+            }
+        }
+
+
         private void PurgeCache()
         {
             var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyMusic));

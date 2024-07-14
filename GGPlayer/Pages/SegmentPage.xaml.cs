@@ -45,9 +45,9 @@ namespace GGPlayer.Pages
             switch (segmentItem)
             {
                 case Material:
-                    var listeningMaterial = segmentItem as Material;
-                    var listeningPresenter = new MaterialViewer(listeningMaterial.Title, listeningMaterial.Text, listeningMaterial.Image, listeningMaterial.Audio);
-                    listeningPresenter.ShowDialog();
+                    var material = segmentItem as Material;
+                    var materialPresenter = new MaterialViewer(material.Title, material.PdfData, material.Audio);
+                    materialPresenter.ShowDialog();
 
                     break;
                 case FakeSegmentMaterial:

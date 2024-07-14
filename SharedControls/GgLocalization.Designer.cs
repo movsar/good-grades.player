@@ -205,6 +205,15 @@ namespace Shared {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Выбор файла с текстом.
+        /// </summary>
+        public static string ChooseMaterialFile {
+            get {
+                return ResourceManager.GetString("ChooseMaterialFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Выберите раздел с которым хотите работать.
         /// </summary>
         public static string ChoosingChapterToWork {
@@ -502,6 +511,15 @@ namespace Shared {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Файлы с PDF текстом (.pdf) | *.pdf;.
+        /// </summary>
+        public static string PdfFiles {
+            get {
+                return ResourceManager.GetString("PdfFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Версия программы: .
         /// </summary>
         public static string ProgramVersion {
@@ -516,24 +534,6 @@ namespace Shared {
         public static string Reading {
             get {
                 return ResourceManager.GetString("Reading", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Выбор файла с текстом.
-        /// </summary>
-        public static string RtfFileChoose {
-            get {
-                return ResourceManager.GetString("RtfFileChoose", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Файлы с RTF текстом (.rtf) | *.rtf;.
-        /// </summary>
-        public static string RtfFiles {
-            get {
-                return ResourceManager.GetString("RtfFiles", resourceCulture);
             }
         }
         
