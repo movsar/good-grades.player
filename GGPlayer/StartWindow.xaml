@@ -32,16 +32,16 @@
 
                 </MenuItem>
             </MenuItem>
-
-
-
         </Menu>
-        
+
         <Button Content="Дуьло!" 
-                FontSize="14" 
+                FontSize="26" 
+                FontWeight="Bold"
+                Background="Lime"
                 Margin="10" 
                 HorizontalAlignment="Center" 
-                Height="40"
+                Height="60"
+                Width="120"
                 Click="Button_Click"/>
     </DockPanel>
 </Window>

@@ -4,14 +4,14 @@
     <Style TargetType="TextBlock" x:Key="LargeHeaderStyle">
         <Setter Property="FontStyle" Value="Italic"/>
         <Setter Property="FontWeight" Value="Bold"/>
-        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="FontSize" Value="30"/>
         <Setter Property="TextWrapping" Value="Wrap"/>
         <Setter Property="Margin" Value="5"/>
     </Style>
 
     <Style x:Key="CheckboxOptionStyle" TargetType="CheckBox">
         <Setter Property="Cursor" Value="Hand"/>
-        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontSize" Value="24"/>
         <Setter Property="Margin" Value="5"/>
         <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="Foreground" Value="Black"/>
@@ -24,7 +24,7 @@
 
     <Style x:Key="RadioOptionStyle" TargetType="RadioButton">
         <Setter Property="Cursor" Value="Hand"/>
-        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontSize" Value="24"/>
         <Setter Property="Margin" Value="5"/>
         <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="Foreground" Value="Black"/>
@@ -40,7 +40,7 @@
         <!-- Orange color for visibility, change to yellow if needed -->
         <Setter Property="Foreground" Value="Black"/>
         <Setter Property="FontWeight" Value="Bold"/>
-        <Setter Property="FontSize" Value="24"/>
+        <Setter Property="FontSize" Value="30"/>
         <Setter Property="BorderBrush" Value="Transparent"/>
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
@@ -80,14 +80,14 @@
         <Setter Property="Margin" Value="0,0,10,0"/>
         <Setter Property="Padding" Value="8,4,8,4"/>
 
-        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="FontSize" Value="24"/>
         <Setter Property="Cursor" Value="Hand"/>
     </Style>
 
     <Style x:Key="FillInLabelStyle" TargetType="Label">
         <Setter Property="Padding" Value="0 0 0 0"/>
         <Setter Property="Margin" Value="0 0 0 8"/>
-        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="FontSize" Value="24"/>
     </Style>
 
     <Style x:Key="FillInTextBoxStyle" TargetType="TextBox">
@@ -95,7 +95,7 @@
         <Setter Property="BorderBrush" Value="Black"/>
         <Setter Property="Padding" Value="0 0 0 0"/>
         <Setter Property="Margin" Value="0 0 0 8"/>
-        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="FontSize" Value="24"/>
     </Style>
 
     <SolidColorBrush x:Key="StagedBrush">LightYellow</SolidColorBrush>

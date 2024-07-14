@@ -65,7 +65,11 @@ namespace Shared.Viewers
 
                 int pairIndex = i;
                 var imageUiElement = new Image { Source = image, Name = $"Pair_{pairIndex}" };
-                var textBlockUiElement = new TextBlock { Text = text, Name = $"Pair_{pairIndex}" };
+                var textBlockUiElement = new TextBlock { Text = text, 
+                    Name = $"Pair_{pairIndex}",
+                    FontSize = 26
+                
+                };
 
                 gridItems.Add(new GridItem
                 {

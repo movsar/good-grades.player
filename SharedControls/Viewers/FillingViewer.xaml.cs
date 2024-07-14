@@ -51,7 +51,11 @@ namespace Shared.Viewers
                     {
                         // Add editable text as TextBox
                         var options = parts[i].Split('|').Select(o => o.ToLower().Trim()).ToArray();
-                        var textBox = new TextBox { Tag = options, Width = 100 };
+                        
+                        var textBox = new TextBox { Tag = options, 
+                            Width = options[0].Length * 14,
+                            FontSize = 24
+                        };
                         textBox.Style = (Style)FindResource("FillInTextBoxStyle");
                         panel.Children.Add(textBox);
                     }
