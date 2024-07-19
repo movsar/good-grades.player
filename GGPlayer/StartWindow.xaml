@@ -34,13 +34,15 @@
             </MenuItem>
         </Menu>
 
-        <Button Content="Дуьло!" 
+        <Button x:Name="btnGo" 
+                Content="Дуьло!" 
                 FontSize="26" 
                 FontWeight="Bold"
                 Background="Lime"
                 Margin="10" 
                 HorizontalAlignment="Center" 
                 Height="60"
+                IsEnabled="False"
                 Width="120"
                 Click="Button_Click"/>
     </DockPanel>

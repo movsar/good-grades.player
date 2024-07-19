@@ -24,7 +24,7 @@ namespace GGPlayer
 
             InitializeComponent();
             DataContext = this;
-            
+
             // Initialize fields
             _settingsService = App.AppHost!.Services.GetRequiredService<SettingsService>();
             _storage = App.AppHost!.Services.GetRequiredService<Storage>();
@@ -32,19 +32,10 @@ namespace GGPlayer
             try
             {
                 LoadDatabase();
-
-                // Set the background image for the class
-                var dbMeta = _storage.DbContext.DbMetas.First();
-                if (dbMeta.BackgroundImage?.Length > 0)
-                {
-                    BitmapImage logo = new BitmapImage();
-                    logo.BeginInit();
-                    logo.StreamSource = new MemoryStream(dbMeta.BackgroundImage);
-                    logo.EndInit();
-                    ImageBrush myBrush = new ImageBrush();
-                    myBrush.ImageSource = logo;
-                    pnlMain.Background = myBrush;
-                }
+            }
+            catch (OperationCanceledException)
+            {
+                // Do nothing, user cancelled 
             }
             catch (Exception ex)
             {
@@ -63,11 +54,26 @@ namespace GGPlayer
             // If the user cancels and closes the window
             if (string.IsNullOrEmpty(dbAbsolutePath))
             {
-                return;
+                throw new OperationCanceledException();
             }
 
             _settingsService.SetValue("lastOpenedDatabasePath", dbAbsolutePath);
             _storage.SetDatabaseConfig(dbAbsolutePath);
+            btnGo.IsEnabled = true;
+
+            // Set the background image for the class
+            var dbMeta = _storage.DbContext.DbMetas.First();
+            Title = "Good Grades: " + dbMeta.Title;
+            if (dbMeta.BackgroundImage?.Length > 0)
+            {
+                BitmapImage logo = new BitmapImage();
+                logo.BeginInit();
+                logo.StreamSource = new MemoryStream(dbMeta.BackgroundImage);
+                logo.EndInit();
+                ImageBrush myBrush = new ImageBrush();
+                myBrush.ImageSource = logo;
+                pnlMain.Background = myBrush;
+            }
         }
         private string GetDatabasePath()
         {
@@ -106,7 +112,10 @@ namespace GGPlayer
         }
         private void OpenDatabase_Click(object sender, RoutedEventArgs e)
         {
-            LoadDatabase();
+            LoadDatabase(false);
+
+            var dbMeta = _storage.DbContext.DbMetas.First();
+            Title += dbMeta.Title;
         }
     }
 }
