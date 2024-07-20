@@ -1,11 +1,13 @@
 ﻿
 using Data;
+using Data.Entities;
 using Data.Services;
 using GGManager.Stores;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Win32;
 using Shared;
 using Shared.Services;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Media;
@@ -18,6 +20,7 @@ namespace GGPlayer
         private readonly SettingsService _settingsService;
         private readonly Storage _storage;
         private readonly ContentStore _contentStore;
+        public string DbTitle { get; set; }
 
         public StartWindow()
         {
