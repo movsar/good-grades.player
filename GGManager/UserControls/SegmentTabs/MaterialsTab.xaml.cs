@@ -8,17 +8,19 @@ namespace GGManager.UserControls.SegmentTabs
     public partial class MaterialsTab : UserControl
     {
         private ContentStore ContentStore => App.AppHost!.Services.GetRequiredService<ContentStore>();
+
         public MaterialsTab()
         {
             InitializeComponent();
             DataContext = this;
-
+            //подписка на события изменений в contentStore
             ContentStore.ItemAdded += ContentStore_ItemChanged;
             ContentStore.ItemDeleted += ContentStore_ItemChanged;
             ContentStore.ItemUpdated += ContentStore_ItemChanged;
 
             RedrawUi();
         }
+        //перерисовка интерфейса
         public void RedrawUi()
         {
             spListeningControls.Children.Clear();
@@ -27,13 +29,13 @@ namespace GGManager.UserControls.SegmentTabs
             {
                 return;
             }
-
+            //добавление существующих материалов сегмента в интерфейс
             foreach (var material in ContentStore.SelectedSegment!.Materials)
             {
                 var existingMaterial = new MaterialControl(material);
                 spListeningControls.Children.Add(existingMaterial);
             }
-
+            //добавление пустого поля для создания нового материала
             var newMaterial = new MaterialControl();
 
             spListeningControls.Children.Add(newMaterial);

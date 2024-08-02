@@ -15,6 +15,7 @@ namespace GGPlayer
         public static IHost? AppHost { get; private set; }
         public App()
         {
+            //создание лога и его запись в файл
             string logPath = Path.Combine("logs", "logs.txt");
             Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Error()

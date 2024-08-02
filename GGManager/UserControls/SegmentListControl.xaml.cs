@@ -54,7 +54,9 @@ namespace GGManager.UserControls
 
         private void BtnNewSection_Click(object sender, RoutedEventArgs e)
         {
+            //создание нового сегмента
             Segment segment = new Segment() { Title = Translations.GetValue("NewChapter") };
+            //добавление нового сегмента в бд и сохранение
             _contentStore.DbContext.Add(segment);
             _contentStore.DbContext.SaveChanges();
 

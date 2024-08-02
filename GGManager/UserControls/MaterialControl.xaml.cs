@@ -148,9 +148,17 @@ namespace GGManager.UserControls
                 OnTitleSet(true);
             }
         }
+        private void txtTitle_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                Save();
+            }
+        }
         #endregion
 
         #region ButtonHandlers
+      
         private void btnChooseText_Click(object sender, RoutedEventArgs e)
         {
             string filePath = FileService.SelectPdfFilePath();
@@ -183,6 +191,7 @@ namespace GGManager.UserControls
             var materialPreviewWindow = new MaterialViewer(Title, PdfData, Audio);
             materialPreviewWindow.ShowDialog();
         }
+
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
             Save();
@@ -230,12 +239,5 @@ namespace GGManager.UserControls
         }
         #endregion
 
-        private void txtTitle_KeyUp(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                Save();
-            }
-        }
     }
 }
