@@ -19,11 +19,13 @@ namespace GGManager.UserControls
         private readonly ContentStore _contentStore = App.AppHost!.Services.GetRequiredService<ContentStore>();
         public event Action Saved;
         private byte[]? _backgroundImage = null;
+
         public DbInformation()
         {
             InitializeComponent();
             DataContext = this;
-
+            
+            //получение метаданных из БД и присваивание полям
             var dbMeta = _contentStore.DbContext.DbMetas.First();
             txtDbName.Text = dbMeta.Title;
             txtDbCreatedAt.Text = dbMeta.CreatedAt.ToString("R");
@@ -37,8 +39,11 @@ namespace GGManager.UserControls
                 btnChooseBackground.Background = Brushes.LightGreen;
             }
         }
+
         private void btnChooseBackground_Click(object sender, RoutedEventArgs e)
         {
+
+            //выбор файла с изображением для фона
             string filePath = FileService.SelectImageFilePath();
             if (string.IsNullOrEmpty(filePath)) return;
 

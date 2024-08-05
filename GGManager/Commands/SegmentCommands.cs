@@ -18,6 +18,7 @@ namespace GGManager.Commands
                 return;
             }
 
+            //подтверждение удаления
             var result = MessageBox.Show(string.Format(Translations.GetValue("ConfirmingDelete"), selectedSegment.Title),
                                              "Good Grades",
                                              MessageBoxButton.YesNo,

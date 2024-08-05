@@ -32,12 +32,14 @@ namespace GGManager.UserControls.SegmentTabs
         #endregion
 
         private readonly ContentStore _contentStore = App.AppHost!.Services.GetRequiredService<ContentStore>();
+
         public SegmentInfoTab()
         {
             InitializeComponent();
             DataContext = this;
             try
             {
+                //загрузка описания сегмента через rtf
                 RtfService.LoadRtfFromText(rtbDescription, _contentStore.SelectedSegment!.Description);
             }
             catch
@@ -47,7 +49,7 @@ namespace GGManager.UserControls.SegmentTabs
             Title = _contentStore.SelectedSegment!.Title;
         }
 
-
+        //сохранение изменений в сегменте
         private void Save()
         {
             _contentStore.SelectedSegment!.Title = Title;

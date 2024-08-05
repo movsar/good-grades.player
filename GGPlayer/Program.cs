@@ -10,6 +10,7 @@ namespace GGPlayer
         [STAThread]
         public static void Main(string[] args)
         {
+            //создание лога, настройка конфигурации и его запись в файл
             string logPath = Path.Combine("logs", "logs.txt");
             Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Error()

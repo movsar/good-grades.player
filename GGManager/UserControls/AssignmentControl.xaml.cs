@@ -90,9 +90,11 @@ namespace GGManager.UserControls
                 btnPreview.Visibility = Visibility.Collapsed;
             }
         }
+       
         private void btnSetData_Click(object sender, RoutedEventArgs e)
         {
             IAssignment taskAssignment;
+            //редакторы заданий в зависимости от типа задания
             IAssignmentEditor taskEditor = _taskType switch
             {
                 AssignmentType.Matching => new MatchingAssignmentEditor(_taskAssignment as MatchingAssignment),
@@ -117,7 +119,7 @@ namespace GGManager.UserControls
                 ContentStore.RaiseItemAddedEvent(taskAssignment);
             }
         }
-
+        
         private void btnPreview_Click(object sender, RoutedEventArgs e)
         {
             Window viewer = null!;
@@ -166,8 +168,10 @@ namespace GGManager.UserControls
             btnSetData.IsEnabled = true;
             _taskType = GetSelectedTaskType(selectedItemTitle);
         }
+
         private void AddTaskTypes()
         {
+            //варианты задания
             var fillingTaskType = new ComboBoxItem()
             {
                 Content = Translations.GetValue("FillingTaskName")
@@ -199,6 +203,8 @@ namespace GGManager.UserControls
             cmbTaskType.Items.Add(matchingTaskType);
             cmbTaskType.Items.Add(buildingTaskMaterial);
         }
+
+        //получение текущих элементов заданий
         private IEnumerable<object> GetCurrentTaskItems()
         {
             IEnumerable<object> items = _taskAssignment switch
@@ -213,8 +219,10 @@ namespace GGManager.UserControls
 
             return items;
         }
+
         private void SetSelectedTaskType()
         {
+            //установка выбранного типа задания
             string selectedTaskName = _taskAssignment switch
             {
                 FillingAssignment _ => Translations.GetValue("FillingTaskName"),
@@ -229,6 +237,7 @@ namespace GGManager.UserControls
                                 .Cast<ComboBoxItem>()
                                 .FirstOrDefault(item => item.Content.ToString() == selectedTaskName);
         }
+
         private AssignmentType GetSelectedTaskType(string selectedTaskTypeTitle)
         {
             if (selectedTaskTypeTitle.Equals(Translations.GetValue("FillingTaskName")))

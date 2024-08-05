@@ -14,13 +14,14 @@ namespace GGManager.UserControls.SegmentTabs
         {
             InitializeComponent();
             DataContext = this;
-
+            //подписка на события изменений в ContentStore
             ContentStore.ItemAdded += ContentStore_ItemChanged;
             ContentStore.ItemDeleted += ContentStore_ItemChanged;
             ContentStore.ItemUpdated += ContentStore_ItemChanged;
 
             RedrawUi();
         }
+        //перерисовка интерфейса
         public void RedrawUi()
         {
             spTaskAssignmentControls.Children.Clear();
@@ -29,18 +30,20 @@ namespace GGManager.UserControls.SegmentTabs
             {
                 return;
             }
-
+            //получение заданий выбранного сегмента
             List<IAssignment> allTasks = ContentStore.SelectedSegment!.MatchingAssignments.Cast<IAssignment>().ToList();
             allTasks.AddRange(ContentStore.SelectedSegment!.FillingAssignments);
             allTasks.AddRange(ContentStore.SelectedSegment!.BuildingAssignments);
             allTasks.AddRange(ContentStore.SelectedSegment!.TestingAssignments);
             allTasks.AddRange(ContentStore.SelectedSegment!.SelectionAssignments);
-
+            
+            //добавление заданий в интерффейс
             foreach (var material in allTasks.OrderBy(t => t.CreatedAt))
             {
                 spTaskAssignmentControls.Children.Add(new AssignmentControl(material));
             }
 
+            //создание пустого поля для нового задания
             var newMaterial = new AssignmentControl();
 
             spTaskAssignmentControls.Children.Add(newMaterial);

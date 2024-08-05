@@ -73,6 +73,7 @@ namespace GGManager.UserControls
         }
         #endregion
 
+        //перерисовка меню с вопросами
         private void RedrawOptions()
         {
             spItems.Children.Clear();
@@ -120,6 +121,7 @@ namespace GGManager.UserControls
 
         private void txtQuestionText_TextChanged(object sender, TextChangedEventArgs e)
         {
+            // Обновляет текст вопроса при изменении текста в текстовом поле, если он не пуст и не равен подсказке.
             if (string.IsNullOrEmpty(txtQuestion.Text) || txtQuestion.Text.Equals(Hint))
             {
                 return;
@@ -127,6 +129,7 @@ namespace GGManager.UserControls
 
             Question.Text = txtQuestion.Text;
         }
+
         private void btnDiscard_Click(object sender, RoutedEventArgs e)
         {
             Discarded?.Invoke(Question);
@@ -134,6 +137,7 @@ namespace GGManager.UserControls
 
         private void txtQuestion_KeyUp(object sender, KeyEventArgs e)
         {
+            // Вызывает метод RaiseQuestionCommitEvent при нажатии клавиши Enter.
             if (e.Key == Key.Enter)
             {
                 RaiseQuestionCommitEvent();
@@ -147,6 +151,7 @@ namespace GGManager.UserControls
             RaiseQuestionCommitEvent();
         }
 
+        //событие при создании вопроса и его условия
         private void RaiseQuestionCommitEvent()
         {
             if (string.IsNullOrWhiteSpace(Question.Text))

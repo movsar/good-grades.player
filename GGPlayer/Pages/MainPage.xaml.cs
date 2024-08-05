@@ -49,10 +49,12 @@ namespace GGPlayer.Pages
         }
 
         #region Event handlers
+
         private void lvSegments_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             LoadSegment();
         }
+
         private void lvSegments_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Return || e.Key == Key.Enter)

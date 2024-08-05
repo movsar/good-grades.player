@@ -23,17 +23,20 @@ namespace GGManager
             InitializeComponent();
             DataContext = this;
 
+            //инициализация и подписка на события
             _settingsService = fileService;
             _contentStore = contentStore;
             _contentStore.SelectedSegmentChanged += SelectedSegmentChanged;
             _contentStore.CurrentDatabaseChanged += OnDatabaseOpened;
 
+            //открытие последней открытой базы данных при запуске
             var lastOpenedDatabasePath = _settingsService.GetValue("lastOpenedDatabasePath");
             if (!string.IsNullOrEmpty(lastOpenedDatabasePath) && File.Exists(lastOpenedDatabasePath))
             {
                 _contentStore.OpenDatabase(lastOpenedDatabasePath);
             }
 
+            //версия приложения в загаловке
             string? _appVersion = Assembly.GetExecutingAssembly().GetName()?.Version?.ToString();
             Title += " " + _appVersion;
         }
@@ -61,6 +64,7 @@ namespace GGManager
         }
 
         #region Database Operations
+
         private void mnuOpenDatabase_Click(object sender, RoutedEventArgs e)
         {
             string filePath = FileService.SelectDatabaseFilePath();
@@ -73,9 +77,7 @@ namespace GGManager
         {
             string filePath = FileService.SelectNewDatabaseFilePath();
             if (string.IsNullOrEmpty(filePath)) return;
-
             _contentStore.CreateDatabase(filePath);
-
             Task.Delay(200);
             var dbInfo = new DbInfoWindow();
             dbInfo.ShowDialog();
