@@ -15,41 +15,60 @@ namespace Shared.Viewers
         public event Action<IAssignment, bool> CompletionStateChanged;
 
         private readonly BuildingAssignment _assignment;
+        private int _currentItemIndex = 0;
 
         public string TaskTitle { get; }
+
         public BuildingViewer(BuildingAssignment assignment)
         {
             InitializeComponent();
             DataContext = this;
 
             _assignment = assignment;
-
             TaskTitle = _assignment.Title;
 
-            foreach (var item in _assignment.Items)
+            // Загрузка первого выражения
+            LoadCurrentItem();
+        }
+
+        // Метод для загрузки текущего элемента
+        private void LoadCurrentItem()
+        {
+            spItems.Children.Clear();
+
+            if (_currentItemIndex < _assignment.Items.Count)
             {
+                var item = _assignment.Items[_currentItemIndex];
                 var buildingItemViewControl = new BuildingItemViewControl(item) { Tag = item.Text };
                 spItems.Children.Add(buildingItemViewControl);
             }
+            else
+            {
+                MessageBox.Show("Шайолу предложениш нийса ю!");
+                this.Close(); // Закрыть окно после завершения всех вопросов
+            }
         }
+
         private void btnCheck_Click(object sender, RoutedEventArgs e)
         {
-            foreach (BuildingItemViewControl buildingItemViewControl in spItems.Children)
-            {
-                var arrangedPhrase = GetUserArrangedPhrase(buildingItemViewControl);
+            if (spItems.Children.Count == 0) return;
 
-                // Check if the user input matches one of the options
-                if (arrangedPhrase != buildingItemViewControl.Tag.ToString())
-                {
-                    CompletionStateChanged?.Invoke(_assignment, false);
-                    MessageBox.Show(Translations.GetValue("Incorrect"));
-                    return;
-                }
+            var buildingItemViewControl = (BuildingItemViewControl)spItems.Children[0];
+            var arrangedPhrase = GetUserArrangedPhrase(buildingItemViewControl);
+
+            // Проверка правильности
+            if (arrangedPhrase != buildingItemViewControl.Tag.ToString())
+            {
+                CompletionStateChanged?.Invoke(_assignment, false);
+                MessageBox.Show(Translations.GetValue("Incorrect"));
+                return;
             }
 
-            // Show a message if all inputs are correct
+            // Если все верно, показать уведомление и переход к следующему выражению
             CompletionStateChanged?.Invoke(_assignment, true);
-            MessageBox.Show(Translations.GetValue("Correct"));
+            MessageBox.Show(Translations.GetValue("Correct")); // Показываем сообщение
+            _currentItemIndex++; // Переход к следующему элементу
+            LoadCurrentItem(); // Загрузка следующего выражения
         }
 
         private string GetUserArrangedPhrase(BuildingItemViewControl buildingItemViewControl)

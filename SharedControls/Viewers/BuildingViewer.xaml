@@ -6,24 +6,67 @@
         xmlns:shared="clr-namespace:Shared;assembly=Shared"
         xmlns:local="clr-namespace:Shared.Viewers"
         mc:Ignorable="d"
-        WindowState="Maximized"
-        Title="{x:Static shared:GgLocalization.Task}" Height="450" Width="800">
+        WindowState="Maximized" 
+    Title="{x:Static shared:GgLocalization.Task}">
+
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
 
-        <Grid Margin="10">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
+        <!-- Заголовок задания -->
+        <TextBlock Grid.Row="0" 
+                   Text="{Binding TaskTitle}" 
+                   Style="{StaticResource LargeHeaderStyle}" 
+                   HorizontalAlignment="Center"
+                   FontSize="36"
+                   Margin="20"/>
 
-            <TextBlock Grid.Row="0" Text="{Binding TaskTitle}" Style="{StaticResource LargeHeaderStyle}"/>
+        <!-- Контент задания (предложение и варианты) -->
+        <StackPanel Grid.Row="1" 
+                    x:Name="spItems" 
+                    VerticalAlignment="Center" 
+                    HorizontalAlignment="Center"
+                    Width="1200" 
+                    Height="600">
+        </StackPanel>
 
-            <StackPanel Grid.Row="1" x:Name="spItems" Margin="0 10">
-                <!-- Dynamic content will be added here -->
-            </StackPanel>
+        <!-- Кнопка проверки -->
+        <Button Grid.Row="2" 
+        Content="{x:Static shared:GgLocalization.Check}" 
+        FontSize="40" 
+        Click="btnCheck_Click"
+        HorizontalAlignment="Center" 
+        VerticalAlignment="Bottom" 
+        Width="500" 
+        Height="80" 
+        Margin="20"
+        Background="Gray" 
+        Foreground="White"
+        BorderBrush="#FF357ABD"
+        BorderThickness="2"
+        Padding="10">
+            <Button.Style>
+                <Style TargetType="Button">
+                    <!-- Основной стиль кнопки -->
+                    <Setter Property="Background" Value="Honeydew"/>
+                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="BorderBrush" Value="Honeydew" />
+                    <Setter Property="BorderThickness" Value="2"/>
+                    <Setter Property="Padding" Value="10"/>
+                    <Setter Property="FontWeight" Value="SemiBold"/>
 
-            <Button Grid.Row="2" Content="{x:Static shared:GgLocalization.Check}" Click="btnCheck_Click" HorizontalAlignment="Right" Margin="10"/>
-        </Grid>
+                    <!-- Изменение фона при наведении -->
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="Honeydew"/>
+                            <Setter Property="BorderBrush" Value="Honeydew"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
     </Grid>
 </Window>

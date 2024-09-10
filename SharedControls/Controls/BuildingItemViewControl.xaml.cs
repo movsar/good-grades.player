@@ -21,6 +21,9 @@ namespace Shared.Controls
                 {
                     Content = word,
                     Style = (Style)FindResource("BuilderItemButtonStyle"),
+                    FontSize = 24, 
+                    Width = 180, 
+                    Height = 60,
                 };
 
                 // Event handlers for drag and drop

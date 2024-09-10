@@ -5,21 +5,33 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Shared.Controls"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="1080" d:DesignWidth="1920">
+   
 
-    <StackPanel>
+    <Grid>
+        <Grid.RowDefinitions>
+            <!-- Строка предложения-->
+            <RowDefinition Height="3*"/>
+            <!-- Варианты слов под строкой предложения -->
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Строка предложения -->
         <StackPanel x:Name="spItemDropZone"
                     Orientation="Horizontal"
-                    Margin="10" Height="40" 
+                     Margin="50" Height="70" 
                     Background="Honeydew">
             <!-- Dynamic content will be added here -->
         </StackPanel>
 
-        <StackPanel x:Name="spItemSource"
-                    Orientation="Horizontal"
-                    Margin="10" Height="40">
-            <!-- Dynamic content will be added here -->
-        </StackPanel>
-    </StackPanel>
-
+        <!-- Источник вариантов слов -->
+        <UniformGrid x:Name="spItemSource"
+                     Grid.Row="1"
+                     Rows="1"
+                     HorizontalAlignment="Center"
+                     VerticalAlignment="Center"
+                     Margin="50"
+                     >
+        </UniformGrid>
+    </Grid>
 </UserControl>
