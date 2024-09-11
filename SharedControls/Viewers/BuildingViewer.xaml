@@ -6,7 +6,9 @@
         xmlns:shared="clr-namespace:Shared;assembly=Shared"
         xmlns:local="clr-namespace:Shared.Viewers"
         mc:Ignorable="d"
-        WindowState="Maximized" 
+        WindowState="Maximized"
+        MinHeight="1200"
+        MinWidth="1200"
     Title="{x:Static shared:GgLocalization.Task}">
 
     <Grid>
