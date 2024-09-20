@@ -12,7 +12,6 @@ namespace GGPlayer.Pages
     public partial class AssignmentsPage : Page
     {
         private List<IAssignment> Assignments { get; } = new List<IAssignment>();
-
         const int ButtonSize = 150;
         const int ButtonSpacing = 50;
         public AssignmentsPage(List<IAssignment> assignments)

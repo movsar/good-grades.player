@@ -6,6 +6,8 @@ using Shared.Interfaces;
 using Shared.Services;
 using System;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace Shared.Viewers
 {
@@ -34,21 +36,37 @@ namespace Shared.Viewers
 
         private void btnCheck_Click(object sender, RoutedEventArgs e)
         {
-            // Collect user answers
             var questionViewControl = spQuestion.Children[0] as QuestionViewControl;
             var selections = questionViewControl!.SelectedOptionIds;
 
             var areAnswersCorrect = QuestionService.CheckUserAnswers(_question, selections);
+
+            // Подсвечиваем правильные ответы
+            foreach (var item in questionViewControl.spOptions.Children)
+            {
+                if (item is CheckBox checkbox && selections.Contains(checkbox.Tag.ToString()))
+                {
+                    checkbox.Background = areAnswersCorrect ? Brushes.LightGreen : Brushes.LightCoral;
+                }
+                else if (item is RadioButton radioButton && selections.Contains(radioButton.Tag.ToString()))
+                {
+                    radioButton.Background = areAnswersCorrect ? Brushes.LightGreen : Brushes.LightCoral;
+                }
+            }
+
             if (areAnswersCorrect)
             {
                 MessageBox.Show(Translations.GetValue("Correct"));
+
+                // Важно вызвать событие о завершении задания
+                CompletionStateChanged?.Invoke(_assignment, true);
+
+                this.Close();
             }
             else
             {
                 MessageBox.Show(Translations.GetValue("Incorrect"));
             }
-
-            CompletionStateChanged?.Invoke(_assignment, areAnswersCorrect);
         }
     }
 }
