@@ -52,7 +52,6 @@
         Padding="10">
             <Button.Style>
                 <Style TargetType="Button">
-                    <!-- Основной стиль кнопки -->
                     <Setter Property="Background" Value="Honeydew"/>
                     <Setter Property="Foreground" Value="White"/>
                     <Setter Property="BorderBrush" Value="Honeydew" />
@@ -60,7 +59,6 @@
                     <Setter Property="Padding" Value="10"/>
                     <Setter Property="FontWeight" Value="SemiBold"/>
 
-                    <!-- Изменение фона при наведении -->
                     <Style.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter Property="Background" Value="Honeydew"/>

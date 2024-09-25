@@ -6,32 +6,37 @@
              xmlns:local="clr-namespace:Shared.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="1080" d:DesignWidth="1920">
-   
+
 
     <Grid>
         <Grid.RowDefinitions>
-            <!-- Строка предложения-->
             <RowDefinition Height="3*"/>
-            <!-- Варианты слов под строкой предложения -->
             <RowDefinition Height="2*"/>
         </Grid.RowDefinitions>
+        
+        <Border Grid.Row="0"
+            BorderBrush="Green"
+            BorderThickness="2"
+            CornerRadius="5"
+            Padding="10"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center">
 
-        <!-- Строка предложения -->
-        <StackPanel x:Name="spItemDropZone"
+            <StackPanel x:Name="spItemDropZone"
                     Orientation="Horizontal"
-                     Margin="50" Height="70" 
-                    Background="Honeydew">
-            <!-- Dynamic content will be added here -->
-        </StackPanel>
+                    Background="Honeydew"
+                    MinHeight="70"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+            </StackPanel>
+        </Border>
 
-        <!-- Источник вариантов слов -->
         <UniformGrid x:Name="spItemSource"
-                     Grid.Row="1"
-                     Rows="1"
-                     HorizontalAlignment="Center"
-                     VerticalAlignment="Center"
-                     Margin="50"
-                     >
+                 Grid.Row="1"
+                 Rows="1"
+                 HorizontalAlignment="Center"
+                 VerticalAlignment="Center"
+                 Margin="50">
         </UniformGrid>
     </Grid>
 </UserControl>
