@@ -34,7 +34,6 @@
                     Width="1200" 
                     Height="600">
         </StackPanel>
-
         <!-- Кнопка проверки -->
         <Button Grid.Row="2" 
         Content="{x:Static shared:GgLocalization.Check}" 
@@ -58,13 +57,6 @@
                     <Setter Property="BorderThickness" Value="2"/>
                     <Setter Property="Padding" Value="10"/>
                     <Setter Property="FontWeight" Value="SemiBold"/>
-
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="Honeydew"/>
-                            <Setter Property="BorderBrush" Value="Honeydew"/>
-                        </Trigger>
-                    </Style.Triggers>
                 </Style>
             </Button.Style>
         </Button>
