@@ -42,11 +42,7 @@ namespace Shared.Viewers
                 var buildingItemViewControl = new BuildingItemViewControl(item) { Tag = item.Text };
                 spItems.Children.Add(buildingItemViewControl);
             }
-            else
-            {
-                MessageBox.Show("Шайолу предложениш нийса ю!");
-                this.Close(); // Закрыть окно после завершения всех вопросов
-            }
+            _currentItemIndex++;
         }
 
         private void btnCheck_Click(object sender, RoutedEventArgs e)
@@ -64,11 +60,18 @@ namespace Shared.Viewers
                 return;
             }
 
+            // Проверка на завершение всех элементов
+            if (_currentItemIndex >= _assignment.Items.Count)
+            {
+                MessageBox.Show(Translations.GetValue("AllAnswersAreCorrect"));
+                CompletionStateChanged?.Invoke(_assignment, true);
+                this.Close();
+                return;
+            }
+
             // Если все верно, показать уведомление и переход к следующему выражению
-            CompletionStateChanged?.Invoke(_assignment, true);
-            MessageBox.Show(Translations.GetValue("Correct")); // Показываем сообщение
-            _currentItemIndex++; // Переход к следующему элементу
-            LoadCurrentItem(); // Загрузка следующего выражения
+            MessageBox.Show(Translations.GetValue("Correct"));
+            LoadCurrentItem();
         }
 
         private string GetUserArrangedPhrase(BuildingItemViewControl buildingItemViewControl)

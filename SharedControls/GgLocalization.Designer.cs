@@ -79,6 +79,15 @@ namespace Shared {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Все ответы верны!.
+        /// </summary>
+        public static string AllAnswersAreCorrect {
+            get {
+                return ResourceManager.GetString("AllAnswersAreCorrect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Все элементы совпадают!.
         /// </summary>
         public static string AllElementsMatch {
@@ -219,6 +228,15 @@ namespace Shared {
         public static string ChoosingChapterToWork {
             get {
                 return ResourceManager.GetString("ChoosingChapterToWork", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Закрыть.
+        /// </summary>
+        public static string Close {
+            get {
+                return ResourceManager.GetString("Close", resourceCulture);
             }
         }
         
