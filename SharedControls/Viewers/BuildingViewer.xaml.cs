@@ -36,18 +36,19 @@ namespace Shared.Viewers
         {
             spItems.Children.Clear();
 
-            if (_currentItemIndex < _assignment.Items.Count)
-            {
-                var item = _assignment.Items[_currentItemIndex];
-                var buildingItemViewControl = new BuildingItemViewControl(item) { Tag = item.Text };
-                spItems.Children.Add(buildingItemViewControl);
-            }
+            var item = _assignment.Items[_currentItemIndex];
+            var buildingItemViewControl = new BuildingItemViewControl(item) { Tag = item.Text };
+            spItems.Children.Add(buildingItemViewControl);
+            
             _currentItemIndex++;
         }
 
         private void btnCheck_Click(object sender, RoutedEventArgs e)
         {
-            if (spItems.Children.Count == 0) return;
+            if (spItems.Children.Count == 0)
+            {
+                return;
+            }
 
             var buildingItemViewControl = (BuildingItemViewControl)spItems.Children[0];
             var arrangedPhrase = GetUserArrangedPhrase(buildingItemViewControl);
@@ -61,7 +62,7 @@ namespace Shared.Viewers
             }
 
             // Проверка на завершение всех элементов
-            if (_currentItemIndex >= _assignment.Items.Count)
+            if (_currentItemIndex == _assignment.Items.Count)
             {
                 MessageBox.Show(Translations.GetValue("AllAnswersAreCorrect"));
                 CompletionStateChanged?.Invoke(_assignment, true);

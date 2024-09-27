@@ -7,8 +7,8 @@
         xmlns:local="clr-namespace:Shared.Viewers"
         mc:Ignorable="d"
         WindowState="Maximized"
-        MinHeight="1200"
-        MinWidth="1200"
+        MinHeight="720"
+        MinWidth="1280"
     Title="{x:Static shared:GgLocalization.Task}">
 
     <StackPanel>
@@ -27,8 +27,6 @@
                     x:Name="spItems" 
                     VerticalAlignment="Center" 
                     HorizontalAlignment="Center"
-                    Width="1200" 
-                    Height="600"
                     Margin="0 300 0 0">
         </StackPanel>
         <!-- Кнопка проверки -->
