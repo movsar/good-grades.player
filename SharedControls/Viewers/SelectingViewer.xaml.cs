@@ -1,5 +1,5 @@
-﻿using Data.Entities;
-using Data.Entities.TaskItems;
+﻿using Data.Entities.TaskItems;
+using Data.Entities;
 using Data.Interfaces;
 using Shared.Controls;
 using Shared.Interfaces;
@@ -7,19 +7,18 @@ using Shared.Services;
 using System;
 using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
 
 namespace Shared.Viewers
 {
     public partial class SelectingViewer : Window, IAssignmentViewer
     {
         private readonly SelectingAssignment _assignment;
-        private readonly Question _question;
 
         public string TaskTitle { get; }
 
-        public event Action<IAssignment, bool> CompletionStateChanged;
+        private readonly Question _question;
+
+        public event Action<IAssignment, bool>? CompletionStateChanged;
 
         public SelectingViewer(SelectingAssignment selectingTask)
         {
@@ -31,28 +30,30 @@ namespace Shared.Viewers
             _question = _assignment.Question;
 
             var questionViewControl = new QuestionViewControl(_assignment.Question);
-            spQuestion.Children.Add(questionViewControl);
+            spOptions.Children.Add(questionViewControl); 
         }
 
         private void btnCheck_Click(object sender, RoutedEventArgs e)
         {
-            var questionViewControl = spQuestion.Children[0] as QuestionViewControl;
-            var selectedOptionIds = questionViewControl!.SelectedOptionIds;
+            // Collect user answers
+            var questionViewControl = spOptions.Children[0] as QuestionViewControl;
+            var selections = questionViewControl!.SelectedOptionIds;
 
-            var areAnswersCorrect = QuestionService.CheckAnswersForQuestion(_question, selectedOptionIds);
+            var areAnswersCorrect = QuestionService.CheckUserAnswers(_question, selections);
             var correctOptionIds = QuestionService.GetCorrectOptionIds(_question);
 
-            // Передаём информацию о правильности ответа для подсветки
             questionViewControl.HighlightCorrectOptions(correctOptionIds, areAnswersCorrect);
 
             if (areAnswersCorrect)
             {
-                MessageBox.Show(Translations.GetValue("Correct"), "Result", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Ответ правильный!");
             }
             else
             {
-                MessageBox.Show(Translations.GetValue("Incorrect"), "Result", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Ответ неправильный.");
             }
+
+            CompletionStateChanged?.Invoke(_assignment, areAnswersCorrect);
         }
     }
 }

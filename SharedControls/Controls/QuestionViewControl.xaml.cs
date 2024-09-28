@@ -1,9 +1,10 @@
 ﻿using Data.Entities.TaskItems;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Media.Effects;
 
 namespace Shared.Controls
 {
@@ -12,80 +13,93 @@ namespace Shared.Controls
         public Question Question { get; }
         public List<string> SelectedOptionIds => GetUserSelections();
 
+        private List<string> selectedOptionIds = new List<string>();
+
         private List<string> GetUserSelections()
         {
-            var selections = new List<string>();
-
-            foreach (var item in spOptions.Children)
-            {
-                if (item is CheckBox)
-                {
-                    var checkboxOption = item as CheckBox;
-                    if (checkboxOption!.IsChecked == true)
-                    {
-                        selections.Add(checkboxOption.Tag.ToString()!);
-                    }
-                }
-
-                if (item is RadioButton)
-                {
-                    var radioButtonOption = item as RadioButton;
-                    if (radioButtonOption!.IsChecked == true)
-                    {
-                        selections.Add(radioButtonOption.Tag.ToString()!);
-                    }
-                }
-            }
-
-            return selections;
+            return selectedOptionIds;
         }
 
         public QuestionViewControl(Question question)
         {
             Question = question;
-
-            // Initialize UI
             InitializeComponent();
             DataContext = this;
 
-            // Add options UI
-            var isMultichoice = Question.Options.Where(o => o.IsChecked).Count() > 1;
             spOptions.Children.Clear();
             foreach (var option in Question.Options)
             {
-                if (isMultichoice)
-                {
-                    spOptions.Children.Add(GenerateCheckboxOptionView(option));
-                }
-                else
-                {
-                    spOptions.Children.Add(GenerateRadioButtonOptionView(option, Question.Id));
-                }
+                spOptions.Children.Add(GenerateOptionButton(option));
             }
         }
 
-        private RadioButton GenerateRadioButtonOptionView(AssignmentItem option, string groupName)
+        private Button GenerateOptionButton(AssignmentItem option)
         {
-            var radioButton = new RadioButton()
+            var button = new Button()
             {
                 Tag = option.Id,
-                GroupName = groupName,
                 Content = option.Text,
-                Style = (Style)FindResource("RadioOptionStyle"),
+                Margin = new System.Windows.Thickness(10),
+                Padding = new System.Windows.Thickness(20),
+                FontSize = 24,
+                Foreground = Brushes.Black,
+                BorderBrush = Brushes.DarkGray,
+                BorderThickness = new Thickness(3),
+                FontWeight = FontWeights.Bold,
+                HorizontalContentAlignment = HorizontalAlignment.Center,
+                VerticalContentAlignment = VerticalAlignment.Center,
+                Effect = new DropShadowEffect
+                {
+                    Color = Colors.Black,
+                    ShadowDepth = 5,
+                    Opacity = 0.3
+                }
             };
 
-            return radioButton;
+            button.Click += (s, e) => OnOptionSelected(button);
+
+            return button;
         }
-        private CheckBox GenerateCheckboxOptionView(AssignmentItem option)
-        {
-            var checkbox = new CheckBox()
-            {
-                Tag = option.Id,
-                Content = option.Text,
-                Style = (Style)FindResource("CheckboxOptionStyle"),
-            };
 
-            return checkbox;
+        private void OnOptionSelected(Button selectedButton)
+        {
+            var selectedId = selectedButton.Tag.ToString();
+
+            // Проверяем, уже ли выбран этот вариант
+            if (selectedOptionIds.Contains(selectedId!))
+            {
+                selectedOptionIds.Remove(selectedId!);
+                selectedButton.Background = Brushes.LightGray;
+            }
+            else
+            {
+                selectedOptionIds.Add(selectedId!);
+                selectedButton.Background = Brushes.LightBlue;
+            }
+        }
+
+        // Метод для подсветки правильных и неправильных ответов
+        public void HighlightCorrectOptions(List<string> correctOptionIds, bool areAnswersCorrect)
+        {
+            foreach (Button btn in spOptions.Children.OfType<Button>())
+            {
+                var optionId = btn.Tag.ToString();
+
+                if (!areAnswersCorrect)
+                {
+                    if (SelectedOptionIds.Contains(optionId!))
+                    {
+                        btn.Background = Brushes.LightCoral;
+                    }
+                }
+                else
+                {
+                    if (correctOptionIds.Contains(optionId!))
+                    {
+                        btn.Background = Brushes.LightGreen;
+                    }
+                }
+            }
         }
     }
 }
