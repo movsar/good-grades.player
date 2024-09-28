@@ -5,6 +5,7 @@ using Shared.Controls;
 using Shared.Interfaces;
 using Shared.Services;
 using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -14,10 +15,9 @@ namespace Shared.Viewers
     public partial class SelectingViewer : Window, IAssignmentViewer
     {
         private readonly SelectingAssignment _assignment;
+        private readonly Question _question;
 
         public string TaskTitle { get; }
-
-        private readonly Question _question;
 
         public event Action<IAssignment, bool> CompletionStateChanged;
 
@@ -37,35 +37,21 @@ namespace Shared.Viewers
         private void btnCheck_Click(object sender, RoutedEventArgs e)
         {
             var questionViewControl = spQuestion.Children[0] as QuestionViewControl;
-            var selections = questionViewControl!.SelectedOptionIds;
+            var selectedOptionIds = questionViewControl!.SelectedOptionIds;
 
-            var areAnswersCorrect = QuestionService.CheckUserAnswers(_question, selections);
+            var areAnswersCorrect = QuestionService.CheckAnswersForQuestion(_question, selectedOptionIds);
+            var correctOptionIds = QuestionService.GetCorrectOptionIds(_question);
 
-            // Подсвечиваем правильные ответы
-            foreach (var item in questionViewControl.spOptions.Children)
-            {
-                if (item is CheckBox checkbox && selections.Contains(checkbox.Tag.ToString()))
-                {
-                    checkbox.Background = areAnswersCorrect ? Brushes.LightGreen : Brushes.LightCoral;
-                }
-                else if (item is RadioButton radioButton && selections.Contains(radioButton.Tag.ToString()))
-                {
-                    radioButton.Background = areAnswersCorrect ? Brushes.LightGreen : Brushes.LightCoral;
-                }
-            }
+            // Передаём информацию о правильности ответа для подсветки
+            questionViewControl.HighlightCorrectOptions(correctOptionIds, areAnswersCorrect);
 
             if (areAnswersCorrect)
             {
-                MessageBox.Show(Translations.GetValue("Correct"));
-
-                // Важно вызвать событие о завершении задания
-                CompletionStateChanged?.Invoke(_assignment, true);
-
-                this.Close();
+                MessageBox.Show(Translations.GetValue("Correct"), "Result", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
             {
-                MessageBox.Show(Translations.GetValue("Incorrect"));
+                MessageBox.Show(Translations.GetValue("Incorrect"), "Result", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
     }
