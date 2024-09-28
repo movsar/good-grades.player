@@ -11,7 +11,7 @@
         MinWidth="1280"
     Title="{x:Static shared:GgLocalization.Task}">
 
-    <StackPanel>
+    <StackPanel VerticalAlignment="Center">
         
 
         <!-- Заголовок задания -->
@@ -26,8 +26,7 @@
         <StackPanel
                     x:Name="spItems" 
                     VerticalAlignment="Center" 
-                    HorizontalAlignment="Center"
-                    Margin="0 300 0 0">
+                    HorizontalAlignment="Center">
         </StackPanel>
         <!-- Кнопка проверки -->
         <Button 
