@@ -35,22 +35,22 @@ namespace Shared.Viewers
 
         private void btnCheck_Click(object sender, RoutedEventArgs e)
         {
-            // Collect user answers
             var questionViewControl = spOptions.Children[0] as QuestionViewControl;
             var selections = questionViewControl!.SelectedOptionIds;
 
             var areAnswersCorrect = QuestionService.CheckUserAnswers(_question, selections);
             var correctOptionIds = QuestionService.GetCorrectOptionIds(_question);
 
-            questionViewControl.HighlightCorrectOptions(correctOptionIds, areAnswersCorrect);
+            questionViewControl.HighlightCorrectOptions(correctOptionIds);
 
-            if (areAnswersCorrect)
+            // Проверяем, есть ли выбранный правильный ответ без лишних
+            if (areAnswersCorrect && selections.Count == correctOptionIds.Count)
             {
-                MessageBox.Show("Ответ правильный!");
+                MessageBox.Show(Translations.GetValue("Correct"));
             }
             else
             {
-                MessageBox.Show("Ответ неправильный.");
+                MessageBox.Show(Translations.GetValue("Incorrect"));
             }
 
             CompletionStateChanged?.Invoke(_assignment, areAnswersCorrect);

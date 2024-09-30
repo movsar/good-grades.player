@@ -14,7 +14,7 @@ namespace Shared.Controls
         public List<string> SelectedOptionIds => GetUserSelections();
 
         private List<string> selectedOptionIds = new List<string>();
-
+        private List<string> correctOptionIds;
         private List<string> GetUserSelections()
         {
             return selectedOptionIds;
@@ -69,7 +69,7 @@ namespace Shared.Controls
             if (selectedOptionIds.Contains(selectedId!))
             {
                 selectedOptionIds.Remove(selectedId!);
-                selectedButton.Background = Brushes.LightGray;
+                selectedButton.Background = null;
             }
             else
             {
@@ -78,28 +78,40 @@ namespace Shared.Controls
             }
         }
 
-        // Метод для подсветки правильных и неправильных ответов
-        public void HighlightCorrectOptions(List<string> correctOptionIds, bool areAnswersCorrect)
+        public void HighlightCorrectOptions(List<string> correctOptionIds)
         {
+            bool allCorrectSelected = correctOptionIds.All(id => SelectedOptionIds.Contains(id));
+            bool anyWrongSelected = SelectedOptionIds.Any(id => !correctOptionIds.Contains(id));
+
             foreach (Button btn in spOptions.Children.OfType<Button>())
             {
                 var optionId = btn.Tag.ToString();
 
-                if (!areAnswersCorrect)
+                // Подсветка для выбранных вариантов
+                if (SelectedOptionIds.Contains(optionId!))
                 {
-                    if (SelectedOptionIds.Contains(optionId!))
+                    if (anyWrongSelected || !allCorrectSelected)
                     {
-                        btn.Background = Brushes.LightCoral;
+                        btn.Background = Brushes.LightCoral; // Подсветка красным, если выбраны неправильные варианты или не все правильные
+                    }
+                    else if (correctOptionIds.Contains(optionId!) && allCorrectSelected)
+                    {
+                        btn.Background = Brushes.LightGreen; // Подсветка зеленым, если все правильные выбраны
                     }
                 }
                 else
                 {
-                    if (correctOptionIds.Contains(optionId!))
-                    {
-                        btn.Background = Brushes.LightGreen;
-                    }
+                    btn.ClearValue(Button.BackgroundProperty); // Убираем фоновый цвет
                 }
             }
         }
-    }
-}
+        public void ResetSelections()
+            {
+                selectedOptionIds.Clear(); // Очистка выбранных опций
+                foreach (Button btn in spOptions.Children.OfType<Button>())
+                {
+                    btn.Background = null; // Сброс фона кнопок
+                }
+            }
+        }
+    } 
