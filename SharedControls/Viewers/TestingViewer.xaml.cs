@@ -15,6 +15,11 @@ namespace Shared.Viewers
     public partial class TestingViewer : Window, IAssignmentViewer
     {
         private readonly TestingAssignment _assignment;
+        private int _currentQuestionIndex;
+        private List<QuestionViewControl> _questionViewControls;
+
+
+        public event Action<IAssignment, bool> CompletionStateChanged;
 
         public TestingViewer(TestingAssignment testingTask)
         {
@@ -22,42 +27,78 @@ namespace Shared.Viewers
             DataContext = this;
 
             _assignment = testingTask;
+            _currentQuestionIndex = 0;
+            _questionViewControls = new List<QuestionViewControl>();
+
             foreach (var question in _assignment.Questions)
             {
                 var questionViewControl = new QuestionViewControl(question);
-                spQuestions.Children.Add(questionViewControl);
+                _questionViewControls.Add(questionViewControl);
             }
+
+            ShowCurrentQuestion();
         }
 
-        public event Action<IAssignment, bool> CompletionStateChanged;
+        private void ShowCurrentQuestion()
+        {
+            spQuestions.Children.Clear();
+            spQuestions.Children.Add(_questionViewControls[_currentQuestionIndex]);
+        }
 
         private void btnOk_Click(object sender, RoutedEventArgs e)
         {
-            var questionViewControls = new List<QuestionViewControl>();
+            var questionViewControl = _questionViewControls[_currentQuestionIndex];
+            var selections = questionViewControl.SelectedOptionIds;
 
-            foreach (var view in spQuestions.Children)
-            {
-                if (view is QuestionViewControl)
+            _currentQuestionIndex++;
+
+                if (_currentQuestionIndex < _assignment.Questions.Count)
                 {
-                    questionViewControls.Add((QuestionViewControl)view);
+                    ShowCurrentQuestion();
                 }
-            }
-
-            foreach (var questionViewControl in questionViewControls)
-            {
-                var selections = questionViewControl!.SelectedOptionIds;
-                var areAnswersCorrect = QuestionService.CheckUserAnswers(questionViewControl.Question, selections);
-
-                if (!areAnswersCorrect)
+                else
                 {
-                    MessageBox.Show(Translations.GetValue("Incorrect"));
-                    CompletionStateChanged?.Invoke(_assignment, false);
-                    return;
+                    ShowStatistics();
                 }
-            }
+            
+            
+        }
 
-            MessageBox.Show(Translations.GetValue("Correct"));
-            CompletionStateChanged?.Invoke(_assignment, true);
+        private void ShowStatistics()
+        {
+            int correctAnswers = _questionViewControls.Count(qvc =>
+                QuestionService.CheckUserAnswers(qvc.Question, qvc.SelectedOptionIds));
+            int incorrectAnswers = _assignment.Questions.Count - correctAnswers;
+
+            var statisticsViewer = new StatisticsViewer(correctAnswers, incorrectAnswers);
+            statisticsViewer.AssignmentCompleted += (isComplete) =>
+            {
+                if (isComplete)
+                {
+                    CompletionStateChanged?.Invoke(_assignment, true);
+                }
+            };
+
+            statisticsViewer.ShowDialog();
+
+            if (incorrectAnswers > 0)
+            {
+                RestartTest();
+            }
+            else
+            {
+                this.Close();
+            }
+        }
+
+        private void RestartTest()
+        {
+            _currentQuestionIndex = 0;
+            foreach (var control in _questionViewControls)
+            {
+                control.ResetSelections();
+            }
+            ShowCurrentQuestion();
         }
     }
 }
