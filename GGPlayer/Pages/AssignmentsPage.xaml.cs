@@ -11,6 +11,7 @@ namespace GGPlayer.Pages
 {
     public partial class AssignmentsPage : Page
     {
+        private List<int> completedAssignments = new List<int>();
         private List<IAssignment> Assignments { get; } = new List<IAssignment>();
         const int ButtonSize = 150;
         const int ButtonSpacing = 50;
@@ -26,7 +27,6 @@ namespace GGPlayer.Pages
             // Clear previous content
             ScrollViewerContainer.Content = null;
 
-            // Determine the number of buttons that can fit in a row based on the container's width
             int buttonsPerRow = (int)(ScrollViewerContainer.ActualWidth / (ButtonSize + ButtonSpacing));
 
             WrapPanel wrapPanel = new WrapPanel()
@@ -38,7 +38,6 @@ namespace GGPlayer.Pages
             int count = 1;
             foreach (var assignment in Assignments)
             {
-                // Create a new button for the assignment
                 Button button = new Button
                 {
                     Content = count.ToString(),
@@ -49,10 +48,14 @@ namespace GGPlayer.Pages
                     Cursor = Cursors.Hand
                 };
 
+                // Окрашиваем кнопку в зеленый, если задание уже выполнено
+                if (completedAssignments.Contains(count - 1))
+                {
+                    button.Background = new SolidColorBrush(Colors.Green);
+                }
+
                 button.Click += AssignmentButton_Click;
-
                 wrapPanel.Children.Add(button);
-
                 count++;
             }
 
@@ -88,10 +91,19 @@ namespace GGPlayer.Pages
                     break;
             }
 
+            // Подписываемся на событие закрытия окна
+            viewer.Closed += (s, args) =>
+            {
+                // Проверяем, выполнены ли все задания после закрытия окна
+                if (completedAssignments.Count == Assignments.Count)
+                {
+                    MessageBox.Show("ХӀокху декъера дерриг тӀедахкарш кхочушдина ахь!");
+                }
+            };
+
+            // Подписываемся на изменение состояния выполнения задания
             ((IAssignmentViewer)viewer).CompletionStateChanged += AssignmentsPage_CompletionStateChanged;
             viewer.ShowDialog();
-
-            // TODO: Check whether the user had solved anything, if so - set green
         }
 
         private void AssignmentsPage_CompletionStateChanged(IAssignment assignment, bool completionState)
@@ -107,11 +119,17 @@ namespace GGPlayer.Pages
                 return;
             }
 
-            //проверка кнопки на наличие контента
+            // Добавляем задание в список выполненных
+            if (!completedAssignments.Contains(assignmentIndex))
+            {
+                completedAssignments.Add(assignmentIndex);
+            }
+
             var wrapPanel = ScrollViewerContainer.Content as WrapPanel;
             var buttonContentToFind = (assignmentIndex + 1).ToString();
             var button = wrapPanel.Children.OfType<Button>()
-                              .FirstOrDefault(b => b.Content.ToString() == buttonContentToFind);
+                                    .FirstOrDefault(b => b.Content.ToString() == buttonContentToFind);
+
             //перекраска кнопки выполненного задания в зеленый
             if (button != null)
             {
