@@ -57,6 +57,7 @@ namespace GGPlayer
                 throw new OperationCanceledException();
             }
 
+            //открытие последней открытой БД
             _settingsService.SetValue("lastOpenedDatabasePath", dbAbsolutePath);
             _storage.SetDatabaseConfig(dbAbsolutePath);
             btnGo.IsEnabled = true;

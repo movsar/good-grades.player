@@ -1,9 +1,10 @@
 ﻿using Data.Entities.TaskItems;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Media.Effects;
 
 namespace Shared.Controls
 {
@@ -12,80 +13,105 @@ namespace Shared.Controls
         public Question Question { get; }
         public List<string> SelectedOptionIds => GetUserSelections();
 
+        private List<string> selectedOptionIds = new List<string>();
+        private List<string> correctOptionIds;
         private List<string> GetUserSelections()
         {
-            var selections = new List<string>();
-
-            foreach (var item in spOptions.Children)
-            {
-                if (item is CheckBox)
-                {
-                    var checkboxOption = item as CheckBox;
-                    if (checkboxOption!.IsChecked == true)
-                    {
-                        selections.Add(checkboxOption.Tag.ToString()!);
-                    }
-                }
-
-                if (item is RadioButton)
-                {
-                    var radioButtonOption = item as RadioButton;
-                    if (radioButtonOption!.IsChecked == true)
-                    {
-                        selections.Add(radioButtonOption.Tag.ToString()!);
-                    }
-                }
-            }
-
-            return selections;
+            return selectedOptionIds;
         }
 
         public QuestionViewControl(Question question)
         {
             Question = question;
-
-            // Initialize UI
             InitializeComponent();
             DataContext = this;
 
-            // Add options UI
-            var isMultichoice = Question.Options.Where(o => o.IsChecked).Count() > 1;
             spOptions.Children.Clear();
             foreach (var option in Question.Options)
             {
-                if (isMultichoice)
-                {
-                    spOptions.Children.Add(GenerateCheckboxOptionView(option));
-                }
-                else
-                {
-                    spOptions.Children.Add(GenerateRadioButtonOptionView(option, Question.Id));
-                }
+                spOptions.Children.Add(GenerateOptionButton(option));
             }
         }
 
-        private RadioButton GenerateRadioButtonOptionView(AssignmentItem option, string groupName)
+        private Button GenerateOptionButton(AssignmentItem option)
         {
-            var radioButton = new RadioButton()
-            {
-                Tag = option.Id,
-                GroupName = groupName,
-                Content = option.Text,
-                Style = (Style)FindResource("RadioOptionStyle"),
-            };
-
-            return radioButton;
-        }
-        private CheckBox GenerateCheckboxOptionView(AssignmentItem option)
-        {
-            var checkbox = new CheckBox()
+            var button = new Button()
             {
                 Tag = option.Id,
                 Content = option.Text,
-                Style = (Style)FindResource("CheckboxOptionStyle"),
+                Margin = new System.Windows.Thickness(10),
+                Padding = new System.Windows.Thickness(20),
+                FontSize = 24,
+                Foreground = Brushes.Black,
+                BorderBrush = Brushes.DarkGray,
+                BorderThickness = new Thickness(3),
+                FontWeight = FontWeights.Bold,
+                HorizontalContentAlignment = HorizontalAlignment.Center,
+                VerticalContentAlignment = VerticalAlignment.Center,
+                Effect = new DropShadowEffect
+                {
+                    Color = Colors.Black,
+                    ShadowDepth = 5,
+                    Opacity = 0.3
+                }
             };
 
-            return checkbox;
+            button.Click += (s, e) => OnOptionSelected(button);
+
+            return button;
         }
-    }
-}
+
+        private void OnOptionSelected(Button selectedButton)
+        {
+            var selectedId = selectedButton.Tag.ToString();
+
+            // Проверяем, уже ли выбран этот вариант
+            if (selectedOptionIds.Contains(selectedId!))
+            {
+                selectedOptionIds.Remove(selectedId!);
+                selectedButton.Background = null;
+            }
+            else
+            {
+                selectedOptionIds.Add(selectedId!);
+                selectedButton.Background = Brushes.LightBlue;
+            }
+        }
+
+        public void HighlightCorrectOptions(List<string> correctOptionIds)
+        {
+            bool allCorrectSelected = correctOptionIds.All(id => SelectedOptionIds.Contains(id));
+            bool anyWrongSelected = SelectedOptionIds.Any(id => !correctOptionIds.Contains(id));
+
+            foreach (Button btn in spOptions.Children.OfType<Button>())
+            {
+                var optionId = btn.Tag.ToString();
+
+                // Подсветка для выбранных вариантов
+                if (SelectedOptionIds.Contains(optionId!))
+                {
+                    if (anyWrongSelected || !allCorrectSelected)
+                    {
+                        btn.Background = Brushes.LightCoral; // Подсветка красным, если выбраны неправильные варианты или не все правильные
+                    }
+                    else if (correctOptionIds.Contains(optionId!) && allCorrectSelected)
+                    {
+                        btn.Background = Brushes.LightGreen; // Подсветка зеленым, если все правильные выбраны
+                    }
+                }
+                else
+                {
+                    btn.ClearValue(Button.BackgroundProperty); // Убираем фоновый цвет
+                }
+            }
+        }
+        public void ResetSelections()
+            {
+                selectedOptionIds.Clear(); // Очистка выбранных опций
+                foreach (Button btn in spOptions.Children.OfType<Button>())
+                {
+                    btn.Background = null; // Сброс фона кнопок
+                }
+            }
+        }
+    } 

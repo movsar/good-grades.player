@@ -38,6 +38,8 @@ namespace GGManager.Windows.Editors
         public void RedrawAssignmentItems()
         {
             spItems.Children.Clear();
+
+            //добавление существующих элементов в интерфейс
             foreach (var item in _assignment.Question.Options)
             {
                 var existingQuizItemControl = new AssignmentItemEditControl(AssignmentType.Selecting, item);
@@ -45,6 +47,7 @@ namespace GGManager.Windows.Editors
                 spItems.Children.Add(existingQuizItemControl);
             }
 
+            //создание пустого поля для добавления нового элемента
             var newItemControl = new AssignmentItemEditControl(AssignmentType.Selecting);
             newItemControl.Committed += OnAssignmentItemCommitted;
             spItems.Children.Add(newItemControl);

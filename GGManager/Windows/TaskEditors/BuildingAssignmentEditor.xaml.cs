@@ -30,9 +30,12 @@ namespace GGManager.Windows.Editors
 
             RedrawItems();
         }
+
         public void RedrawItems()
         {
             spItems.Children.Clear();
+
+            //добавление существующих элементов в интерфейс
             foreach (var item in _assignment.Items)
             {
                 var existingItemControl = new AssignmentItemEditControl(AssignmentType.Building, item);
@@ -40,7 +43,8 @@ namespace GGManager.Windows.Editors
 
                 spItems.Children.Add(existingItemControl);
             }
-
+            
+            //добавление пустого элемента для новых записей
             var newItemControl = new AssignmentItemEditControl(AssignmentType.Building);
             newItemControl.Committed += OnAssignmentItemCommitted;
 
@@ -48,14 +52,17 @@ namespace GGManager.Windows.Editors
         }
         private void OnAssignmentItemCommitted(AssignmentItem item)
         {
+            //добавление элемента в задание
             _assignment.Items.Add(item);
             RedrawItems();
         }
         private void OnAssignmentItemDiscarded(AssignmentItem item)
         {
+            //удаление элемента из задания
             _assignment.Items.Remove(item);
             RedrawItems();
         }
+
         private void SaveAndClose()
         {
             if (string.IsNullOrWhiteSpace(txtTitle.Text))
@@ -95,6 +102,7 @@ namespace GGManager.Windows.Editors
 
             Close();
         }
+
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
             SaveAndClose();

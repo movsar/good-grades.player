@@ -15,6 +15,7 @@ namespace GGPlayer.Pages
             InitializeComponent();
             DataContext = this;
 
+            //загрузка описания из ртф
             RtfService.LoadRtfFromText(rtbDescription, segment.Description);
             Title = segment.Title;
 

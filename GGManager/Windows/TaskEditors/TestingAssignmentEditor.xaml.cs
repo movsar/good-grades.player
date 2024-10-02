@@ -31,10 +31,12 @@ namespace GGManager.Windows.Editors
 
             RedrawQuestions();
         }
-
+        //перерисовка интерфейса вопросов
         public void RedrawQuestions()
         {
             spItems.Children.Clear();
+            
+            //добавление существующих вопросов в интерфейс
             foreach (var question in _assignment.Questions)
             {
                 var existingQuestionControl = new QuestionEditControl(question);
@@ -42,7 +44,8 @@ namespace GGManager.Windows.Editors
 
                 spItems.Children.Add(existingQuestionControl);
             }
-
+            
+            //создание пустого поля для нового вопроса
             var newQuestionControl = new QuestionEditControl();
             newQuestionControl.Committed += OnQuestionCommitted;
             spItems.Children.Add(newQuestionControl);
@@ -52,12 +55,14 @@ namespace GGManager.Windows.Editors
 
         private void OnQuestionCommitted(Question question)
         {
+            //добавление вопроса
             _assignment.Questions.Add(question);
             RedrawQuestions();
         }
 
         private void OnQuestionDiscarded(Question question)
         {
+            //удаление вопроса
             _assignment.Questions.Remove(question);
             RedrawQuestions();
         }

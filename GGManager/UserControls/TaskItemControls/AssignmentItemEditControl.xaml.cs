@@ -119,10 +119,13 @@ namespace GGManager.UserControls
             }
         }
         #endregion
+
+        //Валидация заданий на сопоставление и заполнение
         private void Validate()
         {
             try
             {
+                //проверка на наличие текста и отсутствие пробелов
                 if (string.IsNullOrWhiteSpace(Item.Text))
                 {
                     throw new Exception("Введите текст");
@@ -131,6 +134,7 @@ namespace GGManager.UserControls
                 switch (_assignmentType)
                 {
                     case AssignmentType.Matching:
+                        //проверка на заданность изображений в задании сопоставления
                         if (Item.Image == null)
                         {
                             throw new Exception(Translations.GetValue("SetMatchingImage"));
@@ -138,6 +142,7 @@ namespace GGManager.UserControls
 
                         break;
                     case AssignmentType.Filling:
+                        //проверка для заданий заполнения на формат текста
                         var gapOpeners = Regex.Matches(Item.Text, @"\{");
                         var gapClosers = Regex.Matches(Item.Text, @"\}");
                         var gappedWords = Regex.Matches(Item.Text, @"\{\W*\w+.*?\}");
@@ -146,7 +151,7 @@ namespace GGManager.UserControls
                         {
                             throw new Exception(Translations.GetValue("ExceptionUncorrectFormate"));
                         }
-
+                        //проверка на наличие минимум одного заполненного слова
                         if (gappedWords.Count == 0)
                         {
                             throw new Exception(Translations.GetValue("ExceptionMinWords"));
@@ -180,15 +185,14 @@ namespace GGManager.UserControls
                 txtItemText.Text = Hint;
             }
         }
-
         private void txtItemText_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (_formCompletionInfo == null)
             {
-                // Not initialized yet
                 return;
             }
 
+            // Если текст пустой или равен подсказке, вызывается OnTextSet с параметром false
             if (string.IsNullOrEmpty(txtItemText.Text) || txtItemText.Text.Equals(Hint))
             {
                 OnTextSet(false);
@@ -202,10 +206,11 @@ namespace GGManager.UserControls
 
         private void btnChooseImage_Click(object sender, RoutedEventArgs e)
         {
+            // Открытие диалогового окна для выбора пути к файлу изображения
             string filePath = FileService.SelectImageFilePath();
             if (string.IsNullOrEmpty(filePath)) return;
 
-            // Read, load contents to the object and add to collection
+            // Чтение содержимого файла и добавление его в объект Item
             var content = File.ReadAllBytes(filePath);
             if (content.Length == 0) return;
 
@@ -245,12 +250,12 @@ namespace GGManager.UserControls
                 return;
             }
 
+            // Скрываем кнопку Commit и показываем кнопку Discard
             btnCommit.Visibility = Visibility.Collapsed;
             btnDiscard.Visibility = Visibility.Visible;
 
             Committed?.Invoke(Item);
         }
-        #endregion
 
         private void txtItemText_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
         {
@@ -259,5 +264,6 @@ namespace GGManager.UserControls
                 Commit();
             }
         }
+        #endregion
     }
 }

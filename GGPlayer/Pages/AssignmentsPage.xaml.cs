@@ -13,7 +13,6 @@ namespace GGPlayer.Pages
     {
         private List<int> completedAssignments = new List<int>();
         private List<IAssignment> Assignments { get; } = new List<IAssignment>();
-
         const int ButtonSize = 150;
         const int ButtonSpacing = 50;
         public AssignmentsPage(List<IAssignment> assignments)
@@ -21,6 +20,8 @@ namespace GGPlayer.Pages
             InitializeComponent();
             Assignments.AddRange(assignments);
         }
+
+        
         private void GenerateAssignmentButtons()
         {
             // Clear previous content
@@ -61,13 +62,13 @@ namespace GGPlayer.Pages
             ScrollViewerContainer.Content = wrapPanel;
         }
 
-
         private void AssignmentButton_Click(object sender, RoutedEventArgs e)
         {
             var clickedButton = (Button)e.Source;
             var assignment = Assignments[int.Parse(clickedButton.Content.ToString()!) - 1];
 
             Window viewer = null!;
+            //выбор типа задания
             switch (assignment)
             {
                 case MatchingAssignment:
@@ -129,6 +130,7 @@ namespace GGPlayer.Pages
             var button = wrapPanel.Children.OfType<Button>()
                                     .FirstOrDefault(b => b.Content.ToString() == buttonContentToFind);
 
+            //перекраска кнопки выполненного задания в зеленый
             if (button != null)
             {
                 button.Background = new SolidColorBrush(Colors.Green);
@@ -137,6 +139,7 @@ namespace GGPlayer.Pages
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
+            //подстраивание под изменение окна
             var widthDifference = ActualWidth - e.PreviousSize.Width;
             var heightDifference = ActualHeight - e.PreviousSize.Height;
 

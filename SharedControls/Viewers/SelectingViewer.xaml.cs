@@ -1,10 +1,11 @@
-﻿using Data.Entities;
-using Data.Entities.TaskItems;
+﻿using Data.Entities.TaskItems;
+using Data.Entities;
 using Data.Interfaces;
 using Shared.Controls;
 using Shared.Interfaces;
 using Shared.Services;
 using System;
+using System.Collections.Generic;
 using System.Windows;
 
 namespace Shared.Viewers
@@ -17,7 +18,7 @@ namespace Shared.Viewers
 
         private readonly Question _question;
 
-        public event Action<IAssignment, bool> CompletionStateChanged;
+        public event Action<IAssignment, bool>? CompletionStateChanged;
 
         public SelectingViewer(SelectingAssignment selectingTask)
         {
@@ -29,17 +30,21 @@ namespace Shared.Viewers
             _question = _assignment.Question;
 
             var questionViewControl = new QuestionViewControl(_assignment.Question);
-            spQuestion.Children.Add(questionViewControl);
+            spOptions.Children.Add(questionViewControl); 
         }
 
         private void btnCheck_Click(object sender, RoutedEventArgs e)
         {
-            // Collect user answers
-            var questionViewControl = spQuestion.Children[0] as QuestionViewControl;
+            var questionViewControl = spOptions.Children[0] as QuestionViewControl;
             var selections = questionViewControl!.SelectedOptionIds;
 
             var areAnswersCorrect = QuestionService.CheckUserAnswers(_question, selections);
-            if (areAnswersCorrect)
+            var correctOptionIds = QuestionService.GetCorrectOptionIds(_question);
+
+            questionViewControl.HighlightCorrectOptions(correctOptionIds);
+
+            // Проверяем, есть ли выбранный правильный ответ без лишних
+            if (areAnswersCorrect && selections.Count == correctOptionIds.Count)
             {
                 MessageBox.Show(Translations.GetValue("Correct"));
             }
