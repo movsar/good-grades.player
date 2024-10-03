@@ -13,7 +13,13 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <None Remove="Images\main_background.jpg" />
+	  <None Remove="Images\b1ow.png" />
+	  <None Remove="Images\fon.jpg" />
+	  <None Remove="Images\guo.png" />
+	  <None Remove="Images\haarh.png" />
+	  <None Remove="Images\lam.png" />
+	  <None Remove="Images\mazhdig.png" />
+	  <None Remove="Images\nuyda.png" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -27,7 +33,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Resource Include="Images\main_background.jpg" />
+	  <Resource Include="Images\fon.jpg" />
+	  <Resource Include="Images\guo.png" />
+	  <Resource Include="Images\b1ow.png" />
+	  <Resource Include="Images\lam.png" />
+	  <Resource Include="Images\mazhdig.png" />
+	  <Resource Include="Images\nuyda.png" />
+	  <Resource Include="Images\haarh.png" />
 	</ItemGroup>
 
 </Project>
