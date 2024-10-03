@@ -14,7 +14,7 @@ namespace Shared.Controls
         public List<string> SelectedOptionIds => GetUserSelections();
 
         private List<string> selectedOptionIds = new List<string>();
-        private List<string> correctOptionIds;
+        private bool wasPreviousAttemptCorrect = true;
         private List<string> GetUserSelections()
         {
             return selectedOptionIds;
@@ -63,13 +63,18 @@ namespace Shared.Controls
 
         private void OnOptionSelected(Button selectedButton)
         {
+            if (!wasPreviousAttemptCorrect)
+            {
+                ResetSelections();
+                wasPreviousAttemptCorrect = true;
+            }
+
             var selectedId = selectedButton.Tag.ToString();
 
-            // Проверяем, уже ли выбран этот вариант
             if (selectedOptionIds.Contains(selectedId!))
             {
                 selectedOptionIds.Remove(selectedId!);
-                selectedButton.Background = null;
+                selectedButton.Background = Brushes.Transparent;
             }
             else
             {
@@ -87,30 +92,31 @@ namespace Shared.Controls
             {
                 var optionId = btn.Tag.ToString();
 
-                // Подсветка для выбранных вариантов
                 if (SelectedOptionIds.Contains(optionId!))
                 {
                     if (anyWrongSelected || !allCorrectSelected)
                     {
-                        btn.Background = Brushes.LightCoral; // Подсветка красным, если выбраны неправильные варианты или не все правильные
+                        btn.Background = Brushes.LightCoral;
+                        wasPreviousAttemptCorrect = false;
                     }
                     else if (correctOptionIds.Contains(optionId!) && allCorrectSelected)
                     {
-                        btn.Background = Brushes.LightGreen; // Подсветка зеленым, если все правильные выбраны
+                        btn.Background = Brushes.LightGreen;
+                        wasPreviousAttemptCorrect = true;
                     }
                 }
                 else
                 {
-                    btn.ClearValue(Button.BackgroundProperty); // Убираем фоновый цвет
+                    btn.ClearValue(Button.BackgroundProperty);
                 }
             }
         }
         public void ResetSelections()
             {
-                selectedOptionIds.Clear(); // Очистка выбранных опций
+                selectedOptionIds.Clear();
                 foreach (Button btn in spOptions.Children.OfType<Button>())
                 {
-                    btn.Background = null; // Сброс фона кнопок
+                    btn.Background = null;
                 }
             }
         }
