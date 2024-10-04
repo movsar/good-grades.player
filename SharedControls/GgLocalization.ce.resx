@@ -321,4 +321,10 @@
   <data name="BackgroundImage" xml:space="preserve">
     <value>Фоновое изображение</value>
   </data>
+  <data name="Close" xml:space="preserve">
+    <value>Д1ач1аг1а</value>
+  </data>
+  <data name="AllAnswersAreCorrect" xml:space="preserve">
+    <value>Шадолу жоьпаш нийса ду!</value>
+  </data>
 </root>
