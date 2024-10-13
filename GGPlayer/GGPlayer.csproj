@@ -13,13 +13,52 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <None Remove="Fonts\Amazing Grotesk Demi Italic.otf" />
+	  <None Remove="Fonts\TD Mars.otf" />
 	  <None Remove="Images\b1ow.png" />
 	  <None Remove="Images\fon.jpg" />
+	  <None Remove="Images\fon_segment.jpg" />
 	  <None Remove="Images\guo.png" />
+	  <None Remove="Images\guo_segment.png" />
 	  <None Remove="Images\haarh.png" />
+	  <None Remove="Images\kvadrat_segment.jpg" />
+	  <None Remove="Images\kvadroguo_segment.png" />
 	  <None Remove="Images\lam.png" />
 	  <None Remove="Images\mazhdig.png" />
 	  <None Remove="Images\nuyda.png" />
+	  <None Remove="Images\nuyda_krug.png" />
+	  <None Remove="Images\ornament_down_segment.png" />
+	  <None Remove="Images\ornament_up_segment.png" />
+	  <None Remove="Images\TaskButtons\Task10Btn.png" />
+	  <None Remove="Images\TaskButtons\Task11Btn.png" />
+	  <None Remove="Images\TaskButtons\Task12Btn.png" />
+	  <None Remove="Images\TaskButtons\Task13Btn.png" />
+	  <None Remove="Images\TaskButtons\Task14Btn.png" />
+	  <None Remove="Images\TaskButtons\Task15Btn.png" />
+	  <None Remove="Images\TaskButtons\Task16Btn.png" />
+	  <None Remove="Images\TaskButtons\Task17Btn.png" />
+	  <None Remove="Images\TaskButtons\Task18Btn.png" />
+	  <None Remove="Images\TaskButtons\Task19Btn.png" />
+	  <None Remove="Images\TaskButtons\Task1Btn.png" />
+	  <None Remove="Images\TaskButtons\Task20Btn.png" />
+	  <None Remove="Images\TaskButtons\Task21Btn.png" />
+	  <None Remove="Images\TaskButtons\Task22Btn.png" />
+	  <None Remove="Images\TaskButtons\Task23Btn.png" />
+	  <None Remove="Images\TaskButtons\Task24Btn.png" />
+	  <None Remove="Images\TaskButtons\Task25Btn.png" />
+	  <None Remove="Images\TaskButtons\Task26Btn.png" />
+	  <None Remove="Images\TaskButtons\Task27Btn.png" />
+	  <None Remove="Images\TaskButtons\Task28Btn.png" />
+	  <None Remove="Images\TaskButtons\Task29Btn.png" />
+	  <None Remove="Images\TaskButtons\task2Btn.png" />
+	  <None Remove="Images\TaskButtons\Task30Btn.png" />
+	  <None Remove="Images\TaskButtons\Task3Btn.png" />
+	  <None Remove="Images\TaskButtons\Task4Btn.png" />
+	  <None Remove="Images\TaskButtons\Task5Btn.png" />
+	  <None Remove="Images\TaskButtons\Task6Btn.png" />
+	  <None Remove="Images\TaskButtons\Task7Btn.png" />
+	  <None Remove="Images\TaskButtons\Task8Btn.png" />
+	  <None Remove="Images\TaskButtons\Task9Btn.png" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -33,13 +72,52 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Resource Include="Fonts\Amazing Grotesk Demi Italic.otf" />
+	  <Resource Include="Fonts\TD Mars.otf" />
 	  <Resource Include="Images\fon.jpg" />
+	  <Resource Include="Images\fon_segment.jpg" />
 	  <Resource Include="Images\guo.png" />
 	  <Resource Include="Images\b1ow.png" />
+	  <Resource Include="Images\guo_segment.png" />
+	  <Resource Include="Images\kvadrat_segment.jpg" />
+	  <Resource Include="Images\kvadroguo_segment.png" />
 	  <Resource Include="Images\lam.png" />
 	  <Resource Include="Images\mazhdig.png" />
 	  <Resource Include="Images\nuyda.png" />
 	  <Resource Include="Images\haarh.png" />
+	  <Resource Include="Images\nuyda_krug.png" />
+	  <Resource Include="Images\ornament_down_segment.png" />
+	  <Resource Include="Images\ornament_up_segment.png" />
+	  <Resource Include="Images\TaskButtons\Task10Btn.png" />
+	  <Resource Include="Images\TaskButtons\Task11Btn.png" />
+	  <Resource Include="Images\TaskButtons\Task12Btn.png" />
+	  <Resource Include="Images\TaskButtons\Task13Btn.png" />
+	  <Resource Include="Images\TaskButtons\Task14Btn.png" />
+	  <Resource Include="Images\TaskButtons\Task15Btn.png" />
+	  <Resource Include="Images\TaskButtons\Task16Btn.png" />
+	  <Resource Include="Images\TaskButtons\Task17Btn.png" />
+	  <Resource Include="Images\TaskButtons\Task18Btn.png" />
+	  <Resource Include="Images\TaskButtons\Task19Btn.png" />
+	  <Resource Include="Images\TaskButtons\Task1Btn.png" />
+	  <Resource Include="Images\TaskButtons\Task20Btn.png" />
+	  <Resource Include="Images\TaskButtons\Task21Btn.png" />
+	  <Resource Include="Images\TaskButtons\Task22Btn.png" />
+	  <Resource Include="Images\TaskButtons\Task23Btn.png" />
+	  <Resource Include="Images\TaskButtons\Task24Btn.png" />
+	  <Resource Include="Images\TaskButtons\Task25Btn.png" />
+	  <Resource Include="Images\TaskButtons\Task26Btn.png" />
+	  <Resource Include="Images\TaskButtons\Task27Btn.png" />
+	  <Resource Include="Images\TaskButtons\Task28Btn.png" />
+	  <Resource Include="Images\TaskButtons\Task29Btn.png" />
+	  <Resource Include="Images\TaskButtons\task2Btn.png" />
+	  <Resource Include="Images\TaskButtons\Task30Btn.png" />
+	  <Resource Include="Images\TaskButtons\Task3Btn.png" />
+	  <Resource Include="Images\TaskButtons\Task4Btn.png" />
+	  <Resource Include="Images\TaskButtons\Task5Btn.png" />
+	  <Resource Include="Images\TaskButtons\Task6Btn.png" />
+	  <Resource Include="Images\TaskButtons\Task7Btn.png" />
+	  <Resource Include="Images\TaskButtons\Task8Btn.png" />
+	  <Resource Include="Images\TaskButtons\Task9Btn.png" />
 	</ItemGroup>
 
 </Project>

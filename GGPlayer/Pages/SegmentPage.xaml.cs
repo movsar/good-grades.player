@@ -5,34 +5,76 @@ using Shared.Services;
 using Shared.Viewers;
 using System.Windows.Controls;
 using System.Windows.Input;
-
+using System.Collections.ObjectModel;
 namespace GGPlayer.Pages
 {
     public partial class SegmentPage : Page
     {
+        private readonly Segment _segment;
+
         public SegmentPage(Segment segment)
         {
             InitializeComponent();
             DataContext = this;
 
-            //загрузка описания из ртф
             RtfService.LoadRtfFromText(rtbDescription, segment.Description);
             Title = segment.Title;
-
-            Materials.AddRange(segment.Materials.Cast<IMaterial>());
-            Materials.Add(new FakeSegmentMaterial()
+            if (segment == null)
             {
-                Id = "tasks",
-                Title = "Хаарш зер"
-            });
+                throw new ArgumentNullException(nameof(segment), "Segment cannot be null");
+            }
 
             _segment = segment;
-        }
-        private readonly Segment _segment;
 
-        public string SegmentTitle { get; }
+
+            // Заполнение списка материалов
+            if (segment.Materials != null)
+            {
+                Materials.AddRange(segment.Materials.Cast<IMaterial>());
+            }
+
+            // Проверка наличия заданий и добавление кнопки
+            var assignments = GetAllAssignments();
+            if (assignments != null && assignments.Count > 0)
+            {
+                var fakeSegmentMaterial = new FakeSegmentMaterial()
+                {
+                    Id = "tasks",
+                    Title = "Хаарш зер"
+                };
+                Materials.Add(fakeSegmentMaterial);
+            }
+        }
+
         public List<IMaterial> Materials { get; } = new List<IMaterial>();
-     
+
+        private List<IAssignment> GetAllAssignments()
+        {
+            var allAssignments = new List<IAssignment>();
+
+            if (_segment.MatchingAssignments != null)
+            {
+                allAssignments.AddRange(_segment.MatchingAssignments.Cast<IAssignment>());
+            }
+            if (_segment.FillingAssignments != null)
+            {
+                allAssignments.AddRange(_segment.FillingAssignments);
+            }
+            if (_segment.BuildingAssignments != null)
+            {
+                allAssignments.AddRange(_segment.BuildingAssignments);
+            }
+            if (_segment.TestingAssignments != null)
+            {
+                allAssignments.AddRange(_segment.TestingAssignments);
+            }
+            if (_segment.SelectionAssignments != null)
+            {
+                allAssignments.AddRange(_segment.SelectionAssignments);
+            }
+
+            return allAssignments;
+        }
 
         private void OnListViewItemSelected()
         {
@@ -43,31 +85,18 @@ namespace GGPlayer.Pages
 
             var segmentItem = (IMaterial)lvMaterials.SelectedItem;
 
-            switch (segmentItem)
+            if (segmentItem is FakeSegmentMaterial)
             {
-                case Material:
-                    var material = segmentItem as Material;
-                    var materialPresenter = new MaterialViewer(material.Title, material.PdfData, material.Audio);
-                    materialPresenter.ShowDialog();
-
-                    break;
-                case FakeSegmentMaterial:
-                    var assignments = GetAllAssignments();
-                    NavigationService.Navigate(new AssignmentsPage(assignments));
-                    break;
+                var assignments = GetAllAssignments();
+                NavigationService.Navigate(new AssignmentsPage(assignments));
+            }
+            else if (segmentItem is Material material)
+            {
+                var materialPresenter = new MaterialViewer(material.Title, material.PdfData, material.Audio);
+                materialPresenter.ShowDialog();
             }
         }
 
-        private List<IAssignment> GetAllAssignments()
-        {
-            List<IAssignment> allAssignments = _segment!.MatchingAssignments.Cast<IAssignment>().ToList();
-            allAssignments.AddRange(_segment!.FillingAssignments);
-            allAssignments.AddRange(_segment!.BuildingAssignments);
-            allAssignments.AddRange(_segment!.TestingAssignments);
-            allAssignments.AddRange(_segment!.SelectionAssignments);
-
-            return allAssignments;
-        }
         private void lvMaterialsItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             OnListViewItemSelected();
