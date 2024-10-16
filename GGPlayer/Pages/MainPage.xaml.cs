@@ -62,6 +62,7 @@ namespace GGPlayer.Pages
                 LoadSegment();
             }
         }
+
         #endregion
 
         //private void mnuOpenDatabase_Click(object sender, RoutedEventArgs e)

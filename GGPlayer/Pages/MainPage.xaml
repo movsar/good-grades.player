@@ -21,7 +21,7 @@
                 <Image Source="/Images/lam.png" Stretch="Uniform" 
                        HorizontalAlignment="Left" VerticalAlignment="Top"
                        Width="580" Height="300" Margin="200,10,0,0"/>
-                
+
                 <Image Source="/Images/guo.png" 
                        HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0, 70, 0, 0"
                        Width="900" Height="600"/>
@@ -32,41 +32,34 @@
 
                 <ListView x:Name="lvSegments" ItemsSource="{Binding Segments}"
                           MouseDoubleClick="lvSegments_MouseDoubleClick"
-                           Background="Transparent"
-                          BorderThickness="0" 
+                          Background="Transparent"
                           BorderBrush="Transparent"
+                          BorderThickness="0" 
                           HorizontalAlignment="Left" VerticalAlignment="Top"
                           Width="500" Height="300" Margin="50,100,0,0">
                     <ListView.Resources>
                         <!-- Стили для элементов ListView -->
                         <Style TargetType="ListViewItem">
-                            <Setter Property="Background" Value="Transparent"/>
-                            <Setter Property="BorderBrush" Value="Transparent"/>
-                            <Setter Property="Padding" Value="0"/>
-                            <Setter Property="Margin" Value="0"/>
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="ListViewItem">
-                                        <Grid>
-                                            <ContentPresenter/>
-                                        </Grid>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
+                            <Setter Property="Height" Value="40px"/>
+                            <Setter Property="BorderBrush" Value="DarkGreen"/>
+                            <Setter Property="Foreground" Value="#126243"/>
+                            <Setter Property="BorderThickness" Value="1.5"/>
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                            <Setter Property="FontWeight" Value="Bold"/>
+                            <Setter Property="FontSize" Value="24"/>
+                            <Setter Property="Cursor" Value="Hand"/>
                         </Style>
                     </ListView.Resources>
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Grid Width="400" Height="30">
-                                <Image Source="/Images/nuyda.png" Stretch="Fill"/>
+                            <StackPanel
+                                VerticalAlignment="Center">
                                 <TextBlock Text="{Binding Title}"
-                                           VerticalAlignment="Center"
-                                           HorizontalAlignment="Center"
-                                           FontWeight="Bold"
-                                           FontSize="18"
-                                           Foreground="White"
-                                           TextWrapping="Wrap"/>
-                            </Grid>
+                                   Padding="5"
+                                   TextWrapping="Wrap"
+                                   />
+                            </StackPanel>                            
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
