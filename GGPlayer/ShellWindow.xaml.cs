@@ -7,12 +7,12 @@ namespace GGPlayer
 {
     public partial class ShellWindow : Window
     {
-        private MainPage _mainPage;
         public ShellWindow()
         {
             InitializeComponent();
-            _mainPage = new MainPage();
-            CurrentFrame.Navigate(new MainPage());
+
+            var _mainPage = new MainPage(this);
+            CurrentFrame.Navigate(_mainPage);
         }
         private void GoBack(object sender, RoutedEventArgs e)
         {
@@ -30,13 +30,6 @@ namespace GGPlayer
             }
         }
 
-        private void CurrentFrame_Navigated(object sender, NavigationEventArgs e)
-        {
-            // Update the button state after navigation
-            BackButton.IsEnabled = CurrentFrame.CanGoBack;
-            ForwardButton.IsEnabled = CurrentFrame.CanGoForward;
-        }
-
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             if (MessageBox.Show(String.Format(Translations.GetValue("AreYouSureToExit")), "Good Grades", MessageBoxButton.YesNo, MessageBoxImage.Information) != MessageBoxResult.Yes)
@@ -45,5 +38,14 @@ namespace GGPlayer
             }
         }
 
+        private void CurrentFrame_Navigating(object sender, NavigatingCancelEventArgs e)
+        {
+            BackButton.Visibility = Visibility.Hidden;
+        }
+
+        private void CurrentFrame_Navigated(object sender, NavigationEventArgs e)
+        {
+            BackButton.Visibility = CurrentFrame.CanGoBack ? Visibility.Visible : Visibility.Hidden;
+        }
     }
 }

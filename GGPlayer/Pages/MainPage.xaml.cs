@@ -5,6 +5,8 @@ using System.Windows.Input;
 using Data.Services;
 using System.Collections.ObjectModel;
 using Microsoft.Extensions.DependencyInjection;
+using System.Windows.Navigation;
+using System.Windows;
 
 namespace GGPlayer.Pages
 {
@@ -17,10 +19,14 @@ namespace GGPlayer.Pages
         private DbMeta _dbInfo;
         private readonly SettingsService _settingsService;
         private readonly Storage _storage;
-        public MainPage()
+        private readonly ShellWindow _shell;
+
+        public MainPage(ShellWindow shellWindow)
         {
             DataContext = this;
+
             _storage = App.AppHost!.Services.GetRequiredService<Storage>();
+            _shell = shellWindow;
 
             // Load Segments into the collection view
             foreach (var segment in _storage.DbContext.Segments)
@@ -45,7 +51,7 @@ namespace GGPlayer.Pages
                 return;
             }
 
-            this.NavigationService.Navigate(new SegmentPage(selectedSegment));
+            _shell.CurrentFrame.Navigate(new SegmentPage(_shell, selectedSegment));
         }
 
         #region Event handlers

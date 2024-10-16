@@ -17,7 +17,6 @@ namespace GGPlayer
     {
         private readonly SettingsService _settingsService;
         private readonly Storage _storage;
-        private readonly ContentStore _contentStore;
 
         public StartWindow()
         {
@@ -94,7 +93,7 @@ namespace GGPlayer
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             // Создание и показ основного окна
-            var shellWindow = new ShellWindow();
+            var shellWindow = new ShellWindow();            
             shellWindow.Show();
 
             // Закрытие стартового окна
@@ -114,9 +113,6 @@ namespace GGPlayer
         private void OpenDatabase_Click(object sender, RoutedEventArgs e)
         {
             LoadDatabase(false);
-
-            var dbMeta = _storage.DbContext.DbMetas.First();
-            Title += dbMeta.Title;
         }
     }
 }

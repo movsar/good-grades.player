@@ -30,9 +30,7 @@ namespace GGPlayer
                     .ConfigureServices((hostContext, services) =>
                     {
                         services.AddSingleton<Storage>();
-                        services.AddSingleton<ShellWindow>();
                         services.AddSingleton<SettingsService>();
-                        services.AddSingleton<StartWindow>();
                         services.AddSingleton<StylingService>();
                     }).Build();
         }
@@ -59,19 +57,17 @@ namespace GGPlayer
         protected override void OnStartup(StartupEventArgs e)
         {
             AppHost.Start();
-            var startUpForm = AppHost!.Services.GetRequiredService<StartWindow>();
+            var startUpForm = new StartWindow();
             startUpForm.Show();
 
             base.OnStartup(e);
         }
 
-        protected override void OnExit(ExitEventArgs e)
+        protected override async void OnExit(ExitEventArgs e)
         {
             Log.CloseAndFlush();
-            AppHost!.StopAsync();
+            await AppHost!.StopAsync();
             base.OnExit(e);
         }
-        
     }
-
 }

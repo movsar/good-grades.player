@@ -1,8 +1,8 @@
 ﻿<Window x:Class="GGPlayer.StartWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Height="816" Width="1224"
-        WindowState="Maximized"
+        Height="612" Width="918"
+        WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize">
 
     <DockPanel x:Name="pnlMain">

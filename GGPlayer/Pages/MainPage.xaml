@@ -5,7 +5,8 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:GGPlayer.Pages" 
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800">
+      d:DesignHeight="450" d:DesignWidth="800"
+      >
 
     <Grid>
         <Grid.Background>
@@ -13,7 +14,7 @@
         </Grid.Background>
 
         <Viewbox Stretch="Uniform">
-            <Grid Width="1000" Height="600">
+            <Grid Width="1000">
                 <Image Source="/Images/b1ow.png" Stretch="Uniform" 
                        HorizontalAlignment="Left" VerticalAlignment="Top"
                        Width="150" Height="80" Margin="230,0,0,0"/>
@@ -22,13 +23,16 @@
                        HorizontalAlignment="Left" VerticalAlignment="Top"
                        Width="580" Height="300" Margin="200,10,0,0"/>
 
-                <Image Source="/Images/guo.png" 
-                       HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0, 70, 0, 0"
-                       Width="900" Height="600"/>
+                <Border BorderThickness="3" 
+                        CornerRadius="20"
+                        BorderBrush="Gray" 
+                        Background="AntiqueWhite" 
+                        Opacity="0.5"
+                        Margin="20, 70, 20, 30"/>
 
                 <Image Source="/Images/mazhdig.png" Stretch="Uniform"
                        HorizontalAlignment="Left" VerticalAlignment="Top"
-                       Width="500" Height="400" Margin="450,280,0,0"/>
+                       Height="300" Margin="530,290,0,0"/>
 
                 <ListView x:Name="lvSegments" ItemsSource="{Binding Segments}"
                           MouseDoubleClick="lvSegments_MouseDoubleClick"
@@ -59,11 +63,12 @@
                                    Padding="5"
                                    TextWrapping="Wrap"
                                    />
-                            </StackPanel>                            
+                            </StackPanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-
+                <Label FontStyle="Italic" FontSize="40" FontFamily="Arial" Margin="500,150,0,0" Content="Мотт бу - къам ду?" VerticalAlignment="Top"/>
+                <Label FontStyle="Italic" FontSize="40" FontFamily="Arial" Margin="550,200,-22,0" Content="Мотт бац - къам дац!" VerticalAlignment="Top"/>
             </Grid>
         </Viewbox>
     </Grid>

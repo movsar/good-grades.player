@@ -5,17 +5,19 @@ using Shared.Services;
 using Shared.Viewers;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Collections.ObjectModel;
 namespace GGPlayer.Pages
 {
     public partial class SegmentPage : Page
     {
         private readonly Segment _segment;
+        private ShellWindow _shell;
 
-        public SegmentPage(Segment segment)
+        public SegmentPage(ShellWindow shell, Segment segment)
         {
             InitializeComponent();
-            DataContext = this;
+            DataContext = this; 
+            
+            _shell = shell;
 
             RtfService.LoadRtfFromText(rtbDescription, segment.Description);
             Title = segment.Title;
@@ -88,7 +90,7 @@ namespace GGPlayer.Pages
             if (segmentItem is FakeSegmentMaterial)
             {
                 var assignments = GetAllAssignments();
-                NavigationService.Navigate(new AssignmentsPage(assignments));
+                _shell.CurrentFrame.Navigate(new AssignmentsPage(assignments));
             }
             else if (segmentItem is Material material)
             {

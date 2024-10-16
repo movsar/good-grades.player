@@ -50,13 +50,16 @@
 
         <Grid>
             <!-- Frame that hosts the navigated pages -->
-            <Frame x:Name="CurrentFrame" NavigationUIVisibility="Hidden" />
+            <Frame x:Name="CurrentFrame" NavigationUIVisibility="Hidden" 
+                   Navigated="CurrentFrame_Navigated"
+                   Navigating="CurrentFrame_Navigating" />
 
             <!-- Overlay the navigation buttons -->
-            <Button x:Name="BackButton" Content="Назад" Click="GoBack" Style="{StaticResource NavigationButtonStyle}"
-                HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20" />
-            <Button x:Name="ForwardButton" Content="Вперед" Click="GoForward" Style="{StaticResource NavigationButtonStyle}"
-                HorizontalAlignment="Right" VerticalAlignment="Top" Margin="20" />
+            <Button x:Name="BackButton" Content="Назад" Click="GoBack" 
+                    Style="{StaticResource NavigationButtonStyle}"
+                    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20" />
+            <!--<Button x:Name="ForwardButton" Content="Вперед" Click="GoForward" Style="{StaticResource NavigationButtonStyle}"
+                HorizontalAlignment="Right" VerticalAlignment="Top" Margin="20" />-->
         </Grid>
      
 
