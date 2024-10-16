@@ -4,13 +4,64 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:GGPlayer.Pages"
-      xmlns:shared="clr-namespace:Shared;assembly=Shared"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      SizeChanged="Window_SizeChanged"
-      Title="{x:Static shared:GgLocalization.AssignmentsPage}">
+      SizeChanged="Window_SizeChanged">
 
-    <ScrollViewer x:Name="ScrollViewerContainer">
+    <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="/Images/fon_segment.jpg" Stretch="UniformToFill"/>
+        </Grid.Background>
 
-    </ScrollViewer>
+        <Viewbox>
+            <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Width="1300" Height="600">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="653*"/>
+                    <ColumnDefinition Width="647*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Основное изображение guo_segment -->
+                <Image Source="/Images/guo_segment.png" 
+                       HorizontalAlignment="Left" 
+                       VerticalAlignment="Top"
+                       Width="1000" Height="500" Margin="204,74,0,0" Grid.ColumnSpan="2" />
+
+                <!-- Верхние изображения lam и haarh -->
+                <Image Source="/Images/lam.png" 
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Top"
+                       Width="825"
+                       Margin="309,-10,0,0" Height="132" Grid.ColumnSpan="2"/>
+
+                <Image Source="/Images/haarh.png" 
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Top"
+                       Width="200"
+                       Height="auto"
+                       Margin="567,25,0,0" Grid.ColumnSpan="2"/>
+
+                <!-- Контейнер для кнопок с заданиями -->
+                <ScrollViewer x:Name="ScrollViewerContainer"
+                              HorizontalAlignment="Left" 
+                              VerticalAlignment="Top"
+                              Width="800" 
+                              Height="441" Margin="250,94,0,0" Grid.ColumnSpan="2">
+                    <WrapPanel x:Name="wrapPanel" 
+                               HorizontalAlignment="Center" 
+                               VerticalAlignment="Center"
+                               ItemWidth="200" ItemHeight="200">
+                        <!-- Увеличен размер кнопок -->
+
+                    </WrapPanel>
+                </ScrollViewer>
+
+                <!-- Нижний орнамент -->
+                <Image Source="/Images/ornament_down_segment.png" 
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Top"
+                       Width="800" 
+                       Height="auto"
+                       Margin="250,509,0,0" Grid.ColumnSpan="2"/>
+            </Grid>
+        </Viewbox>
+    </Grid>
 </Page>
