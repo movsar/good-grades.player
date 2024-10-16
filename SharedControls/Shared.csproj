@@ -10,7 +10,9 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<None Remove="Images\fon_segment.jpg" />
 		<None Remove="Images\listening.png" />
+		<None Remove="Images\ornament_up_segment.png" />
 		<None Remove="Images\reading.png" />
 		<None Remove="Images\testing.png" />
 	</ItemGroup>
@@ -38,7 +40,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Resource Include="Images\fon_segment.jpg" />
 		<Resource Include="Images\listening.png" />
+		<Resource Include="Images\ornament_up_segment.png" />
 		<Resource Include="Images\reading.png" />
 		<Resource Include="Images\testing.png" />
 	</ItemGroup>

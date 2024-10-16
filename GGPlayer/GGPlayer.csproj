@@ -29,6 +29,7 @@
 	  <None Remove="Images\nuyda_krug.png" />
 	  <None Remove="Images\ornament_down_segment.png" />
 	  <None Remove="Images\ornament_up_segment.png" />
+	  <None Remove="Images\Start_btn.png" />
 	  <None Remove="Images\TaskButtons\Task10Btn.png" />
 	  <None Remove="Images\TaskButtons\Task11Btn.png" />
 	  <None Remove="Images\TaskButtons\Task12Btn.png" />
@@ -88,6 +89,7 @@
 	  <Resource Include="Images\nuyda_krug.png" />
 	  <Resource Include="Images\ornament_down_segment.png" />
 	  <Resource Include="Images\ornament_up_segment.png" />
+	  <Resource Include="Images\Start_btn.png" />
 	  <Resource Include="Images\TaskButtons\Task10Btn.png" />
 	  <Resource Include="Images\TaskButtons\Task11Btn.png" />
 	  <Resource Include="Images\TaskButtons\Task12Btn.png" />
