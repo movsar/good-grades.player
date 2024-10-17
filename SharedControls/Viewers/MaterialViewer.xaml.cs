@@ -46,19 +46,22 @@ namespace Shared.Viewers
         #endregion
 
         #region AudioControls
-        private void btnPlay_Click(object sender, RoutedEventArgs e)
+        private void btnStop_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            CrossSimpleAudioPlayer.Current.Play();
+            if (e.Source == btnStop)
+            {
+                CrossSimpleAudioPlayer.Current.Stop();
+            }
         }
 
-        private void btnStop_Click(object sender, RoutedEventArgs e)
-        {
-            CrossSimpleAudioPlayer.Current.Stop();
-        }
-
-        private void btnPause_Click(object sender, RoutedEventArgs e)
+        private void btnPause_MouseUp(object sender, MouseButtonEventArgs e)
         {
             CrossSimpleAudioPlayer.Current.Pause();
+        }
+
+        private void btnPlay_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            CrossSimpleAudioPlayer.Current.Play();
         }
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
@@ -67,8 +70,6 @@ namespace Shared.Viewers
             base.OnClosing(e);
         }
         #endregion
-   
-
 
         private void PurgeCache()
         {
@@ -90,5 +91,6 @@ namespace Shared.Viewers
                 }
             }
         }
+
     }
 }

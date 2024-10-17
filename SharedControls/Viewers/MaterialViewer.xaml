@@ -13,34 +13,39 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        
+
         <controls:WebViewControl x:Name="webView" Grid.Row="0"/>
 
         <StackPanel x:Name="spAudioControls" 
                     Grid.Row="1"
                     Orientation="Horizontal" 
                     VerticalAlignment="Bottom" 
-                    HorizontalAlignment="Left"
+                    HorizontalAlignment="Center"
                     Margin="5"
                     Visibility="Collapsed">
 
-            <Button Width="30" Height="30"
-                    Margin="2"                    
-                    x:Name="btnStop" 
-                    FontFamily="Segoe MDL2 Assets" Content="&#xE71A;"
-                    Click="btnStop_Click"/>
-
-            <Button Width="30" Height="30"
-                    Margin="2"                    
-                    x:Name="btnPause" 
-                    FontFamily="Segoe MDL2 Assets" Content="&#xE769;" 
-                    Click="btnPause_Click"/>
-
-            <Button  Width="30" Height="30"
-                    Margin="2"                    
-                    x:Name="btnPlay" 
-                    FontFamily="Segoe MDL2 Assets" Content="&#xE102;" 
-                    Click="btnPlay_Click"/>
+            <Image 
+                Width="100"
+                Panel.ZIndex="1"
+                x:Name="btnStop" 
+                MouseUp="btnStop_MouseUp" 
+                Source="/Images/Stop.png" Stretch="Uniform" />
+                        
+            <Image 
+                Width="100"
+                Margin="-40,0,0,0"
+                Panel.ZIndex="2"
+                x:Name="btnPause" 
+                MouseUp="btnPause_MouseUp" 
+                Source="/Images/Pause.png" Stretch="Uniform" />
+            
+            <Image 
+                Width="100"
+                Margin="-40,0,0,0"
+                Panel.ZIndex="3"
+                x:Name="btnPlay" 
+                MouseUp="btnPlay_MouseUp" 
+                Source="/Images/Play.png" Stretch="Uniform" />
         </StackPanel>
     </Grid>
 

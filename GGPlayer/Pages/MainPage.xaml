@@ -67,7 +67,7 @@
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-                <Label FontStyle="Italic" FontSize="40" FontFamily="Arial" Margin="500,150,0,0" Content="Мотт бу - къам ду?" VerticalAlignment="Top"/>
+                <Label FontStyle="Italic" FontSize="40" FontFamily="Arial" Margin="500,150,0,0" Content="Мотт бу - къам ду," VerticalAlignment="Top"/>
                 <Label FontStyle="Italic" FontSize="40" FontFamily="Arial" Margin="550,200,-22,0" Content="Мотт бац - къам дац!" VerticalAlignment="Top"/>
             </Grid>
         </Viewbox>

@@ -11,6 +11,7 @@ namespace GGPlayer.Pages
     {
         private readonly Segment _segment;
         private ShellWindow _shell;
+        public string SegmentTitle => _segment.Title;
 
         public SegmentPage(ShellWindow shell, Segment segment)
         {
