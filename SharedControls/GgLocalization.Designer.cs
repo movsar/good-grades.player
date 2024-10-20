@@ -385,6 +385,15 @@ namespace Shared {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Выход.
+        /// </summary>
+        public static string Exit {
+            get {
+                return ResourceManager.GetString("Exit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Путь к файлу:.
         /// </summary>
         public static string FilePath {

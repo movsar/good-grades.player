@@ -11,6 +11,7 @@ using System.Windows;
 using Data.Services;
 using System.Diagnostics;
 using Shared;
+using Shared.Services;
 
 namespace GGManager
 {
@@ -121,15 +122,15 @@ namespace GGManager
 
         private async void mnuCheckUpdates_Click(object sender, RoutedEventArgs e)
         {
-            string repositoryUrl = "https://github.com/movsar/good-grades";
+            string releasesUrl = "https://movsar.dev/releases/good-grades/manager";
 
-            //IsEnabled = false;
-            //await UpdateService.UpdateMyApp(repositoryUrl);
-            //IsEnabled = true;
+            IsEnabled = false;
+            await UpdateService.UpdateMyApp(releasesUrl);
+            IsEnabled = true;
 
             Process.Start(new ProcessStartInfo
             {
-                FileName = $"{repositoryUrl}/releases",
+                FileName = releasesUrl,
                 UseShellExecute = true
             });
         }

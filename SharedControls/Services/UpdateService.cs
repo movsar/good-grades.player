@@ -11,12 +11,12 @@ namespace Shared.Services
 {
     public static class UpdateService
     {
-        public static async Task UpdateMyApp(string repoUrl)
+        public static async Task UpdateMyApp(string releasesUrl)
         {
             try
             {
-                IUpdateSource girHubSource = new GithubSource(repoUrl, "", true);
-                var mgr = new UpdateManager(girHubSource, new UpdateOptions() { ExplicitChannel = "win" });
+                IUpdateSource updateSource = new SimpleWebSource(releasesUrl + "/RELEASES");
+                var mgr = new UpdateManager(updateSource);
 
                 // Check for new version
                 var newVersion = await mgr.CheckForUpdatesAsync();

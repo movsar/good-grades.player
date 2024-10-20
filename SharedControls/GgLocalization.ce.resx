@@ -354,4 +354,7 @@
   <data name="Russian" xml:space="preserve">
     <value>Оьрсийн</value>
   </data>
+  <data name="Exit" xml:space="preserve">
+    <value>Ара</value>
+  </data>
 </root>

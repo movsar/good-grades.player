@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Win32;
 using Shared;
 using Shared.Services;
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Media;
@@ -93,7 +94,7 @@ namespace GGPlayer
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             // Создание и показ основного окна
-            var shellWindow = new ShellWindow();            
+            var shellWindow = new ShellWindow();
             shellWindow.Show();
 
             // Закрытие стартового окна
@@ -113,6 +114,35 @@ namespace GGPlayer
         private void OpenDatabase_Click(object sender, RoutedEventArgs e)
         {
             LoadDatabase(false);
+        }
+
+        private void mnuSetLanguageChechen_Click(object sender, RoutedEventArgs e)
+        {
+            _settingsService.SetValue("uiLanguageCode", "ce");
+            Translations.SetToCulture("ce");
+            Translations.RestartApp();
+        }
+
+        private void mnuSetLanguageRussian_Click(object sender, RoutedEventArgs e)
+        {
+            _settingsService.SetValue("uiLanguageCode", "ru");
+            Translations.SetToCulture("ru");
+            Translations.RestartApp();
+        }
+
+        private async void mnuCheckUpdates_Click(object sender, RoutedEventArgs e)
+        {
+            string releasesUrl = "https://movsar.dev/releases/good-grades/player";
+
+            IsEnabled = false;
+            await UpdateService.UpdateMyApp(releasesUrl);
+            IsEnabled = true;
+
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = releasesUrl,
+                UseShellExecute = true
+            });
         }
     }
 }
