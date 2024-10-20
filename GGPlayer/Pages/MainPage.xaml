@@ -36,11 +36,12 @@
 
                 <ListView x:Name="lvSegments" ItemsSource="{Binding Segments}"
                           MouseDoubleClick="lvSegments_MouseDoubleClick"
+                          Panel.ZIndex="10"
                           Background="Transparent"
                           BorderBrush="Transparent"
                           BorderThickness="0" 
                           HorizontalAlignment="Left" VerticalAlignment="Top"
-                          Width="500" Height="300" Margin="50,100,0,0">
+                          Width="500" Height="431" Margin="50,100,0,0">
                     <ListView.Resources>
                         <!-- Стили для элементов ListView -->
                         <Style TargetType="ListViewItem">
@@ -67,8 +68,8 @@
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-                <Label FontStyle="Italic" FontSize="40" FontFamily="Arial" Margin="500,150,0,0" Content="Мотт бу - къам ду," VerticalAlignment="Top"/>
-                <Label FontStyle="Italic" FontSize="40" FontFamily="Arial" Margin="550,200,-22,0" Content="Мотт бац - къам дац!" VerticalAlignment="Top"/>
+                <Label  FontStyle="Italic" FontSize="40" FontFamily="Arial" Margin="500,150,0,0" Content="Мотт бу - къам ду," VerticalAlignment="Top"/>
+                <Label  FontStyle="Italic" FontSize="40" FontFamily="Arial" Margin="550,200,-22,0" Content="Мотт бац - къам дац!" VerticalAlignment="Top"/>
             </Grid>
         </Viewbox>
     </Grid>

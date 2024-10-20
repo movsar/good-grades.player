@@ -1,56 +1,52 @@
-﻿using System.Net.Http.Headers;
-using System.Reflection;
-using System.Resources;
+﻿using System.Reflection;
+using System.Text.Json;
 
 namespace Data.Services
 {
     public class SettingsService
     {
+        private string _settingsFile = "Settings.json";
         public string AppResourcesPath { get; }
-        private string _fileName = "Settings.resx";
+        private string _filePath;
+
         public SettingsService()
         {
             var assembly = Assembly.GetEntryAssembly();
             var assemblyName = assembly.GetName().Name;
             AppResourcesPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), assemblyName);
-        }
-        public void SetValue(string key, string value)
-        {
-            string filePath = Path.Combine(AppResourcesPath, _fileName);
+            _filePath = Path.Combine(AppResourcesPath, _settingsFile);
 
             if (!Directory.Exists(AppResourcesPath))
             {
                 Directory.CreateDirectory(AppResourcesPath);
             }
-
-            using ResourceWriter resourceWriter = new ResourceWriter(filePath);
-            resourceWriter.AddResource(key, value);
         }
+
+        public void SetValue(string key, string value)
+        {
+            var settings = LoadSettings();
+            settings[key] = value;
+            SaveSettings(settings);
+        }
+
         public string? GetValue(string key)
         {
-            string filePath = Path.Combine(AppResourcesPath, _fileName);
-            if (!File.Exists(filePath))
-            {
-                return null;
-            }
+            var settings = LoadSettings();
+            return settings.ContainsKey(key) ? settings[key] : null;
+        }
 
-            using ResourceReader resourceReader = new ResourceReader(Path.Combine(AppResourcesPath, _fileName));
-            string dataType = null;
-            byte[] data = null;
-            try
-            {
+        private Dictionary<string, string> LoadSettings()
+        {
+            if (!File.Exists(_filePath)) return new Dictionary<string, string>();
 
-                resourceReader.GetResourceData(key, out dataType, out data);
-                using BinaryReader reader = new BinaryReader(new MemoryStream(data));
-                var value = reader.ReadString();
+            var json = File.ReadAllText(_filePath);
+            return JsonSerializer.Deserialize<Dictionary<string, string>>(json) ?? new Dictionary<string, string>();
+        }
 
-                if (!string.IsNullOrEmpty(value))
-                {
-                    return value;
-                }
-            }
-            catch { }
-            return null;
+        private void SaveSettings(Dictionary<string, string> settings)
+        {
+            var json = JsonSerializer.Serialize(settings, new JsonSerializerOptions { WriteIndented = true });
+            File.WriteAllText(_filePath, json);
         }
     }
 }
