@@ -9,7 +9,7 @@
 
     <Grid>
         <Grid.Background>
-            <ImageBrush ImageSource="/Images/fon_segment.jpg" Stretch="UniformToFill"/>
+            <ImageBrush ImageSource="pack://application:,,,/Shared;component/Images/fon_segment.jpg" Stretch="UniformToFill"/>
         </Grid.Background>
 
         <Viewbox>
@@ -20,19 +20,19 @@
                 </Grid.ColumnDefinitions>
 
                 <!-- Основное изображение guo_segment -->
-                <Image Source="/Images/guo_segment.png" 
+                <Image Source="pack://application:,,,/Shared;component/Images/guo_segment.png" 
                        HorizontalAlignment="Left" 
                        VerticalAlignment="Top"
                        Width="1000" Height="500" Margin="204,74,0,0" Grid.ColumnSpan="2" />
 
                 <!-- Верхние изображения lam и haarh -->
-                <Image Source="/Images/lam.png" 
+                <Image Source="pack://application:,,,/Shared;component/Images/lam.png" 
                        HorizontalAlignment="Left"
                        VerticalAlignment="Top"
                        Width="825"
                        Margin="309,-10,0,0" Height="132" Grid.ColumnSpan="2"/>
 
-                <Image Source="/Images/haarh.png" 
+                <Image Source="pack://application:,,,/Shared;component/Images/haarh.png" 
                        HorizontalAlignment="Left"
                        VerticalAlignment="Top"
                        Width="200"
@@ -55,7 +55,7 @@
                 </ScrollViewer>
 
                 <!-- Нижний орнамент -->
-                <Image Source="/Images/ornament_down_segment.png" 
+                <Image Source="pack://application:,,,/Shared;component/Images/ornament_down_segment.png" 
                        HorizontalAlignment="Left"
                        VerticalAlignment="Top"
                        Width="800" 

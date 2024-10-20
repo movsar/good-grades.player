@@ -16,21 +16,21 @@
 
     <Grid>
         <Grid.Background>
-            <ImageBrush ImageSource="/Images/fon_segment.jpg" Stretch="UniformToFill"/>
+            <ImageBrush ImageSource="pack://application:,,,/Shared;component/Images/fon_segment.jpg" Stretch="UniformToFill"/>
         </Grid.Background>
 
         <Viewbox Stretch="Uniform">
             <Grid Width="1000" Height="600">
 
-                <Image Source="/Images/guo_segment.png" 
+                <Image Source="pack://application:,,,/Shared;component/Images/guo_segment.png" 
                        HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0, 70, 0, 0"
                        Width="900" Height="600"/>
 
-                <Image Source="/Images/ornament_up_segment.png" Stretch="Uniform" 
+                <Image Source="pack://application:,,,/Shared;component/Images/ornament_up_segment.png" Stretch="Uniform" 
                        HorizontalAlignment="Left" VerticalAlignment="Top"
                        Width="770" Height="369" Margin="129,20,0,0"/>
 
-                <Image Source="/Images/ornament_down_segment.png" Stretch="Uniform" 
+                <Image Source="pack://application:,,,/Shared;component/Images/ornament_down_segment.png" Stretch="Uniform" 
                        HorizontalAlignment="Center" VerticalAlignment="Bottom"
                        Width="764" Height="509" Margin="0,538,0,0"/>
 
@@ -46,7 +46,7 @@
                            TextAlignment="Center"/>
 
              
-                <Image Source="/Images/kvadroguo_segment.png" Stretch="Uniform"
+                <Image Source="pack://application:,,,/Shared;component/Images/kvadroguo_segment.png" Stretch="Uniform"
                        HorizontalAlignment="Left" VerticalAlignment="Top" Margin="500,130,0,0"
                        Width="500" Height="400"/>
 
