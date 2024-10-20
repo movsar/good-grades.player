@@ -20,10 +20,7 @@ namespace GGManager
         private readonly SettingsService _settingsService;
 
         public MainWindow(ContentStore contentStore, SettingsService settingsService)
-        {
-            var uiLanguageCode = settingsService.GetValue("uiLanguageCode");
-            Translations.SetToCulture(uiLanguageCode ?? "ce");
-
+        {          
             InitializeComponent();
             DataContext = this;
 
@@ -141,12 +138,14 @@ namespace GGManager
         {
             _settingsService.SetValue("uiLanguageCode", "ce");
             Translations.SetToCulture("ce");
+            Translations.RestartApp();
         }
 
         private void mnuSetLanguageRussian_Click(object sender, RoutedEventArgs e)
         {
             _settingsService.SetValue("uiLanguageCode", "ru");
             Translations.SetToCulture("ru");
+            Translations.RestartApp();
         }     
     }
 }

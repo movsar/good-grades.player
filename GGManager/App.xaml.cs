@@ -10,6 +10,7 @@ using System.IO;
 using Shared.Services;
 using Data.Services;
 using Velopack;
+using Shared;
 
 namespace GGManager
 {
@@ -33,7 +34,6 @@ namespace GGManager
                         services.AddSingleton<ContentStore>();
                     }).Build();
         }
-      
         private void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
             e.Handled = true;
@@ -55,10 +55,13 @@ namespace GGManager
         protected override void OnStartup(StartupEventArgs e)
         {
             AppHost.Start();
+            base.OnStartup(e);
+
+            var uiLanguageCode = AppHost.Services.GetRequiredService<SettingsService>().GetValue("uiLanguageCode");
+            Translations.SetToCulture(uiLanguageCode ?? "ce");
+
             var startUpForm = AppHost!.Services.GetRequiredService<MainWindow>();
             startUpForm.Show();
-
-            base.OnStartup(e);
         }
 
         protected override void OnExit(ExitEventArgs e)

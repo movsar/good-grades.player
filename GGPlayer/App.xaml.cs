@@ -3,6 +3,7 @@ using Data.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
+using Shared;
 using Shared.Services;
 using System.IO;
 using System.Windows;
@@ -57,10 +58,13 @@ namespace GGPlayer
         protected override void OnStartup(StartupEventArgs e)
         {
             AppHost.Start();
+            base.OnStartup(e);
+
+            var uiLanguageCode = AppHost.Services.GetRequiredService<SettingsService>().GetValue("uiLanguageCode");
+            Translations.SetToCulture(uiLanguageCode ?? "ce");
+
             var startUpForm = new StartWindow();
             startUpForm.Show();
-
-            base.OnStartup(e);
         }
 
         protected override async void OnExit(ExitEventArgs e)

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.Resources;
 using System.Threading;
@@ -30,32 +31,18 @@ namespace Shared
             // Set both the current culture and the current UI culture
             Thread.CurrentThread.CurrentCulture = cultureInfo;
             Thread.CurrentThread.CurrentUICulture = cultureInfo;
-
-            ApplyLanguageResources();
         }
 
-        private static void ApplyLanguageResources()
+        public static void RestartApp()
         {
-            // Clear existing resource dictionaries
-            var dicts = Application.Current.Resources.MergedDictionaries;
-            dicts.Clear();
+            // Get the current executable path
+            string exePath = Process.GetCurrentProcess().MainModule.FileName;
 
-            // Load the new language resource file
-            var resourceDict = new ResourceDictionary
-            {
-                Source = new Uri($"Resources/Resources.GgLocalization.{Thread.CurrentThread.CurrentUICulture.Name}.xaml", UriKind.Relative)
-            };
+            // Start a new instance of the application
+            Process.Start(exePath);
 
-            // Add the new resource dictionary
-            dicts.Add(resourceDict);
-
-            // Refresh all open windows to apply the language change
-            foreach (Window window in Application.Current.Windows)
-            {
-                window.Language = XmlLanguage.GetLanguage(Thread.CurrentThread.CurrentUICulture.IetfLanguageTag);
-                // You may need to trigger a manual refresh for data-bound controls here
-                // If necessary, recreate or reload window contents
-            }
+            // Shutdown the current instance
+            Application.Current.Shutdown();
         }
     }
 }
