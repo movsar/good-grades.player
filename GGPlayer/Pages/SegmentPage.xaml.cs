@@ -16,8 +16,8 @@ namespace GGPlayer.Pages
         public SegmentPage(ShellWindow shell, Segment segment)
         {
             InitializeComponent();
-            DataContext = this; 
-            
+            DataContext = this;
+
             _shell = shell;
 
             RtfService.LoadRtfFromText(rtbDescription, segment.Description);
@@ -40,6 +40,9 @@ namespace GGPlayer.Pages
             var assignments = GetAllAssignments();
             if (assignments != null && assignments.Count > 0)
             {
+                // Add a dummy separator
+                Materials.Add(new FakeSegmentMaterial());
+
                 var fakeSegmentMaterial = new FakeSegmentMaterial()
                 {
                     Id = "tasks",
@@ -88,7 +91,7 @@ namespace GGPlayer.Pages
 
             var segmentItem = (IMaterial)lvMaterials.SelectedItem;
 
-            if (segmentItem is FakeSegmentMaterial)
+            if (segmentItem is FakeSegmentMaterial && segmentItem.Id == "tasks")
             {
                 var assignments = GetAllAssignments();
                 _shell.CurrentFrame.Navigate(new AssignmentsPage(assignments));
