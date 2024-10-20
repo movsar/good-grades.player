@@ -47,5 +47,13 @@ namespace GGPlayer
         {
             BackButton.Visibility = CurrentFrame.CanGoBack ? Visibility.Visible : Visibility.Hidden;
         }
+
+        private void BackButton_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (CurrentFrame.CanGoBack)
+            {
+                CurrentFrame.GoBack();
+            }
+        }
     }
 }

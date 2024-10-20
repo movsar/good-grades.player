@@ -11,6 +11,7 @@
 
 	<ItemGroup>
 		<None Remove="Images\b1ow.png" />
+		<None Remove="Images\back.png" />
 		<None Remove="Images\fon.jpg" />
 		<None Remove="Images\fon_segment.jpg" />
 		<None Remove="Images\guo.png" />
@@ -51,34 +52,35 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Page Update="Viewers\MaterialViewer.xaml">
-			<XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-		</Page>
+	  <Resource Include="Images\b1ow.png" />
+	  <Resource Include="Images\back.png" />
+	  <Resource Include="Images\fon.jpg" />
+	  <Resource Include="Images\fon_segment.jpg" />
+	  <Resource Include="Images\guo.png" />
+	  <Resource Include="Images\guo_material.png" />
+	  <Resource Include="Images\guo_segment.png" />
+	  <Resource Include="Images\haarh.png" />
+	  <Resource Include="Images\kvadrat_segment.jpg" />
+	  <Resource Include="Images\kvadroguo_segment.png" />
+	  <Resource Include="Images\lam.png" />
+	  <Resource Include="Images\listening.png" />
+	  <Resource Include="Images\mazhdig.png" />
+	  <Resource Include="Images\nuyda.png" />
+	  <Resource Include="Images\nuyda_krug.png" />
+	  <Resource Include="Images\ornament_down_segment.png" />
+	  <Resource Include="Images\ornament_up_segment.png" />
+	  <Resource Include="Images\Pause.png" />
+	  <Resource Include="Images\Play.png" />
+	  <Resource Include="Images\reading.png" />
+	  <Resource Include="Images\Start_btn.png" />
+	  <Resource Include="Images\Stop.png" />
+	  <Resource Include="Images\testing.png" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<Resource Include="Images\b1ow.png" />
-		<Resource Include="Images\fon.jpg" />
-		<Resource Include="Images\fon_segment.jpg" />
-		<Resource Include="Images\guo.png" />
-		<Resource Include="Images\guo_material.png" />
-		<Resource Include="Images\guo_segment.png" />
-		<Resource Include="Images\haarh.png" />
-		<Resource Include="Images\kvadrat_segment.jpg" />
-		<Resource Include="Images\kvadroguo_segment.png" />
-		<Resource Include="Images\lam.png" />
-		<Resource Include="Images\listening.png" />
-		<Resource Include="Images\mazhdig.png" />
-		<Resource Include="Images\nuyda.png" />
-		<Resource Include="Images\nuyda_krug.png" />
-		<Resource Include="Images\ornament_down_segment.png" />
-		<Resource Include="Images\ornament_up_segment.png" />
-		<Resource Include="Images\Pause.png" />
-		<Resource Include="Images\Play.png" />
-		<Resource Include="Images\reading.png" />
-		<Resource Include="Images\Start_btn.png" />
-		<Resource Include="Images\Stop.png" />
-		<Resource Include="Images\testing.png" />
+		<Page Update="Viewers\MaterialViewer.xaml">
+			<XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+		</Page>
 	</ItemGroup>
 
 	<ItemGroup>

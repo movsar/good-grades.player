@@ -55,10 +55,14 @@
                    Navigating="CurrentFrame_Navigating" />
 
             <!-- Overlay the navigation buttons -->
-            <Button x:Name="BackButton" Content="Назад" Click="GoBack" 
-                    Style="{StaticResource NavigationButtonStyle}"
-                    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20" />
-            <!--<Button x:Name="ForwardButton" Content="Вперед" Click="GoForward" Style="{StaticResource NavigationButtonStyle}"
+            <Image  Source="pack://application:,,,/Shared;component/Images/back.png" 
+                    Height="80" Width="150"
+                    Cursor="Hand"
+                    x:Name="BackButton" MouseUp="BackButton_MouseUp"
+                    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="-60,10,0,0" 
+                    Stretch="UniformToFill"
+                   />
+        <!--<Button x:Name="ForwardButton" Content="Вперед" Click="GoForward" Style="{StaticResource NavigationButtonStyle}"
                 HorizontalAlignment="Right" VerticalAlignment="Top" Margin="20" />-->
         </Grid>
      
