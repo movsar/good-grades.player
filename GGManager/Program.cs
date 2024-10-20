@@ -25,7 +25,6 @@ namespace GGManager
             application.InitializeComponent();
             application.Run();
         }
-
         private void SetToChechenCulture()
         {
             // Set the culture to Chechen ("ce")
