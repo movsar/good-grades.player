@@ -8,7 +8,7 @@ namespace Shared
     {
         static Translations()
         {
-            CultureInfo culture = new CultureInfo("ce");
+            CultureInfo culture = new CultureInfo("ru");
             Thread.CurrentThread.CurrentCulture = culture;
             Thread.CurrentThread.CurrentUICulture = culture;
         }

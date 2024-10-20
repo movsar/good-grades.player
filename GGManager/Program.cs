@@ -20,12 +20,13 @@ namespace GGManager
             .CreateLogger();
 
             VelopackApp.Build().Run(LoggingInstance<Program>());
+            // SetToChechenCulture();
             
             var application = new App();
             application.InitializeComponent();
             application.Run();
         }
-        private void SetToChechenCulture()
+        private static void SetToChechenCulture()
         {
             // Set the culture to Chechen ("ce")
             CultureInfo cultureInfo = new CultureInfo("ce");
