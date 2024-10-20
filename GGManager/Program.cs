@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Data.Services;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Serilog;
 using Shared;
 using System;
@@ -14,7 +16,6 @@ namespace GGManager
         [STAThread]
         public static void Main(string[] args)
         {
-            Translations.SetToCulture("ce");
 
             string logPath = Path.Combine("logs", "logs.txt");
             Log.Logger = new LoggerConfiguration()

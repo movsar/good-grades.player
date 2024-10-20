@@ -205,6 +205,15 @@ namespace Shared {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Чеченский.
+        /// </summary>
+        public static string Chechen {
+            get {
+                return ResourceManager.GetString("Chechen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Проверить.
         /// </summary>
         public static string Check {
@@ -475,6 +484,15 @@ namespace Shared {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Язык.
+        /// </summary>
+        public static string Language {
+            get {
+                return ResourceManager.GetString("Language", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Установлена последняя версия!.
         /// </summary>
         public static string LastVersionInstalled {
@@ -597,6 +615,15 @@ namespace Shared {
         public static string Reading {
             get {
                 return ResourceManager.GetString("Reading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Русский.
+        /// </summary>
+        public static string Russian {
+            get {
+                return ResourceManager.GetString("Russian", resourceCulture);
             }
         }
         

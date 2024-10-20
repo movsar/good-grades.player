@@ -37,14 +37,19 @@ namespace Data.Services
             using ResourceReader resourceReader = new ResourceReader(Path.Combine(AppResourcesPath, _fileName));
             string dataType = null;
             byte[] data = null;
-            resourceReader.GetResourceData(key, out dataType, out data);
-            using BinaryReader reader = new BinaryReader(new MemoryStream(data));
-            var value = reader.ReadString();
-
-            if (!string.IsNullOrEmpty(value))
+            try
             {
-                return value;
+
+                resourceReader.GetResourceData(key, out dataType, out data);
+                using BinaryReader reader = new BinaryReader(new MemoryStream(data));
+                var value = reader.ReadString();
+
+                if (!string.IsNullOrEmpty(value))
+                {
+                    return value;
+                }
             }
+            catch { }
             return null;
         }
     }

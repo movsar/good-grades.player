@@ -57,6 +57,24 @@
                 </MenuItem>
             </MenuItem>
             <MenuItem Header="{x:Static shared:GgLocalization.Help}" >
+                
+                <MenuItem Header="{x:Static shared:GgLocalization.Language}">
+                    <MenuItem.Icon>
+                        <TextBlock
+                             HorizontalAlignment="Center" 
+                             VerticalAlignment="Center" 
+                             FontFamily="Segoe MDL2 Assets">
+                             &#xe775;
+                        </TextBlock>
+                    </MenuItem.Icon>
+
+                    <MenuItem x:Name="mnuSetLanguageChechen" Header="{x:Static shared:GgLocalization.Chechen}" 
+                              Click="mnuSetLanguageChechen_Click"/>
+                    
+                    <MenuItem x:Name="mnuSetLanguageRussian" Header="{x:Static shared:GgLocalization.Russian}" 
+                              Click="mnuSetLanguageRussian_Click"/>
+                </MenuItem>
+                
                 <MenuItem Header="{x:Static shared:GgLocalization.Update}" Click="mnuCheckUpdates_Click">
                     <MenuItem.Icon>
                         <TextBlock
@@ -67,6 +85,7 @@
                         </TextBlock>
                     </MenuItem.Icon>
                 </MenuItem>
+                
                 <MenuItem Header="{x:Static shared:GgLocalization.AboutProgram}" Click="mnuAbout_Click">
                     <MenuItem.Icon>
                         <TextBlock

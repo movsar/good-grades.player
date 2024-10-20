@@ -345,4 +345,13 @@
   <data name="Update" xml:space="preserve">
     <value>Обновить</value>
   </data>
+  <data name="Chechen" xml:space="preserve">
+    <value>Чеченский</value>
+  </data>
+  <data name="Russian" xml:space="preserve">
+    <value>Русский</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Язык</value>
+  </data>
 </root>

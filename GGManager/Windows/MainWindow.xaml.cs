@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Data.Services;
 using System.Diagnostics;
+using Shared;
 
 namespace GGManager
 {
@@ -18,13 +19,16 @@ namespace GGManager
         private readonly ContentStore _contentStore;
         private readonly SettingsService _settingsService;
 
-        public MainWindow(ContentStore contentStore, SettingsService fileService)
+        public MainWindow(ContentStore contentStore, SettingsService settingsService)
         {
+            var uiLanguageCode = settingsService.GetValue("uiLanguageCode");
+            Translations.SetToCulture(uiLanguageCode ?? "ce");
+
             InitializeComponent();
             DataContext = this;
 
             //инициализация и подписка на события
-            _settingsService = fileService;
+            _settingsService = settingsService;
             _contentStore = contentStore;
             _contentStore.SelectedSegmentChanged += SelectedSegmentChanged;
             _contentStore.CurrentDatabaseChanged += OnDatabaseOpened;
@@ -132,5 +136,17 @@ namespace GGManager
                 UseShellExecute = true
             });
         }
+
+        private void mnuSetLanguageChechen_Click(object sender, RoutedEventArgs e)
+        {
+            _settingsService.SetValue("uiLanguageCode", "ce");
+            Translations.SetToCulture("ce");
+        }
+
+        private void mnuSetLanguageRussian_Click(object sender, RoutedEventArgs e)
+        {
+            _settingsService.SetValue("uiLanguageCode", "ru");
+            Translations.SetToCulture("ru");
+        }     
     }
 }
