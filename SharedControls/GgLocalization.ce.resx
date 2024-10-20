@@ -330,4 +330,19 @@
   <data name="ChooseImagesAndFillDescription" xml:space="preserve">
     <value>Сурташ къаста а дай, царах лаьцна йазде</value>
   </data>
+  <data name="Create" xml:space="preserve">
+    <value>Кхолла</value>
+  </data>
+  <data name="Open" xml:space="preserve">
+    <value>Схьаелла</value>
+  </data>
+  <data name="Information" xml:space="preserve">
+    <value>Информаци</value>
+  </data>
+  <data name="Help" xml:space="preserve">
+    <value>ГIо</value>
+  </data>
+  <data name="Update" xml:space="preserve">
+    <value>Карлайаккха</value>
+  </data>
 </root>

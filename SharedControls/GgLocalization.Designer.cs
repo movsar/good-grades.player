@@ -268,6 +268,15 @@ namespace Shared {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Создать.
+        /// </summary>
+        public static string Create {
+            get {
+                return ResourceManager.GetString("Create", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Данные.
         /// </summary>
         public static string Data {
@@ -403,6 +412,15 @@ namespace Shared {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Помощь.
+        /// </summary>
+        public static string Help {
+            get {
+                return ResourceManager.GetString("Help", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Изображение.
         /// </summary>
         public static string Image {
@@ -444,6 +462,15 @@ namespace Shared {
         public static string IncorrectAnswer {
             get {
                 return ResourceManager.GetString("IncorrectAnswer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Информация.
+        /// </summary>
+        public static string Information {
+            get {
+                return ResourceManager.GetString("Information", resourceCulture);
             }
         }
         
@@ -516,6 +543,15 @@ namespace Shared {
         public static string NewChapter {
             get {
                 return ResourceManager.GetString("NewChapter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Открыть.
+        /// </summary>
+        public static string Open {
+            get {
+                return ResourceManager.GetString("Open", resourceCulture);
             }
         }
         
@@ -687,6 +723,15 @@ namespace Shared {
         public static string Title {
             get {
                 return ResourceManager.GetString("Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Обновить.
+        /// </summary>
+        public static string Update {
+            get {
+                return ResourceManager.GetString("Update", resourceCulture);
             }
         }
         
