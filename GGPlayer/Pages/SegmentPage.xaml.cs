@@ -41,7 +41,10 @@ namespace GGPlayer.Pages
             if (assignments != null && assignments.Count > 0)
             {
                 // Add a dummy separator
-                Materials.Add(new FakeSegmentMaterial());
+                Materials.Add(new FakeSegmentMaterial()
+                {
+                    Title = ""
+                });
 
                 var fakeSegmentMaterial = new FakeSegmentMaterial()
                 {
