@@ -30,7 +30,7 @@
                     Orientation="Horizontal" 
                     HorizontalAlignment="Center"
                     Margin="5"
-                    Visibility="Visible">
+                    Visibility="Hidden">
 
             <Image 
                 Width="100"

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Serilog;
+using Shared;
 using System;
 using System.Globalization;
 using System.IO;
@@ -13,6 +14,8 @@ namespace GGManager
         [STAThread]
         public static void Main(string[] args)
         {
+            Translations.SetToCulture("ce");
+
             string logPath = Path.Combine("logs", "logs.txt");
             Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Error()
@@ -20,22 +23,13 @@ namespace GGManager
             .CreateLogger();
 
             VelopackApp.Build().Run(LoggingInstance<Program>());
-            // SetToChechenCulture();
-            
+
             var application = new App();
             application.InitializeComponent();
             application.Run();
         }
-        private static void SetToChechenCulture()
-        {
-            // Set the culture to Chechen ("ce")
-            CultureInfo cultureInfo = new CultureInfo("ce");
-
-            // Set both the current culture and the current UI culture
-            Thread.CurrentThread.CurrentCulture = cultureInfo;
-            Thread.CurrentThread.CurrentUICulture = cultureInfo;
-        }
-
+        
+        
         public static Microsoft.Extensions.Logging.ILogger LoggingInstance<T>()
         {
             ILoggerFactory factory = new LoggerFactory().AddSerilog(Log.Logger);

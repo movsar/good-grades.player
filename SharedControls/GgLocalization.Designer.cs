@@ -214,6 +214,15 @@ namespace Shared {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Выберите изображения и пропишите описания.
+        /// </summary>
+        public static string ChooseImagesAndFillDescription {
+            get {
+                return ResourceManager.GetString("ChooseImagesAndFillDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Выбор файла с текстом.
         /// </summary>
         public static string ChooseMaterialFile {

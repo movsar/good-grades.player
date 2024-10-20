@@ -327,4 +327,7 @@
   <data name="AllAnswersAreCorrect" xml:space="preserve">
     <value>Все ответы верны!</value>
   </data>
+  <data name="ChooseImagesAndFillDescription" xml:space="preserve">
+    <value>Выберите изображения и пропишите описания</value>
+  </data>
 </root>

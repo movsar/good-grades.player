@@ -220,7 +220,7 @@
     <value>Материална оьшу боллу хаамаш билгалбаха</value>
   </data>
   <data name="Materials" xml:space="preserve">
-    <value>Сурташ къаста а дай, царах лаьцна йазде</value>
+    <value>Материалаш</value>
   </data>
   <data name="MatchingTaskName" xml:space="preserve">
     <value>Дустар</value>
@@ -326,5 +326,8 @@
   </data>
   <data name="AllAnswersAreCorrect" xml:space="preserve">
     <value>Шадолу жоьпаш нийса ду!</value>
+  </data>
+  <data name="ChooseImagesAndFillDescription" xml:space="preserve">
+    <value>Сурташ къаста а дай, царах лаьцна йазде</value>
   </data>
 </root>

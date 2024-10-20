@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Serilog;
+using Shared;
 using System.IO;
 using Velopack;
 
@@ -10,6 +11,8 @@ namespace GGPlayer
         [STAThread]
         public static void Main(string[] args)
         {
+            Translations.SetToCulture("ce");
+            
             //создание лога, настройка конфигурации и его запись в файл
             string logPath = Path.Combine("logs", "logs.txt");
             Log.Logger = new LoggerConfiguration()

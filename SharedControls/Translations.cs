@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.Resources;
 using System.Threading;
 
@@ -8,9 +9,7 @@ namespace Shared
     {
         static Translations()
         {
-            CultureInfo culture = new CultureInfo("ru");
-            Thread.CurrentThread.CurrentCulture = culture;
-            Thread.CurrentThread.CurrentUICulture = culture;
+            //SetToCulture("ce");
         }
 
         public static string GetValue(string key)
@@ -20,6 +19,15 @@ namespace Shared
 
             var v = rm.GetString(key);
             return string.IsNullOrWhiteSpace(v) ? string.Empty : v;
+        }
+
+        public static void SetToCulture(string code)
+        {
+            CultureInfo cultureInfo = new CultureInfo(code);
+
+            // Set both the current culture and the current UI culture
+            Thread.CurrentThread.CurrentCulture = cultureInfo;
+            Thread.CurrentThread.CurrentUICulture = cultureInfo;
         }
     }
 }
