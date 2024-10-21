@@ -1,0 +1,53 @@
+﻿<UserControl x:Class="Shared.Controls.YesNoDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="200" d:DesignWidth="400" Background="Transparent">
+
+    <Border MouseDown="Grid_MouseDown" CornerRadius="10" BorderThickness="2" Padding="10">
+        <Border.Background>
+            <ImageBrush ImageSource="/Images/fon.jpg"/>
+        </Border.Background>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Message Area -->
+            <TextBlock x:Name="DialogHeader"
+                       Text="Good Grades"
+                       Style="{StaticResource DialogHeader}" />
+
+            <TextBlock x:Name="DialogMessage"
+                       Grid.Row="1"
+                       Text="Message"
+                       Style="{StaticResource DialogMessage}" />
+
+            <!-- Button Area -->
+            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                <!-- Yes Button -->
+                <Button x:Name="YesButton"
+                    Content="Yes"
+                    Width="100"
+                    Margin="10"
+                    Background="#FF007ACC"
+                    Foreground="White"
+                    Click="YesButton_Click"/>
+
+                <!-- No Button -->
+                <Button x:Name="NoButton"
+                    Content="No"
+                    Width="100"
+                    Margin="10"
+                    Background="White"
+                    Foreground="Black"
+                    Click="NoButton_Click"/>
+            </StackPanel>
+        </Grid>
+    </Border>
+
+</UserControl>
