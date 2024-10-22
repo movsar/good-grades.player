@@ -357,4 +357,10 @@
   <data name="Exit" xml:space="preserve">
     <value>Ара</value>
   </data>
+  <data name="Again" xml:space="preserve">
+    <value>Кхин цкъа а</value>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>КхидIа</value>
+  </data>
 </root>

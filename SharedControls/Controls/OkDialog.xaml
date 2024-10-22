@@ -8,7 +8,7 @@
 
     <Border MouseDown="Grid_MouseDown" CornerRadius="10" BorderThickness="2" Padding="10">
         <Border.Background>
-            <ImageBrush ImageSource="/Images/fon.jpg"/>
+            <ImageBrush ImageSource="pack://application:,,,/Shared;component/Images/fon.jpg"/>
         </Border.Background>
         <Grid>
             <Grid.RowDefinitions>

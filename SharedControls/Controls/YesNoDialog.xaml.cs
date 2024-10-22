@@ -7,39 +7,25 @@ namespace Shared.Controls
 {
     public partial class YesNoDialog : UserControl
     {
-        public enum YesNoResult
-        {
-            Yes,
-            No
-        }
-
-        public YesNoResult DialogResult { get; private set; }
+        public MessageBoxResult DialogResult { get; private set; }
 
         public YesNoDialog()
         {
             InitializeComponent();
         }
-
-        public void SetMessage(string message)
-        {
-            DialogMessage.Text = message;
-        }
-
-        // Yes button click event handler
+        
         private void YesButton_Click(object sender, RoutedEventArgs e)
         {
-            DialogResult = YesNoResult.Yes;
+            DialogResult = MessageBoxResult.Yes;
             CloseDialog();
         }
 
-        // No button click event handler
         private void NoButton_Click(object sender, RoutedEventArgs e)
         {
-            DialogResult = YesNoResult.No;
+            DialogResult = MessageBoxResult.No;
             CloseDialog();
         }
 
-        // Close the dialog by closing its parent window
         private void CloseDialog()
         {
             Window parentWindow = Window.GetWindow(this);
@@ -50,7 +36,7 @@ namespace Shared.Controls
             }
         }
 
-        private void Grid_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
             {
@@ -60,6 +46,36 @@ namespace Shared.Controls
                     parentWindow.DragMove();
                 }
             }
+        }
+
+        public static MessageBoxResult Show(string message, string title = "Good Grades")
+        {
+            // Create a new window to host the dialog
+            var dialogWindow = new Window
+            {
+                Title = title,
+                Content = new YesNoDialog
+                {
+                    HorizontalAlignment = HorizontalAlignment.Stretch,
+                    VerticalAlignment = VerticalAlignment.Stretch
+                },
+                Width = 400,
+                Height = 200,
+                WindowStartupLocation = WindowStartupLocation.CenterScreen,
+                WindowStyle = WindowStyle.None,
+                ResizeMode = ResizeMode.NoResize,
+                Background = System.Windows.Media.Brushes.Transparent
+            };
+
+            var dialog = (YesNoDialog)dialogWindow.Content;
+
+            // Customize the dialog
+            dialog.DialogMessage.Text = message;
+            dialog.DialogHeader.Text = title;
+
+            // Show the dialog and wait for user interaction
+            bool? dialogResult = dialogWindow.ShowDialog();
+            return dialog.DialogResult;
         }
     }
 }

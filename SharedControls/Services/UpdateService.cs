@@ -1,5 +1,6 @@
 ﻿using Serilog;
 using Shared;
+using Shared.Controls;
 using System;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -32,11 +33,11 @@ namespace Shared.Services
                 if (newVersion.TargetFullRelease.Version.Major == mgr.CurrentVersion!.Major
                     && newVersion.TargetFullRelease.Version.Minor == mgr.CurrentVersion!.Minor)
                 {
-                    MessageBox.Show(Translations.GetValue("LastVersionInstalled"), "Good Grades");
+                    OkDialog.Show(Translations.GetValue("LastVersionInstalled"), "Good Grades");
                     return;
                 }
 
-                if (MessageBox.Show(string.Format(Translations.GetValue("AvailableNewVersion"), newVersion), "Good Grades", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
+                if (YesNoDialog.Show(string.Format(Translations.GetValue("AvailableNewVersion"), newVersion)) == MessageBoxResult.Yes)
                 {
                     // Download new version
                     await mgr.DownloadUpdatesAsync(newVersion);

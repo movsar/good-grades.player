@@ -1,5 +1,6 @@
 ﻿using GGPlayer.Pages;
 using Shared;
+using Shared.Controls;
 using System.Windows;
 using System.Windows.Navigation;
 
@@ -32,7 +33,7 @@ namespace GGPlayer
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (MessageBox.Show(String.Format(Translations.GetValue("AreYouSureToExit")), "Good Grades", MessageBoxButton.YesNo, MessageBoxImage.Information) != MessageBoxResult.Yes)
+            if (YesNoDialog.Show(Translations.GetValue("AreYouSureToExit")) != MessageBoxResult.Yes)
             {
                 e.Cancel = true;
             }

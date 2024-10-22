@@ -43,45 +43,7 @@ namespace GGPlayer.Pages
             // Intialize the visual elements
             InitializeComponent();
 
-
-
-            // Create a new window to host the dialog
-            var dialogWindow = new Window
-            {
-                Title = "Confirmation",
-                Content = new YesNoDialog
-                {
-                    HorizontalAlignment = HorizontalAlignment.Stretch,
-                    VerticalAlignment = VerticalAlignment.Stretch
-                },
-                Width = 400,
-                Height = 200,
-                WindowStartupLocation = WindowStartupLocation.CenterOwner,
-                WindowStyle = WindowStyle.None,
-                ResizeMode = ResizeMode.NoResize,
-                Background = System.Windows.Media.Brushes.Transparent
-            };
-
-            var dialog = (YesNoDialog)dialogWindow.Content;
-
-            // Customize the dialog
-            dialog.SetMessage("Are you sure you want to proceed?");
-
-            // Show the dialog and wait for user interaction
-            bool? dialogResult = dialogWindow.ShowDialog();
-
-            // Handle the result
-            if (dialogResult == true)
-            {
-                if (dialog.DialogResult == YesNoDialog.YesNoResult.Yes)
-                {
-                    MessageBox.Show("You clicked Yes");
-                }
-                else
-                {
-                    MessageBox.Show("You clicked No");
-                }
-            }
+            OkDialog.Show("whatever  oo");
         }
 
         private void LoadSegment()

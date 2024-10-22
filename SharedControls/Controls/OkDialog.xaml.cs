@@ -12,11 +12,6 @@ namespace Shared.Controls
             InitializeComponent();
         }
 
-        public void SetMessage(string message)
-        {
-            DialogMessage.Text = message;
-        }
-
         private void CloseDialog()
         {
             Window parentWindow = Window.GetWindow(this);
@@ -26,8 +21,12 @@ namespace Shared.Controls
                 parentWindow.Close();
             }
         }
+        private void OkButton_Click(object sender, RoutedEventArgs e)
+        {
+            CloseDialog();
+        }
 
-        private void Grid_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
             {
@@ -39,9 +38,33 @@ namespace Shared.Controls
             }
         }
 
-        private void OkButton_Click(object sender, RoutedEventArgs e)
+        public static void Show(string message, string title = "Good Grades")
         {
-            CloseDialog();
+            // Create a new window to host the dialog
+            var dialogWindow = new Window
+            {
+                Title = title,
+                Content = new OkDialog
+                {
+                    HorizontalAlignment = HorizontalAlignment.Stretch,
+                    VerticalAlignment = VerticalAlignment.Stretch
+                },
+                Width = 400,
+                Height = 200,
+                WindowStartupLocation = WindowStartupLocation.CenterScreen,
+                WindowStyle = WindowStyle.None,
+                ResizeMode = ResizeMode.NoResize,
+                Background = System.Windows.Media.Brushes.Transparent
+            };
+
+            var dialog = (OkDialog)dialogWindow.Content;
+
+            // Customize the dialog
+            dialog.DialogMessage.Text = message;
+            dialog.DialogHeader.Text = title;
+
+            // Show the dialog and wait for user interaction
+            bool? dialogResult = dialogWindow.ShowDialog();
         }
     }
 }
