@@ -31,12 +31,13 @@
             <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
                 <!-- Yes Button -->
                 <Button x:Name="YesButton"
-                    Content="Yes"
-                    Width="100"
-                    Margin="10"
-                    Background="#FF007ACC"
-                    Foreground="White"
-                    Click="YesButton_Click"/>
+                        TabIndex="0"
+                        Content="Yes"
+                        Width="100"
+                        Margin="10"
+                        Background="#FF007ACC"
+                        Foreground="White"
+                        Click="YesButton_Click"/>
 
                 <!-- No Button -->
                 <Button x:Name="NoButton"

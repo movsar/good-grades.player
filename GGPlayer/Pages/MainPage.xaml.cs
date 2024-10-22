@@ -42,8 +42,6 @@ namespace GGPlayer.Pages
 
             // Intialize the visual elements
             InitializeComponent();
-
-            OkDialog.Show("whatever  oo");
         }
 
         private void LoadSegment()

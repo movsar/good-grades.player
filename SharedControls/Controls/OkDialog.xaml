@@ -30,6 +30,7 @@
 
             <Button x:Name="OkButton"
                     Grid.Row="2"
+                    TabIndex="0"
                     HorizontalAlignment="Right"
                     Click="OkButton_Click"
                     Content="Ok"

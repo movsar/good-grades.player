@@ -1,6 +1,7 @@
 ﻿<Window x:Class="Shared.Viewers.StatisticsViewer"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"        
+        xmlns:shared="clr-namespace:Shared"
         Title="Statistics" Height="300" Width="400">
 
     <Grid Margin="10">
@@ -8,8 +9,8 @@
             <TextBlock x:Name="txtCorrectAnswers" FontSize="20" />
             <TextBlock x:Name="txtIncorrectAnswers" FontSize="20" />
 
-            <Button x:Name="btnRetry" Content="Кхин цкъа" Click="btnRetry_Click" Visibility="Collapsed" />
-            <Button x:Name="btnNext" Content="КхидӀа" Click="btnNext_Click" Visibility="Collapsed" />
+            <Button x:Name="btnRetry" Content="{x:Static shared:GgLocalization.Retry}" Click="btnRetry_Click" Visibility="Collapsed" />
+            <Button x:Name="btnNext" Content="{x:Static shared:GgLocalization.Next}" Click="btnNext_Click" Visibility="Collapsed" />
         </StackPanel>
     </Grid>
 </Window>

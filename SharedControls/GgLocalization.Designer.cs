@@ -79,15 +79,6 @@ namespace Shared {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Еще раз.
-        /// </summary>
-        public static string Again {
-            get {
-                return ResourceManager.GetString("Again", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Все ответы верны!.
         /// </summary>
         public static string AllAnswersAreCorrect {
@@ -642,6 +633,15 @@ namespace Shared {
         public static string Reading {
             get {
                 return ResourceManager.GetString("Reading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Еще раз.
+        /// </summary>
+        public static string Retry {
+            get {
+                return ResourceManager.GetString("Retry", resourceCulture);
             }
         }
         

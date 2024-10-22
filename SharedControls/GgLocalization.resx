@@ -357,7 +357,7 @@
   <data name="Exit" xml:space="preserve">
     <value>Выход</value>
   </data>
-  <data name="Again" xml:space="preserve">
+  <data name="Retry" xml:space="preserve">
     <value>Еще раз</value>
   </data>
   <data name="Next" xml:space="preserve">
