@@ -58,6 +58,7 @@ namespace Shared.Controls
             };
 
             var dialog = (OkDialog)dialogWindow.Content;
+            dialog.OkButton.Focus();
 
             // Customize the dialog
             dialog.DialogMessage.Text = message;

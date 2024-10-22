@@ -57,17 +57,18 @@ namespace Shared.Controls
                 Content = new YesNoDialog
                 {
                     HorizontalAlignment = HorizontalAlignment.Stretch,
-                    VerticalAlignment = VerticalAlignment.Stretch
+                    VerticalAlignment = VerticalAlignment.Stretch,
                 },
                 Width = 400,
                 Height = 200,
                 WindowStartupLocation = WindowStartupLocation.CenterScreen,
                 WindowStyle = WindowStyle.None,
                 ResizeMode = ResizeMode.NoResize,
-                Background = System.Windows.Media.Brushes.Transparent
+                Background = System.Windows.Media.Brushes.Transparent                
             };
 
             var dialog = (YesNoDialog)dialogWindow.Content;
+            dialog.YesButton.Focus();
 
             // Customize the dialog
             dialog.DialogMessage.Text = message;

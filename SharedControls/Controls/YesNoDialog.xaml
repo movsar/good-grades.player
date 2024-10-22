@@ -31,7 +31,6 @@
             <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
                 <!-- Yes Button -->
                 <Button x:Name="YesButton"
-                        TabIndex="0"
                         Content="Yes"
                         Width="100"
                         Margin="10"
