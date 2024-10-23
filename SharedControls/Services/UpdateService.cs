@@ -1,12 +1,10 @@
 ﻿using Serilog;
-using Shared;
 using Shared.Controls;
 using System;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 using Velopack;
-using Velopack.Sources;
 
 namespace Shared.Services
 {
@@ -16,8 +14,7 @@ namespace Shared.Services
         {
             try
             {
-                IUpdateSource updateSource = new SimpleWebSource(releasesUrl + "/RELEASES");
-                var mgr = new UpdateManager(updateSource);
+                var mgr = new UpdateManager(releasesUrl);
 
                 // Check for new version
                 var newVersion = await mgr.CheckForUpdatesAsync();

@@ -1,12 +1,7 @@
-﻿using Data.Services;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Serilog;
-using Shared;
 using System;
-using System.Globalization;
 using System.IO;
-using System.Threading;
 using Velopack;
 
 namespace GGManager
@@ -36,15 +31,5 @@ namespace GGManager
             ILoggerFactory factory = new LoggerFactory().AddSerilog(Log.Logger);
             return factory.CreateLogger<T>();
         }
-
-        //private static void OnAppInstall(SemanticVersion version, IAppTools tools)
-        //{
-        //    tools.CreateShortcutForThisExe(ShortcutLocation.StartMenu | ShortcutLocation.Desktop);
-        //}
-
-        //private static void OnAppUninstall(SemanticVersion version, IAppTools tools)
-        //{
-        //    tools.RemoveShortcutForThisExe(ShortcutLocation.StartMenu | ShortcutLocation.Desktop);
-        //}
     }
 }
