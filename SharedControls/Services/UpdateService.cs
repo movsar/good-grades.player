@@ -30,7 +30,7 @@ namespace Shared.Services
                 {
                     throw new Exception("Couldn't fetch current version information");
                 }
-                var currentVersionAsString = $"{currentVersion.Major}.{currentVersion.MinorRevision}.{currentVersion.Build}".Trim();
+                var currentVersionAsString = $"{currentVersion.Major}.{currentVersion.Minor}.{currentVersion.Build}".Trim();
                 if (currentVersionAsString.Equals(latestVersion))
                 {
                     OkDialog.Show(Translations.GetValue("LastVersionInstalled"));
