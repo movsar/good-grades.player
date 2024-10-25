@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -47,7 +48,7 @@ namespace Shared.Services
                 if (latestVersion == null)
                 {
                     throw new();
-                }                
+                }
 
                 return latestVersion;
             }
@@ -59,7 +60,21 @@ namespace Shared.Services
 
         internal static async Task<string> DownloadUpdate(GithubReleaseAsset? setupAsset)
         {
-            throw new NotImplementedException();
+            // Define the path where the update will be saved
+            string updateFilePath = Path.Combine(Path.GetTempPath(), "good-grades-update.exe");
+
+            // Download the update file
+            var response = await client.GetAsync(setupAsset!.BrowserDownloadUrl);
+            response.EnsureSuccessStatusCode();
+
+            // Save the file
+            await using (var fileStream = new FileStream(updateFilePath, FileMode.Create))
+            {
+                await response.Content.CopyToAsync(fileStream);
+            }
+
+            return updateFilePath;
+
         }
     }
 }

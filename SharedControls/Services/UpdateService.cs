@@ -37,7 +37,7 @@ namespace Shared.Services
                     return;
                 }
 
-                if (YesNoDialog.Show(string.Format(Translations.GetValue("AvailableNewVersion"), currentVersionAsString)) != MessageBoxResult.Yes)
+                if (YesNoDialog.Show(string.Format(Translations.GetValue("AvailableNewVersion"), latestVersion)) != MessageBoxResult.Yes)
                 {
                     return;
                 }

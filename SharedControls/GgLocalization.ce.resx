@@ -363,4 +363,10 @@
   <data name="Next" xml:space="preserve">
     <value>КхидIа</value>
   </data>
+  <data name="Yes" xml:space="preserve">
+    <value>ХIан-ХIан</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>ХIан-ХIан</value>
+  </data>
 </root>
