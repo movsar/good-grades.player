@@ -13,7 +13,8 @@ namespace Data.Services
         {
             var assembly = Assembly.GetEntryAssembly();
             var assemblyName = assembly.GetName().Name;
-            AppResourcesPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), assemblyName);
+
+            AppResourcesPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Good Grades", assemblyName);
             _filePath = Path.Combine(AppResourcesPath, _settingsFile);
 
             if (!Directory.Exists(AppResourcesPath))
