@@ -1,7 +1,11 @@
 ﻿using Serilog;
 using Shared.Controls;
 using System;
+using System.Diagnostics;
+using System.Linq;
+using System.Reflection;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using Velopack;
@@ -14,34 +18,36 @@ namespace Shared.Services
         {
             try
             {
-                var mgr = new UpdateManager(releasesUrl);
-
-                // Check for new version
-                var newVersion = await mgr.CheckForUpdatesAsync();
-                if (newVersion == null)
-                {
-                    return;
-                }
-
                 Log.Information($"Before Checking for updates");
-                Log.Debug($"future: {JsonSerializer.Serialize(newVersion)}");
-                Log.Debug($"current: {JsonSerializer.Serialize(mgr.CurrentVersion)}");
+                var latestRelease = await GitHubService.GetLatestRelease();
+                var latestVersion = Regex.Match(latestRelease.Name!, @"\d+\.\d+\.\d+").Value.Trim();
+                var setupAsset = latestRelease.Assets
+                        .Where(a => a.Name!.ToLower().Contains("setup"))
+                        .FirstOrDefault();
 
-                if (newVersion.TargetFullRelease.Version.Major == mgr.CurrentVersion!.Major
-                    && newVersion.TargetFullRelease.Version.Minor == mgr.CurrentVersion!.Minor)
+                var currentVersion = Assembly.GetEntryAssembly()?.GetName().Version;
+                if (currentVersion == null)
                 {
-                    OkDialog.Show(Translations.GetValue("LastVersionInstalled"), "Good Grades");
+                    throw new Exception("Couldn't fetch current version information");
+                }
+                var currentVersionAsString = $"{currentVersion.Major}.{currentVersion.MinorRevision}.{currentVersion.Build}".Trim();
+                if (currentVersionAsString.Equals(latestVersion))
+                {
+                    OkDialog.Show(Translations.GetValue("LastVersionInstalled"));
                     return;
                 }
 
-                if (YesNoDialog.Show(string.Format(Translations.GetValue("AvailableNewVersion"), newVersion)) == MessageBoxResult.Yes)
+                if (YesNoDialog.Show(string.Format(Translations.GetValue("AvailableNewVersion"), currentVersionAsString)) != MessageBoxResult.Yes)
                 {
-                    // Download new version
-                    await mgr.DownloadUpdatesAsync(newVersion);
-
-                    // Install new version and restart app
-                    mgr.ApplyUpdatesAndRestart(newVersion);
+                    return;
                 }
+
+                // Download new version
+                var filePath = await GitHubService.DownloadUpdate(setupAsset);
+
+                // Install new version and restart app
+                Process.Start(filePath);
+                Application.Current.Shutdown();
             }
             catch (Exception ex)
             {

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Serilog;
+using Shared.Services;
 using System;
 using System.IO;
 using Velopack;
@@ -24,8 +25,8 @@ namespace GGManager
             application.InitializeComponent();
             application.Run();
         }
-        
-        
+
+
         public static Microsoft.Extensions.Logging.ILogger LoggingInstance<T>()
         {
             ILoggerFactory factory = new LoggerFactory().AddSerilog(Log.Logger);
