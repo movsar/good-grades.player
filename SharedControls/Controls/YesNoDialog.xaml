@@ -32,8 +32,7 @@
             <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
                 <!-- Yes Button -->
                 <Button x:Name="YesButton"
-                        Width="100"
-                        
+                        Width="100"                        
                         Margin="10"
                         Background="#FF007ACC"
                         Foreground="White"

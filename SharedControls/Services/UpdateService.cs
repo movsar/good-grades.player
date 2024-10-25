@@ -14,12 +14,12 @@ namespace Shared.Services
 {
     public static class UpdateService
     {
-        public static async Task UpdateMyApp(string releasesUrl)
+        public static async Task UpdateMyApp(string module)
         {
             try
             {
                 Log.Information($"Before Checking for updates");
-                var latestRelease = await GitHubService.GetLatestRelease();
+                var latestRelease = await GitHubService.GetLatestRelease(module);
                 var latestVersion = Regex.Match(latestRelease.Name!, @"\d+\.\d+\.\d+").Value.Trim();
                 var setupAsset = latestRelease.Assets
                         .Where(a => a.Name!.ToLower().Contains("setup"))
@@ -51,7 +51,12 @@ namespace Shared.Services
             }
             catch (Exception ex)
             {
-                ExceptionService.HandleError(ex, "Ошибка при попытаке обновления приложения");
+                Log.Error(ex.Message);
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = "https://github.com/movsar/good-grades/releases",
+                    UseShellExecute = true,
+                });
             }
         }
     }

@@ -22,8 +22,13 @@ namespace Shared.Services
             client.DefaultRequestHeaders.UserAgent.ParseAdd("Good Grades/1.0");
         }
 
-        public static async Task<GithubRelease> GetLatestRelease(string module = "manager")
+        public static async Task<GithubRelease> GetLatestRelease(string module)
         {
+            if (module != "manager" && module != "player")
+            {
+                throw new Exception("Wrong module name");
+            }
+
             try
             {
                 var response = await client.GetAsync(url);

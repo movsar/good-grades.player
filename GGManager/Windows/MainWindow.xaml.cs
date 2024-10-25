@@ -122,17 +122,9 @@ namespace GGManager
 
         private async void mnuCheckUpdates_Click(object sender, RoutedEventArgs e)
         {
-            string releasesUrl = "https://movsar.dev/releases/good-grades/manager";
-
             IsEnabled = false;
-            await UpdateService.UpdateMyApp(releasesUrl);
+            await UpdateService.UpdateMyApp("manager");
             IsEnabled = true;
-
-            Process.Start(new ProcessStartInfo
-            {
-                FileName = releasesUrl,
-                UseShellExecute = true
-            });
         }
 
         private void mnuSetLanguageChechen_Click(object sender, RoutedEventArgs e)

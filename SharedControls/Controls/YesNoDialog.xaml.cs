@@ -12,6 +12,8 @@ namespace Shared.Controls
         public YesNoDialog()
         {
             InitializeComponent();
+            YesButton.Content = Translations.GetValue("Yes");
+            NoButton.Content = Translations.GetValue("No");
         }
         
         private void YesButton_Click(object sender, RoutedEventArgs e)
