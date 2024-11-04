@@ -30,12 +30,14 @@
                        HorizontalAlignment="Left"
                        VerticalAlignment="Top"
                        Width="825"
+                       Panel.ZIndex="1"
                        Margin="309,-10,0,0" Height="132" Grid.ColumnSpan="2"/>
 
                 <Image Source="pack://application:,,,/Shared;component/Images/haarh.png" 
                        HorizontalAlignment="Left"
                        VerticalAlignment="Top"
                        Width="200"
+                       Panel.ZIndex="2"
                        Height="auto"
                        Margin="567,25,0,0" Grid.ColumnSpan="2"/>
 
