@@ -97,7 +97,7 @@ namespace GGPlayer.Pages
             if (segmentItem is FakeSegmentMaterial && segmentItem.Id == "tasks")
             {
                 var assignments = GetAllAssignments();
-                _shell.CurrentFrame.Navigate(new AssignmentsPage(assignments));
+                _shell.CurrentFrame.Navigate(new AssignmentsPage(_shell, assignments));
             }
             else if (segmentItem is Material material)
             {

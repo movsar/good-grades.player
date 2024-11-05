@@ -15,6 +15,8 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using Shared;
+using Serilog.Parsing;
+using Shared.Controls.Assignments;
 
 namespace GGManager.UserControls
 {
@@ -122,7 +124,13 @@ namespace GGManager.UserControls
         
         private void btnPreview_Click(object sender, RoutedEventArgs e)
         {
-            Window viewer = null!;
+            Window viewer = new Window()
+            {
+                Width = 1280,
+                Height = 720,
+                Title = "Good Grades"
+            };
+
             switch (_taskType)
             {
                 case AssignmentType.Matching:
@@ -138,8 +146,9 @@ namespace GGManager.UserControls
                     break;
 
                 case AssignmentType.Selecting:
-                    viewer = new SelectingViewer((SelectingAssignment)_taskAssignment);
+                    viewer.Content = new SelectionAssignmentControl(((SelectingAssignment)_taskAssignment));
                     break;
+
                 case AssignmentType.Building:
                     viewer = new BuildingViewer((BuildingAssignment)_taskAssignment);
                     break;

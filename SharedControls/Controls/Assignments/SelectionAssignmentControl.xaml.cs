@@ -1,16 +1,15 @@
-﻿using Data.Entities.TaskItems;
-using Data.Entities;
+﻿using Data.Entities;
+using Data.Entities.TaskItems;
 using Data.Interfaces;
-using Shared.Controls;
 using Shared.Interfaces;
 using Shared.Services;
 using System;
-using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Controls;
 
-namespace Shared.Viewers
+namespace Shared.Controls.Assignments
 {
-    public partial class SelectingViewer : Window, IAssignmentViewer
+    public partial class SelectionAssignmentControl : UserControl, IAssignmentViewer
     {
         private readonly SelectingAssignment _assignment;
 
@@ -20,9 +19,10 @@ namespace Shared.Viewers
 
         public event Action<IAssignment, bool>? CompletionStateChanged;
 
-        public SelectingViewer(SelectingAssignment selectingTask)
+        public SelectionAssignmentControl(SelectingAssignment selectingTask)
         {
             InitializeComponent();
+
             DataContext = this;
 
             _assignment = selectingTask;
@@ -30,7 +30,7 @@ namespace Shared.Viewers
             _question = _assignment.Question;
 
             var questionViewControl = new QuestionViewControl(_assignment.Question);
-            spOptions.Children.Add(questionViewControl); 
+            spOptions.Children.Add(questionViewControl);
         }
 
         private void btnCheck_Click(object sender, RoutedEventArgs e)

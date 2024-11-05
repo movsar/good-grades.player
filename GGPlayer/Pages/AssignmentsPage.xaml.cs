@@ -9,6 +9,8 @@ using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
 using Data.Entities;
 using Data.Interfaces;
+using GGPlayer.Pages.Assignments;
+using Shared.Controls.Assignments;
 using Shared.Interfaces;
 using Shared.Viewers;
 
@@ -22,12 +24,16 @@ namespace GGPlayer.Pages
         const int ButtonSize = 100;
         const int ButtonSpacing = 20;
 
-        public AssignmentsPage(List<IAssignment> assignments)
+        private readonly ShellWindow _shell;
+
+        public AssignmentsPage(ShellWindow shell, List<IAssignment> assignments)
         {
             InitializeComponent();
             // Ограничиваем список заданий до 30
             Assignments.AddRange(assignments.Take(MaxAssignments));
             GenerateAssignmentButtons();
+
+            _shell = shell;
         }
 
         private void GenerateAssignmentButtons()
@@ -103,15 +109,15 @@ namespace GGPlayer.Pages
                     effect = new DropShadowEffect
                     {
                         ShadowDepth = 0,
-                        BlurRadius = 20, 
-                        Opacity = 0.8 
+                        BlurRadius = 20,
+                        Opacity = 0.8
                     };
                     image.Effect = effect;
                 }
 
                 if (isCompleted)
                 {
-                    effect.Color = Colors.LimeGreen; 
+                    effect.Color = Colors.LimeGreen;
                     effect.BlurRadius = 30;
                 }
                 else
@@ -162,7 +168,8 @@ namespace GGPlayer.Pages
                     viewer = new FillingViewer((FillingAssignment)assignment);
                     break;
                 case SelectingAssignment:
-                    viewer = new SelectingViewer((SelectingAssignment)assignment);
+                    var uc = new SelectionAssignmentControl((SelectingAssignment)assignment);
+                    _shell.CurrentFrame.Navigate(new AssignmentViewerPage(_shell, uc));
                     break;
                 case BuildingAssignment:
                     viewer = new BuildingViewer((BuildingAssignment)assignment);
@@ -213,7 +220,7 @@ namespace GGPlayer.Pages
                 // Изменяем цвет границы
                 ChangeBorderColor(assignment, true);
             }
-          
+
         }
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -222,7 +229,7 @@ namespace GGPlayer.Pages
             ScrollViewerContainer.Content = null;
             GenerateAssignmentButtons();
         }
-    
-        
+
+
     }
 }
