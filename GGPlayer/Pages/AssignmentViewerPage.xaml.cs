@@ -18,6 +18,7 @@ namespace GGPlayer.Pages.Assignments
             InitializeComponent();
 
             _assignment = assignment;
+            SetUiStateToInitial();
             LoadAssignmentView();
         }
 
@@ -47,23 +48,70 @@ namespace GGPlayer.Pages.Assignments
             ucRoot.Children.Add(uc);
 
             _userControl = (IAssignmentViewer)uc;
+            _userControl.AssignmentCompleted += OnAssignmentCompleted;
+            _userControl.AssignmentItemCompleted += OnAssignmentItemCompleted;
         }
 
         private void btnRetry_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            LoadAssignmentView();  
+            SetUiStateToInitial();
+            _userControl.Retry();
         }
 
-        private void btnCheck_MouseUp(object sender, MouseButtonEventArgs e)
+        private void OnAssignmentItemCompleted(IAssignment assignment, string itemId, bool success)
         {
-            if (_userControl.Check())
+            if (!success)
             {
-
+                SetUiStateToFailure();
             }
             else
             {
-
+                SetUiStateToSuccess();
             }
+        }
+
+        private void OnAssignmentCompleted(IAssignment assignment, bool success)
+        {
+            if (!success)
+            {
+                SetUiStateToFailure();
+            }
+            else
+            {
+                SetUiStateToSuccess();
+            }
+        }
+
+        private void btnCheck_MouseUp(object sender, MouseButtonEventArgs e) => _userControl.Check();
+        private void SetUiStateToInitial()
+        {
+            btnRetry.Visibility = System.Windows.Visibility.Collapsed;
+            btnCheck.Visibility = System.Windows.Visibility.Visible;
+
+            msgFailure.Visibility = System.Windows.Visibility.Collapsed;
+            msgSuccess.Visibility = System.Windows.Visibility.Collapsed;
+        }
+        private void SetUiStateToFailure()
+        {
+            btnRetry.Visibility = System.Windows.Visibility.Visible;
+            btnCheck.Visibility = System.Windows.Visibility.Collapsed;
+
+            msgFailure.Visibility = System.Windows.Visibility.Visible;
+            msgSuccess.Visibility = System.Windows.Visibility.Collapsed;
+        }
+        private void SetUiStateToSuccess()
+        {
+            btnRetry.Visibility = System.Windows.Visibility.Collapsed;
+            btnCheck.Visibility = System.Windows.Visibility.Collapsed;
+
+            msgFailure.Visibility = System.Windows.Visibility.Collapsed;
+            msgSuccess.Visibility = System.Windows.Visibility.Visible;
+        }
+
+        ~AssignmentViewerPage()
+        {
+            _userControl.AssignmentCompleted -= OnAssignmentCompleted;
+            _userControl.AssignmentItemCompleted -= OnAssignmentItemCompleted;
         }
     }
 }

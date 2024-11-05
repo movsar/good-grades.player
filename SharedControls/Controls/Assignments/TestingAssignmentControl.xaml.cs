@@ -17,7 +17,8 @@ namespace Shared.Controls.Assignments
         private List<QuestionViewControl> _questionViewControls;
 
 
-        public event Action<IAssignment, bool> CompletionStateChanged;
+        public event Action<IAssignment, bool> AssignmentCompleted;
+        public event Action<IAssignment, string, bool> AssignmentItemCompleted;
 
         public TestingAssignmentControl(TestingAssignment testingTask)
         {
@@ -100,6 +101,16 @@ namespace Shared.Controls.Assignments
         }
 
         public bool Check()
+        {
+            throw new NotImplementedException();
+        }
+
+        void IAssignmentViewer.Check()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Retry()
         {
             throw new NotImplementedException();
         }

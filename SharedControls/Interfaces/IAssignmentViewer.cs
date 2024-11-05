@@ -5,9 +5,12 @@ namespace Shared.Interfaces
 {
     public interface IAssignmentViewer
     {
-        // This will be triggered whenever the user checks their  answers,
-        // it will return true if it's correct and false if not
-        public event Action<IAssignment, bool> CompletionStateChanged;
-        public bool Check();
+        // Assignment, Success (true/false)
+        event Action<IAssignment, bool> AssignmentCompleted;
+
+        // gnment, Assignment Item's Id, Success (true/false)
+        event Action<IAssignment, string, bool> AssignmentItemCompleted;
+        void Check();
+        void Retry();
     }
 }

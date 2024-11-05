@@ -17,7 +17,8 @@ namespace Shared.Controls.Assignments
 
         private readonly Question _question;
 
-        public event Action<IAssignment, bool>? CompletionStateChanged;
+        public event Action<IAssignment, bool>? AssignmentCompleted;
+        public event Action<IAssignment, string, bool> AssignmentItemCompleted;
 
         public SelectionAssignmentControl(SelectingAssignment selectingTask)
         {
@@ -53,10 +54,20 @@ namespace Shared.Controls.Assignments
                 MessageBox.Show(Translations.GetValue("Incorrect"));
             }
 
-            CompletionStateChanged?.Invoke(_assignment, areAnswersCorrect);
+            AssignmentCompleted?.Invoke(_assignment, areAnswersCorrect);
         }
 
         public bool Check()
+        {
+            throw new NotImplementedException();
+        }
+
+        void IAssignmentViewer.Check()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Retry()
         {
             throw new NotImplementedException();
         }

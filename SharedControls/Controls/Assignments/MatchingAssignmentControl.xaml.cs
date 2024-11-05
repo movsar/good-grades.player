@@ -27,7 +27,8 @@ namespace Shared.Controls.Assignments
         private readonly MatchingAssignment _assignment;
 
         // An event that signals when the completion state of the assignment changes.
-        public event Action<IAssignment, bool> CompletionStateChanged;
+        public event Action<IAssignment, bool> AssignmentCompleted;
+        public event Action<IAssignment, string, bool> AssignmentItemCompleted;
 
         #region Properties, Fields and Constructors
         // Constructor initializes the MatchingViewer with a specific assignment.
@@ -114,14 +115,14 @@ namespace Shared.Controls.Assignments
                 if (image != null && textBlock != null && image.Name != textBlock.Name)
                 {
                     MessageBox.Show(Translations.GetValue("ElementsDoNotMatch"));
-                    CompletionStateChanged?.Invoke(_assignment, false);
+                    AssignmentCompleted?.Invoke(_assignment, false);
                     return;
                 }
             }
 
             // If all pairs match, show a success message and signal assignment completion.
             MessageBox.Show(Translations.GetValue("AllElementsMatch"));
-            CompletionStateChanged?.Invoke(_assignment, true);
+            AssignmentCompleted?.Invoke(_assignment, true);
         }
 
         // Generic method to find a child element of a specific type in a grid cell.
@@ -281,6 +282,16 @@ namespace Shared.Controls.Assignments
         }
 
         public bool Check()
+        {
+            throw new NotImplementedException();
+        }
+
+        void IAssignmentViewer.Check()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Retry()
         {
             throw new NotImplementedException();
         }

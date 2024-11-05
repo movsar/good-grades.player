@@ -23,7 +23,8 @@ namespace Shared.Controls.Assignments
             GenerateItemsUI();
         }
 
-        public event Action<IAssignment, bool> CompletionStateChanged;
+        public event Action<IAssignment, bool> AssignmentCompleted;
+        public event Action<IAssignment, string, bool> AssignmentItemCompleted;
 
         private void GenerateItemsUI()
         {
@@ -82,7 +83,7 @@ namespace Shared.Controls.Assignments
                         if (!options.Contains(textBox.Text.ToLower().Trim()))
                         {
                             MessageBox.Show(Translations.GetValue("Incorrect"));
-                            CompletionStateChanged?.Invoke(_assignment, false);
+                            AssignmentCompleted?.Invoke(_assignment, false);
                             return;
                         }
                     }
@@ -91,10 +92,20 @@ namespace Shared.Controls.Assignments
 
             // Show a message if all inputs are correct
             MessageBox.Show(Translations.GetValue("Correct"));
-            CompletionStateChanged?.Invoke(_assignment, true);
+            AssignmentCompleted?.Invoke(_assignment, true);
         }
 
         public bool Check()
+        {
+            throw new NotImplementedException();
+        }
+
+        void IAssignmentViewer.Check()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Retry()
         {
             throw new NotImplementedException();
         }

@@ -9,22 +9,47 @@
       Title="SelectionAssignmentPage">
 
     <Grid>
-        <Image  Source="pack://application:,,,/Shared;component/Images/Buttons/retry.png" 
-                Height="100" Width="150"
-                Cursor="Hand"
-                x:Name="btnRetry"
+        <Grid.Resources>
+            <Style x:Key="ControlButton" TargetType="Image">
+                <Setter Property="Height" Value="100"/>
+                <Setter Property="Width" Value="150"/>
+                <Setter Property="Cursor" Value="Hand"/>
+                <Setter Property="Margin" Value="20"/>
+                <Setter Property="HorizontalAlignment" Value="Right"/>
+                <Setter Property="Stretch" Value="UniformToFill"/>
+            </Style>
+
+            <Style x:Key="TaskResult" TargetType="Image">
+                <Setter Property="Height" Value="400"/>
+                <Setter Property="HorizontalAlignment" Value="Center"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="Stretch" Value="Uniform"/>
+                <Setter Property="Visibility" Value="Collapsed"/>
+            </Style>
+        </Grid.Resources>
+
+        <Image  x:Name="msgSuccess"
+                Source="pack://application:,,,/Shared;component/Images/task_result_msg_correct.png" 
+                Panel.ZIndex="100"
+                Style="{StaticResource TaskResult}" />
+
+        <Image  x:Name="msgFailure"
+                Source="pack://application:,,,/Shared;component/Images/task_result_msg_incorrect.png" 
+                Panel.ZIndex="101"
+                Style="{StaticResource TaskResult}" />
+
+        <Image  x:Name="btnRetry"
+                Source="pack://application:,,,/Shared;component/Images/Buttons/retry.png" 
                 MouseUp="btnRetry_MouseUp"
-                HorizontalAlignment="Right" VerticalAlignment="Center" Margin="20" 
-                Stretch="UniformToFill" />
-        
-        <Image  Source="pack://application:,,,/Shared;component/Images/Buttons/check.png" 
-             Height="100" Width="150"
-             Cursor="Hand"
-             x:Name="btnCheck"
-             MouseUp="btnCheck_MouseUp"
-             HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="20" 
-             Stretch="UniformToFill" />
-        
+                VerticalAlignment="Center" 
+                Style="{StaticResource ControlButton}" />
+
+        <Image  x:Name="btnCheck"
+                Source="pack://application:,,,/Shared;component/Images/Buttons/check.png" 
+                MouseUp="btnCheck_MouseUp"
+                VerticalAlignment="Bottom"
+                Style="{StaticResource ControlButton}" />
+
         <StackPanel x:Name="ucRoot"/>
     </Grid>
 </Page>

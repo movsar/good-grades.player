@@ -3,17 +3,17 @@ using Data.Interfaces;
 using Shared.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Windows;
 using System.Windows.Controls;
 
 namespace Shared.Controls.Assignments
 {
     public partial class BuildingAssignmentControl : UserControl, IAssignmentViewer
     {
-        public event Action<IAssignment, bool> CompletionStateChanged;
+        public event Action<IAssignment, bool> AssignmentCompleted;
+        public event Action<IAssignment, string, bool> AssignmentItemCompleted;
 
         private readonly BuildingAssignment _assignment;
-        private int _currentItemIndex = 0;
+        private int _currentItemIndex = -1;
 
         public string TaskTitle { get; }
 
@@ -25,49 +25,43 @@ namespace Shared.Controls.Assignments
             _assignment = assignment;
             TaskTitle = _assignment.Title;
 
-            // Загрузка первого выражения
-            LoadCurrentItem();
+            LoadNextItem();
         }
 
         // Метод для загрузки текущего элемента
-        private void LoadCurrentItem()
+        private void LoadNextItem()
         {
-            spItems.Children.Clear();
-
-            var item = _assignment.Items[_currentItemIndex];
+            var item = _assignment.Items[++_currentItemIndex];
             var buildingItemViewControl = new BuildingItemViewControl(item) { Tag = item.Text };
+            
+            spItems.Children.Clear();
             spItems.Children.Add(buildingItemViewControl);
-
-            _currentItemIndex++;
         }
-        public bool Check()
+        public void Check()
         {
             if (spItems.Children.Count == 0)
             {
-                CompletionStateChanged?.Invoke(_assignment, true);
-                return true;
+                return;
             }
 
             var buildingItemViewControl = (BuildingItemViewControl)spItems.Children[0];
             var arrangedPhrase = GetUserArrangedPhrase(buildingItemViewControl);
-
-            // Проверка правильности
             if (arrangedPhrase != buildingItemViewControl.Tag.ToString())
             {
-                CompletionStateChanged?.Invoke(_assignment, false);
-                return false;
+                AssignmentItemCompleted?.Invoke(_assignment, _assignment.Items[_currentItemIndex].Id, false);
+                return;
             }
 
             // Проверка на завершение всех элементов
-            if (_currentItemIndex != _assignment.Items.Count)
+            if (_currentItemIndex == _assignment.Items.Count)
             {
-                CompletionStateChanged?.Invoke(_assignment, false);
-                return false;
+                AssignmentCompleted?.Invoke(_assignment, true);
             }
-
-            LoadCurrentItem();
-            CompletionStateChanged?.Invoke(_assignment, true);
-            return true;
+            else
+            {
+                AssignmentItemCompleted?.Invoke(_assignment, _assignment.Items[_currentItemIndex].Id, true);
+                LoadNextItem();
+            }
         }
 
         private string GetUserArrangedPhrase(BuildingItemViewControl buildingItemViewControl)
@@ -79,6 +73,11 @@ namespace Shared.Controls.Assignments
             }
 
             return string.Join(" ", words);
+        }
+
+        public void Retry()
+        {
+            throw new NotImplementedException();
         }
     }
 }
