@@ -44,6 +44,12 @@
                 VerticalAlignment="Center" 
                 Style="{StaticResource ControlButton}" />
 
+        <Image  x:Name="btnNextAssignment"
+                Source="pack://application:,,,/Shared;component/Images/Buttons/next.png" 
+                MouseUp="btnNextAssignment_MouseUp"
+                VerticalAlignment="Center" 
+                Style="{StaticResource ControlButton}" />
+
         <Image  x:Name="btnCheck"
                 Source="pack://application:,,,/Shared;component/Images/Buttons/check.png" 
                 MouseUp="btnCheck_MouseUp"

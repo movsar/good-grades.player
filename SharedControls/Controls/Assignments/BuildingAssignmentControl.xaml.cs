@@ -31,14 +31,18 @@ namespace Shared.Controls.Assignments
         // Метод для загрузки текущего элемента
         private void LoadNextItem()
         {
+            this.IsEnabled = true;
+          
             var item = _assignment.Items[++_currentItemIndex];
             var buildingItemViewControl = new BuildingItemViewControl(item) { Tag = item.Text };
             
             spItems.Children.Clear();
             spItems.Children.Add(buildingItemViewControl);
         }
-        public void Check()
+        public void OnCheckClicked()
         {
+            this.IsEnabled = false;
+
             if (spItems.Children.Count == 0)
             {
                 return;
@@ -75,9 +79,9 @@ namespace Shared.Controls.Assignments
             return string.Join(" ", words);
         }
 
-        public void Retry()
+        public void OnRetryClicked()
         {
-            throw new NotImplementedException();
+            this.IsEnabled = true;
         }
     }
 }

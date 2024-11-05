@@ -10,7 +10,7 @@ namespace Shared.Interfaces
 
         // gnment, Assignment Item's Id, Success (true/false)
         event Action<IAssignment, string, bool> AssignmentItemCompleted;
-        void Check();
-        void Retry();
+        void OnCheckClicked();
+        void OnRetryClicked();
     }
 }

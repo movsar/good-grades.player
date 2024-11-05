@@ -105,12 +105,12 @@ namespace Shared.Controls.Assignments
             throw new NotImplementedException();
         }
 
-        void IAssignmentViewer.Check()
+        void IAssignmentViewer.OnCheckClicked()
         {
             throw new NotImplementedException();
         }
 
-        public void Retry()
+        public void OnRetryClicked()
         {
             throw new NotImplementedException();
         }
