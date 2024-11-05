@@ -55,5 +55,10 @@ namespace Shared.Controls.Assignments
 
             CompletionStateChanged?.Invoke(_assignment, areAnswersCorrect);
         }
+
+        public bool Check()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

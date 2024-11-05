@@ -152,28 +152,6 @@ namespace GGPlayer.Pages
             var taskIndex = int.Parse(clickedImage.Source.ToString().Split('/').Last().Replace("Task", "").Replace("Btn.png", "")) - 1;
             var assignment = Assignments[taskIndex];
 
-            UserControl uc = null!;
-
-            // В зависимости от типа задания открываем соответствующее окно
-            switch (assignment)
-            {
-                case MatchingAssignment:
-                    uc = new MatchingAssignmentControl((MatchingAssignment)assignment);
-                    break;
-                case TestingAssignment:
-                    uc = new TestingAssignmentControl((TestingAssignment)assignment);
-                    break;
-                case FillingAssignment:
-                    uc = new FillingAssignmentControl((FillingAssignment)assignment);
-                    break;
-                case SelectingAssignment:
-                    uc = new SelectionAssignmentControl((SelectingAssignment)assignment);
-                    break;
-                case BuildingAssignment:
-                    uc = new BuildingAssignmentControl((BuildingAssignment)assignment);
-                    break;
-            }
-
             // Когда окно задания закрывается, проверяем состояние выполнения
             //viewer.Closed += (s, args) =>
             //{
@@ -184,9 +162,10 @@ namespace GGPlayer.Pages
             //};
 
             // Подписываемся на событие изменения состояния выполнения
-            ((IAssignmentViewer)uc).CompletionStateChanged += AssignmentsPage_CompletionStateChanged;
+            
+            //((IAssignmentViewer)uc).CompletionStateChanged += AssignmentsPage_CompletionStateChanged;
 
-            _shell.CurrentFrame.Navigate(new AssignmentViewerPage(_shell, uc));
+            _shell.CurrentFrame.Navigate(new AssignmentViewerPage(_shell, assignment));
         }
 
         private void AssignmentsPage_CompletionStateChanged(IAssignment assignment, bool completionState)

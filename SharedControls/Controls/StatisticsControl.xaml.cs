@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace Shared.Controls.Assignments
+namespace Shared.Controls
 {
     public partial class StatisticsControl : UserControl
     {

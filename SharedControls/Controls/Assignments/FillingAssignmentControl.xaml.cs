@@ -93,5 +93,10 @@ namespace Shared.Controls.Assignments
             MessageBox.Show(Translations.GetValue("Correct"));
             CompletionStateChanged?.Invoke(_assignment, true);
         }
+
+        public bool Check()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

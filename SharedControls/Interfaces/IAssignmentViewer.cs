@@ -8,5 +8,6 @@ namespace Shared.Interfaces
         // This will be triggered whenever the user checks their  answers,
         // it will return true if it's correct and false if not
         public event Action<IAssignment, bool> CompletionStateChanged;
+        public bool Check();
     }
 }

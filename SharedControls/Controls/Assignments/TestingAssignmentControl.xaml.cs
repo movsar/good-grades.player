@@ -98,5 +98,10 @@ namespace Shared.Controls.Assignments
             }
             ShowCurrentQuestion();
         }
+
+        public bool Check()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -40,12 +40,12 @@ namespace Shared.Controls.Assignments
 
             _currentItemIndex++;
         }
-
-        private void btnCheck_Click(object sender, RoutedEventArgs e)
+        public bool Check()
         {
             if (spItems.Children.Count == 0)
             {
-                return;
+                CompletionStateChanged?.Invoke(_assignment, true);
+                return true;
             }
 
             var buildingItemViewControl = (BuildingItemViewControl)spItems.Children[0];
@@ -55,21 +55,19 @@ namespace Shared.Controls.Assignments
             if (arrangedPhrase != buildingItemViewControl.Tag.ToString())
             {
                 CompletionStateChanged?.Invoke(_assignment, false);
-                MessageBox.Show(Translations.GetValue("Incorrect"));
-                return;
+                return false;
             }
 
             // Проверка на завершение всех элементов
-            if (_currentItemIndex == _assignment.Items.Count)
+            if (_currentItemIndex != _assignment.Items.Count)
             {
-                MessageBox.Show(Translations.GetValue("AllAnswersAreCorrect"));
-                CompletionStateChanged?.Invoke(_assignment, true);
-                return;
+                CompletionStateChanged?.Invoke(_assignment, false);
+                return false;
             }
 
-            // Если все верно, показать уведомление и переход к следующему выражению
-            MessageBox.Show(Translations.GetValue("Correct"));
             LoadCurrentItem();
+            CompletionStateChanged?.Invoke(_assignment, true);
+            return true;
         }
 
         private string GetUserArrangedPhrase(BuildingItemViewControl buildingItemViewControl)

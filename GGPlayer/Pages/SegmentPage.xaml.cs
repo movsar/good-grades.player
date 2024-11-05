@@ -102,13 +102,13 @@ namespace GGPlayer.Pages
             }
             else if (segmentItem is Material material)
             {
-                var window = new Window()
+                var page = new Page()
                 {
                     Title = Title
                 };
 
-                window.Content = new MaterialViewerControl(material.Title, material.PdfData, material.Audio);
-                window.ShowDialog();
+                page.Content = new MaterialViewerControl(material.Title, material.PdfData, material.Audio);
+                _shell.CurrentFrame.Navigate(page);
             }
         }
 

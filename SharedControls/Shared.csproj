@@ -12,6 +12,12 @@
 	<ItemGroup>
 		<None Remove="Images\b1ow.png" />
 		<None Remove="Images\back.png" />
+		<None Remove="Images\Buttons\back.png" />
+		<None Remove="Images\Buttons\check.png" />
+		<None Remove="Images\Buttons\check_hover.png" />
+		<None Remove="Images\Buttons\next.png" />
+		<None Remove="Images\Buttons\previous.png" />
+		<None Remove="Images\Buttons\retry.png" />
 		<None Remove="Images\fon.jpg" />
 		<None Remove="Images\fon_segment.jpg" />
 		<None Remove="Images\guo.png" />
@@ -54,6 +60,12 @@
 	<ItemGroup>
 	  <Resource Include="Images\b1ow.png" />
 	  <Resource Include="Images\back.png" />
+	  <Resource Include="Images\Buttons\back.png" />
+	  <Resource Include="Images\Buttons\check.png" />
+	  <Resource Include="Images\Buttons\check_hover.png" />
+	  <Resource Include="Images\Buttons\next.png" />
+	  <Resource Include="Images\Buttons\previous.png" />
+	  <Resource Include="Images\Buttons\retry.png" />
 	  <Resource Include="Images\fon.jpg" />
 	  <Resource Include="Images\fon_segment.jpg" />
 	  <Resource Include="Images\guo.png" />
