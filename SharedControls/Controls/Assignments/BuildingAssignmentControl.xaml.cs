@@ -57,7 +57,7 @@ namespace Shared.Controls.Assignments
             }
 
             // Проверка на завершение всех элементов
-            if (_currentItemIndex == _assignment.Items.Count)
+            if (_currentItemIndex == _assignment.Items.Count - 1)
             {
                 AssignmentCompleted?.Invoke(_assignment, true);
             }
