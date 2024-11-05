@@ -153,42 +153,41 @@ namespace GGPlayer.Pages
             var taskIndex = int.Parse(clickedImage.Source.ToString().Split('/').Last().Replace("Task", "").Replace("Btn.png", "")) - 1;
             var assignment = Assignments[taskIndex];
 
-            Window viewer = null!;
+            UserControl uc = null!;
 
             // В зависимости от типа задания открываем соответствующее окно
             switch (assignment)
             {
                 case MatchingAssignment:
-                    viewer = new MatchingViewer((MatchingAssignment)assignment);
+                    uc = new MatchingAssignmentControl((MatchingAssignment)assignment);
                     break;
                 case TestingAssignment:
-                    viewer = new TestingViewer((TestingAssignment)assignment);
+                    uc = new TestingAssignmentControl((TestingAssignment)assignment);
                     break;
                 case FillingAssignment:
-                    viewer = new FillingViewer((FillingAssignment)assignment);
+                    uc = new FillingAssignmentControl((FillingAssignment)assignment);
                     break;
                 case SelectingAssignment:
-                    var uc = new SelectionAssignmentControl((SelectingAssignment)assignment);
-                    _shell.CurrentFrame.Navigate(new AssignmentViewerPage(_shell, uc));
+                    uc = new SelectionAssignmentControl((SelectingAssignment)assignment);
                     break;
                 case BuildingAssignment:
-                    viewer = new BuildingViewer((BuildingAssignment)assignment);
+                    uc = new BuildingAssignmentControl((BuildingAssignment)assignment);
                     break;
             }
 
             // Когда окно задания закрывается, проверяем состояние выполнения
-            viewer.Closed += (s, args) =>
-            {
-                if (completedAssignments.Count == Assignments.Count)
-                {
-                    MessageBox.Show("ХӀокху декъера дерриг тӀедахкарш кхочушдинаахь!");
-                }
-            };
+            //viewer.Closed += (s, args) =>
+            //{
+            //    if (completedAssignments.Count == Assignments.Count)
+            //    {
+            //        MessageBox.Show("ХӀокху декъера дерриг тӀедахкарш кхочушдинаахь!");
+            //    }
+            //};
 
             // Подписываемся на событие изменения состояния выполнения
-            ((IAssignmentViewer)viewer).CompletionStateChanged += AssignmentsPage_CompletionStateChanged;
+            ((IAssignmentViewer)uc).CompletionStateChanged += AssignmentsPage_CompletionStateChanged;
 
-            viewer.ShowDialog();
+            _shell.CurrentFrame.Navigate(new AssignmentViewerPage(_shell, uc));
         }
 
         private void AssignmentsPage_CompletionStateChanged(IAssignment assignment, bool completionState)

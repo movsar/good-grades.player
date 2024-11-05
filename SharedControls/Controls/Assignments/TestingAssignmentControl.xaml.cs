@@ -1,18 +1,17 @@
 ﻿using Data.Entities;
-using Data.Entities.TaskItems;
 using Data.Interfaces;
-using Shared.Controls;
 using Shared.Interfaces;
 using Shared.Services;
-using Shared;
+using Shared.Viewers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 
-namespace Shared.Viewers
+namespace Shared.Controls.Assignments
 {
-    public partial class TestingViewer : Window, IAssignmentViewer
+    public partial class TestingAssignmentControl : UserControl, IAssignmentViewer
     {
         private readonly TestingAssignment _assignment;
         private int _currentQuestionIndex;
@@ -21,7 +20,7 @@ namespace Shared.Viewers
 
         public event Action<IAssignment, bool> CompletionStateChanged;
 
-        public TestingViewer(TestingAssignment testingTask)
+        public TestingAssignmentControl(TestingAssignment testingTask)
         {
             InitializeComponent();
             DataContext = this;
@@ -52,16 +51,16 @@ namespace Shared.Viewers
 
             _currentQuestionIndex++;
 
-                if (_currentQuestionIndex < _assignment.Questions.Count)
-                {
-                    ShowCurrentQuestion();
-                }
-                else
-                {
-                    ShowStatistics();
-                }
-            
-            
+            if (_currentQuestionIndex < _assignment.Questions.Count)
+            {
+                ShowCurrentQuestion();
+            }
+            else
+            {
+                ShowStatistics();
+            }
+
+
         }
 
         private void ShowStatistics()
@@ -101,4 +100,5 @@ namespace Shared.Viewers
             ShowCurrentQuestion();
         }
     }
+}
 }

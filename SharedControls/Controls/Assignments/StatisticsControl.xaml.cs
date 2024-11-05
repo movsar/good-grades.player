@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Controls;
 
-namespace Shared.Viewers
+namespace Shared.Controls.Assignments
 {
-    public partial class StatisticsViewer : Window
+    public partial class StatisticsControl : UserControl
     {
         public event Action<bool> AssignmentCompleted;
-        public StatisticsViewer(int correctAnswers, int incorrectAnswers)
+        public StatisticsControl(int correctAnswers, int incorrectAnswers)
         {
             InitializeComponent();
 
@@ -25,15 +26,15 @@ namespace Shared.Viewers
 
         private void btnRetry_Click(object sender, RoutedEventArgs e)
         {
-            DialogResult = true;
-            this.Close();
+            //DialogResult = true;
+            //this.Close();
         }
 
         private void btnNext_Click(object sender, RoutedEventArgs e)
         {
             AssignmentCompleted?.Invoke(true); // Уведомляем о завершении, если все ответы правильные
-            this.DialogResult = true; // Закрываем окно с результатом
-            this.Close();
+            //this.DialogResult = true; // Закрываем окно с результатом
+            //this.Close();
         }
     }
 }

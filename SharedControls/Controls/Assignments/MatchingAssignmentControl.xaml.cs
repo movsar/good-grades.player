@@ -2,21 +2,28 @@
 using Data.Interfaces;
 using Shared.Interfaces;
 using Shared.Models;
-using Shared;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
 
-namespace Shared.Viewers
+namespace Shared.Controls.Assignments
 {
-    // Defines a MatchingViewer class as a specialized window for displaying matching tasks.
-    public partial class MatchingViewer : Window, IAssignmentViewer
+    /// <summary>
+    /// Interaction logic for MatchingAssignmentControl.xaml
+    /// </summary>
+    public partial class MatchingAssignmentControl : UserControl, IAssignmentViewer
     {
         public string TaskTitle { get; }
 
@@ -30,7 +37,7 @@ namespace Shared.Viewers
 
         #region Properties, Fields and Constructors
         // Constructor initializes the MatchingViewer with a specific assignment.
-        public MatchingViewer(MatchingAssignment assignment)
+        public MatchingAssignmentControl(MatchingAssignment assignment)
         {
             _assignment = assignment;
             TaskTitle = _assignment.Title;
@@ -65,10 +72,12 @@ namespace Shared.Viewers
 
                 int pairIndex = i;
                 var imageUiElement = new Image { Source = image, Name = $"Pair_{pairIndex}" };
-                var textBlockUiElement = new TextBlock { Text = text, 
+                var textBlockUiElement = new TextBlock
+                {
+                    Text = text,
                     Name = $"Pair_{pairIndex}",
                     FontSize = 26
-                
+
                 };
 
                 gridItems.Add(new GridItem

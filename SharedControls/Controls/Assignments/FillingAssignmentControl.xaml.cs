@@ -1,20 +1,19 @@
 ﻿using Data.Entities;
-using System.Linq;
+using Data.Interfaces;
+using Shared.Interfaces;
 using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using Shared;
-using Shared.Interfaces;
-using Data.Interfaces;
 
-namespace Shared.Viewers
+namespace Shared.Controls.Assignments
 {
-    public partial class FillingViewer : Window, IAssignmentViewer
+    public partial class FillingAssignmentControl : UserControl, IAssignmentViewer
     {
         private readonly FillingAssignment _assignment;
 
         public string TaskTitle { get; }
-        public FillingViewer(FillingAssignment fillingTask)
+        public FillingAssignmentControl(FillingAssignment fillingTask)
         {
             InitializeComponent();
             DataContext = this;
@@ -51,8 +50,10 @@ namespace Shared.Viewers
                     {
                         // Add editable text as TextBox
                         var options = parts[i].Split('|').Select(o => o.ToLower().Trim()).ToArray();
-                        
-                        var textBox = new TextBox { Tag = options, 
+
+                        var textBox = new TextBox
+                        {
+                            Tag = options,
                             Width = options[0].Length * 14,
                             FontSize = 24
                         };

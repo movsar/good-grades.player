@@ -1,16 +1,14 @@
 ﻿using Data.Entities;
 using Data.Interfaces;
-using Shared.Controls;
 using Shared.Interfaces;
-using Shared;
 using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace Shared.Viewers
+namespace Shared.Controls.Assignments
 {
-    public partial class BuildingViewer : Window, IAssignmentViewer
+    public partial class BuildingAssignmentControl : UserControl, IAssignmentViewer
     {
         public event Action<IAssignment, bool> CompletionStateChanged;
 
@@ -19,7 +17,7 @@ namespace Shared.Viewers
 
         public string TaskTitle { get; }
 
-        public BuildingViewer(BuildingAssignment assignment)
+        public BuildingAssignmentControl(BuildingAssignment assignment)
         {
             InitializeComponent();
             DataContext = this;
@@ -39,7 +37,7 @@ namespace Shared.Viewers
             var item = _assignment.Items[_currentItemIndex];
             var buildingItemViewControl = new BuildingItemViewControl(item) { Tag = item.Text };
             spItems.Children.Add(buildingItemViewControl);
-            
+
             _currentItemIndex++;
         }
 
@@ -66,7 +64,6 @@ namespace Shared.Viewers
             {
                 MessageBox.Show(Translations.GetValue("AllAnswersAreCorrect"));
                 CompletionStateChanged?.Invoke(_assignment, true);
-                this.Close();
                 return;
             }
 
