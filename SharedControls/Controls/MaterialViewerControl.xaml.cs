@@ -1,17 +1,19 @@
-﻿using Microsoft.Web.WebView2.Core;
-using Plugin.SimpleAudioPlayer;
+﻿using Plugin.SimpleAudioPlayer;
 using Serilog;
 using System;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Shapes;
+using Path = System.IO.Path;
 
-namespace Shared.Viewers
+namespace Shared.Controls
 {
-    public partial class MaterialViewer : Window
+    public partial class MaterialViewerControl : UserControl
     {
+
         private string _pdfBase64;
         private bool _isWebViewReady = false;
 
@@ -21,19 +23,15 @@ namespace Shared.Viewers
             PurgeCache();
             InitializeComponent();
         }
-        public MaterialViewer(string title, byte[] data)
+        public MaterialViewerControl(string title, byte[] data)
         {
-            Title = title;
-
             SharedInitialization();
             webView.LoadPdfAsync(data);
         }
 
-        public MaterialViewer(string title, byte[] data, byte[]? audio)
+        public MaterialViewerControl(string title, byte[] data, byte[]? audio)
         {
             SharedInitialization();
-
-            Title = title;
 
             if (audio != null)
             {
@@ -63,12 +61,12 @@ namespace Shared.Viewers
         {
             CrossSimpleAudioPlayer.Current.Play();
         }
-        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
-        {
-            CrossSimpleAudioPlayer.Current.Stop();
-            CrossSimpleAudioPlayer.Current.Dispose();
-            base.OnClosing(e);
-        }
+        //protected void OnClose()
+        //{
+        //    CrossSimpleAudioPlayer.Current.Stop();
+        //    CrossSimpleAudioPlayer.Current.Dispose();
+        //    base.OnClosing(e);
+        //}
         #endregion
 
         private void PurgeCache()

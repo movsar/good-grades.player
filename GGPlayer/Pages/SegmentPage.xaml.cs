@@ -2,9 +2,10 @@
 using Data.Entities;
 using Data.Interfaces;
 using Shared.Services;
-using Shared.Viewers;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Shared.Controls;
+using System.Windows;
 namespace GGPlayer.Pages
 {
     public partial class SegmentPage : Page
@@ -101,8 +102,13 @@ namespace GGPlayer.Pages
             }
             else if (segmentItem is Material material)
             {
-                var materialPresenter = new MaterialViewer(material.Title, material.PdfData, material.Audio);
-                materialPresenter.ShowDialog();
+                var window = new Window()
+                {
+                    Title = Title
+                };
+
+                window.Content = new MaterialViewerControl(material.Title, material.PdfData, material.Audio);
+                window.ShowDialog();
             }
         }
 

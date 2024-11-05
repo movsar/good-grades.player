@@ -12,7 +12,6 @@ using Data.Interfaces;
 using GGPlayer.Pages.Assignments;
 using Shared.Controls.Assignments;
 using Shared.Interfaces;
-using Shared.Viewers;
 
 namespace GGPlayer.Pages
 {

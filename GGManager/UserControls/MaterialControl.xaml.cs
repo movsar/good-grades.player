@@ -3,7 +3,6 @@ using GGManager.Services;
 using GGManager.Stores;
 using Data.Entities;
 using Microsoft.Extensions.DependencyInjection;
-using Shared.Viewers;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -12,6 +11,7 @@ using System.Windows.Controls;
 using Shared;
 using Shared.Services;
 using System.Windows.Input;
+using Shared.Controls;
 
 namespace GGManager.UserControls
 {
@@ -188,8 +188,13 @@ namespace GGManager.UserControls
 
         private void btnPreview_Click(object sender, RoutedEventArgs e)
         {
-            var materialPreviewWindow = new MaterialViewer(Title, PdfData, Audio);
-            materialPreviewWindow.ShowDialog();
+            var window = new Window()
+            {
+                Title = Title
+            };
+
+            window.Content = new MaterialViewerControl(Title, PdfData, Audio);
+            window.ShowDialog();
         }
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
