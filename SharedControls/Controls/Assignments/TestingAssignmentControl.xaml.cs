@@ -2,7 +2,6 @@
 using Data.Interfaces;
 using Shared.Interfaces;
 using Shared.Services;
-using Shared.Viewers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -69,25 +68,25 @@ namespace Shared.Controls.Assignments
                 QuestionService.CheckUserAnswers(qvc.Question, qvc.SelectedOptionIds));
             int incorrectAnswers = _assignment.Questions.Count - correctAnswers;
 
-            var statisticsViewer = new StatisticsViewer(correctAnswers, incorrectAnswers);
-            statisticsViewer.AssignmentCompleted += (isComplete) =>
-            {
-                if (isComplete)
-                {
-                    CompletionStateChanged?.Invoke(_assignment, true);
-                }
-            };
+            //var statisticsViewer = new StatisticsViewer(correctAnswers, incorrectAnswers);
+            //statisticsViewer.AssignmentCompleted += (isComplete) =>
+            //{
+            //    if (isComplete)
+            //    {
+            //        CompletionStateChanged?.Invoke(_assignment, true);
+            //    }
+            //};
 
-            statisticsViewer.ShowDialog();
+            //statisticsViewer.ShowDialog();
 
-            if (incorrectAnswers > 0)
-            {
-                RestartTest();
-            }
-            else
-            {
-                this.Close();
-            }
+            //if (incorrectAnswers > 0)
+            //{
+            //    RestartTest();
+            //}
+            //else
+            //{
+            //    this.Close();
+            //}
         }
 
         private void RestartTest()
@@ -100,5 +99,4 @@ namespace Shared.Controls.Assignments
             ShowCurrentQuestion();
         }
     }
-}
 }

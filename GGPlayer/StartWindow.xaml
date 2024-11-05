@@ -40,7 +40,7 @@
 
                     <MenuItem x:Name="mnuSetLanguageRussian" Header="{x:Static shared:GgLocalization.Russian}" 
                         Click="mnuSetLanguageRussian_Click"/>
-                    </MenuItem>
+                </MenuItem>
 
                 <MenuItem Header="{x:Static shared:GgLocalization.Update}" Click="mnuCheckUpdates_Click">
                     <MenuItem.Icon>

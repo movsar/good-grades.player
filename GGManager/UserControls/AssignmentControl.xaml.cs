@@ -92,7 +92,7 @@ namespace GGManager.UserControls
                 btnPreview.Visibility = Visibility.Collapsed;
             }
         }
-       
+
         private void btnSetData_Click(object sender, RoutedEventArgs e)
         {
             IAssignment taskAssignment;
@@ -121,7 +121,7 @@ namespace GGManager.UserControls
                 ContentStore.RaiseItemAddedEvent(taskAssignment);
             }
         }
-        
+
         private void btnPreview_Click(object sender, RoutedEventArgs e)
         {
             Window viewer = new Window()
@@ -134,15 +134,15 @@ namespace GGManager.UserControls
             switch (_taskType)
             {
                 case AssignmentType.Matching:
-                    viewer = new MatchingViewer((MatchingAssignment)_taskAssignment);
+                    viewer.Content = new MatchingAssignmentControl((MatchingAssignment)_taskAssignment);
                     break;
 
                 case AssignmentType.Test:
-                    viewer = new TestingViewer((TestingAssignment)_taskAssignment);
+                    viewer.Content = new TestingAssignmentControl((TestingAssignment)_taskAssignment);
                     break;
 
                 case AssignmentType.Filling:
-                    viewer = new FillingViewer((FillingAssignment)_taskAssignment);
+                    viewer.Content = new FillingAssignmentControl((FillingAssignment)_taskAssignment);
                     break;
 
                 case AssignmentType.Selecting:
@@ -150,7 +150,7 @@ namespace GGManager.UserControls
                     break;
 
                 case AssignmentType.Building:
-                    viewer = new BuildingViewer((BuildingAssignment)_taskAssignment);
+                    viewer.Content = new BuildingAssignmentControl((BuildingAssignment)_taskAssignment);
                     break;
             }
 
