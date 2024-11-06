@@ -32,7 +32,7 @@ namespace Shared.Controls.Assignments
         // Метод для загрузки текущего элемента
         private void LoadNextItem()
         {
-            this.IsEnabled = true;
+            IsEnabled = true;
 
             var item = _assignment.Items[++_currentItemIndex];
             var buildingItemViewControl = new BuildingItemViewControl(item) { Tag = item.Text };
@@ -84,7 +84,6 @@ namespace Shared.Controls.Assignments
             }
 
             LoadNextItem();
-            IsEnabled = true;
         }
     }
 }
