@@ -10,6 +10,7 @@ using System.Windows.Media.Imaging;
 using Data.Entities;
 using Data.Interfaces;
 using GGPlayer.Pages.Assignments;
+using Serilog.Parsing;
 using Shared.Controls.Assignments;
 using Shared.Interfaces;
 
@@ -33,6 +34,10 @@ namespace GGPlayer.Pages
             GenerateAssignmentButtons();
 
             _shell = shell;
+        }
+
+        private void IAssignmentViewer_AssignmentCompleted(IAssignment arg1, bool arg2)
+        {
         }
 
         private void GenerateAssignmentButtons()
@@ -161,20 +166,18 @@ namespace GGPlayer.Pages
             //    }
             //};
 
-            // Подписываемся на событие изменения состояния выполнения
-            
-            //((IAssignmentViewer)uc).CompletionStateChanged += AssignmentsPage_CompletionStateChanged;
-
-            _shell.CurrentFrame.Navigate(new AssignmentViewerPage(_shell, assignment));
+            NavigateToAssignment(assignment);
         }
 
-        private void AssignmentsPage_CompletionStateChanged(IAssignment assignment, bool completionState)
+        private void NavigateToAssignment(IAssignment assignment)
         {
-            if (!completionState)
-            {
-                return;
-            }
+            var viewerPage = new AssignmentViewerPage(_shell, assignment);
+            viewerPage.AssignmentCompleted += OnAssignmentCompleted;
+            _shell.CurrentFrame.Navigate(viewerPage);
+        }
 
+        private void OnAssignmentCompleted(IAssignment assignment, bool success)
+        {
             // Находим индекс задания в списке
             var assignmentIndex = Assignments.IndexOf(assignment);
             if (assignmentIndex == -1)
@@ -189,15 +192,27 @@ namespace GGPlayer.Pages
             }
 
             // Находим изображение задания и перекрашиваем его границу в зеленый
+            SetAssignmentButtonState(assignment, true);
+
+            if (completedAssignments.Count == Assignments.Count)
+            {
+                return;
+            }
+
+            // Загрузка следующего задания
+            var nextAssignment = Assignments[assignmentIndex + 1];
+            NavigateToAssignment(nextAssignment);
+        }
+
+        private void SetAssignmentButtonState(IAssignment assignment, bool successfullyCompleted)
+        {
             var wrapPanel = ScrollViewerContainer.Content as WrapPanel;
             var image = FindAssignmentImage(assignment);
-
             if (image != null)
             {
                 // Изменяем цвет границы
-                ChangeBorderColor(assignment, true);
+                ChangeBorderColor(assignment, successfullyCompleted);
             }
-
         }
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -206,7 +221,5 @@ namespace GGPlayer.Pages
             ScrollViewerContainer.Content = null;
             GenerateAssignmentButtons();
         }
-
-
     }
 }

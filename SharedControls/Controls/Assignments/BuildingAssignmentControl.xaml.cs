@@ -9,11 +9,12 @@ namespace Shared.Controls.Assignments
 {
     public partial class BuildingAssignmentControl : UserControl, IAssignmentViewer
     {
-        public event Action<IAssignment, bool> AssignmentCompleted;
-        public event Action<IAssignment, string, bool> AssignmentItemCompleted;
 
         private readonly BuildingAssignment _assignment;
         private int _currentItemIndex = -1;
+
+        public event Action<IAssignment, bool> AssignmentCompleted;
+        public event Action<IAssignment, string, bool> AssignmentItemSubmitted;
 
         public string TaskTitle { get; }
 
@@ -32,40 +33,30 @@ namespace Shared.Controls.Assignments
         private void LoadNextItem()
         {
             this.IsEnabled = true;
-          
+
             var item = _assignment.Items[++_currentItemIndex];
             var buildingItemViewControl = new BuildingItemViewControl(item) { Tag = item.Text };
-            
+
             spItems.Children.Clear();
             spItems.Children.Add(buildingItemViewControl);
         }
         public void OnCheckClicked()
         {
-            this.IsEnabled = false;
-
             if (spItems.Children.Count == 0)
             {
                 return;
             }
 
+            // Get submission information
             var buildingItemViewControl = (BuildingItemViewControl)spItems.Children[0];
             var arrangedPhrase = GetUserArrangedPhrase(buildingItemViewControl);
-            if (arrangedPhrase != buildingItemViewControl.Tag.ToString())
-            {
-                AssignmentItemCompleted?.Invoke(_assignment, _assignment.Items[_currentItemIndex].Id, false);
-                return;
-            }
-
-            // Проверка на завершение всех элементов
-            if (_currentItemIndex == _assignment.Items.Count - 1)
-            {
-                AssignmentCompleted?.Invoke(_assignment, true);
-            }
-            else
-            {
-                AssignmentItemCompleted?.Invoke(_assignment, _assignment.Items[_currentItemIndex].Id, true);
-                LoadNextItem();
-            }
+            
+            // Check whether the submission was correct
+            var isItemSubmissionCorrect = (arrangedPhrase == buildingItemViewControl.Tag.ToString());
+            AssignmentItemSubmitted?.Invoke(_assignment, _assignment.Items[_currentItemIndex].Id, isItemSubmissionCorrect);
+            
+            // Block UI until the Next is clicked
+            IsEnabled = false;
         }
 
         private string GetUserArrangedPhrase(BuildingItemViewControl buildingItemViewControl)
@@ -81,7 +72,19 @@ namespace Shared.Controls.Assignments
 
         public void OnRetryClicked()
         {
-            this.IsEnabled = true;
+            IsEnabled = true;
+        }
+
+        public void OnNextClicked()
+        {
+            if (_currentItemIndex == _assignment.Items.Count - 1)
+            {
+                AssignmentCompleted?.Invoke(_assignment, true);
+                return;
+            }
+
+            LoadNextItem();
+            IsEnabled = true;
         }
     }
 }

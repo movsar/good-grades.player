@@ -1,16 +1,19 @@
 ﻿using Data.Interfaces;
+using Shared.Models;
 using System;
 
 namespace Shared.Interfaces
 {
+
     public interface IAssignmentViewer
     {
         // Assignment, Success (true/false)
         event Action<IAssignment, bool> AssignmentCompleted;
 
-        // gnment, Assignment Item's Id, Success (true/false)
-        event Action<IAssignment, string, bool> AssignmentItemCompleted;
+        // Assignment, Assignment Item's Id, Success (true/false)
+        event Action<IAssignment, string, bool> AssignmentItemSubmitted;
         void OnCheckClicked();
         void OnRetryClicked();
+        void OnNextClicked();
     }
 }

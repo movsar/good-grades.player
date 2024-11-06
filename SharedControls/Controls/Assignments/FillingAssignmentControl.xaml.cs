@@ -24,7 +24,7 @@ namespace Shared.Controls.Assignments
         }
 
         public event Action<IAssignment, bool> AssignmentCompleted;
-        public event Action<IAssignment, string, bool> AssignmentItemCompleted;
+        public event Action<IAssignment, string, bool> AssignmentItemSubmitted;
 
         private void GenerateItemsUI()
         {
@@ -106,6 +106,11 @@ namespace Shared.Controls.Assignments
         }
 
         public void OnRetryClicked()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnNextClicked()
         {
             throw new NotImplementedException();
         }

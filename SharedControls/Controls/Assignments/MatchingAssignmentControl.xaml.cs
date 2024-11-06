@@ -28,7 +28,7 @@ namespace Shared.Controls.Assignments
 
         // An event that signals when the completion state of the assignment changes.
         public event Action<IAssignment, bool> AssignmentCompleted;
-        public event Action<IAssignment, string, bool> AssignmentItemCompleted;
+        public event Action<IAssignment, string, bool> AssignmentItemSubmitted;
 
         #region Properties, Fields and Constructors
         // Constructor initializes the MatchingViewer with a specific assignment.
@@ -292,6 +292,11 @@ namespace Shared.Controls.Assignments
         }
 
         public void OnRetryClicked()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnNextClicked()
         {
             throw new NotImplementedException();
         }
