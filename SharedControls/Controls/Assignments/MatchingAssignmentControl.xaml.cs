@@ -79,7 +79,7 @@ namespace Shared.Controls.Assignments
                 {
                     Text = text,
                     Name = $"Pair_{pairIndex}",
-                    FontSize = 26
+                    FontSize = 20
                 };
 
                 gridItems.Add(new GridItem

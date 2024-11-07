@@ -38,8 +38,11 @@
 		<None Remove="Images\reading.png" />
 		<None Remove="Images\Start_btn.png" />
 		<None Remove="Images\Stop.png" />
+		<None Remove="Images\task_background.png" />
+		<None Remove="Images\task_bottom_ornament.png" />
 		<None Remove="Images\task_result_msg_correct.png" />
 		<None Remove="Images\task_result_msg_incorrect.png" />
+		<None Remove="Images\task_top_ornament.png" />
 		<None Remove="Images\testing.png" />
 	</ItemGroup>
 
@@ -88,8 +91,11 @@
 	  <Resource Include="Images\reading.png" />
 	  <Resource Include="Images\Start_btn.png" />
 	  <Resource Include="Images\Stop.png" />
+	  <Resource Include="Images\task_background.png" />
+	  <Resource Include="Images\task_bottom_ornament.png" />
 	  <Resource Include="Images\task_result_msg_correct.png" />
 	  <Resource Include="Images\task_result_msg_incorrect.png" />
+	  <Resource Include="Images\task_top_ornament.png" />
 	  <Resource Include="Images\testing.png" />
 	</ItemGroup>
 

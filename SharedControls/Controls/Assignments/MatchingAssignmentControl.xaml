@@ -20,11 +20,14 @@
                         <Setter Property="BorderThickness" Value="2"/>
                         <Setter Property="Background" Value="White"/>
                         <Setter Property="Margin" Value="5"/>
+                        <Setter Property="Height" Value="200"/>
+                        <Setter Property="Width" Value="200"/>
                     </Style>
 
                     <!-- Style for TextBlocks to make the text more readable and playful -->
                     <Style TargetType="TextBlock">
-                        <Setter Property="FontSize" Value="16"/>
+                        <Setter Property="FontSize" Value="18"/>
+                        <Setter Property="FontWeight" Value="SemiBold"/>
                         <Setter Property="FontFamily" Value="Comic Sans MS"/>
                         <Setter Property="TextWrapping" Value="Wrap"/>
                         <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -34,14 +37,15 @@
 
                 <Grid.RowDefinitions>
                     <!-- Row for images -->
-                    <RowDefinition Height="300" />
+                    <RowDefinition />
                     <!-- Row for names -->
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <!-- Columns will be added dynamically in the code-behind -->
                 </Grid.ColumnDefinitions>
             </Grid>
+            
         </ScrollViewer>
     </StackPanel>
 </UserControl>
