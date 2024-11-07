@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace Shared.Controls.Assignments
 {
@@ -28,47 +29,63 @@ namespace Shared.Controls.Assignments
 
         private void GenerateItemsUI()
         {
+            spItems.Children.Clear();
+
             foreach (var item in _assignment.Items)
             {
-                // Create a horizontal StackPanel for each item
-                var panel = new StackPanel { Orientation = Orientation.Horizontal };
+                var panel = new StackPanel
+                {
+                    Orientation = Orientation.Horizontal,
+                    MaxWidth = 500,
+                    HorizontalAlignment = HorizontalAlignment.Center
+                };
 
-                // Split the text into parts, separating static text from placeholders
+                // Разделяем текст на части для добавления меток и полей для ввода
                 string[] parts = item.Text.Split(new[] { '{', '}' }, StringSplitOptions.RemoveEmptyEntries);
 
                 for (int i = 0; i < parts.Length; i++)
                 {
                     if (i % 2 == 0)
                     {
-                        // Add static text as TextBlock
-                        panel.Children.Add(new Label
+                        // Статический текст как Label
+                        var label = new Label
                         {
                             Content = parts[i],
-                            Style = (Style)FindResource("FillInLabelStyle")
-                        });
+                            Style = (Style)FindResource("FillInLabelStyle"),
+                            FontSize = 14,
+                            HorizontalAlignment = HorizontalAlignment.Center
+                        };
+                        panel.Children.Add(label);
                     }
                     else
                     {
-                        // Add editable text as TextBox
+                        // Поле для ввода без фона, с подчеркиванием
                         var options = parts[i].Split('|').Select(o => o.ToLower().Trim()).ToArray();
-
                         var textBox = new TextBox
                         {
                             Tag = options,
-                            Width = options[0].Length * 14,
-                            FontSize = 24
+                            Width = Math.Min(150, options[0].Length * 8),
+                            FontSize = 14,
+                            BorderBrush = Brushes.Gray,
+                            BorderThickness = new Thickness(0, 0, 0, 1), // Подчеркивание
+                            Background = Brushes.Transparent, // Прозрачный фон
+                            HorizontalAlignment = HorizontalAlignment.Center
                         };
                         textBox.Style = (Style)FindResource("FillInTextBoxStyle");
+
                         panel.Children.Add(textBox);
                     }
                 }
-
-                // Add the constructed panel to the StackPanel in the window
                 spItems.Children.Add(panel);
             }
         }
 
-        private void btnCheck_Click(object sender, RoutedEventArgs e)
+        public bool Check()
+        {
+            throw new NotImplementedException();
+        }
+
+        void IAssignmentViewer.OnCheckClicked()
         {
             foreach (StackPanel panel in spItems.Children)
             {
@@ -93,16 +110,6 @@ namespace Shared.Controls.Assignments
             // Show a message if all inputs are correct
             MessageBox.Show(Translations.GetValue("Correct"));
             AssignmentCompleted?.Invoke(_assignment, true);
-        }
-
-        public bool Check()
-        {
-            throw new NotImplementedException();
-        }
-
-        void IAssignmentViewer.OnCheckClicked()
-        {
-            throw new NotImplementedException();
         }
 
         public void OnRetryClicked()
