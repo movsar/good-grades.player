@@ -42,18 +42,21 @@
                 Source="pack://application:,,,/Shared;component/Images/Buttons/retry.png" 
                 MouseUp="btnRetry_MouseUp"
                 VerticalAlignment="Center" 
+                Panel.ZIndex="102"
                 Style="{StaticResource ControlButton}" />
 
         <Image  x:Name="btnNextAssignment"
                 Source="pack://application:,,,/Shared;component/Images/Buttons/next.png" 
                 MouseUp="btnNextAssignment_MouseUp"
                 VerticalAlignment="Center" 
+                Panel.ZIndex="103"
                 Style="{StaticResource ControlButton}" />
 
         <Image  x:Name="btnCheck"
                 Source="pack://application:,,,/Shared;component/Images/Buttons/check.png" 
                 MouseUp="btnCheck_MouseUp"
                 VerticalAlignment="Bottom"
+                Panel.ZIndex="104"
                 Style="{StaticResource ControlButton}" />
 
         <StackPanel x:Name="ucRoot"/>

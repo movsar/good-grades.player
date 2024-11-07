@@ -32,8 +32,6 @@ namespace Shared.Controls.Assignments
         // Метод для загрузки текущего элемента
         private void LoadNextItem()
         {
-            IsEnabled = true;
-
             var item = _assignment.Items[++_currentItemIndex];
             var buildingItemViewControl = new BuildingItemViewControl(item) { Tag = item.Text };
 
@@ -54,7 +52,12 @@ namespace Shared.Controls.Assignments
             // Check whether the submission was correct
             var isItemSubmissionCorrect = (arrangedPhrase == buildingItemViewControl.Tag.ToString());
             AssignmentItemSubmitted?.Invoke(_assignment, _assignment.Items[_currentItemIndex].Id, isItemSubmissionCorrect);
-            
+
+            if (_currentItemIndex == _assignment.Items.Count - 1)
+            {
+                AssignmentCompleted?.Invoke(_assignment, true);
+            }
+
             // Block UI until the Next is clicked
             IsEnabled = false;
         }
@@ -77,12 +80,8 @@ namespace Shared.Controls.Assignments
 
         public void OnNextClicked()
         {
-            if (_currentItemIndex == _assignment.Items.Count - 1)
-            {
-                AssignmentCompleted?.Invoke(_assignment, true);
-                return;
-            }
-
+            IsEnabled = true;
+        
             LoadNextItem();
         }
     }
