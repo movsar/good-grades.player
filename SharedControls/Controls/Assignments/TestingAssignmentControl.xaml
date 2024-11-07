@@ -20,23 +20,6 @@
                     <!-- Здесь будет динамически добавленный QuestionViewControl -->
                 </StackPanel>
             </ScrollViewer>
-
-            <Button 
-                 Content="Проверить" 
-                 Click="btnOk_Click"
-                 FontSize="30"
-                 HorizontalAlignment="Center" 
-                 VerticalAlignment="Bottom" 
-                 Width="700" 
-                 Height="100" 
-                 Margin="0 200 0 100"
-                 Background="Gray" 
-                 Foreground="White"
-                 BorderBrush="#FF357ABD"
-                 BorderThickness="2"
-                 FontWeight="SemiBold"
-                 Padding="10">
-            </Button>
         </Grid>
     </Grid>
 </UserControl>

@@ -42,26 +42,7 @@ namespace Shared.Controls.Assignments
         {
             spQuestions.Children.Clear();
             spQuestions.Children.Add(_questionViewControls[_currentQuestionIndex]);
-        }
-
-        private void btnOk_Click(object sender, RoutedEventArgs e)
-        {
-            var questionViewControl = _questionViewControls[_currentQuestionIndex];
-            var selections = questionViewControl.SelectedOptionIds;
-
-            _currentQuestionIndex++;
-
-            if (_currentQuestionIndex < _assignment.Questions.Count)
-            {
-                ShowCurrentQuestion();
-            }
-            else
-            {
-                ShowStatistics();
-            }
-
-
-        }
+        }            
 
         private void ShowStatistics()
         {
@@ -99,15 +80,21 @@ namespace Shared.Controls.Assignments
             }
             ShowCurrentQuestion();
         }
-
-        public bool Check()
+        public void OnCheckClicked()
         {
-            throw new NotImplementedException();
-        }
+            var questionViewControl = _questionViewControls[_currentQuestionIndex];
+            var selections = questionViewControl.SelectedOptionIds;
 
-        void IAssignmentViewer.OnCheckClicked()
-        {
-            throw new NotImplementedException();
+            _currentQuestionIndex++;
+
+            if (_currentQuestionIndex < _assignment.Questions.Count)
+            {
+                ShowCurrentQuestion();
+            }
+            else
+            {
+                ShowStatistics();
+            }
         }
 
         public void OnRetryClicked()
