@@ -15,22 +15,27 @@
             <Setter Property="Padding" Value="8,4,8,4"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="FontSize" Value="14"/>
             <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FontSize" Value="10"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border CornerRadius="12" 
-                                Background="#e0ef93"
+                                Background="#e0ef93"                                
                                 BorderBrush="#3b4405" 
                                 BorderThickness="2" >
 
-                            <ContentPresenter x:Name="contentPresenter" 
-                                      ContentTemplate="{TemplateBinding ContentTemplate}" 
-                                      Content="{TemplateBinding Content}" 
-                                      HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                      Margin="{TemplateBinding Padding}" />
+                            <TextBlock FontSize="{TemplateBinding FontSize}"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center">
+
+                                <ContentPresenter x:Name="contentPresenter" 
+                                          ContentTemplate="{TemplateBinding ContentTemplate}" 
+                                          Content="{TemplateBinding Content}" 
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          Margin="{TemplateBinding Padding}" />
+                            </TextBlock>
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
