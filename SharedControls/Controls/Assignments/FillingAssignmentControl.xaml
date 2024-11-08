@@ -37,38 +37,12 @@
         <!-- Viewbox для пропорционального масштабирования содержимого -->
         <Viewbox Stretch="Uniform">
             <Grid Width="600" Height="330">
-                <!--Верхний орнамент-->
-                <Image  Source="pack://application:,,,/Shared;component/Images/task_top_ornament.png"
-                    HorizontalAlignment="Stretch" VerticalAlignment="Top"
-                    Height = "40" Margin="5,0,5,0"/>
-
-                <!--Заголовок-->
-                <Border BorderThickness="4"
-                    CornerRadius="20"
-                    HorizontalAlignment="Stretch"
-                    BorderBrush="#ffc777"
-                    Background="White"
-                    VerticalAlignment="Top"
-                    Panel.ZIndex="1"
-                    Height="50" Margin="100,35,100,0">
-
-                    <TextBlock Text="{Binding TaskTitle}" 
-                           Style="{StaticResource LargeHeaderStyle}" 
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="Center"
-                           FontWeight="Normal"
-                           FontStyle="Normal"
-                           FontSize="12" />
-
+                <Image Style="{StaticResource TaskTopOrnamentStyle}" />
+                <Border Style="{StaticResource TaskTitleBorderStyle}" Panel.ZIndex="3">
+                    <TextBlock Text="{Binding TaskTitle}" Style="{StaticResource TaskTitleTextStyle}" />
                 </Border>
 
-                <!-- Полупрозрачный фон для текста -->
-                <Border BorderThickness="2"
-                    CornerRadius="20"
-                    BorderBrush="#538202"
-                    Background="AntiqueWhite"
-                    Opacity="0.7"
-                    Margin="50,60,50,30">
+                <Border Style="{StaticResource TaskContentStyle}">
 
                     <StackPanel x:Name="spItems"
                                 VerticalAlignment="Center"
@@ -76,13 +50,7 @@
                                 Margin="20,20,20,20"/>
                 </Border>
 
-                <!-- Нижний орнамент -->
-                <Image Source="pack://application:,,,/Shared;component/Images/task_bottom_ornament.png"
-                       HorizontalAlignment="Stretch"
-                       VerticalAlignment="Bottom"
-                       Height="40"
-                       Margin="25,0,25,0" />
-
+                <Image Style="{StaticResource TaskBottomOrnamentStyle}" />
             </Grid>
         </Viewbox>
     </Grid>

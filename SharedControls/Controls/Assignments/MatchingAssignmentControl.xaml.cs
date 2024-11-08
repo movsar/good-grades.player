@@ -57,7 +57,7 @@ namespace Shared.Controls.Assignments
             for (int i = 0; i < numberOfColumns; i++)
             {
                 gridMatchOptions.ColumnDefinitions.Add(
-                    new ColumnDefinition { Width = new GridLength(250, GridUnitType.Pixel) }
+                    new ColumnDefinition { Width = GridLength.Auto }
                 );
             }
 
@@ -74,7 +74,12 @@ namespace Shared.Controls.Assignments
                 var image = _matchingPairs.Values.ToList()[i];
 
                 int pairIndex = i;
-                var imageUiElement = new Image { Source = image, Name = $"Pair_{pairIndex}" };
+                
+                var imageUiElement = new Image { 
+                    Source = image, 
+                    Name = $"Pair_{pairIndex}" 
+                };
+
                 var textBlockUiElement = new TextBlock
                 {
                     Text = text,
