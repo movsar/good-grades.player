@@ -89,19 +89,6 @@
         </Setter>
     </Style>
 
-    <Style x:Key="BuilderItemButtonStyle" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-        <Setter Property="BorderThickness" Value="0"/>
-
-        <Setter Property="Background" Value="AliceBlue"/>
-        <Setter Property="BorderBrush" Value="Green"/>
-        <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="Margin" Value="0,0,10,0"/>
-        <Setter Property="Padding" Value="8,4,8,4"/>
-
-        <Setter Property="FontSize" Value="24"/>
-        <Setter Property="Cursor" Value="Hand"/>
-    </Style>
-
     <Style x:Key="FillInLabelStyle" TargetType="Label">
         <Setter Property="Padding" Value="0 0 0 0"/>
         <Setter Property="Margin" Value="0 0 0 8"/>

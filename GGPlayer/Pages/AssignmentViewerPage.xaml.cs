@@ -48,8 +48,7 @@ namespace GGPlayer.Pages.Assignments
                     break;
             }
 
-            ucRoot.Children.Clear();
-            ucRoot.Children.Add(uc);
+            ucRoot.Content = uc;
 
             _userControl = (IAssignmentViewer)uc;
             _userControl.AssignmentItemSubmitted += _userControl_AssignmentItemSubmitted;

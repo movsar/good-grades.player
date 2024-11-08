@@ -59,6 +59,6 @@
                 Panel.ZIndex="104"
                 Style="{StaticResource ControlButton}" />
 
-        <StackPanel x:Name="ucRoot"/>
+        <ContentControl  x:Name="ucRoot" />
     </Grid>
 </Page>

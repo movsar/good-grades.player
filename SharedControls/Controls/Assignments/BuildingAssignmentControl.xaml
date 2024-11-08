@@ -7,58 +7,64 @@
              xmlns:local="clr-namespace:Shared.Controls.Assignments"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <!-- Фон на всю область UserControl -->
-        <Grid.Background>
-            <ImageBrush ImageSource="pack://application:,,,/Shared;component/Images/FillingImages/1.fon.png"
-                        Stretch="UniformToFill"/>
-        </Grid.Background>
 
+    <UserControl.Background>
+        <!-- Фон на всю область UserControl -->
+        <ImageBrush ImageSource="pack://application:,,,/Shared;component/Images/task_background.png"
+            Stretch="UniformToFill"/>
+    </UserControl.Background>
+
+    <Grid>
         <!-- Viewbox для пропорционального масштабирования содержимого -->
         <Viewbox Stretch="Uniform">
             <Grid Width="600" Height="330">
+                <!--Верхний орнамент-->
+                <Image  Source="pack://application:,,,/Shared;component/Images/task_top_ornament.png"
+                        HorizontalAlignment="Stretch" VerticalAlignment="Top"
+                        Height = "40" Margin="5,0,5,0"/>
+
+                <!--Заголовок-->
+                <Border BorderThickness="4"
+                        CornerRadius="20"
+                        HorizontalAlignment="Stretch"
+                        BorderBrush="#ffc777"
+                        Background="White"
+                        VerticalAlignment="Top"
+                        Panel.ZIndex="1"
+                        Height="50" Margin="100,35,100,0">
+
+                    <TextBlock Text="{Binding TaskTitle}" 
+                               Style="{StaticResource LargeHeaderStyle}" 
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               FontWeight="Normal"
+                               FontStyle="Normal"
+                               FontSize="12" />
+
+                </Border>
 
                 <!-- Полупрозрачный фон для текста -->
-                <Border BorderThickness="3"
+                <Border BorderThickness="2"
                         CornerRadius="20"
-                        BorderBrush="Gray"
+                        BorderBrush="#538202"
                         Background="AntiqueWhite"
                         Opacity="0.7"
-                        Margin="10,34,10,34"/>
+                        Margin="50,60,50,30">
 
-                <!-- Орнаменты, настроенные для корректного отображения -->
-                <Image Source="pack://application:,,,/Shared;component/Images/FillingImages/2.t!edillar.png"
-                       HorizontalAlignment="Left" VerticalAlignment="Top"
-                       Width="418" Height="215" Margin="111,0,0,0"/>
-                <TextBlock Grid.Row="0" Text="{Binding TaskTitle}" Style="{StaticResource LargeHeaderStyle}" Margin="180,33, 0, 0" FontSize="12"/>
+                        <StackPanel x:Name="spItems">
+                            <StackPanel x:Name="spItemSource" Orientation="Horizontal" Margin="0,5,0,5" />
+                            <StackPanel x:Name="spItemDropZone" Orientation="Horizontal" Margin="0,5,0,5" HorizontalAlignment="Stretch" />
+                        </StackPanel>
+                </Border>
 
-                <Image Source="pack://application:,,,/Shared;component/Images/FillingImages/4.ornament.png"
-                       HorizontalAlignment="Left" VerticalAlignment="Top"
-                       Width="530" Height="40" Margin="37,286,0,0"/>
-
-                <Image Source="pack://application:,,,/Shared;component/Images/FillingImages/5.ornament.png"
-                       HorizontalAlignment="Left" VerticalAlignment="Top"
-                       Width="428" Height="42" Margin="93,0,0,0" />
-
-                <Image Source="pack://application:,,,/Shared;component/Images/FillingImages/mog1a.png"
-                       HorizontalAlignment="Left" VerticalAlignment="Top"
-                       Width="698" Height="326" Margin="10,95,0,0" />
-
-                <Image Source="pack://application:,,,/Shared;component/Images/FillingImages/mog1a.png"
-                       HorizontalAlignment="Left" VerticalAlignment="Top"
-                       Width="698" Height="326" Margin="10, 0,0,0" />
-
-               <Image Source="pack://application:,,,/Shared;component/Images/FillingImages/mog1a.png"
-       HorizontalAlignment="Left" VerticalAlignment="Top"
-       Width="698" Height="326" Margin="10, 0,0,0" />
-
-                <StackPanel
-                 x:Name="spItems" 
-                 VerticalAlignment="Center" 
-                 HorizontalAlignment="Center">
-                    <StackPanel x:Name="spItemSource" Orientation="Horizontal" Margin="0,5,0,5" />
-                    <StackPanel x:Name="spItemDropZone" Orientation="Horizontal" Margin="0,5,0,5" />
-                </StackPanel>
+                <!-- Нижний орнамент -->
+                <Image 
+                    Source="pack://application:,,,/Shared;component/Images/task_bottom_ornament.png"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Bottom"
+                    Height="40"
+                    Margin="25,0,25,0" />
+                
             </Grid>
         </Viewbox>
     </Grid>

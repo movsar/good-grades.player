@@ -8,40 +8,55 @@
              d:DesignHeight="1080" d:DesignWidth="1920">
 
     <UserControl.Resources>
+
         <!-- Стиль для кнопок слов -->
-        <Style x:Key="BuilderItemButtonStyle" TargetType="Button">
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="TextBlock.TextWrapping" Value="Wrap"/>
+        <Style x:Key="BuilderItemButtonStyle" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Margin" Value="0,0,10,0"/>
+            <Setter Property="Padding" Value="8,4,8,4"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="Padding" Value="5,2,5,2"/>
-            <Setter Property="Margin" Value="2"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="12" 
+                                Background="#e0ef93"
+                                BorderBrush="#3b4405" 
+                                BorderThickness="2" >
+
+                            <ContentPresenter x:Name="contentPresenter" 
+                                      ContentTemplate="{TemplateBinding ContentTemplate}" 
+                                      Content="{TemplateBinding Content}" 
+                                      HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                      Margin="{TemplateBinding Padding}" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
+        
     </UserControl.Resources>
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="3*"/>
-            <RowDefinition Height="2*"/>
-        </Grid.RowDefinitions>
-
-        <Border x:Name="dropZoneBorder"
-        BorderThickness="0,0,0,2"
-        Margin="-15"  Height="40" Width="500">
-            <StackPanel x:Name="spItemDropZone"
-            Orientation="Horizontal"
-            Background="Transparent"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Top">
-            </StackPanel>
+    <StackPanel>
+        
+        <!-- Область где будет собираться предложение -->
+        <Border Background="#b9d42a"
+                Margin="0,50,0,0" Height="40" 
+                HorizontalAlignment="Stretch">
+            
+            <StackPanel x:Name="spItemDropZone" 
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        />
         </Border>
 
-        <UniformGrid x:Name="spItemSource"
-             Grid.Row="1"
-             Rows="1"
-             HorizontalAlignment="Center"
-             VerticalAlignment="Center"
-             Margin="10,30,20,25">
-        </UniformGrid>
-        
-    </Grid>
+        <!-- Область где будут разбросанные слова -->
+        <StackPanel x:Name="spItemSource" 
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    Margin="10" Height="40"/>
+
+    </StackPanel>
 </UserControl>

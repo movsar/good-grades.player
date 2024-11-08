@@ -34,7 +34,7 @@ namespace Shared.Controls.Assignments
         private void LoadNextItem()
         {
             var item = _assignment.Items[++_currentItemIndex];
-            var buildingItemViewControl = new BuildingItemViewControl(item) { Tag = item.Text};
+            var buildingItemViewControl = new BuildingItemViewControl(item) { Tag = item.Text };
 
             spItems.Children.Clear();
             spItems.Children.Add(buildingItemViewControl);
@@ -54,7 +54,7 @@ namespace Shared.Controls.Assignments
             var isItemSubmissionCorrect = (arrangedPhrase == buildingItemViewControl.Tag.ToString());
             AssignmentItemSubmitted?.Invoke(_assignment, _assignment.Items[_currentItemIndex].Id, isItemSubmissionCorrect);
 
-            if (_currentItemIndex == _assignment.Items.Count - 1)
+            if (isItemSubmissionCorrect && _currentItemIndex == _assignment.Items.Count - 1)
             {
                 AssignmentCompleted?.Invoke(_assignment, true);
             }
@@ -94,10 +94,6 @@ namespace Shared.Controls.Assignments
         public void OnNextClicked()
         {
             IsEnabled = true;
-        
-                AssignmentCompleted?.Invoke(_assignment, true);
-                return;
-            }
 
             LoadNextItem();
         }
