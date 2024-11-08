@@ -7,6 +7,16 @@
              mc:Ignorable="d" 
              d:DesignHeight="1080" d:DesignWidth="1920">
 
+    <UserControl.Resources>
+        <!-- Стиль для кнопок слов -->
+        <Style x:Key="BuilderItemButtonStyle" TargetType="Button">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="TextBlock.TextWrapping" Value="Wrap"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="5,2,5,2"/>
+            <Setter Property="Margin" Value="2"/>
+        </Style>
+    </UserControl.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -15,25 +25,23 @@
         </Grid.RowDefinitions>
 
         <Border x:Name="dropZoneBorder"
-        BorderBrush="Black"
         BorderThickness="0,0,0,2"
-        Margin="50"
-        Height="70"
-        Width="400"
-            Background="Honeydew">
+        Margin="-15"  Height="40" Width="500">
             <StackPanel x:Name="spItemDropZone"
-                Orientation="Horizontal"
-                Background="Transparent">
-                <!-- Здесь будут динамически добавляться слова -->
+            Orientation="Horizontal"
+            Background="Transparent"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top">
             </StackPanel>
         </Border>
 
         <UniformGrid x:Name="spItemSource"
-                 Grid.Row="1"
-                 Rows="1"
-                 HorizontalAlignment="Center"
-                 VerticalAlignment="Center"
-                 Margin="50">
+             Grid.Row="1"
+             Rows="1"
+             HorizontalAlignment="Center"
+             VerticalAlignment="Center"
+             Margin="10,30,20,25">
         </UniformGrid>
+        
     </Grid>
 </UserControl>

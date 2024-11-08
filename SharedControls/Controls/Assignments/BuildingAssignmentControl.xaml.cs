@@ -3,6 +3,7 @@ using Data.Interfaces;
 using Shared.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Controls;
 
 namespace Shared.Controls.Assignments
@@ -32,10 +33,8 @@ namespace Shared.Controls.Assignments
         // Метод для загрузки текущего элемента
         private void LoadNextItem()
         {
-            IsEnabled = true;
-
             var item = _assignment.Items[++_currentItemIndex];
-            var buildingItemViewControl = new BuildingItemViewControl(item) { Tag = item.Text };
+            var buildingItemViewControl = new BuildingItemViewControl(item) { Tag = item.Text};
 
             spItems.Children.Clear();
             spItems.Children.Add(buildingItemViewControl);
@@ -50,11 +49,16 @@ namespace Shared.Controls.Assignments
             // Get submission information
             var buildingItemViewControl = (BuildingItemViewControl)spItems.Children[0];
             var arrangedPhrase = GetUserArrangedPhrase(buildingItemViewControl);
-            
+
             // Check whether the submission was correct
             var isItemSubmissionCorrect = (arrangedPhrase == buildingItemViewControl.Tag.ToString());
             AssignmentItemSubmitted?.Invoke(_assignment, _assignment.Items[_currentItemIndex].Id, isItemSubmissionCorrect);
-            
+
+            if (_currentItemIndex == _assignment.Items.Count - 1)
+            {
+                AssignmentCompleted?.Invoke(_assignment, true);
+            }
+
             // Block UI until the Next is clicked
             IsEnabled = false;
         }
@@ -62,11 +66,23 @@ namespace Shared.Controls.Assignments
         private string GetUserArrangedPhrase(BuildingItemViewControl buildingItemViewControl)
         {
             var words = new List<string>();
-            foreach (Button btnWord in buildingItemViewControl.spItemDropZone.Children)
+            foreach (var child in buildingItemViewControl.spItemDropZone.Children)
             {
-                words.Add(btnWord.Content.ToString());
+                // Проверяем, является ли элемент кнопкой
+                if (child is Button btnWord)
+                {
+                    words.Add(btnWord.Content.ToString());
+                }
+                // Если это Grid, например, то извлекаем текст из TextBlock внутри Grid
+                else if (child is Grid gridWord)
+                {
+                    var textBlock = gridWord.Children.OfType<TextBlock>().FirstOrDefault();
+                    if (textBlock != null)
+                    {
+                        words.Add(textBlock.Text);
+                    }
+                }
             }
-
             return string.Join(" ", words);
         }
 
@@ -77,13 +93,10 @@ namespace Shared.Controls.Assignments
 
         public void OnNextClicked()
         {
-            if (_currentItemIndex == _assignment.Items.Count - 1)
-            {
-                AssignmentCompleted?.Invoke(_assignment, true);
-                return;
-            }
+            IsEnabled = true;
 
             LoadNextItem();
         }
+
     }
 }

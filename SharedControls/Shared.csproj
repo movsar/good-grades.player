@@ -22,6 +22,8 @@
 		<None Remove="Images\FillingImages\2.t!edillar.png" />
 		<None Remove="Images\FillingImages\4.ornament.png" />
 		<None Remove="Images\FillingImages\5.ornament.png" />
+		<None Remove="Images\FillingImages\khas.png" />
+		<None Remove="Images\FillingImages\mog1a.png" />
 		<None Remove="Images\fon.jpg" />
 		<None Remove="Images\fon_segment.jpg" />
 		<None Remove="Images\guo.png" />
@@ -76,6 +78,8 @@
 	  <Resource Include="Images\FillingImages\2.t!edillar.png" />
 	  <Resource Include="Images\FillingImages\4.ornament.png" />
 	  <Resource Include="Images\FillingImages\5.ornament.png" />
+	  <Resource Include="Images\FillingImages\khas.png" />
+	  <Resource Include="Images\FillingImages\mog1a.png" />
 	  <Resource Include="Images\fon.jpg" />
 	  <Resource Include="Images\fon_segment.jpg" />
 	  <Resource Include="Images\guo.png" />
