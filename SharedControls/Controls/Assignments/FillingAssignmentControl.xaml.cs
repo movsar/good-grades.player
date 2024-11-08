@@ -37,7 +37,6 @@ namespace Shared.Controls.Assignments
                 {
                     Orientation = Orientation.Horizontal,
                     MaxWidth = 500,
-                    HorizontalAlignment = HorizontalAlignment.Center
                 };
 
                 // Разделяем текст на части для добавления меток и полей для ввода
@@ -52,8 +51,6 @@ namespace Shared.Controls.Assignments
                         {
                             Content = parts[i],
                             Style = (Style)FindResource("FillInLabelStyle"),
-                            FontSize = 14,
-                            HorizontalAlignment = HorizontalAlignment.Center
                         };
                         panel.Children.Add(label);
                     }
@@ -65,11 +62,6 @@ namespace Shared.Controls.Assignments
                         {
                             Tag = options,
                             Width = Math.Min(150, options[0].Length * 8),
-                            FontSize = 14,
-                            BorderBrush = Brushes.Gray,
-                            BorderThickness = new Thickness(0, 0, 0, 1), // Подчеркивание
-                            Background = Brushes.Transparent, // Прозрачный фон
-                            HorizontalAlignment = HorizontalAlignment.Center
                         };
                         textBox.Style = (Style)FindResource("FillInTextBoxStyle");
 
@@ -80,12 +72,7 @@ namespace Shared.Controls.Assignments
             }
         }
 
-        public bool Check()
-        {
-            throw new NotImplementedException();
-        }
-
-        void IAssignmentViewer.OnCheckClicked()
+        public void OnCheckClicked()
         {
             foreach (StackPanel panel in spItems.Children)
             {
@@ -99,7 +86,6 @@ namespace Shared.Controls.Assignments
                         // Check if the user input matches one of the options
                         if (!options.Contains(textBox.Text.ToLower().Trim()))
                         {
-                            MessageBox.Show(Translations.GetValue("Incorrect"));
                             AssignmentCompleted?.Invoke(_assignment, false);
                             return;
                         }
@@ -108,18 +94,17 @@ namespace Shared.Controls.Assignments
             }
 
             // Show a message if all inputs are correct
-            MessageBox.Show(Translations.GetValue("Correct"));
             AssignmentCompleted?.Invoke(_assignment, true);
         }
 
         public void OnRetryClicked()
         {
-            throw new NotImplementedException();
+            IsEnabled = true;
         }
 
         public void OnNextClicked()
         {
-            throw new NotImplementedException();
+            IsEnabled = true;
         }
     }
 }

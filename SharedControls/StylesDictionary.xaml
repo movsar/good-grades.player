@@ -89,20 +89,6 @@
         </Setter>
     </Style>
 
-    <Style x:Key="FillInLabelStyle" TargetType="Label">
-        <Setter Property="Padding" Value="0 0 0 0"/>
-        <Setter Property="Margin" Value="0 0 0 8"/>
-        <Setter Property="FontSize" Value="24"/>
-    </Style>
-
-    <Style x:Key="FillInTextBoxStyle" TargetType="TextBox">
-        <Setter Property="BorderThickness" Value="0,0,0,1"/>
-        <Setter Property="BorderBrush" Value="Black"/>
-        <Setter Property="Padding" Value="0 0 0 0"/>
-        <Setter Property="Margin" Value="0 0 0 8"/>
-        <Setter Property="FontSize" Value="24"/>
-    </Style>
-
     <SolidColorBrush x:Key="StagedBrush">LightYellow</SolidColorBrush>
     <SolidColorBrush x:Key="DeleteBrush">Red</SolidColorBrush>
     <SolidColorBrush x:Key="ReadyBrush">PaleGreen</SolidColorBrush>

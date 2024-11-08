@@ -34,7 +34,7 @@ namespace Shared.Controls.Assignments
             spOptions.Children.Add(questionViewControl);
         }
 
-        private void btnCheck_Click(object sender, RoutedEventArgs e)
+        public void OnCheckClicked()
         {
             var questionViewControl = spOptions.Children[0] as QuestionViewControl;
             var selections = questionViewControl!.SelectedOptionIds;
@@ -47,34 +47,24 @@ namespace Shared.Controls.Assignments
             // Проверяем, есть ли выбранный правильный ответ без лишних
             if (areAnswersCorrect && selections.Count == correctOptionIds.Count)
             {
-                MessageBox.Show(Translations.GetValue("Correct"));
+                AssignmentCompleted?.Invoke(_assignment, true);
             }
             else
             {
-                MessageBox.Show(Translations.GetValue("Incorrect"));
+                AssignmentCompleted?.Invoke(_assignment, false);
             }
 
-            AssignmentCompleted?.Invoke(_assignment, areAnswersCorrect);
-        }
-
-        public bool Check()
-        {
-            throw new NotImplementedException();
-        }
-
-        void IAssignmentViewer.OnCheckClicked()
-        {
-            throw new NotImplementedException();
+            IsEnabled = false;
         }
 
         public void OnRetryClicked()
         {
-            throw new NotImplementedException();
+            IsEnabled = true;
         }
 
         public void OnNextClicked()
         {
-            throw new NotImplementedException();
+            IsEnabled = true;
         }
     }
 }

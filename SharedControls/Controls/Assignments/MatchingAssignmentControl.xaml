@@ -7,45 +7,99 @@
              xmlns:shared="clr-namespace:Shared;assembly=Shared"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <StackPanel>
-        <TextBlock Text="{Binding TaskTitle}" Style="{StaticResource LargeHeaderStyle}"/>
 
-        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
-            <Grid x:Name="gridMatchOptions">
-                <Grid.Resources>
-                    <!-- Rounded corner style for borders -->
-                    <Style x:Key="RoundedBorderStyle" TargetType="Border">
-                        <Setter Property="CornerRadius" Value="10"/>
-                        <Setter Property="BorderBrush" Value="LightGray"/>
-                        <Setter Property="BorderThickness" Value="2"/>
-                        <Setter Property="Background" Value="White"/>
-                        <Setter Property="Margin" Value="5"/>
-                        <Setter Property="Height" Value="200"/>
-                        <Setter Property="Width" Value="200"/>
-                    </Style>
+    <UserControl.Resources>
+        <!-- Rounded corner style for borders -->
+        <Style x:Key="RoundedBorderStyle" TargetType="Border">
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="BorderBrush" Value="LightGray"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Height" Value="100"/>
+            <Setter Property="Width" Value="100"/>
+        </Style>
 
-                    <!-- Style for TextBlocks to make the text more readable and playful -->
-                    <Style TargetType="TextBlock">
-                        <Setter Property="FontSize" Value="18"/>
-                        <Setter Property="FontWeight" Value="SemiBold"/>
-                        <Setter Property="FontFamily" Value="Comic Sans MS"/>
-                        <Setter Property="TextWrapping" Value="Wrap"/>
-                        <Setter Property="HorizontalAlignment" Value="Center"/>
-                        <Setter Property="VerticalAlignment" Value="Center"/>
-                    </Style>
-                </Grid.Resources>
+        <!-- Style for TextBlocks to make the text more readable and playful -->
+        <Style TargetType="TextBlock">
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontFamily" Value="Comic Sans MS"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+    </UserControl.Resources>
 
-                <Grid.RowDefinitions>
-                    <!-- Row for images -->
-                    <RowDefinition />
-                    <!-- Row for names -->
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <!-- Columns will be added dynamically in the code-behind -->
-                </Grid.ColumnDefinitions>
+    <UserControl.Background>
+        <!-- Фон на всю область UserControl -->
+        <ImageBrush ImageSource="pack://application:,,,/Shared;component/Images/task_background.png"
+          Stretch="UniformToFill"/>
+    </UserControl.Background>
+
+    <Grid>
+        <!-- Viewbox для пропорционального масштабирования содержимого -->
+        <Viewbox Stretch="Uniform">
+            <Grid Width="600" Height="330">
+                <!--Верхний орнамент-->
+                <Image  Source="pack://application:,,,/Shared;component/Images/task_top_ornament.png"
+                    HorizontalAlignment="Stretch" VerticalAlignment="Top"
+                    Height = "40" Margin="5,0,5,0"/>
+
+                <!--Заголовок-->
+                <Border BorderThickness="4"
+                    CornerRadius="20"
+                    HorizontalAlignment="Stretch"
+                    BorderBrush="#ffc777"
+                    Background="White"
+                    VerticalAlignment="Top"
+                    Panel.ZIndex="1"
+                    Height="50" Margin="100,35,100,0">
+
+                    <TextBlock Text="{Binding TaskTitle}" 
+                           Style="{StaticResource LargeHeaderStyle}" 
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           FontWeight="Normal"
+                           FontStyle="Normal"
+                           FontSize="12" />
+
+                </Border>
+
+                <!-- Полупрозрачный фон для текста -->
+                <Border BorderThickness="2"
+                    CornerRadius="20"
+                    BorderBrush="#538202"
+                    Background="AntiqueWhite"
+                    Opacity="0.7"
+                    Margin="50,60,50,50">
+
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto" 
+                                  VerticalScrollBarVisibility="Disabled">
+                        <Grid x:Name="gridMatchOptions">
+                            <Grid.RowDefinitions>
+                                <!-- Row for images -->
+                                <RowDefinition  />
+                                <!-- Row for names -->
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <!-- Columns will be added dynamically in the code-behind -->
+                            </Grid.ColumnDefinitions>
+                        </Grid>
+
+                    </ScrollViewer>
+                </Border>
+
+                <!-- Нижний орнамент -->
+                <Image Source="pack://application:,,,/Shared;component/Images/task_bottom_ornament.png"
+                       HorizontalAlignment="Stretch"
+                       VerticalAlignment="Bottom"
+                       Height="40"
+                       Margin="25,0,25,0" />
+
             </Grid>
-            
-        </ScrollViewer>
-    </StackPanel>
+        </Viewbox>
+    </Grid>
+
 </UserControl>

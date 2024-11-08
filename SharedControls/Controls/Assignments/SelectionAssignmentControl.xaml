@@ -15,23 +15,6 @@
                     VerticalAlignment="Center">
             </StackPanel>
 
-            <!-- Кнопка проверки по центру снизу -->
-        <Button 
-                Content="Проверить" 
-                Click="btnCheck_Click"
-                FontSize="30"
-                HorizontalAlignment="Center" 
-                VerticalAlignment="Bottom" 
-                Width="600" 
-                Height="70" 
-                Margin="0 200 0 0"
-                Background="Gray" 
-                Foreground="White"
-                FontWeight="SemiBold"
-                BorderBrush="#FF357ABD"
-                BorderThickness="2"
-                Padding="10">          
-            </Button>
         </StackPanel>
     
 </UserControl>
