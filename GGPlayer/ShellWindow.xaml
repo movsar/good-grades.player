@@ -59,7 +59,7 @@
                     Height="80" Width="150"
                     Cursor="Hand"
                     x:Name="BackButton" MouseUp="BackButton_MouseUp"
-                    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="-10,10,0,0" 
+                    HorizontalAlignment="Left" VerticalAlignment="Top" Margin="-10,100,0,0" 
                     Stretch="UniformToFill" />
             
             <!--<Button x:Name="ForwardButton" Content="Вперед" Click="GoForward" Style="{StaticResource NavigationButtonStyle}"

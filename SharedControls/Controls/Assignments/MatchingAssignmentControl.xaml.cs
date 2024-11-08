@@ -14,9 +14,6 @@ using System.Windows.Media.Imaging;
 
 namespace Shared.Controls.Assignments
 {
-    /// <summary>
-    /// Interaction logic for MatchingAssignmentControl.xaml
-    /// </summary>
     public partial class MatchingAssignmentControl : UserControl, IAssignmentViewer
     {
         public string TaskTitle { get; }
@@ -40,27 +37,38 @@ namespace Shared.Controls.Assignments
             InitializeComponent();
             DataContext = this;
 
+            LoadContent();
+        }
+
+        private void LoadContent()
+        {
+            _matchingPairs.Clear();
+            gridMatchOptions.ColumnDefinitions.Clear();
+            gridMatchOptions.Children.Clear();
+
             // Load matching pairs from the assignment into the dictionary.
             foreach (var item in _assignment.Items)
             {
                 _matchingPairs.Add(item.Text, ConvertByteArrayToBitmapImage(item.Image));
             }
 
-            // Set up the grid rows based on the number of items to match.
-            int numberOfRows = _assignment.Items.Count;
-            for (int i = 0; i < numberOfRows; i++)
+            // Set up the grid columns based on the number of items to match.
+            int numberOfColumns = _assignment.Items.Count;
+            for (int i = 0; i < numberOfColumns; i++)
             {
-                gridMatchOptions.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+                gridMatchOptions.ColumnDefinitions.Add(
+                    new ColumnDefinition { Width = new GridLength(250, GridUnitType.Pixel) }
+                );
             }
 
             // Shuffle the items to randomize their positions in the grid.
-            var randomRowIndexesForTexts = Enumerable.Range(0, numberOfRows).OrderBy(i => Guid.NewGuid()).ToArray();
-            var randomRowIndexesForImages = Enumerable.Range(0, numberOfRows).OrderBy(i => Guid.NewGuid()).ToArray();
+            var randomColumnIndexesForTexts = Enumerable.Range(0, numberOfColumns).OrderBy(i => Guid.NewGuid()).ToArray();
+            var randomColumnIndexesForImages = Enumerable.Range(0, numberOfColumns).OrderBy(i => Guid.NewGuid()).ToArray();
 
             var gridItems = new List<GridItem>();
 
-            // Create UI elements for each pair and assign them to random rows.
-            for (int i = 0; i < _matchingPairs.Count(); i++)
+            // Create UI elements for each pair and assign them to random columns.
+            for (int i = 0; i < _matchingPairs.Count; i++)
             {
                 var text = _matchingPairs.Keys.ToList()[i];
                 var image = _matchingPairs.Values.ToList()[i];
@@ -71,61 +79,31 @@ namespace Shared.Controls.Assignments
                 {
                     Text = text,
                     Name = $"Pair_{pairIndex}",
-                    FontSize = 26
-
+                    FontSize = 20
                 };
 
                 gridItems.Add(new GridItem
                 {
                     Element = imageUiElement,
-                    Row = randomRowIndexesForImages[i],
-                    Column = 0
+                    Row = 0,
+                    Column = randomColumnIndexesForImages[i]
                 });
 
                 gridItems.Add(new GridItem
                 {
                     Element = textBlockUiElement,
-                    Row = randomRowIndexesForTexts[i],
-                    Column = 1
+                    Row = 1,
+                    Column = randomColumnIndexesForTexts[i]
                 });
             }
 
             // Add the elements to the grid.
             AddElementsToGrid(gridMatchOptions, gridItems);
         }
+
         #endregion
 
-        #region Event Handlers
-        // Handles button click events to check for correct matches.
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            // Iterate through grid rows, assuming each row contains an image and text block pair.
-            for (int row = 0; row < gridMatchOptions.RowDefinitions.Count; row++)
-            {
-                var imageBorder = FindChildInGrid<Border>(gridMatchOptions, row, 0);
-                var textBlockBorder = FindChildInGrid<Border>(gridMatchOptions, row, 1);
-
-                // Skip the iteration if either image or text block is missing.
-                if (imageBorder == null || textBlockBorder == null) continue;
-
-                var image = imageBorder.Child as Image;
-                var textBlock = textBlockBorder.Child as TextBlock;
-
-                // Show a message and signal incomplete assignment if any pair does not match.
-                if (image != null && textBlock != null && image.Name != textBlock.Name)
-                {
-                    MessageBox.Show(Translations.GetValue("ElementsDoNotMatch"));
-                    AssignmentCompleted?.Invoke(_assignment, false);
-                    return;
-                }
-            }
-
-            // If all pairs match, show a success message and signal assignment completion.
-            MessageBox.Show(Translations.GetValue("AllElementsMatch"));
-            AssignmentCompleted?.Invoke(_assignment, true);
-        }
-
-        // Generic method to find a child element of a specific type in a grid cell.
+        //Generic method to find a child element of a specific type in a grid cell.
         private T? FindChildInGrid<T>(Grid grid, int row, int column) where T : FrameworkElement
         {
             foreach (FrameworkElement child in grid.Children)
@@ -137,6 +115,8 @@ namespace Shared.Controls.Assignments
             }
             return null;
         }
+
+        #region Drag & Drop
 
         // Handles the drop event during a drag-and-drop operation to swap elements.
         private void Element_Drop(object sender, DragEventArgs e)
@@ -281,24 +261,42 @@ namespace Shared.Controls.Assignments
             }
         }
 
-        public bool Check()
+        public void OnCheckClicked()
         {
-            throw new NotImplementedException();
-        }
+            IsEnabled = false;
 
-        void IAssignmentViewer.OnCheckClicked()
-        {
-            throw new NotImplementedException();
+            // Iterate through grid rows, assuming each row contains an image and text block pair.
+            for (int column = 0; column < gridMatchOptions.RowDefinitions.Count; column++)
+            {
+                var imageBorder = FindChildInGrid<Border>(gridMatchOptions, 0, column);
+                var textBlockBorder = FindChildInGrid<Border>(gridMatchOptions, 1, column);
+
+                // Skip the iteration if either image or text block is missing.
+                if (imageBorder == null || textBlockBorder == null) continue;
+
+                var image = imageBorder.Child as Image;
+                var textBlock = textBlockBorder.Child as TextBlock;
+
+                // Show a message and signal incomplete assignment if any pair does not match.
+                if (image != null && textBlock != null && image.Name != textBlock.Name)
+                {
+                    AssignmentCompleted?.Invoke(_assignment, false);
+                    return;
+                }
+            }
+
+            // If all pairs match, show a success message and signal assignment completion.
+            AssignmentCompleted?.Invoke(_assignment, true);
         }
 
         public void OnRetryClicked()
         {
-            throw new NotImplementedException();
+            IsEnabled = true;
         }
 
         public void OnNextClicked()
         {
-            throw new NotImplementedException();
+            IsEnabled = true;
         }
     }
 }

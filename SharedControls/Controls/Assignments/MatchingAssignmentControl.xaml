@@ -7,51 +7,45 @@
              xmlns:shared="clr-namespace:Shared;assembly=Shared"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <Grid.Resources>
-            <!-- Rounded corner style for borders -->
-            <Style x:Key="RoundedBorderStyle" TargetType="Border">
-                <Setter Property="CornerRadius" Value="10"/>
-                <Setter Property="BorderBrush" Value="LightGray"/>
-                <Setter Property="BorderThickness" Value="2"/>
-                <Setter Property="Background" Value="White"/>
-                <Setter Property="Margin" Value="5"/>
-            </Style>
+    <StackPanel>
+        <TextBlock Text="{Binding TaskTitle}" Style="{StaticResource LargeHeaderStyle}"/>
 
-            <!-- Style for TextBlocks to make the text more readable and playful -->
-            <Style TargetType="TextBlock">
-                <Setter Property="FontSize" Value="16"/>
-                <Setter Property="FontFamily" Value="Comic Sans MS"/>
-                <Setter Property="TextWrapping" Value="Wrap"/>
-                <Setter Property="HorizontalAlignment" Value="Center"/>
-                <Setter Property="VerticalAlignment" Value="Center"/>
-            </Style>
-        </Grid.Resources>
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+            <Grid x:Name="gridMatchOptions">
+                <Grid.Resources>
+                    <!-- Rounded corner style for borders -->
+                    <Style x:Key="RoundedBorderStyle" TargetType="Border">
+                        <Setter Property="CornerRadius" Value="10"/>
+                        <Setter Property="BorderBrush" Value="LightGray"/>
+                        <Setter Property="BorderThickness" Value="2"/>
+                        <Setter Property="Background" Value="White"/>
+                        <Setter Property="Margin" Value="5"/>
+                        <Setter Property="Height" Value="200"/>
+                        <Setter Property="Width" Value="200"/>
+                    </Style>
 
-        <Grid Margin="10" >
+                    <!-- Style for TextBlocks to make the text more readable and playful -->
+                    <Style TargetType="TextBlock">
+                        <Setter Property="FontSize" Value="18"/>
+                        <Setter Property="FontWeight" Value="SemiBold"/>
+                        <Setter Property="FontFamily" Value="Comic Sans MS"/>
+                        <Setter Property="TextWrapping" Value="Wrap"/>
+                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                    </Style>
+                </Grid.Resources>
 
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-
-            <TextBlock Text="{Binding TaskTitle}" Style="{StaticResource LargeHeaderStyle}"/>
-
-            <Grid Grid.Row="1" x:Name="gridMatchOptions" HorizontalAlignment="Stretch">
+                <Grid.RowDefinitions>
+                    <!-- Row for images -->
+                    <RowDefinition />
+                    <!-- Row for names -->
+                    <RowDefinition />
+                </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
+                    <!-- Columns will be added dynamically in the code-behind -->
                 </Grid.ColumnDefinitions>
             </Grid>
-
-            <Button Grid.Row="2"
-             Content="{x:Static shared:GgLocalization.Check}" 
-             HorizontalAlignment="Right"
-             VerticalAlignment="Bottom"
-             Margin="0,0,0,0" Click="Button_Click"
-             />
-
-        </Grid>
-    </Grid>
+            
+        </ScrollViewer>
+    </StackPanel>
 </UserControl>

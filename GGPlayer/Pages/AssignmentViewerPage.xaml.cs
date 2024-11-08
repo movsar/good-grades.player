@@ -58,7 +58,16 @@ namespace GGPlayer.Pages.Assignments
 
         private void _userControl_AssignmentCompleted(IAssignment assignment, bool success)
         {
-            AssignmentCompleted?.Invoke(assignment, success);
+            if (!success)
+            {
+                SetUiStateToFailure();
+            }
+            else
+            {
+                SetUiStateToSuccess();
+            }
+
+            _isAssignmentCompleted = success;
         }
 
         private void _userControl_AssignmentItemSubmitted(IAssignment assignment, string itemId, bool success)
@@ -93,7 +102,7 @@ namespace GGPlayer.Pages.Assignments
 
             if (_isAssignmentCompleted)
             {
-
+                AssignmentCompleted?.Invoke(_assignment, true);
             }
             else
             {

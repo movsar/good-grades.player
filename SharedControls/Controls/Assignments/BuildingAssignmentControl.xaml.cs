@@ -94,6 +94,10 @@ namespace Shared.Controls.Assignments
         public void OnNextClicked()
         {
             IsEnabled = true;
+        
+                AssignmentCompleted?.Invoke(_assignment, true);
+                return;
+            }
 
             LoadNextItem();
         }
