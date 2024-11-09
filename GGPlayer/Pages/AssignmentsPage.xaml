@@ -8,6 +8,29 @@
       d:Width="1280" d:Height="720"
       SizeChanged="Window_SizeChanged">
 
+    <Page.Resources>
+
+        <Style x:Key="AssignmentButtonLabel" TargetType="Label">
+            <Setter Property="Width" Value="200"/>
+            <Setter Property="Height" Value="200"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="90"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Background">
+                <Setter.Value>
+                    <ImageBrush ImageSource="pack://application:,,,/Shared;component/Images/Buttons/assignment_button_background.png"/>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect Color="Transparent" ShadowDepth="0" BlurRadius="0"/>
+                </Setter.Value>                
+            </Setter>
+        </Style>
+
+    </Page.Resources>
+    
     <Grid>
         <Grid.Background>
             <ImageBrush ImageSource="pack://application:,,,/Shared;component/Images/fon_segment.jpg" Stretch="UniformToFill"/>

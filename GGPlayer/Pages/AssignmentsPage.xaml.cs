@@ -1,18 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
-using System.Windows.Media.Imaging;
-using Data.Entities;
 using Data.Interfaces;
 using GGPlayer.Pages.Assignments;
-using Serilog.Parsing;
-using Shared.Controls.Assignments;
-using Shared.Interfaces;
 
 namespace GGPlayer.Pages
 {
@@ -21,8 +13,6 @@ namespace GGPlayer.Pages
         private List<int> completedAssignments = new List<int>();
         private List<IAssignment> Assignments { get; } = new List<IAssignment>();
         const int MaxAssignments = 30;
-        const int ButtonSize = 100;
-        const int ButtonSpacing = 20;
 
         private readonly ShellWindow _shell;
 
@@ -36,10 +26,6 @@ namespace GGPlayer.Pages
             _shell = shell;
         }
 
-        private void IAssignmentViewer_AssignmentCompleted(IAssignment arg1, bool arg2)
-        {
-        }
-
         private void GenerateAssignmentButtons()
         {
             // Очистка предыдущего содержимого
@@ -48,37 +34,18 @@ namespace GGPlayer.Pages
             int count = 1;
             foreach (var assignment in Assignments)
             {
-                // Создаем Grid для кнопки и фона
-                var buttonGrid = new Grid
+                var label = new Label()
                 {
-                    Margin = new Thickness(ButtonSpacing)
-                };
-
-                // Фоновое изображение
-                var backgroundImage = new Image
-                {
-                    Source = new BitmapImage(new Uri($"/Images/TaskButtons/Task{count}Btn.png", UriKind.Relative)),
-                    Cursor = Cursors.Hand,
+                    Content = count,
+                    Style = (Style)FindResource("AssignmentButtonLabel"),
                     Tag = assignment
                 };
 
-                // Эффект тени, изначально прозрачный
-                DropShadowEffect shadowEffect = new DropShadowEffect
-                {
-                    Color = Colors.Transparent,
-                    ShadowDepth = 0,
-                    BlurRadius = 0
-                };
-                backgroundImage.Effect = shadowEffect;
-
                 // Устанавливаем событие клика на изображение
-                backgroundImage.MouseDown += AssignmentButton_Click;
-
-                // Добавляем изображение в Grid
-                buttonGrid.Children.Add(backgroundImage);
+                label.MouseDown += AssignmentButton_Click;
 
                 // Помещаем Grid в WrapPanel
-                wrapPanel.Children.Add(buttonGrid);
+                wrapPanel.Children.Add(label);
                 count++;
             }
         }
@@ -86,49 +53,34 @@ namespace GGPlayer.Pages
         // Метод для изменения цвета границы
         private void ChangeBorderColor(IAssignment assignment, bool isCompleted)
         {
-            var image = FindAssignmentImage(assignment);
-            if (image != null)
+            var label = FindAssignmentButton(assignment);
+            if (label == null)
             {
-                var effect = image.Effect as DropShadowEffect;
+                return;
+            }
 
-                if (effect == null)
-                {
-                    effect = new DropShadowEffect
-                    {
-                        ShadowDepth = 0,
-                        BlurRadius = 20,
-                        Opacity = 0.8
-                    };
-                    image.Effect = effect;
-                }
-
-                if (isCompleted)
-                {
-                    effect.Color = Colors.LimeGreen;
-                    effect.BlurRadius = 30;
-                }
-                else
-                {
-                    effect.Color = Colors.Transparent;
-                    effect.BlurRadius = 0;
-                }
+            var effect = label.Effect as DropShadowEffect;
+            if (isCompleted)
+            {
+                effect.Color = Colors.LimeGreen;
+                effect.BlurRadius = 30;
+            }
+            else
+            {
+                effect.Color = Colors.Transparent;
+                effect.BlurRadius = 0;
             }
         }
 
         // Метод для поиска изображения задания
-        private Image FindAssignmentImage(IAssignment assignment)
+        private Label FindAssignmentButton(IAssignment assignment)
         {
             foreach (var child in wrapPanel.Children)
             {
-                var grid = child as Grid;
-                if (grid != null && grid.Children.Count > 0)
+                var label = child as Label;
+                if (label != null && label.Tag != null && label.Tag.Equals(assignment))
                 {
-                    var image = grid.Children[0] as Image;
-                    // Проверяем, что image не null и Tag тоже не null
-                    if (image != null && image.Tag != null && image.Tag.Equals(assignment))
-                    {
-                        return image;
-                    }
+                    return label;
                 }
             }
             return null;
@@ -136,8 +88,8 @@ namespace GGPlayer.Pages
 
         private void AssignmentButton_Click(object sender, MouseButtonEventArgs e)
         {
-            var clickedImage = (Image)sender;
-            var taskIndex = int.Parse(clickedImage.Source.ToString().Split('/').Last().Replace("Task", "").Replace("Btn.png", "")) - 1;
+            var clickedButton = (Label)sender;
+            var taskIndex = int.Parse(clickedButton.Content.ToString());
             var assignment = Assignments[taskIndex];
 
             // Когда окно задания закрывается, проверяем состояние выполнения
@@ -196,7 +148,7 @@ namespace GGPlayer.Pages
 
         private void SetAssignmentButtonState(IAssignment assignment, bool successfullyCompleted)
         {
-            var image = FindAssignmentImage(assignment);
+            var image = FindAssignmentButton(assignment);
             if (image != null)
             {
                 // Изменяем цвет границы

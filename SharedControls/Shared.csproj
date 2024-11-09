@@ -11,6 +11,7 @@
 
 	<ItemGroup>
 		<None Remove="Images\b1ow.png" />
+		<None Remove="Images\Buttons\assignment_button_background.png" />
 		<None Remove="Images\Buttons\back.png" />
 		<None Remove="Images\Buttons\check.png" />
 		<None Remove="Images\Buttons\check_hover.png" />
@@ -58,6 +59,7 @@
 
 	<ItemGroup>
 	  <Resource Include="Images\b1ow.png" />
+	  <Resource Include="Images\Buttons\assignment_button_background.png" />
 	  <Resource Include="Images\Buttons\back.png" />
 	  <Resource Include="Images\Buttons\check.png" />
 	  <Resource Include="Images\Buttons\check_hover.png" />
