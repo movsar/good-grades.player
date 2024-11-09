@@ -37,8 +37,8 @@ namespace GGPlayer.Pages
                 var label = new Label()
                 {
                     Content = count,
-                    Style = (Style)FindResource("AssignmentButtonLabel"),
-                    Tag = assignment
+                    Style = (Style)FindResource("AssignmentButtonStyle"),
+                    Tag = assignment.Id
                 };
 
                 // Устанавливаем событие клика на изображение
@@ -53,34 +53,38 @@ namespace GGPlayer.Pages
         // Метод для изменения цвета границы
         private void ChangeBorderColor(IAssignment assignment, bool isCompleted)
         {
-            var label = FindAssignmentButton(assignment);
-            if (label == null)
+            var button = FindAssignmentButton(assignment);
+            if (button == null)
             {
                 return;
             }
 
-            var effect = label.Effect as DropShadowEffect;
+            var effect = new DropShadowEffect();
             if (isCompleted)
             {
                 effect.Color = Colors.LimeGreen;
                 effect.BlurRadius = 30;
+                effect.ShadowDepth = 5;
             }
             else
             {
                 effect.Color = Colors.Transparent;
                 effect.BlurRadius = 0;
+                effect.ShadowDepth = 0;
             }
+
+            button.Effect = effect;
         }
 
         // Метод для поиска изображения задания
-        private Label FindAssignmentButton(IAssignment assignment)
+        private Label? FindAssignmentButton(IAssignment assignment)
         {
             foreach (var child in wrapPanel.Children)
             {
-                var label = child as Label;
-                if (label != null && label.Tag != null && label.Tag.Equals(assignment))
+                var button = child as Label;
+                if (button != null && button.Tag != null && button.Tag.Equals(assignment.Id))
                 {
-                    return label;
+                    return button;
                 }
             }
             return null;
@@ -89,17 +93,8 @@ namespace GGPlayer.Pages
         private void AssignmentButton_Click(object sender, MouseButtonEventArgs e)
         {
             var clickedButton = (Label)sender;
-            var taskIndex = int.Parse(clickedButton.Content.ToString());
+            var taskIndex = int.Parse(clickedButton.Content.ToString()!) - 1;
             var assignment = Assignments[taskIndex];
-
-            // Когда окно задания закрывается, проверяем состояние выполнения
-            //viewer.Closed += (s, args) =>
-            //{
-            //    if (completedAssignments.Count == Assignments.Count)
-            //    {
-            //        MessageBox.Show("ХӀокху декъера дерриг тӀедахкарш кхочушдинаахь!");
-            //    }
-            //};
 
             NavigateToAssignment(assignment);
         }
@@ -134,26 +129,30 @@ namespace GGPlayer.Pages
                 return;
             }
 
-            // Загрузка следующего задания
-            if (assignmentIndex + 1 < Assignments.Count)
+            var nextTaskIndex = assignmentIndex + 1;
+            if (nextTaskIndex < Assignments.Count)
             {
-                var nextAssignment = Assignments[assignmentIndex + 1];
+                // Загрузка следующего задания
+                var nextAssignment = Assignments[nextTaskIndex];
                 NavigateToAssignment(nextAssignment);
             }
             else
             {
+                // После последнего возвращаемся на экран выбора заданий
                 _shell.CurrentFrame.Navigate(this);
             }
         }
 
         private void SetAssignmentButtonState(IAssignment assignment, bool successfullyCompleted)
         {
-            var image = FindAssignmentButton(assignment);
-            if (image != null)
+            var button = FindAssignmentButton(assignment);
+            if (button == null)
             {
-                // Изменяем цвет границы
-                ChangeBorderColor(assignment, successfullyCompleted);
+                return;
             }
+
+            // Изменяем цвет границы
+            ChangeBorderColor(assignment, successfullyCompleted);
         }
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)

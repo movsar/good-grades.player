@@ -45,7 +45,7 @@
                 <Border Style="{StaticResource TaskContentStyle}">
 
                     <StackPanel x:Name="spItems"
-                                VerticalAlignment="Center"
+                                VerticalAlignment="Top"
                                 HorizontalAlignment="Left"
                                 Margin="20,20,20,20"/>
                 </Border>

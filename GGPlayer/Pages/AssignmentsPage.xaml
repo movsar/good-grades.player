@@ -10,36 +10,34 @@
 
     <Page.Resources>
 
-        <Style x:Key="AssignmentButtonLabel" TargetType="Label">
+        <Style x:Key="AssignmentButtonStyle" TargetType="Label">
             <Setter Property="Width" Value="200"/>
             <Setter Property="Height" Value="200"/>
-            <Setter Property="HorizontalAlignment" Value="Center"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="5,0,0,3"/>
+            <Setter Property="FontFamily" Value="Cambria"/>
+            <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="FontSize" Value="90"/>
+            <Setter Property="Foreground" Value="#e9b454"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Background">
                 <Setter.Value>
                     <ImageBrush ImageSource="pack://application:,,,/Shared;component/Images/Buttons/assignment_button_background.png"/>
                 </Setter.Value>
             </Setter>
-            <Setter Property="Effect">
-                <Setter.Value>
-                    <DropShadowEffect Color="Transparent" ShadowDepth="0" BlurRadius="0"/>
-                </Setter.Value>                
-            </Setter>
         </Style>
 
     </Page.Resources>
-    
-    <Grid>
-        <Grid.Background>
-            <ImageBrush ImageSource="pack://application:,,,/Shared;component/Images/fon_segment.jpg" Stretch="UniformToFill"/>
-        </Grid.Background>
 
-        <Viewbox>
-            <Grid>
-                <!-- Верхние изображения lam и haarh -->
-                <Image Source="pack://application:,,,/Shared;component/Images/lam.png" 
+    <Page.Background>
+        <ImageBrush ImageSource="pack://application:,,,/Shared;component/Images/fon_segment.jpg" Stretch="UniformToFill"/>
+    </Page.Background>
+
+    <Viewbox>
+        <Grid>
+            <!-- Верхние изображения lam и haarh -->
+            <Image Source="pack://application:,,,/Shared;component/Images/lam.png" 
                        HorizontalAlignment="Center"
                        VerticalAlignment="Top"
                        Margin="0,-20,0,0"
@@ -47,44 +45,43 @@
                        Stretch="Uniform"
                        Panel.ZIndex="1" />
 
-                <Image Source="pack://application:,,,/Shared;component/Images/haarh.png" 
+            <Image Source="pack://application:,,,/Shared;component/Images/haarh.png" 
                        HorizontalAlignment="Center"
                        VerticalAlignment="Top"
                        Margin="0,20,0,0"
                        Width="350"
                        Panel.ZIndex="2"/>
 
-                <!--Главная область-->
-                <Border BorderThickness="3"
+            <!--Главная область-->
+            <Border BorderThickness="3"
                         BorderBrush="#79bcc4"
                         CornerRadius="15"
                         Padding="0,0,0,0"
                         Margin="70,90,70,20">
 
-                    <Border.Background>
-                        <SolidColorBrush Opacity="0.5" Color="AliceBlue"/>
-                    </Border.Background>
+                <Border.Background>
+                    <SolidColorBrush Opacity="0.5" Color="AliceBlue"/>
+                </Border.Background>
 
-                    <StackPanel Width="1000">
-                        <!-- Контейнер для кнопок с заданиями -->
-                        <ScrollViewer x:Name="ScrollViewerContainer"
+                <StackPanel Width="1000">
+                    <!-- Контейнер для кнопок с заданиями -->
+                    <ScrollViewer x:Name="ScrollViewerContainer"
                                       VerticalScrollBarVisibility="Auto"
                                       HorizontalContentAlignment="Center"
                                       HorizontalAlignment="Center"
                                       Height="450">
 
-                            <WrapPanel x:Name="wrapPanel" ItemWidth="230" ItemHeight="230" />
-                            
-                        </ScrollViewer>
+                        <WrapPanel x:Name="wrapPanel" ItemWidth="230" ItemHeight="230" />
 
-                        <!-- Нижний орнамент -->
-                        <Image Source="pack://application:,,,/Shared;component/Images/ornament_down_segment.png" 
+                    </ScrollViewer>
+
+                    <!-- Нижний орнамент -->
+                    <Image Source="pack://application:,,,/Shared;component/Images/ornament_down_segment.png" 
                            HorizontalAlignment="Stretch"
                            VerticalAlignment="Bottom" />
-                    </StackPanel>
+                </StackPanel>
 
-                </Border>
-            </Grid>
-        </Viewbox>
-    </Grid>
+            </Border>
+        </Grid>
+    </Viewbox>
 </Page>
