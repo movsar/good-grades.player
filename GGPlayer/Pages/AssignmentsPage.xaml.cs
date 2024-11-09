@@ -200,8 +200,15 @@ namespace GGPlayer.Pages
             }
 
             // Загрузка следующего задания
-            var nextAssignment = Assignments[assignmentIndex + 1];
-            NavigateToAssignment(nextAssignment);
+            if (assignmentIndex + 1 < Assignments.Count)
+            {
+                var nextAssignment = Assignments[assignmentIndex + 1];
+                NavigateToAssignment(nextAssignment);
+            }
+            else
+            {
+                _shell.CurrentFrame.Navigate(this);
+            }
         }
 
         private void SetAssignmentButtonState(IAssignment assignment, bool successfullyCompleted)

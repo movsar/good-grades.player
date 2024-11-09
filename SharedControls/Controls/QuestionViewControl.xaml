@@ -7,14 +7,31 @@
              d:DataContext="{d:DesignInstance Type=local:QuestionViewControl}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-
+    
+    <UserControl.Resources>
+        <Style x:Key="QuestionOptionButtonStyle" TargetType="Button">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="BorderBrush" Value="Gray"/>
+            <Setter Property="BorderThickness" Value="3"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Effect" >
+                <Setter.Value>
+                    <DropShadowEffect Color="Black"
+                     ShadowDepth="5"
+                     Opacity="0.3" />
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    
     <StackPanel>
-        <!-- Question Text -->
-        <TextBlock Text="{Binding Question.Text}" 
-                   Style="{StaticResource HeaderStyle}"
-                   FontSize="16"
-                   FontStyle="Italic"/>
-
-        <StackPanel x:Name="spOptions"></StackPanel>
+        <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <StackPanel x:Name="spOptions"></StackPanel>
+        </ScrollViewer>
     </StackPanel>
 </UserControl>

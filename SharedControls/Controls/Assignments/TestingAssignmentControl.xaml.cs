@@ -16,9 +16,9 @@ namespace Shared.Controls.Assignments
         private int _currentQuestionIndex;
         private List<QuestionViewControl> _questionViewControls;
 
-
         public event Action<IAssignment, bool> AssignmentCompleted;
         public event Action<IAssignment, string, bool> AssignmentItemSubmitted;
+        public string TaskTitle { get; set; }
 
         public TestingAssignmentControl(TestingAssignment testingTask)
         {
@@ -40,8 +40,7 @@ namespace Shared.Controls.Assignments
 
         private void ShowCurrentQuestion()
         {
-            spQuestions.Children.Clear();
-            spQuestions.Children.Add(_questionViewControls[_currentQuestionIndex]);
+            spQuestions.Content = _questionViewControls[_currentQuestionIndex];
         }            
 
         private void ShowStatistics()
@@ -82,6 +81,8 @@ namespace Shared.Controls.Assignments
         }
         public void OnCheckClicked()
         {
+            IsEnabled = false;
+            
             var questionViewControl = _questionViewControls[_currentQuestionIndex];
             var selections = questionViewControl.SelectedOptionIds;
 
@@ -99,12 +100,12 @@ namespace Shared.Controls.Assignments
 
         public void OnRetryClicked()
         {
-            throw new NotImplementedException();
+            IsEnabled = true;
         }
 
         public void OnNextClicked()
         {
-            throw new NotImplementedException();
+            IsEnabled = true;
         }
     }
 }

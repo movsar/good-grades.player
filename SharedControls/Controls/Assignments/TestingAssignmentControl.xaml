@@ -24,19 +24,12 @@
 
             <Border Style="{StaticResource TaskContentStyle}">
 
-                <Grid Margin="10">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-
-                    <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                        <StackPanel x:Name="spQuestions" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                        Width="400" Margin="0 0 0 50">
+                        <ContentControl x:Name="spQuestions" 
+                                        HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                        >
                             <!-- Здесь будет динамически добавленный QuestionViewControl -->
-                        </StackPanel>
-                    </ScrollViewer>
-                </Grid>
+                        </ContentControl>
+                
             </Border>
 
             <Image Style="{StaticResource TaskBottomOrnamentStyle}" />

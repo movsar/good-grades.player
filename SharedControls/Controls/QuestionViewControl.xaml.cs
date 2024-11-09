@@ -39,21 +39,7 @@ namespace Shared.Controls
             {
                 Tag = option.Id,
                 Content = option.Text,
-                Margin = new System.Windows.Thickness(10),
-                Padding = new System.Windows.Thickness(20),
-                FontSize = 24,
-                Foreground = Brushes.Black,
-                BorderBrush = Brushes.DarkGray,
-                BorderThickness = new Thickness(3),
-                FontWeight = FontWeights.Bold,
-                HorizontalContentAlignment = HorizontalAlignment.Center,
-                VerticalContentAlignment = VerticalAlignment.Center,
-                Effect = new DropShadowEffect
-                {
-                    Color = Colors.Black,
-                    ShadowDepth = 5,
-                    Opacity = 0.3
-                }
+                Style = (Style)FindResource("QuestionOptionButtonStyle"),                
             };
 
             button.Click += (s, e) => OnOptionSelected(button);
