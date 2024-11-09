@@ -74,10 +74,12 @@ namespace Shared.Controls.Assignments
                 var image = _matchingPairs.Values.ToList()[i];
 
                 int pairIndex = i;
-                
-                var imageUiElement = new Image { 
-                    Source = image, 
-                    Name = $"Pair_{pairIndex}" 
+
+                var imageUiElement = new Image
+                {
+                    Source = image,
+                    Name = $"Pair_{pairIndex}",
+                    Style = (Style)FindResource("MatchingImageStyle")
                 };
 
                 var textBlockUiElement = new TextBlock
@@ -202,7 +204,7 @@ namespace Shared.Controls.Assignments
             // Set to a default or neutral color.
             border.BorderBrush = Brushes.LightGray;
             border.BorderThickness = new Thickness(2);
-            border.Background = Brushes.Transparent;
+            border.Background = Brushes.White;
         }
 
         // Adds UI elements to the grid based on the list of GridItem objects.
@@ -220,12 +222,7 @@ namespace Shared.Controls.Assignments
         // Creates a styled Border element containing a child UIElement.
         private Border CreateBorderWithChild(UIElement child)
         {
-            var border = new Border
-            {
-                AllowDrop = true,
-                Padding = new Thickness(10),
-                Child = child
-            };
+            var border = new Border { Child = child };
 
             // Reference a predefined style for rounded borders.
             border.SetResourceReference(Border.StyleProperty, "RoundedBorderStyle");
@@ -238,12 +235,13 @@ namespace Shared.Controls.Assignments
             border.MouseEnter += (s, e) =>
             {
                 var b = s as Border;
-                b.Background = new SolidColorBrush(Color.FromArgb(255, 135, 206, 250)); // Light Sky Blue
+                // Light Sky Blue
+                b.Background = new SolidColorBrush(Color.FromArgb(255, 135, 206, 250));
             };
             border.MouseLeave += (s, e) =>
             {
                 var b = s as Border;
-                b.Background = Brushes.Transparent;
+                b.Background = Brushes.White;
             };
 
             return border;

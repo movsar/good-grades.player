@@ -9,11 +9,16 @@
              d:DesignHeight="450" d:DesignWidth="800">
 
     <UserControl.Resources>
+        <Style x:Key="MatchingImageStyle" TargetType="Image">
+            <Setter Property="Width" Value="170"/>
+        </Style>
+
         <!-- Rounded corner style for borders -->
         <Style x:Key="RoundedBorderStyle" TargetType="Border">
             <Setter Property="CornerRadius" Value="5"/>
             <Setter Property="BorderBrush" Value="LightGray"/>
             <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="AllowDrop" Value="True"/>
             <Setter Property="Background" Value="White"/>
             <Setter Property="Margin" Value="5"/>
             <Setter Property="Height" Value="70"/>
@@ -22,7 +27,7 @@
 
         <!-- Style for TextBlocks to make the text more readable and playful -->
         <Style TargetType="TextBlock">
-            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="FontSize" Value="8"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="FontFamily" Value="Comic Sans MS"/>
             <Setter Property="TextWrapping" Value="Wrap"/>
@@ -47,7 +52,7 @@
             </Border>
 
             <Border Style="{StaticResource TaskContentStyle}">
-                
+
                 <!--Содержимое задания-->
                 <ScrollViewer HorizontalScrollBarVisibility="Auto" 
                                   HorizontalAlignment="Center"

@@ -33,10 +33,8 @@
           Stretch="UniformToFill"/>
     </UserControl.Background>
 
-    <Grid>
-        <!-- Viewbox для пропорционального масштабирования содержимого -->
-        <Viewbox Stretch="Uniform">
-            <Grid Width="600" Height="330">
+    <Viewbox Stretch="Uniform">
+        <Grid Width="600" Height="330">
                 <Image Style="{StaticResource TaskTopOrnamentStyle}" />
                 <Border Style="{StaticResource TaskTitleBorderStyle}" Panel.ZIndex="3">
                     <TextBlock Text="{Binding TaskTitle}" Style="{StaticResource TaskTitleTextStyle}" />
@@ -53,5 +51,4 @@
                 <Image Style="{StaticResource TaskBottomOrnamentStyle}" />
             </Grid>
         </Viewbox>
-    </Grid>
 </UserControl>

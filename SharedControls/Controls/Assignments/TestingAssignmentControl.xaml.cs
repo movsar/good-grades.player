@@ -41,6 +41,7 @@ namespace Shared.Controls.Assignments
         private void ShowCurrentQuestion()
         {
             spQuestions.Content = _questionViewControls[_currentQuestionIndex];
+            TaskTitle = _assignment.Questions[_currentQuestionIndex].Text;
         }            
 
         private void ShowStatistics()
