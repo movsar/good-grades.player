@@ -22,8 +22,7 @@
                        Margin="0,-20,0,0"
                        Height="160"
                        Stretch="Uniform"
-                       Panel.ZIndex="1"
-                      />
+                       Panel.ZIndex="1" />
 
                 <Image Source="pack://application:,,,/Shared;component/Images/haarh.png" 
                        HorizontalAlignment="Center"
@@ -32,39 +31,33 @@
                        Width="350"
                        Panel.ZIndex="2"/>
 
+                <!--Главная область-->
                 <Border BorderThickness="3"
                         BorderBrush="#79bcc4"
                         CornerRadius="15"
-                        Padding="40,0,0,0"
+                        Padding="0,0,0,0"
                         Margin="70,90,70,20">
 
                     <Border.Background>
                         <SolidColorBrush Opacity="0.5" Color="AliceBlue"/>
                     </Border.Background>
 
-                    <StackPanel>
+                    <StackPanel Width="1000">
                         <!-- Контейнер для кнопок с заданиями -->
                         <ScrollViewer x:Name="ScrollViewerContainer"
                                       VerticalScrollBarVisibility="Auto"
-                                      HorizontalAlignment="Stretch" 
-                                      VerticalAlignment="Stretch"
+                                      HorizontalContentAlignment="Center"
+                                      HorizontalAlignment="Center"
                                       Height="450">
 
-                            <WrapPanel x:Name="wrapPanel"
-                                       HorizontalAlignment="Stretch"
-                                       VerticalAlignment="Stretch"
-                                       ItemWidth="250" ItemHeight="250">
-                            </WrapPanel>
+                            <WrapPanel x:Name="wrapPanel" ItemWidth="230" ItemHeight="230" />
+                            
                         </ScrollViewer>
 
                         <!-- Нижний орнамент -->
                         <Image Source="pack://application:,,,/Shared;component/Images/ornament_down_segment.png" 
                            HorizontalAlignment="Stretch"
-                           VerticalAlignment="Top"
-                           Width="1000"
-                           Margin="20,0,20,0"
-                           Panel.ZIndex="3"
-                        />
+                           VerticalAlignment="Bottom" />
                     </StackPanel>
 
                 </Border>
