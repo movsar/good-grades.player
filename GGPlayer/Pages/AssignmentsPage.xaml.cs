@@ -43,13 +43,7 @@ namespace GGPlayer.Pages
         private void GenerateAssignmentButtons()
         {
             // Очистка предыдущего содержимого
-            ScrollViewerContainer.Content = null;
-
-            WrapPanel wrapPanel = new WrapPanel()
-            {
-                HorizontalAlignment = HorizontalAlignment.Center,
-                Width = ScrollViewerContainer.ActualWidth
-            };
+            wrapPanel.Children.Clear();
 
             int count = 1;
             foreach (var assignment in Assignments)
@@ -57,22 +51,13 @@ namespace GGPlayer.Pages
                 // Создаем Grid для кнопки и фона
                 var buttonGrid = new Grid
                 {
-                    Width = 160,
-                    Height = 160,
                     Margin = new Thickness(ButtonSpacing)
                 };
-
-
 
                 // Фоновое изображение
                 var backgroundImage = new Image
                 {
                     Source = new BitmapImage(new Uri($"/Images/TaskButtons/Task{count}Btn.png", UriKind.Relative)),
-                    Stretch = Stretch.Fill,
-                    Width = 160,
-                    Height = 160,
-                    VerticalAlignment = VerticalAlignment.Center,
-                    HorizontalAlignment = HorizontalAlignment.Center,
                     Cursor = Cursors.Hand,
                     Tag = assignment
                 };
@@ -96,8 +81,6 @@ namespace GGPlayer.Pages
                 wrapPanel.Children.Add(buttonGrid);
                 count++;
             }
-
-            ScrollViewerContainer.Content = wrapPanel;
         }
 
         // Метод для изменения цвета границы
@@ -135,7 +118,7 @@ namespace GGPlayer.Pages
         // Метод для поиска изображения задания
         private Image FindAssignmentImage(IAssignment assignment)
         {
-            foreach (var child in ((WrapPanel)ScrollViewerContainer.Content).Children)
+            foreach (var child in wrapPanel.Children)
             {
                 var grid = child as Grid;
                 if (grid != null && grid.Children.Count > 0)
@@ -213,7 +196,6 @@ namespace GGPlayer.Pages
 
         private void SetAssignmentButtonState(IAssignment assignment, bool successfullyCompleted)
         {
-            var wrapPanel = ScrollViewerContainer.Content as WrapPanel;
             var image = FindAssignmentImage(assignment);
             if (image != null)
             {
@@ -225,7 +207,7 @@ namespace GGPlayer.Pages
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             // Подстраивание под изменение окна
-            ScrollViewerContainer.Content = null;
+            wrapPanel.Children.Clear();
             GenerateAssignmentButtons();
         }
     }

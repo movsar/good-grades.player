@@ -11,7 +11,6 @@
 
 	<ItemGroup>
 		<None Remove="Images\b1ow.png" />
-		<None Remove="Images\back.png" />
 		<None Remove="Images\Buttons\back.png" />
 		<None Remove="Images\Buttons\check.png" />
 		<None Remove="Images\Buttons\check_hover.png" />
@@ -20,17 +19,12 @@
 		<None Remove="Images\Buttons\retry.png" />
 		<None Remove="Images\fon.jpg" />
 		<None Remove="Images\fon_segment.jpg" />
-		<None Remove="Images\guo.png" />
-		<None Remove="Images\guo_material.png" />
-		<None Remove="Images\guo_segment.png" />
 		<None Remove="Images\haarh.png" />
 		<None Remove="Images\kvadrat_segment.jpg" />
 		<None Remove="Images\kvadroguo_segment.png" />
 		<None Remove="Images\lam.png" />
 		<None Remove="Images\listening.png" />
 		<None Remove="Images\mazhdig.png" />
-		<None Remove="Images\nuyda.png" />
-		<None Remove="Images\nuyda_krug.png" />
 		<None Remove="Images\ornament_down_segment.png" />
 		<None Remove="Images\ornament_up_segment.png" />
 		<None Remove="Images\Pause.png" />
@@ -64,7 +58,6 @@
 
 	<ItemGroup>
 	  <Resource Include="Images\b1ow.png" />
-	  <Resource Include="Images\back.png" />
 	  <Resource Include="Images\Buttons\back.png" />
 	  <Resource Include="Images\Buttons\check.png" />
 	  <Resource Include="Images\Buttons\check_hover.png" />
@@ -73,17 +66,12 @@
 	  <Resource Include="Images\Buttons\retry.png" />
 	  <Resource Include="Images\fon.jpg" />
 	  <Resource Include="Images\fon_segment.jpg" />
-	  <Resource Include="Images\guo.png" />
-	  <Resource Include="Images\guo_material.png" />
-	  <Resource Include="Images\guo_segment.png" />
 	  <Resource Include="Images\haarh.png" />
 	  <Resource Include="Images\kvadrat_segment.jpg" />
 	  <Resource Include="Images\kvadroguo_segment.png" />
 	  <Resource Include="Images\lam.png" />
 	  <Resource Include="Images\listening.png" />
 	  <Resource Include="Images\mazhdig.png" />
-	  <Resource Include="Images\nuyda.png" />
-	  <Resource Include="Images\nuyda_krug.png" />
 	  <Resource Include="Images\ornament_down_segment.png" />
 	  <Resource Include="Images\ornament_up_segment.png" />
 	  <Resource Include="Images\Pause.png" />

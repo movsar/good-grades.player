@@ -5,6 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:GGPlayer.Pages"
       mc:Ignorable="d" 
+      d:Width="1280" d:Height="720"
       SizeChanged="Window_SizeChanged">
 
     <Grid>
@@ -13,56 +14,60 @@
         </Grid.Background>
 
         <Viewbox>
-            <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Width="1300" Height="600">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="653*"/>
-                    <ColumnDefinition Width="647*"/>
-                </Grid.ColumnDefinitions>
-
-                <!-- Основное изображение guo_segment -->
-                <Image Source="pack://application:,,,/Shared;component/Images/guo_segment.png" 
-                       HorizontalAlignment="Left" 
-                       VerticalAlignment="Top"
-                       Width="1000" Height="500" Margin="204,74,0,0" Grid.ColumnSpan="2" />
-
+            <Grid>
                 <!-- Верхние изображения lam и haarh -->
                 <Image Source="pack://application:,,,/Shared;component/Images/lam.png" 
-                       HorizontalAlignment="Left"
+                       HorizontalAlignment="Center"
                        VerticalAlignment="Top"
-                       Width="825"
+                       Margin="0,-20,0,0"
+                       Height="160"
+                       Stretch="Uniform"
                        Panel.ZIndex="1"
-                       Margin="309,-10,0,0" Height="132" Grid.ColumnSpan="2"/>
+                      />
 
                 <Image Source="pack://application:,,,/Shared;component/Images/haarh.png" 
-                       HorizontalAlignment="Left"
+                       HorizontalAlignment="Center"
                        VerticalAlignment="Top"
-                       Width="200"
-                       Panel.ZIndex="2"
-                       Height="auto"
-                       Margin="567,25,0,0" Grid.ColumnSpan="2"/>
+                       Margin="0,20,0,0"
+                       Width="350"
+                       Panel.ZIndex="2"/>
 
-                <!-- Контейнер для кнопок с заданиями -->
-                <ScrollViewer x:Name="ScrollViewerContainer"
-                              HorizontalAlignment="Left" 
-                              VerticalAlignment="Top"
-                              Width="800" 
-                              Height="441" Margin="250,94,0,0" Grid.ColumnSpan="2">
-                    <WrapPanel x:Name="wrapPanel" 
-                               HorizontalAlignment="Center" 
-                               VerticalAlignment="Center"
-                               ItemWidth="200" ItemHeight="200">
-                        <!-- Увеличен размер кнопок -->
+                <Border BorderThickness="3"
+                        BorderBrush="#79bcc4"
+                        CornerRadius="15"
+                        Padding="40,0,0,0"
+                        Margin="70,90,70,20">
 
-                    </WrapPanel>
-                </ScrollViewer>
+                    <Border.Background>
+                        <SolidColorBrush Opacity="0.5" Color="AliceBlue"/>
+                    </Border.Background>
 
-                <!-- Нижний орнамент -->
-                <Image Source="pack://application:,,,/Shared;component/Images/ornament_down_segment.png" 
-                       HorizontalAlignment="Left"
-                       VerticalAlignment="Top"
-                       Width="800" 
-                       Height="auto"
-                       Margin="250,509,0,0" Grid.ColumnSpan="2"/>
+                    <StackPanel>
+                        <!-- Контейнер для кнопок с заданиями -->
+                        <ScrollViewer x:Name="ScrollViewerContainer"
+                                      VerticalScrollBarVisibility="Auto"
+                                      HorizontalAlignment="Stretch" 
+                                      VerticalAlignment="Stretch"
+                                      Height="450">
+
+                            <WrapPanel x:Name="wrapPanel"
+                                       HorizontalAlignment="Stretch"
+                                       VerticalAlignment="Stretch"
+                                       ItemWidth="250" ItemHeight="250">
+                            </WrapPanel>
+                        </ScrollViewer>
+
+                        <!-- Нижний орнамент -->
+                        <Image Source="pack://application:,,,/Shared;component/Images/ornament_down_segment.png" 
+                           HorizontalAlignment="Stretch"
+                           VerticalAlignment="Top"
+                           Width="1000"
+                           Margin="20,0,20,0"
+                           Panel.ZIndex="3"
+                        />
+                    </StackPanel>
+
+                </Border>
             </Grid>
         </Viewbox>
     </Grid>
