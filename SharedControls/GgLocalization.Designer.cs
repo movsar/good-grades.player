@@ -277,6 +277,15 @@ namespace Shared {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Число корректных ответов.
+        /// </summary>
+        public static string CorrectAnswersCount {
+            get {
+                return ResourceManager.GetString("CorrectAnswersCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Создать.
         /// </summary>
         public static string Create {
@@ -480,6 +489,15 @@ namespace Shared {
         public static string IncorrectAnswer {
             get {
                 return ResourceManager.GetString("IncorrectAnswer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Число некорректных ответов.
+        /// </summary>
+        public static string IncorrectAnswersCount {
+            get {
+                return ResourceManager.GetString("IncorrectAnswersCount", resourceCulture);
             }
         }
         
@@ -732,6 +750,15 @@ namespace Shared {
         public static string SetTitleAndDataForListeningMaterial {
             get {
                 return ResourceManager.GetString("SetTitleAndDataForListeningMaterial", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Статистика.
+        /// </summary>
+        public static string Statistics {
+            get {
+                return ResourceManager.GetString("Statistics", resourceCulture);
             }
         }
         

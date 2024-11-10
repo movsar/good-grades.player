@@ -1,7 +1,6 @@
 ﻿using Data.Entities;
 using Data.Interfaces;
-using GGManager.UserControls;
-using Serilog.Parsing;
+using Shared.Controls;
 using Shared.Controls.Assignments;
 using Shared.Interfaces;
 using System.Windows.Controls;
@@ -11,19 +10,20 @@ namespace GGPlayer.Pages.Assignments
 {
     public partial class AssignmentViewerPage : Page
     {
+
         public event Action<IAssignment, bool> AssignmentCompleted;
 
         private IAssignmentViewer _userControl;
         private bool _isAssignmentCompleted;
         private readonly IAssignment _assignment;
-
+        private int _currentStep = 1;
         public AssignmentViewerPage(ShellWindow _shell, IAssignment assignment)
         {
             InitializeComponent();
 
             _assignment = assignment;
-            SetUiStateToInitial();
             LoadAssignmentView();
+            SetUiStateToInitial();
         }
 
         private void LoadAssignmentView()
@@ -57,6 +57,12 @@ namespace GGPlayer.Pages.Assignments
 
         private void _userControl_AssignmentCompleted(IAssignment assignment, bool success)
         {
+            if (assignment is TestingAssignment)
+            {
+                var testingAssignmentControl = _userControl as TestingAssignmentControl;
+                ucRoot.Content = new StatisticsControl(testingAssignmentControl.CorrectAnswers, testingAssignmentControl.IncorrectAnswers);
+            }
+
             if (!success)
             {
                 SetUiStateToFailure();
@@ -68,7 +74,6 @@ namespace GGPlayer.Pages.Assignments
 
             _isAssignmentCompleted = success;
         }
-
         private void _userControl_AssignmentItemSubmitted(IAssignment assignment, string itemId, bool success)
         {
             if (!success)
@@ -83,20 +88,21 @@ namespace GGPlayer.Pages.Assignments
 
         private void btnRetry_MouseUp(object sender, MouseButtonEventArgs e)
         {
+            _currentStep = 1;
+            if (Content != _userControl)
+            {
+                ucRoot.Content = _userControl;
+            }
+
             SetUiStateToInitial();
             _userControl.OnRetryClicked();
         }
 
         private void btnCheck_MouseUp(object sender, MouseButtonEventArgs e) => _userControl.OnCheckClicked();
-
-        ~AssignmentViewerPage()
+        private void btnNext_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            _userControl.AssignmentCompleted -= _userControl_AssignmentCompleted;
-            _userControl.AssignmentItemSubmitted -= _userControl_AssignmentItemSubmitted;
-        }
+            _currentStep++;
 
-        private void btnNextAssignment_MouseUp(object sender, MouseButtonEventArgs e)
-        {
             SetUiStateToInitial();
 
             if (_isAssignmentCompleted)
@@ -112,16 +118,26 @@ namespace GGPlayer.Pages.Assignments
         #region Buttons and success / failure messages' states
         private void SetUiStateToInitial()
         {
-            btnNextAssignment.Visibility = System.Windows.Visibility.Collapsed;
-
             btnRetry.Visibility = System.Windows.Visibility.Collapsed;
-            btnCheck.Visibility = System.Windows.Visibility.Visible;
+
+            if (_currentStep >= _userControl.StepsCount)
+            {
+                btnCheck.Visibility = System.Windows.Visibility.Visible;
+                btnNext.Visibility = System.Windows.Visibility.Collapsed;
+            }
+            else
+            {
+                btnCheck.Visibility = System.Windows.Visibility.Collapsed;
+                btnNext.Visibility = System.Windows.Visibility.Visible;
+            }
 
             msgFailure.Visibility = System.Windows.Visibility.Collapsed;
             msgSuccess.Visibility = System.Windows.Visibility.Collapsed;
         }
         private void SetUiStateToFailure()
         {
+            btnNext.Visibility = System.Windows.Visibility.Collapsed;
+
             btnRetry.Visibility = System.Windows.Visibility.Visible;
             btnCheck.Visibility = System.Windows.Visibility.Collapsed;
 
@@ -130,10 +146,10 @@ namespace GGPlayer.Pages.Assignments
         }
         private void SetUiStateToSuccess()
         {
-            btnNextAssignment.Visibility = System.Windows.Visibility.Visible;
+            btnNext.Visibility = System.Windows.Visibility.Visible;
+            btnCheck.Visibility = System.Windows.Visibility.Collapsed;
 
             btnRetry.Visibility = System.Windows.Visibility.Collapsed;
-            btnCheck.Visibility = System.Windows.Visibility.Collapsed;
 
             msgFailure.Visibility = System.Windows.Visibility.Collapsed;
             msgSuccess.Visibility = System.Windows.Visibility.Visible;

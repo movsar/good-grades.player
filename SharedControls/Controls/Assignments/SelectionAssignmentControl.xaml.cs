@@ -15,6 +15,8 @@ namespace Shared.Controls.Assignments
 
         public string TaskTitle { get; }
 
+        public int StepsCount { get; } = 1;
+
         private readonly Question _question;
 
         public event Action<IAssignment, bool>? AssignmentCompleted;

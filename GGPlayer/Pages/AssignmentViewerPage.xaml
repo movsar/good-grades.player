@@ -45,9 +45,9 @@
                 Panel.ZIndex="102"
                 Style="{StaticResource ControlButton}" />
 
-        <Image  x:Name="btnNextAssignment"
+        <Image  x:Name="btnNext"
                 Source="pack://application:,,,/Shared;component/Images/Buttons/next.png" 
-                MouseUp="btnNextAssignment_MouseUp"
+                MouseUp="btnNext_MouseUp"
                 VerticalAlignment="Center" 
                 Panel.ZIndex="103"
                 Style="{StaticResource ControlButton}" />

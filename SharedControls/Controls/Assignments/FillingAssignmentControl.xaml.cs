@@ -14,6 +14,9 @@ namespace Shared.Controls.Assignments
         private readonly FillingAssignment _assignment;
 
         public string TaskTitle { get; }
+
+        public int StepsCount { get; } = 1;
+
         public FillingAssignmentControl(FillingAssignment fillingTask)
         {
             InitializeComponent();

@@ -22,12 +22,15 @@ namespace Shared.Controls.Assignments
         public int CorrectAnswers { get; private set; }
         public int IncorrectAnswers { get; private set; }
 
+        public int StepsCount { get; }
+
         public TestingAssignmentControl(TestingAssignment testingTask)
         {
             InitializeComponent();
             DataContext = this;
 
             _assignment = testingTask;
+            StepsCount = _assignment.Questions.Count;
             _questionViewControls = new List<QuestionViewControl>();
 
             foreach (var question in _assignment.Questions)
@@ -44,8 +47,8 @@ namespace Shared.Controls.Assignments
             _currentQuestionIndex++;
             spQuestions.Content = _questionViewControls[_currentQuestionIndex];
             TaskTitle = _assignment.Questions[_currentQuestionIndex].Text;
-        }            
-             
+        }
+
 
         private void RestartTest()
         {
@@ -62,17 +65,12 @@ namespace Shared.Controls.Assignments
             var questionViewControl = _questionViewControls[_currentQuestionIndex];
             var selections = questionViewControl.SelectedOptionIds;
 
-            if (_currentQuestionIndex < _assignment.Questions.Count - 1)
-            {
-                ShowNextQuestion();
-            }
-            else
-            {
-                CorrectAnswers = _questionViewControls.Count(qvc => QuestionService.CheckUserAnswers(qvc.Question, qvc.SelectedOptionIds));
-                IncorrectAnswers = _assignment.Questions.Count - CorrectAnswers;
-                AssignmentCompleted?.Invoke(_assignment, IncorrectAnswers == 0);
-                IsEnabled = false;
-            }
+            CorrectAnswers = _questionViewControls.Count(qvc => QuestionService.CheckUserAnswers(qvc.Question, qvc.SelectedOptionIds));
+            IncorrectAnswers = _assignment.Questions.Count - CorrectAnswers;
+
+            AssignmentCompleted?.Invoke(_assignment, IncorrectAnswers == 0);
+
+            IsEnabled = false;
         }
 
         public void OnRetryClicked()
@@ -84,6 +82,11 @@ namespace Shared.Controls.Assignments
         public void OnNextClicked()
         {
             IsEnabled = true;
+
+            if (_currentQuestionIndex < _assignment.Questions.Count - 1)
+            {
+                ShowNextQuestion();
+            }
         }
     }
 }

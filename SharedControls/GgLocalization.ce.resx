@@ -369,4 +369,13 @@
   <data name="No" xml:space="preserve">
     <value>ХIан-ХIан</value>
   </data>
+  <data name="Statistics" xml:space="preserve">
+    <value>Статистика</value>
+  </data>
+  <data name="CorrectAnswersCount" xml:space="preserve">
+    <value>Нийса жоьпийн терахь</value>
+  </data>
+  <data name="IncorrectAnswersCount" xml:space="preserve">
+    <value>Нийса доцу жоьпийн терахь</value>
+  </data>
 </root>

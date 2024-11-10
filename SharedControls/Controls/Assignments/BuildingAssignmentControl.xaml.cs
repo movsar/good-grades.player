@@ -18,6 +18,7 @@ namespace Shared.Controls.Assignments
         public event Action<IAssignment, string, bool> AssignmentItemSubmitted;
 
         public string TaskTitle { get; }
+        public int StepsCount { get; } = 1;
 
         public BuildingAssignmentControl(BuildingAssignment assignment)
         {
@@ -25,6 +26,7 @@ namespace Shared.Controls.Assignments
             DataContext = this;
 
             _assignment = assignment;
+
             TaskTitle = _assignment.Title;
 
             LoadNextItem();
@@ -89,6 +91,9 @@ namespace Shared.Controls.Assignments
         public void OnRetryClicked()
         {
             IsEnabled = true;
+
+            _currentItemIndex = -1;
+            LoadNextItem();
         }
 
         public void OnNextClicked()

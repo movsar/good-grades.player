@@ -18,6 +18,8 @@ namespace Shared.Controls.Assignments
     {
         public string TaskTitle { get; }
 
+        public int StepsCount { get; } = 1;
+
         // A dictionary to hold matching pairs with string identifiers and corresponding images.
         private readonly Dictionary<string, BitmapImage> _matchingPairs = new Dictionary<string, BitmapImage>();
         // The matching task assignment to be completed in this viewer.
@@ -31,11 +33,11 @@ namespace Shared.Controls.Assignments
         // Constructor initializes the MatchingViewer with a specific assignment.
         public MatchingAssignmentControl(MatchingAssignment assignment)
         {
-            _assignment = assignment;
-            TaskTitle = _assignment.Title;
-
             InitializeComponent();
             DataContext = this;
+
+            _assignment = assignment;
+            TaskTitle = _assignment.Title;
 
             LoadContent();
         }
