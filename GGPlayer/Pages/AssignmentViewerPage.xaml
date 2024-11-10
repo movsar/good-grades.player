@@ -8,26 +8,37 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="SelectionAssignmentPage">
 
+    <Page.Resources>
+        <Style x:Key="ControlButton" TargetType="Image">
+            <Setter Property="Height" Value="80"/>
+            <Setter Property="Width" Value="80"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="Stretch" Value="UniformToFill"/>
+        </Style>
+        
+        <Style x:Key="CheckButtonStyle" TargetType="Image" BasedOn="{StaticResource ControlButton}">
+            <Setter Property="Source" Value="pack://application:,,,/Shared;component/Images/Buttons/check.png"/>
+       
+            <!-- Change appearance when button is hovered over -->
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Source" Value="pack://application:,,,/Shared;component/Images/Buttons/check_hover.png"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        
+        <Style x:Key="TaskResult" TargetType="Image">
+            <Setter Property="Height" Value="400"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Stretch" Value="Uniform"/>
+            <Setter Property="Visibility" Value="Collapsed"/>
+        </Style>
+    </Page.Resources>
+    
     <Grid>
-        <Grid.Resources>
-            <Style x:Key="ControlButton" TargetType="Image">
-                <Setter Property="Height" Value="100"/>
-                <Setter Property="Width" Value="150"/>
-                <Setter Property="Cursor" Value="Hand"/>
-                <Setter Property="Margin" Value="20"/>
-                <Setter Property="HorizontalAlignment" Value="Right"/>
-                <Setter Property="Stretch" Value="UniformToFill"/>
-            </Style>
-
-            <Style x:Key="TaskResult" TargetType="Image">
-                <Setter Property="Height" Value="400"/>
-                <Setter Property="HorizontalAlignment" Value="Center"/>
-                <Setter Property="VerticalAlignment" Value="Center"/>
-                <Setter Property="Stretch" Value="Uniform"/>
-                <Setter Property="Visibility" Value="Collapsed"/>
-            </Style>
-        </Grid.Resources>
-
         <Image  x:Name="msgSuccess"
                 Source="pack://application:,,,/Shared;component/Images/task_result_msg_correct.png" 
                 Panel.ZIndex="100"
@@ -45,19 +56,27 @@
                 Panel.ZIndex="102"
                 Style="{StaticResource ControlButton}" />
 
+        <Image  x:Name="btnPrevious"
+                Source="pack://application:,,,/Shared;component/Images/Buttons/previous.png" 
+                VerticalAlignment="Center" 
+                Panel.ZIndex="103"
+                Style="{StaticResource ControlButton}"
+                MouseUp="btnPrevious_MouseUp"
+                HorizontalAlignment="Left"
+                />
+
         <Image  x:Name="btnNext"
                 Source="pack://application:,,,/Shared;component/Images/Buttons/next.png" 
                 MouseUp="btnNext_MouseUp"
                 VerticalAlignment="Center" 
-                Panel.ZIndex="103"
+                Panel.ZIndex="104"
                 Style="{StaticResource ControlButton}" />
 
         <Image  x:Name="btnCheck"
-                Source="pack://application:,,,/Shared;component/Images/Buttons/check.png" 
+                Style="{StaticResource CheckButtonStyle}" 
                 MouseUp="btnCheck_MouseUp"
                 VerticalAlignment="Bottom"
-                Panel.ZIndex="104"
-                Style="{StaticResource ControlButton}" />
+                Panel.ZIndex="105" />
 
         <ContentControl  x:Name="ucRoot" />
     </Grid>

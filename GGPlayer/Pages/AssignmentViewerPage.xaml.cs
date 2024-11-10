@@ -16,12 +16,14 @@ namespace GGPlayer.Pages.Assignments
         private IAssignmentViewer _userControl;
         private bool _isAssignmentCompleted;
         private readonly IAssignment _assignment;
+        private readonly ShellWindow _shell;
         private int _currentStep = 1;
-        public AssignmentViewerPage(ShellWindow _shell, IAssignment assignment)
+        public AssignmentViewerPage(ShellWindow shell, IAssignment assignment)
         {
             InitializeComponent();
 
             _assignment = assignment;
+            _shell = shell;
             LoadAssignmentView();
             SetUiStateToInitial();
         }
@@ -97,7 +99,6 @@ namespace GGPlayer.Pages.Assignments
             SetUiStateToInitial();
             _userControl.OnRetryClicked();
         }
-
         private void btnCheck_MouseUp(object sender, MouseButtonEventArgs e) => _userControl.OnCheckClicked();
         private void btnNext_MouseUp(object sender, MouseButtonEventArgs e)
         {
@@ -155,5 +156,13 @@ namespace GGPlayer.Pages.Assignments
             msgSuccess.Visibility = System.Windows.Visibility.Visible;
         }
         #endregion
+
+        private void btnPrevious_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (_shell.CurrentFrame.CanGoBack)
+            {
+                _shell.CurrentFrame.GoBack();
+            }
+        }
     }
 }

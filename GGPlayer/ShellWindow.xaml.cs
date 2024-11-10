@@ -15,21 +15,6 @@ namespace GGPlayer
             var _mainPage = new MainPage(this);
             CurrentFrame.Navigate(_mainPage);
         }
-        private void GoBack(object sender, RoutedEventArgs e)
-        {
-            if (CurrentFrame.CanGoBack)
-            {
-                CurrentFrame.GoBack();
-            }
-        }
-
-        private void GoForward(object sender, RoutedEventArgs e)
-        {
-            if (CurrentFrame.CanGoForward)
-            {
-                CurrentFrame.GoForward();
-            }
-        }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
@@ -51,9 +36,14 @@ namespace GGPlayer
 
         private void BackButton_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            if (CurrentFrame.CanGoBack)
+            var isClickedOnMainPage = CurrentFrame.Content.GetType().Name == nameof(MainPage);
+            if (CurrentFrame.CanGoBack && !isClickedOnMainPage)
             {
-                CurrentFrame.GoBack();
+                CurrentFrame.Navigate(new MainPage(this));
+            }
+            else
+            {
+                BackButton.Visibility = Visibility.Hidden;
             }
         }
     }

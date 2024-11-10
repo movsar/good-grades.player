@@ -9,45 +9,6 @@
         Title="Good Grades" Closing="Window_Closing"
         WindowState="Maximized">
 
-    <Window.Resources>
-        <!-- Define a custom style for the navigation buttons -->
-        <Style x:Key="NavigationButtonStyle" TargetType="Button">
-            <Setter Property="FontSize" Value="16"/>
-            <Setter Property="Width" Value="100"/>
-            <Setter Property="Height" Value="40"/>
-            <Setter Property="Margin" Value="10"/>
-            <Setter Property="Background" Value="DarkGreen"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="BorderBrush" Value="DarkOliveGreen"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="BorderThickness" Value="2"/>
-            <Setter Property="Opacity" Value="0.7"/>
-            <!-- Semi-transparent buttons -->
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="5">
-                            <ContentPresenter HorizontalAlignment="Center"
-                                              VerticalAlignment="Center"
-                                              Content="{TemplateBinding Content}"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <!-- Change appearance when button is hovered over -->
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="Green"/>
-                    <Setter Property="Foreground" Value="White"/>
-                    <Setter Property="BorderBrush" Value="Green"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-    </Window.Resources>
-
     <Grid>
         <!-- Frame that hosts the navigated pages -->
         <Frame x:Name="CurrentFrame" NavigationUIVisibility="Hidden" 
@@ -56,14 +17,12 @@
 
         <!-- Overlay the navigation buttons -->
         <Image  Source="pack://application:,,,/Shared;component/Images/Buttons/back.png" 
-                Height="80" Width="150"
+                Height="80" Width="80"
                 Cursor="Hand"
                 x:Name="BackButton" MouseUp="BackButton_MouseUp"
-                HorizontalAlignment="Left" VerticalAlignment="Top" Margin="-10,100,0,0" 
+                HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,100,0,0" 
+                Panel.ZIndex="99"
                 Stretch="UniformToFill" />
-
-        <!--<Button x:Name="ForwardButton" Content="Вперед" Click="GoForward" Style="{StaticResource NavigationButtonStyle}"
-            HorizontalAlignment="Right" VerticalAlignment="Top" Margin="20" />-->
 
     </Grid>
 
