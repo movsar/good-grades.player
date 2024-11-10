@@ -22,10 +22,10 @@ namespace Shared.Controls
 
         public QuestionViewControl(Question question)
         {
-            Question = question;
             InitializeComponent();
             DataContext = this;
 
+            Question = question;
             spOptions.Children.Clear();
             foreach (var option in Question.Options)
             {
@@ -38,8 +38,9 @@ namespace Shared.Controls
             var button = new Button()
             {
                 Tag = option.Id,
+                Background = Brushes.Transparent,
                 Content = option.Text,
-                Style = (Style)FindResource("QuestionOptionButtonStyle"),                
+                Style = (Style)FindResource("QuestionOptionButtonStyle"),
             };
 
             button.Click += (s, e) => OnOptionSelected(button);
@@ -60,12 +61,12 @@ namespace Shared.Controls
             if (selectedOptionIds.Contains(selectedId!))
             {
                 selectedOptionIds.Remove(selectedId!);
-                selectedButton.Background = Brushes.Transparent;
+                selectedButton.BorderBrush = Brushes.Gray;
             }
             else
             {
                 selectedOptionIds.Add(selectedId!);
-                selectedButton.Background = Brushes.LightBlue;
+                selectedButton.BorderBrush= new SolidColorBrush(Color.FromArgb(255,60,127,177));
             }
         }
 
@@ -82,28 +83,28 @@ namespace Shared.Controls
                 {
                     if (anyWrongSelected || !allCorrectSelected)
                     {
-                        btn.Background = Brushes.LightCoral;
+                        btn.BorderBrush = Brushes.LightCoral;
                         wasPreviousAttemptCorrect = false;
                     }
                     else if (correctOptionIds.Contains(optionId!) && allCorrectSelected)
                     {
-                        btn.Background = Brushes.LightGreen;
+                        btn.BorderBrush = Brushes.LightGreen;
                         wasPreviousAttemptCorrect = true;
                     }
                 }
                 else
                 {
-                    btn.ClearValue(Button.BackgroundProperty);
+                    btn.ClearValue(Button.BorderBrushProperty);
                 }
             }
         }
         public void ResetSelections()
+        {
+            selectedOptionIds.Clear();
+            foreach (Button btn in spOptions.Children.OfType<Button>())
             {
-                selectedOptionIds.Clear();
-                foreach (Button btn in spOptions.Children.OfType<Button>())
-                {
-                    btn.Background = null;
-                }
+                btn.BorderBrush = Brushes.Gray;
             }
         }
-    } 
+    }
+}
