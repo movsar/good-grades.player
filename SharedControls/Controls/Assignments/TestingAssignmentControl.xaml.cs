@@ -13,12 +13,14 @@ namespace Shared.Controls.Assignments
     public partial class TestingAssignmentControl : UserControl, IAssignmentViewer
     {
         private readonly TestingAssignment _assignment;
-        private int _currentQuestionIndex;
+        private int _currentQuestionIndex = -1;
         private List<QuestionViewControl> _questionViewControls;
 
         public event Action<IAssignment, bool> AssignmentCompleted;
         public event Action<IAssignment, string, bool> AssignmentItemSubmitted;
         public string TaskTitle { get; set; }
+        public int CorrectAnswers { get; private set; }
+        public int IncorrectAnswers { get; private set; }
 
         public TestingAssignmentControl(TestingAssignment testingTask)
         {
@@ -26,7 +28,6 @@ namespace Shared.Controls.Assignments
             DataContext = this;
 
             _assignment = testingTask;
-            _currentQuestionIndex = 0;
             _questionViewControls = new List<QuestionViewControl>();
 
             foreach (var question in _assignment.Questions)
@@ -35,73 +36,49 @@ namespace Shared.Controls.Assignments
                 _questionViewControls.Add(questionViewControl);
             }
 
-            ShowCurrentQuestion();
+            ShowNextQuestion();
         }
 
-        private void ShowCurrentQuestion()
+        private void ShowNextQuestion()
         {
+            _currentQuestionIndex++;
             spQuestions.Content = _questionViewControls[_currentQuestionIndex];
             TaskTitle = _assignment.Questions[_currentQuestionIndex].Text;
         }            
-
-        private void ShowStatistics()
-        {
-            int correctAnswers = _questionViewControls.Count(qvc =>
-                QuestionService.CheckUserAnswers(qvc.Question, qvc.SelectedOptionIds));
-            int incorrectAnswers = _assignment.Questions.Count - correctAnswers;
-
-            //var statisticsViewer = new StatisticsViewer(correctAnswers, incorrectAnswers);
-            //statisticsViewer.AssignmentCompleted += (isComplete) =>
-            //{
-            //    if (isComplete)
-            //    {
-            //        CompletionStateChanged?.Invoke(_assignment, true);
-            //    }
-            //};
-
-            //statisticsViewer.ShowDialog();
-
-            //if (incorrectAnswers > 0)
-            //{
-            //    RestartTest();
-            //}
-            //else
-            //{
-            //    this.Close();
-            //}
-        }
+             
 
         private void RestartTest()
         {
-            _currentQuestionIndex = 0;
+            _currentQuestionIndex = -1;
             foreach (var control in _questionViewControls)
             {
                 control.ResetSelections();
             }
-            ShowCurrentQuestion();
+            ShowNextQuestion();
         }
+
         public void OnCheckClicked()
         {
-            IsEnabled = false;
-            
             var questionViewControl = _questionViewControls[_currentQuestionIndex];
             var selections = questionViewControl.SelectedOptionIds;
 
-            _currentQuestionIndex++;
-
-            if (_currentQuestionIndex < _assignment.Questions.Count)
+            if (_currentQuestionIndex < _assignment.Questions.Count - 1)
             {
-                ShowCurrentQuestion();
+                ShowNextQuestion();
             }
             else
             {
-                ShowStatistics();
+                CorrectAnswers = _questionViewControls.Count(qvc => QuestionService.CheckUserAnswers(qvc.Question, qvc.SelectedOptionIds));
+                IncorrectAnswers = _assignment.Questions.Count - CorrectAnswers;
+                AssignmentCompleted?.Invoke(_assignment, IncorrectAnswers == 0);
+                IsEnabled = false;
             }
         }
 
         public void OnRetryClicked()
         {
             IsEnabled = true;
+            RestartTest();
         }
 
         public void OnNextClicked()
