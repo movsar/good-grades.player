@@ -1,4 +1,5 @@
 ﻿using GGPlayer.Pages;
+using GGPlayer.Services;
 using Shared;
 using Shared.Controls;
 using System.Windows;
@@ -8,14 +9,19 @@ namespace GGPlayer
 {
     public partial class ShellWindow : Window
     {
+        private readonly ShellNavigationService _navigationService;
         private readonly MainPage _mainPage;
 
-        public ShellWindow()
+        public ShellWindow(ShellNavigationService navigationService, MainPage mainPage)
         {
             InitializeComponent();
 
-            _mainPage = new MainPage(this);
-            CurrentFrame.Navigate(_mainPage);
+            _navigationService = navigationService;
+            _mainPage = mainPage;
+            _mainPage.LoadContent();
+            _navigationService.Initialize(CurrentFrame);
+
+            _navigationService.NavigateTo(_mainPage);
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -33,17 +39,16 @@ namespace GGPlayer
 
         private void CurrentFrame_Navigated(object sender, NavigationEventArgs e)
         {
-            BackButton.Visibility = CurrentFrame.CanGoBack ? Visibility.Visible : Visibility.Hidden;
+            BackButton.Visibility = _navigationService.CanGoBack ? Visibility.Visible : Visibility.Hidden;
         }
 
         private void BackButton_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            GC.Collect();
-
             var isClickedOnMainPage = CurrentFrame.Content.GetType().Name == nameof(MainPage);
-            if (CurrentFrame.CanGoBack && !isClickedOnMainPage)
+
+            if (_navigationService.CanGoBack && !isClickedOnMainPage)
             {
-                CurrentFrame.Navigate(_mainPage);
+                _navigationService.NavigateTo(_mainPage);
             }
             else
             {

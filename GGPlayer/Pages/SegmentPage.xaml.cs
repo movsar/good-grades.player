@@ -5,21 +5,30 @@ using Shared.Services;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Shared.Controls;
-using System.Windows;
+using GGPlayer.Services;
+
 namespace GGPlayer.Pages
 {
     public partial class SegmentPage : Page
     {
-        private readonly Segment _segment;
-        private ShellWindow _shell;
-        public string SegmentTitle => _segment.Title;
+        private readonly ShellNavigationService _navigationService;
+        private readonly AssignmentsPage _assignmentsPage;
+        private Segment? _segment;
+        public List<IMaterial> Materials { get; } = new List<IMaterial>();
 
-        public SegmentPage(ShellWindow shell, Segment segment)
+        public string? SegmentTitle => _segment?.Title;
+
+        public SegmentPage(ShellNavigationService navigationService, AssignmentsPage assignmentsPage)
         {
             InitializeComponent();
             DataContext = this;
+            _navigationService = navigationService;
+            _assignmentsPage = assignmentsPage;
+        }
 
-            _shell = shell;
+        public void Load(Segment segment)
+        {
+            _segment = segment;
 
             RtfService.LoadRtfFromText(rtbDescription, segment.Description);
             Title = segment.Title;
@@ -32,6 +41,7 @@ namespace GGPlayer.Pages
 
 
             // Заполнение списка материалов
+            Materials.Clear();
             if (segment.Materials != null)
             {
                 Materials.AddRange(segment.Materials.Cast<IMaterial>());
@@ -56,7 +66,6 @@ namespace GGPlayer.Pages
             }
         }
 
-        public List<IMaterial> Materials { get; } = new List<IMaterial>();
 
         private List<IAssignment> GetAllAssignments()
         {
@@ -64,7 +73,7 @@ namespace GGPlayer.Pages
 
             if (_segment.MatchingAssignments != null)
             {
-                allAssignments.AddRange(_segment.MatchingAssignments.Cast<IAssignment>());
+                allAssignments.AddRange(_segment.MatchingAssignments);
             }
             if (_segment.FillingAssignments != null)
             {
@@ -98,7 +107,8 @@ namespace GGPlayer.Pages
             if (segmentItem is FakeSegmentMaterial && segmentItem.Id == "tasks")
             {
                 var assignments = GetAllAssignments();
-                _shell.CurrentFrame.Navigate(new AssignmentsPage(_shell, assignments));
+                _assignmentsPage.LoadAssignments(assignments);
+                _navigationService.NavigateTo(_assignmentsPage);
             }
             else if (segmentItem is Material material)
             {
@@ -108,7 +118,7 @@ namespace GGPlayer.Pages
                 };
 
                 page.Content = new MaterialViewerControl(material.Title, material.PdfData, material.Audio);
-                _shell.CurrentFrame.Navigate(page);
+                _navigationService.NavigateTo(page);
             }
         }
 

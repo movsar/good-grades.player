@@ -1,10 +1,12 @@
 ﻿using Data.Entities;
 using Data.Interfaces;
+using GGPlayer.Services;
 using Shared.Controls;
 using Shared.Controls.Assignments;
 using Shared.Interfaces;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Navigation;
 
 namespace GGPlayer.Pages.Assignments
 {
@@ -13,23 +15,22 @@ namespace GGPlayer.Pages.Assignments
 
         public event Action<IAssignment, bool> AssignmentCompleted;
 
+        private readonly ShellNavigationService _navigationService;
         private IAssignmentViewer _userControl;
+        private IAssignment _assignment;
         private bool _isAssignmentCompleted;
-        private readonly IAssignment _assignment;
-        private readonly ShellWindow _shell;
         private int _currentStep = 1;
-        public AssignmentViewerPage(ShellWindow shell, IAssignment assignment)
+        public AssignmentViewerPage(ShellNavigationService navigationService)
         {
             InitializeComponent();
 
-            _assignment = assignment;
-            _shell = shell;
-            LoadAssignmentView();
-            SetUiStateToInitial();
+            _navigationService = navigationService;
         }
 
-        private void LoadAssignmentView()
+        public void LoadAssignmentView(IAssignment assignment)
         {
+            _assignment = assignment;
+
             UserControl uc = null!;
             switch (_assignment)
             {
@@ -55,6 +56,8 @@ namespace GGPlayer.Pages.Assignments
             _userControl = (IAssignmentViewer)uc;
             _userControl.AssignmentItemSubmitted += _userControl_AssignmentItemSubmitted;
             _userControl.AssignmentCompleted += _userControl_AssignmentCompleted;
+
+            SetUiStateToInitial();
         }
 
         private void _userControl_AssignmentCompleted(IAssignment assignment, bool success)
@@ -159,9 +162,9 @@ namespace GGPlayer.Pages.Assignments
 
         private void btnPrevious_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            if (_shell.CurrentFrame.CanGoBack)
+            if (_navigationService.CanGoBack)
             {
-                _shell.CurrentFrame.GoBack();
+                _navigationService.GoBack();
             }
         }
 

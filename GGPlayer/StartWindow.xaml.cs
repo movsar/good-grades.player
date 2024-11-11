@@ -18,20 +18,20 @@ namespace GGPlayer
     {
         private readonly SettingsService _settingsService;
         private readonly Storage _storage;
+        private readonly ShellWindow _shell;
 
-        public StartWindow()
+        public StartWindow(SettingsService settingsService, Storage storage)
         {
-
             InitializeComponent();
             DataContext = this;
 
-            // Initialize fields
-            _settingsService = App.AppHost!.Services.GetRequiredService<SettingsService>();
-            _storage = App.AppHost!.Services.GetRequiredService<Storage>();
+            _settingsService = settingsService;
+            _storage = storage;
 
             try
             {
                 LoadDatabase();
+                _shell = App.AppHost!.Services.GetRequiredService<ShellWindow>();
             }
             catch (OperationCanceledException)
             {
@@ -94,8 +94,7 @@ namespace GGPlayer
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             // Создание и показ основного окна
-            var shellWindow = new ShellWindow();
-            shellWindow.Show();
+            _shell.Show();
 
             // Закрытие стартового окна
             this.Close();

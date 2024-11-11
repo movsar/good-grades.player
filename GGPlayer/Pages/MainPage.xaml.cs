@@ -5,6 +5,8 @@ using System.Windows.Input;
 using Data.Services;
 using System.Collections.ObjectModel;
 using Microsoft.Extensions.DependencyInjection;
+using GGPlayer.Services;
+using System.Windows.Navigation;
 
 namespace GGPlayer.Pages
 {
@@ -17,15 +19,23 @@ namespace GGPlayer.Pages
         private DbMeta _dbInfo;
         private readonly SettingsService _settingsService;
         private readonly Storage _storage;
-        private readonly ShellWindow _shell;
+        private readonly SegmentPage _segmentPage;
+        private readonly ShellNavigationService _navigationService;
 
-        public MainPage(ShellWindow shellWindow)
+        public MainPage(ShellNavigationService navigationService, Storage storage, SegmentPage segmentPage)
         {
             DataContext = this;
 
-            _storage = App.AppHost!.Services.GetRequiredService<Storage>();
-            _shell = shellWindow;
+            _storage = storage;
+            _segmentPage = segmentPage;
+            _navigationService = navigationService;
 
+            // Intialize the visual elements
+            InitializeComponent();
+        }
+
+        public void LoadContent()
+        {
             // Load Segments into the collection view
             foreach (var segment in _storage.DbContext.Segments)
             {
@@ -36,34 +46,31 @@ namespace GGPlayer.Pages
             _dbInfo = _storage.DbContext.DbMetas.First();
             DbTitle = _dbInfo.Title;
             DbDescription = _dbInfo.Description ?? string.Empty;
-
-            // Intialize the visual elements
-            InitializeComponent();
         }
 
-        private void LoadSegment()
+        private void NavigateToSelectedSegment()
         {
             var selectedSegment = (Segment)lvSegments.SelectedItem;
             if (selectedSegment == null)
             {
                 return;
             }
-
-            _shell.CurrentFrame.Navigate(new SegmentPage(_shell, selectedSegment));
+            _segmentPage.Load(selectedSegment);
+            _navigationService.NavigateTo(_segmentPage);
         }
 
         #region Event handlers
 
         private void lvSegments_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            LoadSegment();
+            NavigateToSelectedSegment();
         }
 
         private void lvSegments_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Return || e.Key == Key.Enter)
             {
-                LoadSegment();
+                NavigateToSelectedSegment();
             }
         }
 

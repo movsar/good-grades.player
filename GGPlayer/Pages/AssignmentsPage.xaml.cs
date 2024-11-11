@@ -5,6 +5,8 @@ using System.Windows.Media;
 using System.Windows.Media.Effects;
 using Data.Interfaces;
 using GGPlayer.Pages.Assignments;
+using GGPlayer.Services;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace GGPlayer.Pages
 {
@@ -12,18 +14,23 @@ namespace GGPlayer.Pages
     {
         private List<int> completedAssignments = new List<int>();
         private List<IAssignment> Assignments { get; } = new List<IAssignment>();
-        const int MaxAssignments = 30;
 
-        private readonly ShellWindow _shell;
+        private readonly ShellNavigationService _navigationService;
+        private readonly AssignmentViewerPage _assignmentViewerPage;
 
-        public AssignmentsPage(ShellWindow shell, List<IAssignment> assignments)
+        public AssignmentsPage(ShellNavigationService navigationService, AssignmentViewerPage assignmentViewerPage)
         {
             InitializeComponent();
-            // Ограничиваем список заданий до 30
-            Assignments.AddRange(assignments.Take(MaxAssignments));
-            GenerateAssignmentButtons();
+            _navigationService = navigationService;
+            _assignmentViewerPage = assignmentViewerPage;
+        }
 
-            _shell = shell;
+        public void LoadAssignments(List<IAssignment> assignments)
+        {
+            Assignments.Clear();
+            Assignments.AddRange(assignments);
+
+            GenerateAssignmentButtons();
         }
 
         private void GenerateAssignmentButtons()
@@ -101,9 +108,12 @@ namespace GGPlayer.Pages
 
         private void NavigateToAssignment(IAssignment assignment)
         {
-            var viewerPage = new AssignmentViewerPage(_shell, assignment);
-            viewerPage.AssignmentCompleted += OnAssignmentCompleted;
-            _shell.CurrentFrame.Navigate(viewerPage);
+            _assignmentViewerPage.LoadAssignmentView(assignment);
+
+            _assignmentViewerPage.AssignmentCompleted -= OnAssignmentCompleted;
+            _assignmentViewerPage.AssignmentCompleted += OnAssignmentCompleted;
+
+            _navigationService.NavigateTo(_assignmentViewerPage);
         }
 
         private void OnAssignmentCompleted(IAssignment assignment, bool success)
@@ -139,7 +149,7 @@ namespace GGPlayer.Pages
             else
             {
                 // После последнего возвращаемся на экран выбора заданий
-                _shell.CurrentFrame.Navigate(this);
+                _navigationService.NavigateTo(this);
             }
         }
 

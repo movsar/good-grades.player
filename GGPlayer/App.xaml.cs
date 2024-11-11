@@ -1,5 +1,8 @@
 ﻿using Data;
 using Data.Services;
+using GGPlayer.Pages;
+using GGPlayer.Pages.Assignments;
+using GGPlayer.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
@@ -33,6 +36,15 @@ namespace GGPlayer
                         services.AddSingleton<Storage>();
                         services.AddSingleton<SettingsService>();
                         services.AddSingleton<StylingService>();
+                        services.AddSingleton<ShellNavigationService>();
+
+                        services.AddSingleton<ShellWindow>();
+                        services.AddSingleton<StartWindow>();
+
+                        services.AddSingleton<MainPage>();
+                        services.AddSingleton<SegmentPage>();
+                        services.AddSingleton<AssignmentViewerPage>();
+                        services.AddSingleton<AssignmentsPage>();
                     }).Build();
         }
         private void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
@@ -63,8 +75,8 @@ namespace GGPlayer
             var uiLanguageCode = AppHost.Services.GetRequiredService<SettingsService>().GetValue("uiLanguageCode");
             Translations.SetToCulture(uiLanguageCode ?? "ce");
 
-            var startUpForm = new StartWindow();
-            startUpForm.Show();
+            var startWindow = AppHost.Services.GetRequiredService<StartWindow>();
+            startWindow.Show();
         }
 
         protected override async void OnExit(ExitEventArgs e)
