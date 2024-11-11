@@ -8,11 +8,13 @@ namespace GGPlayer
 {
     public partial class ShellWindow : Window
     {
+        private readonly MainPage _mainPage;
+
         public ShellWindow()
         {
             InitializeComponent();
 
-            var _mainPage = new MainPage(this);
+            _mainPage = new MainPage(this);
             CurrentFrame.Navigate(_mainPage);
         }
 
@@ -36,10 +38,12 @@ namespace GGPlayer
 
         private void BackButton_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
+            GC.Collect();
+
             var isClickedOnMainPage = CurrentFrame.Content.GetType().Name == nameof(MainPage);
             if (CurrentFrame.CanGoBack && !isClickedOnMainPage)
             {
-                CurrentFrame.Navigate(new MainPage(this));
+                CurrentFrame.Navigate(_mainPage);
             }
             else
             {

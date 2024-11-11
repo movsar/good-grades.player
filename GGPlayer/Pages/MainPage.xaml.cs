@@ -5,9 +5,6 @@ using System.Windows.Input;
 using Data.Services;
 using System.Collections.ObjectModel;
 using Microsoft.Extensions.DependencyInjection;
-using System.Windows.Navigation;
-using System.Windows;
-using Shared.Controls;
 
 namespace GGPlayer.Pages
 {
