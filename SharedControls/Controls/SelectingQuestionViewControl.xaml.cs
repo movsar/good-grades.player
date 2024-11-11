@@ -8,28 +8,38 @@ using System.Windows.Media.Effects;
 
 namespace Shared.Controls
 {
-    public partial class QuestionViewControl : UserControl
+    public partial class SelectingQuestionViewControl : UserControl
     {
         public Question Question { get; }
         public List<string> SelectedOptionIds => GetUserSelections();
 
         private List<string> selectedOptionIds = new List<string>();
         private bool wasPreviousAttemptCorrect = true;
+
+        private readonly SolidColorBrush NEUTRAL_BRUSH = new SolidColorBrush(Color.FromArgb(255, 60, 127, 177));
+        private readonly Brush SELECTION_BRUSH = Brushes.DarkBlue;
         private List<string> GetUserSelections()
         {
             return selectedOptionIds;
         }
 
-        public QuestionViewControl(Question question)
+        public SelectingQuestionViewControl(Question question)
         {
             InitializeComponent();
             DataContext = this;
 
             Question = question;
             spOptions.Children.Clear();
-            foreach (var option in Question.Options)
+            for (int i = 0; i < Question.Options.Count; i++)
             {
-                spOptions.Children.Add(GenerateOptionButton(option));
+                AssignmentItem option = Question.Options[i];
+                var button = GenerateOptionButton(option);
+                if (i % 2 != 0)
+                {
+                    button.Margin = new Thickness(50, 5, 0, 5);
+                }
+
+                spOptions.Children.Add(button);
             }
         }
 
@@ -40,7 +50,7 @@ namespace Shared.Controls
                 Tag = option.Id,
                 Background = Brushes.Transparent,
                 Content = option.Text,
-                Style = (Style)FindResource("QuestionOptionButtonStyle"),
+                Style = (Style)FindResource("SelectingQuestionOptionStyle"),
             };
 
             button.Click += (s, e) => OnOptionSelected(button);
@@ -61,12 +71,12 @@ namespace Shared.Controls
             if (selectedOptionIds.Contains(selectedId!))
             {
                 selectedOptionIds.Remove(selectedId!);
-                selectedButton.BorderBrush = Brushes.Gray;
+                selectedButton.BorderBrush = NEUTRAL_BRUSH;
             }
             else
             {
                 selectedOptionIds.Add(selectedId!);
-                selectedButton.BorderBrush= new SolidColorBrush(Color.FromArgb(255,60,127,177));
+                selectedButton.BorderBrush = SELECTION_BRUSH;
             }
         }
 
@@ -103,7 +113,7 @@ namespace Shared.Controls
             selectedOptionIds.Clear();
             foreach (Button btn in spOptions.Children.OfType<Button>())
             {
-                btn.BorderBrush = Brushes.Gray;
+                btn.BorderBrush = NEUTRAL_BRUSH;
             }
         }
     }

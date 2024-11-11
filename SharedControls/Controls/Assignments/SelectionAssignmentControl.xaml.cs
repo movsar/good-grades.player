@@ -32,13 +32,13 @@ namespace Shared.Controls.Assignments
             TaskTitle = _assignment.Question.Text;
             _question = _assignment.Question;
 
-            var questionViewControl = new QuestionViewControl(_assignment.Question);
-            spOptions.Children.Add(questionViewControl);
+            var questionViewControl = new SelectingQuestionViewControl(_assignment.Question);
+            ccQuestion.Content = questionViewControl;
         }
 
         public void OnCheckClicked()
         {
-            var questionViewControl = spOptions.Children[0] as QuestionViewControl;
+            var questionViewControl = ccQuestion.Content as SelectingQuestionViewControl;
             var selections = questionViewControl!.SelectedOptionIds;
 
             var areAnswersCorrect = QuestionService.CheckUserAnswers(_question, selections);

@@ -19,17 +19,17 @@
 
             <Image Style="{StaticResource TaskTopOrnamentStyle}" />
             <Border Style="{StaticResource TaskTitleBorderStyle}" Panel.ZIndex="3">
-                <TextBlock Text="{Binding TaskTitle}" Style="{StaticResource TaskTitleTextStyle}" />
+                <TextBlock Text="{Binding TaskTitle}" 
+                           Style="{StaticResource TaskTitleTextStyle}"
+                           />
             </Border>
 
             <Border Style="{StaticResource TaskContentStyle}">
 
-                        <ContentControl x:Name="spQuestions" 
-                                        HorizontalAlignment="Center" VerticalAlignment="Center" 
-                                        >
-                            <!-- Здесь будет динамически добавленный QuestionViewControl -->
-                        </ContentControl>
-                
+                <ContentControl x:Name="ccQuestion" 
+                                        HorizontalAlignment="Center" 
+                                        VerticalAlignment="Center" />
+
             </Border>
 
             <Image Style="{StaticResource TaskBottomOrnamentStyle}" />

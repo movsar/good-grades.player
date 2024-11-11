@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:Shared.Controls.Assignments"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    
+
     <UserControl.Background>
         <!-- Фон на всю область UserControl -->
         <ImageBrush ImageSource="pack://application:,,,/Shared;component/Images/task_background.png"
@@ -24,11 +24,10 @@
 
             <Border Style="{StaticResource TaskContentStyle}">
 
-                <!-- Варианты ответов по центру экрана -->
-                <StackPanel  x:Name="spOptions"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center">
-                </StackPanel>
+                    <ContentControl x:Name="ccQuestion" 
+                                        HorizontalAlignment="Center" 
+                                        VerticalAlignment="Center" />
+
             </Border>
 
             <Image Style="{StaticResource TaskBottomOrnamentStyle}" />
