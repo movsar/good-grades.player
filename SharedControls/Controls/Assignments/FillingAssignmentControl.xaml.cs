@@ -1,6 +1,7 @@
 ﻿using Data.Entities;
 using Data.Interfaces;
 using Shared.Interfaces;
+using Shared.Services;
 using System;
 using System.Linq;
 using System.Windows;
@@ -87,7 +88,9 @@ namespace Shared.Controls.Assignments
                         var options = (string[])textBox.Tag;
 
                         // Check if the user input matches one of the options
-                        if (!options.Contains(textBox.Text.ToLower().Trim()))
+                        var userInput = TextService.GetChechenString(textBox.Text).ToLower();
+
+                        if (!options.Contains(userInput))
                         {
                             AssignmentCompleted?.Invoke(_assignment, false);
                             return;

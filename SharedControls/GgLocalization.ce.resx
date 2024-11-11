@@ -378,4 +378,10 @@
   <data name="IncorrectAnswersCount" xml:space="preserve">
     <value>Нийса доцу жоьпийн терахь</value>
   </data>
+  <data name="Downloading" xml:space="preserve">
+    <value>Чуйоккхуш йу ...</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>ДIайаккха</value>
+  </data>
 </root>

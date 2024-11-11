@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using Velopack.Sources;
 
@@ -65,21 +66,61 @@ namespace Shared.Services
 
         internal static async Task<string> DownloadUpdate(GithubReleaseAsset? setupAsset)
         {
-            // Define the path where the update will be saved
             string updateFilePath = Path.Combine(Path.GetTempPath(), "good-grades-update.exe");
-
-            // Download the update file
-            var response = await client.GetAsync(setupAsset!.BrowserDownloadUrl);
+            var response = await client.GetAsync(setupAsset!.BrowserDownloadUrl, HttpCompletionOption.ResponseHeadersRead);
             response.EnsureSuccessStatusCode();
 
-            // Save the file
-            await using (var fileStream = new FileStream(updateFilePath, FileMode.Create))
+            using var contentStream = await response.Content.ReadAsStreamAsync();
+            var totalBytes = response.Content.Headers.ContentLength ?? -1L;
+            var progress = new Progress<double>();
+            var cancellationTokenSource = new CancellationTokenSource();
+
+            var downloadWindow = new DownloadProgressWindow(cancellationTokenSource);
+            downloadWindow.Show();
+
+            progress.ProgressChanged += (s, percent) =>
             {
-                await response.Content.CopyToAsync(fileStream);
+                downloadWindow.UpdateProgress(percent);
+            };
+
+            try
+            {
+                await DownloadWithProgress(contentStream, updateFilePath, totalBytes, progress, cancellationTokenSource.Token);
+            }
+            catch (OperationCanceledException)
+            {
+                return string.Empty; // Download was canceled
+            }
+            finally
+            {
+                downloadWindow.Close();
             }
 
             return updateFilePath;
-
         }
+
+        private static async Task DownloadWithProgress(Stream contentStream, string filePath, long totalBytes, IProgress<double> progress, CancellationToken cancellationToken)
+        {
+            const int bufferSize = 8192;
+            var buffer = new byte[bufferSize];
+            var totalRead = 0L;
+            int bytesRead;
+
+            using var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize, true);
+
+            while ((bytesRead = await contentStream.ReadAsync(buffer, 0, buffer.Length, cancellationToken)) != 0)
+            {
+                await fileStream.WriteAsync(buffer.AsMemory(0, bytesRead), cancellationToken);
+                totalRead += bytesRead;
+
+                if (totalBytes > 0)
+                {
+                    // Report actual download progress here
+                    progress.Report((double)totalRead / totalBytes * 100);
+                }
+            }
+        }
+
+
     }
 }

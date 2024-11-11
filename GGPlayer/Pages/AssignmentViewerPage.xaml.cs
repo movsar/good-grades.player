@@ -164,5 +164,20 @@ namespace GGPlayer.Pages.Assignments
                 _shell.CurrentFrame.GoBack();
             }
         }
+
+        private void Page_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                if (btnCheck.Visibility == System.Windows.Visibility.Visible)
+                {
+                    btnCheck_MouseUp(this, null);
+                }
+                else if (btnNext.Visibility == System.Windows.Visibility.Visible)
+                {
+                    btnNext_MouseUp(this, null);
+                }
+            }
+        }
     }
 }

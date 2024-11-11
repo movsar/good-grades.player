@@ -6,7 +6,8 @@
       xmlns:local="clr-namespace:GGPlayer.Pages.Assignments"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="SelectionAssignmentPage">
+      Title="SelectionAssignmentPage"
+      KeyUp="Page_KeyUp">
 
     <Page.Resources>
         <Style x:Key="ControlButton" TargetType="Image">

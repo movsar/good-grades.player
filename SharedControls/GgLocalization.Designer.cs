@@ -178,6 +178,15 @@ namespace Shared {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Отмена.
+        /// </summary>
+        public static string Cancel {
+            get {
+                return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ура!.
         /// </summary>
         public static string Celebrating {
@@ -354,6 +363,15 @@ namespace Shared {
         public static string Description {
             get {
                 return ResourceManager.GetString("Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Скачивание ....
+        /// </summary>
+        public static string Downloading {
+            get {
+                return ResourceManager.GetString("Downloading", resourceCulture);
             }
         }
         

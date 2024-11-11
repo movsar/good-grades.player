@@ -44,10 +44,12 @@ namespace Shared.Services
 
                 // Download new version
                 var filePath = await GitHubService.DownloadUpdate(setupAsset);
-
-                // Install new version and restart app
-                Process.Start(filePath);
-                Application.Current.Shutdown();
+                if (!string.IsNullOrWhiteSpace(filePath))
+                {
+                    // Install new version and restart app
+                    Process.Start(filePath);
+                    Application.Current.Shutdown();
+                }
             }
             catch (Exception ex)
             {

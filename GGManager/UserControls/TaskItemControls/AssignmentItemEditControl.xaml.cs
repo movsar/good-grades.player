@@ -11,6 +11,7 @@ using System.Windows.Media.Imaging;
 using Shared;
 using Image = System.Windows.Controls.Image;
 using System.Text.RegularExpressions;
+using Shared.Services;
 
 namespace GGManager.UserControls
 {
@@ -199,7 +200,7 @@ namespace GGManager.UserControls
             }
             else
             {
-                Item.Text = txtItemText.Text;
+                Item.Text = TextService.GetChechenString(txtItemText.Text);
                 OnTextSet(true);
             }
         }
@@ -241,7 +242,7 @@ namespace GGManager.UserControls
 
         private void Commit()
         {
-            Item.Text = Item.Text.Trim();
+            Item.Text = TextService.GetChechenString(Item.Text);
 
             Validate();
 

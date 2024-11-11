@@ -126,8 +126,8 @@ namespace GGManager.UserControls
             {
                 return;
             }
-
-            Question.Text = txtQuestion.Text;
+            
+            Question.Text = TextService.GetChechenString(txtQuestion.Text);
         }
 
         private void btnDiscard_Click(object sender, RoutedEventArgs e)
