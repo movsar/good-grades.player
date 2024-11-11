@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Shared;
+using Shared.Controls;
 using Shared.Services;
 using System.IO;
 using System.Windows;
@@ -41,6 +42,7 @@ namespace GGPlayer
                         services.AddSingleton<ShellWindow>();
                         services.AddSingleton<StartWindow>();
 
+                        services.AddSingleton<MaterialViewerPage>();
                         services.AddSingleton<MainPage>();
                         services.AddSingleton<SegmentPage>();
                         services.AddSingleton<AssignmentViewerPage>();

@@ -13,17 +13,22 @@ namespace GGPlayer.Pages
     {
         private readonly ShellNavigationService _navigationService;
         private readonly AssignmentsPage _assignmentsPage;
+        private readonly MaterialViewerPage _materialViewerPage;
         private Segment? _segment;
         public List<IMaterial> Materials { get; } = new List<IMaterial>();
 
         public string? SegmentTitle => _segment?.Title;
 
-        public SegmentPage(ShellNavigationService navigationService, AssignmentsPage assignmentsPage)
+        public SegmentPage(ShellNavigationService navigationService,
+            AssignmentsPage assignmentsPage,
+            MaterialViewerPage materialViewerPage)
         {
             InitializeComponent();
             DataContext = this;
+
             _navigationService = navigationService;
             _assignmentsPage = assignmentsPage;
+            _materialViewerPage = materialViewerPage;
         }
 
         public void Load(Segment segment)
@@ -112,13 +117,8 @@ namespace GGPlayer.Pages
             }
             else if (segmentItem is Material material)
             {
-                var page = new Page()
-                {
-                    Title = Title
-                };
-
-                page.Content = new MaterialViewerControl(material.Title, material.PdfData, material.Audio);
-                _navigationService.NavigateTo(page);
+                _materialViewerPage.LoadMaterial(material);
+                _navigationService.NavigateTo(_materialViewerPage);
             }
         }
 
