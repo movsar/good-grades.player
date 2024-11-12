@@ -14,10 +14,9 @@ namespace GGPlayer.Pages
         private readonly ShellNavigationService _navigationService;
         private readonly AssignmentsPage _assignmentsPage;
         private readonly MaterialViewerPage _materialViewerPage;
-        private Segment? _segment;
         public List<IMaterial> Materials { get; } = new List<IMaterial>();
 
-        public string? SegmentTitle => _segment?.Title;
+        private Segment? _segment;
 
         public SegmentPage(ShellNavigationService navigationService,
             AssignmentsPage assignmentsPage,
@@ -31,7 +30,7 @@ namespace GGPlayer.Pages
             _materialViewerPage = materialViewerPage;
         }
 
-        public void LoadSegment(Segment segment)
+        public void Initialize(Segment segment)
         {
             _segment = segment;
 
@@ -43,7 +42,6 @@ namespace GGPlayer.Pages
             }
 
             _segment = segment;
-
 
             // Заполнение списка материалов
             Materials.Clear();
@@ -111,12 +109,12 @@ namespace GGPlayer.Pages
             if (segmentItem is FakeSegmentMaterial && segmentItem.Id == "tasks")
             {
                 var assignments = GetAllAssignments();
-                _assignmentsPage.LoadAssignments(assignments);
+                _assignmentsPage.Initialize(assignments);
                 _navigationService.NavigateTo(_assignmentsPage);
             }
             else if (segmentItem is Material material)
             {
-                _materialViewerPage.LoadMaterial(material);
+                _materialViewerPage.Initialize(material);
                 _navigationService.NavigateTo(_materialViewerPage);
             }
         }

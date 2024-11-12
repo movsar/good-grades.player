@@ -12,12 +12,8 @@ namespace Shared.Controls.Assignments
     public partial class SelectionAssignmentControl : UserControl, IAssignmentViewer
     {
         private readonly SelectingAssignment _assignment;
-
-        public string TaskTitle { get; }
-
-        public int StepsCount { get; } = 1;
-
         private readonly Question _question;
+        public int StepsCount { get; set; } = 1;
 
         public event Action<IAssignment, bool>? AssignmentCompleted;
         public event Action<IAssignment, string, bool> AssignmentItemSubmitted;
@@ -29,8 +25,8 @@ namespace Shared.Controls.Assignments
             DataContext = this;
 
             _assignment = selectingTask;
-            TaskTitle = _assignment.Question.Text;
             _question = _assignment.Question;
+            tbTitle.Text = _assignment.Question.Text;
 
             var questionViewControl = new SelectingQuestionViewControl(_assignment.Question);
             ccQuestion.Content = questionViewControl;

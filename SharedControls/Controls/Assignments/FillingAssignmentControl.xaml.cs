@@ -14,8 +14,6 @@ namespace Shared.Controls.Assignments
     {
         private readonly FillingAssignment _assignment;
 
-        public string TaskTitle { get; }
-
         public int StepsCount { get; } = 1;
 
         public FillingAssignmentControl(FillingAssignment fillingTask)
@@ -24,7 +22,9 @@ namespace Shared.Controls.Assignments
             DataContext = this;
 
             _assignment = fillingTask;
-            TaskTitle = _assignment.Title;
+
+            tbTitle.Text = _assignment.Title;
+
             GenerateItemsUI();
         }
 

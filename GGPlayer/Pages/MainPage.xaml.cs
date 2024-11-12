@@ -4,9 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using Data.Services;
 using System.Collections.ObjectModel;
-using Microsoft.Extensions.DependencyInjection;
 using GGPlayer.Services;
-using System.Windows.Navigation;
 
 namespace GGPlayer.Pages
 {
@@ -34,7 +32,7 @@ namespace GGPlayer.Pages
             InitializeComponent();
         }
 
-        public void LoadContent()
+        public void Initialize()
         {
             // Load Segments into the collection view
             foreach (var segment in _storage.DbContext.Segments)
@@ -55,7 +53,7 @@ namespace GGPlayer.Pages
             {
                 return;
             }
-            _segmentPage.LoadSegment(selectedSegment);
+            _segmentPage.Initialize(selectedSegment);
             _navigationService.NavigateTo(_segmentPage);
         }
 

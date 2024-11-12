@@ -12,7 +12,7 @@ namespace GGPlayer.Pages
             DataContext = this;
         }
 
-        public void LoadMaterial(Material material)
+        public void Initialize(Material material)
         {
             Title = material.Title;
 

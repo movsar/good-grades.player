@@ -20,7 +20,7 @@
             <Grid Width="600" Height="330">
                 <Image Style="{StaticResource TaskTopOrnamentStyle}" />
                 <Border Style="{StaticResource TaskTitleBorderStyle}">
-                    <TextBlock Text="{Binding TaskTitle}" Style="{StaticResource TaskTitleTextStyle}" />
+                    <TextBlock x:Name="tbTitle" Style="{StaticResource TaskTitleTextStyle}" />
                 </Border>
 
                 <Border Style="{StaticResource TaskContentStyle}" Padding="0">

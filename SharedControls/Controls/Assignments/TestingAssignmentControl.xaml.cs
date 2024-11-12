@@ -12,7 +12,7 @@ using System.Windows.Controls;
 
 namespace Shared.Controls.Assignments
 {
-    public partial class TestingAssignmentControl : UserControl, IAssignmentViewer, INotifyPropertyChanged
+    public partial class TestingAssignmentControl : UserControl, IAssignmentViewer
     {
         private readonly TestingAssignment _assignment;
         private int _currentQuestionIndex = -1;
@@ -22,19 +22,7 @@ namespace Shared.Controls.Assignments
         public event Action<IAssignment, string, bool> AssignmentItemSubmitted;
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        private string _taskTitle;
-        public string TaskTitle
-        {
-            get { return _taskTitle; }
-            set
-            {
-                if (_taskTitle != value)
-                {
-                    _taskTitle = value;
-                    OnPropertyChanged(nameof(TaskTitle));
-                }
-            }
-        }
+       
         protected virtual void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -73,7 +61,7 @@ namespace Shared.Controls.Assignments
             sb.Append(_assignment.Questions.Count);
             sb.Append(" ");
             sb.Append(_assignment.Questions[_currentQuestionIndex].Text);
-            TaskTitle = sb.ToString();
+            tbTitle.Text = sb.ToString();
         }
 
         private void RestartTest()

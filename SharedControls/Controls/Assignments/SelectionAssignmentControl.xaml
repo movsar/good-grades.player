@@ -19,7 +19,7 @@
 
             <Image Style="{StaticResource TaskTopOrnamentStyle}" />
             <Border Style="{StaticResource TaskTitleBorderStyle}" Panel.ZIndex="3">
-                <TextBlock Text="{Binding TaskTitle}" Style="{StaticResource TaskTitleTextStyle}" />
+                <TextBlock x:Name="tbTitle" Style="{StaticResource TaskTitleTextStyle}" />
             </Border>
 
             <Border Style="{StaticResource TaskContentStyle}">

@@ -6,13 +6,12 @@ using System.Windows.Media.Effects;
 using Data.Interfaces;
 using GGPlayer.Pages.Assignments;
 using GGPlayer.Services;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace GGPlayer.Pages
 {
     public partial class AssignmentsPage : Page
     {
-        private List<int> completedAssignments = new List<int>();
+        private List<int> _completedAssignments = new List<int>();
         private List<IAssignment> Assignments { get; } = new List<IAssignment>();
 
         private readonly ShellNavigationService _navigationService;
@@ -26,7 +25,7 @@ namespace GGPlayer.Pages
             _assignmentViewerPage = assignmentViewerPage;
         }
 
-        public void LoadAssignments(List<IAssignment> assignments)
+        public void Initialize(List<IAssignment> assignments)
         {
             Assignments.Clear();
             Assignments.AddRange(assignments);
@@ -127,15 +126,15 @@ namespace GGPlayer.Pages
             }
 
             // Добавляем задание в список выполненных, если оно еще не добавлено
-            if (!completedAssignments.Contains(assignmentIndex))
+            if (!_completedAssignments.Contains(assignmentIndex))
             {
-                completedAssignments.Add(assignmentIndex);
+                _completedAssignments.Add(assignmentIndex);
             }
 
             // Находим изображение задания и перекрашиваем его границу в зеленый
             SetAssignmentButtonState(assignment, true);
 
-            if (completedAssignments.Count == Assignments.Count)
+            if (_completedAssignments.Count == Assignments.Count)
             {
                 return;
             }

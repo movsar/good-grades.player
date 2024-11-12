@@ -6,13 +6,11 @@ using Shared.Controls.Assignments;
 using Shared.Interfaces;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Navigation;
 
 namespace GGPlayer.Pages.Assignments
 {
     public partial class AssignmentViewerPage : Page
     {
-
         public event Action<IAssignment, bool> AssignmentCompleted;
 
         private readonly ShellNavigationService _navigationService;
@@ -22,6 +20,7 @@ namespace GGPlayer.Pages.Assignments
 
         private bool _isAssignmentCompleted;
         private int _currentStep;
+
         public AssignmentViewerPage(ShellNavigationService navigationService)
         {
             InitializeComponent();
@@ -122,8 +121,30 @@ namespace GGPlayer.Pages.Assignments
                 _userControl.OnNextClicked();
             }
         }
+        private void btnPrevious_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (_navigationService.CanGoBack)
+            {
+                _navigationService.GoBack();
+            }
+        }
 
-        #region Buttons and success / failure messages' states
+        private void Page_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                if (btnCheck.Visibility == System.Windows.Visibility.Visible)
+                {
+                    btnCheck_MouseUp(this, null);
+                }
+                else if (btnNext.Visibility == System.Windows.Visibility.Visible)
+                {
+                    btnNext_MouseUp(this, null);
+                }
+            }
+        }
+
+        #region UI states
         private void SetUiStateToInitial()
         {
             btnRetry.Visibility = System.Windows.Visibility.Collapsed;
@@ -163,28 +184,5 @@ namespace GGPlayer.Pages.Assignments
             msgSuccess.Visibility = System.Windows.Visibility.Visible;
         }
         #endregion
-
-        private void btnPrevious_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-            if (_navigationService.CanGoBack)
-            {
-                _navigationService.GoBack();
-            }
-        }
-
-        private void Page_KeyUp(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                if (btnCheck.Visibility == System.Windows.Visibility.Visible)
-                {
-                    btnCheck_MouseUp(this, null);
-                }
-                else if (btnNext.Visibility == System.Windows.Visibility.Visible)
-                {
-                    btnNext_MouseUp(this, null);
-                }
-            }
-        }
     }
 }

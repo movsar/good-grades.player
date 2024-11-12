@@ -20,7 +20,7 @@ namespace GGPlayer
             InitializeComponent();
 
             _mainPage = mainPage;
-            _mainPage.LoadContent();
+            _mainPage.Initialize();
 
             _navigationService = navigationService;
             _navigationService.Initialize(CurrentFrame);

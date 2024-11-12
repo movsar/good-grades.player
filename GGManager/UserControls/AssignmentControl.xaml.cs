@@ -14,7 +14,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using Shared;
-using Serilog.Parsing;
 using Shared.Controls.Assignments;
 
 namespace GGManager.UserControls

@@ -27,7 +27,7 @@ namespace Shared.Controls.Assignments
 
             _assignment = assignment;
 
-            TaskTitle = _assignment.Title;
+            tbTitle.Text = _assignment.Title;
 
             LoadNextItem();
         }

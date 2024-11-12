@@ -16,8 +16,6 @@ namespace Shared.Controls.Assignments
 {
     public partial class MatchingAssignmentControl : UserControl, IAssignmentViewer
     {
-        public string TaskTitle { get; }
-
         public int StepsCount { get; } = 1;
 
         // A dictionary to hold matching pairs with string identifiers and corresponding images.
@@ -37,7 +35,7 @@ namespace Shared.Controls.Assignments
             DataContext = this;
 
             _assignment = assignment;
-            TaskTitle = _assignment.Title;
+            tbTitle.Text = _assignment.Title;
 
             LoadContent();
         }
