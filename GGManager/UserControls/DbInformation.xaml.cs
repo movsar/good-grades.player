@@ -24,7 +24,7 @@ namespace GGManager.UserControls
         {
             InitializeComponent();
             DataContext = this;
-            
+
             //получение метаданных из БД и присваивание полям
             var dbMeta = _contentStore.DbContext.DbMetas.First();
             txtDbName.Text = dbMeta.Title;
@@ -45,9 +45,20 @@ namespace GGManager.UserControls
 
             //выбор файла с изображением для фона
             string filePath = FileService.SelectImageFilePath();
-            if (string.IsNullOrEmpty(filePath)) return;
+            if (string.IsNullOrEmpty(filePath))
+            {
+                return;
+            }
 
             // Read, load contents to the object and add to collection
+            var fi = new FileInfo(filePath);
+            var size = fi.Length / 1024;
+            if (size > 1024)
+            {
+                MessageBox.Show("Размер изображения не должен превышать 1Mb");
+                return;
+            }
+
             var content = File.ReadAllBytes(filePath);
             if (content.Length == 0) return;
 
@@ -69,14 +80,14 @@ namespace GGManager.UserControls
             dbMeta.Title = newName;
             dbMeta.Description = newDescription;
             dbMeta.BackgroundImage = _backgroundImage;
-            
+
             _contentStore.DbContext.SaveChanges();
 
             if (_backgroundImage?.Length > 0)
             {
                 btnChooseBackground.Background = Brushes.LightGreen;
             }
-            
+
             Saved?.Invoke();
         }
 
