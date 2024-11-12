@@ -45,7 +45,6 @@ namespace Shared.Controls.Assignments
         private void LoadContent()
         {
             _matchingPairs.Clear();
-            spMatchOptions.Children.Clear();
 
             int numberOfPairs = _assignment.Items.Count;
 
@@ -55,39 +54,57 @@ namespace Shared.Controls.Assignments
                 _matchingPairs.Add(item.Text, ConvertByteArrayToBitmapImage(item.Image));
             }
 
-            // Shuffle the items to randomize their positions
-            var randomIndexesForTexts = Enumerable.Range(0, numberOfPairs).OrderBy(i => Guid.NewGuid()).ToArray();
-            var randomIndexesForImages = Enumerable.Range(0, numberOfPairs).OrderBy(i => Guid.NewGuid()).ToArray();
+            var imageBorders = new List<Border>();
+            var textBorders = new List<Border>();
 
-            var matchingItemPanels = new List<StackPanel>();
-
-            // Create UI elements for each pair and assign them to random columns.
-            spMatchOptions.Children.Clear();
             for (int pairIndex = 0; pairIndex < numberOfPairs; pairIndex++)
             {
-                var stackPanel = new StackPanel();
-
                 var text = _matchingPairs.Keys.ToList()[pairIndex];
                 var image = _matchingPairs.Values.ToList()[pairIndex];
 
-
-                var imageElement = CreateBorderWithChild(new Image
+                var imageBorder = CreateBorderWithChild(new Image
                 {
                     Source = image,
                     Name = $"Pair_{pairIndex}",
                     Style = (Style)FindResource("MatchingImageStyle")
                 });
+                imageBorders.Add(imageBorder);
 
-                var textBlockElement = CreateBorderWithChild(new TextBlock
+                var textBorder = CreateBorderWithChild(new TextBlock
                 {
                     Text = text,
                     Name = $"Pair_{pairIndex}",
                 });
+                textBorders.Add(textBorder);
+            }
 
-                stackPanel.Children.Add(imageElement);
-                stackPanel.Children.Add(textBlockElement);
+            AddToStackPanel(imageBorders, textBorders);
+        }
 
-                spMatchOptions.Children.Add(stackPanel);
+        private void AddToStackPanel(List<Border> imageBorders, List<Border> textBorders)
+        {
+            // Shuffle the items to randomize their positions
+            var randomIndexesForTexts = Enumerable.Range(0, _matchingPairs.Count).OrderBy(i => Guid.NewGuid()).ToArray();
+            var randomIndexesForImages = Enumerable.Range(0, _matchingPairs.Count).OrderBy(i => Guid.NewGuid()).ToArray();
+
+            // Create UI elements for each pair and assign them to random columns.
+            spMatchOptions.Children.Clear();
+
+            var randomizer = new Random(DateTime.Now.Millisecond);
+          
+            for (var i = 0; i < _matchingPairs.Count; i++)
+            {
+                var image = imageBorders[randomIndexesForImages[i]];
+                image.Margin = new Thickness(0, randomizer.Next(20), 5, randomizer.Next(20));
+
+                var text = textBorders[randomIndexesForTexts[i]];
+                text.Margin = new Thickness(0, randomizer.Next(20), 5, 0);
+
+                var sp = new StackPanel();
+                sp.Children.Add(image);
+                sp.Children.Add(text);
+
+                spMatchOptions.Children.Add(sp);
             }
         }
 
