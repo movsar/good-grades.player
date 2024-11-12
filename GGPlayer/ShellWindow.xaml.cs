@@ -1,14 +1,17 @@
 ﻿using GGPlayer.Pages;
+using GGPlayer.Pages.Assignments;
 using GGPlayer.Services;
 using Shared;
 using Shared.Controls;
 using System.Windows;
+using System.Windows.Media;
 using System.Windows.Navigation;
 
 namespace GGPlayer
 {
     public partial class ShellWindow : Window
     {
+        private readonly StartWindow _startWindow;
         private readonly ShellNavigationService _navigationService;
         private readonly MainPage _mainPage;
 
@@ -16,11 +19,11 @@ namespace GGPlayer
         {
             InitializeComponent();
 
-            _navigationService = navigationService;
             _mainPage = mainPage;
             _mainPage.LoadContent();
-            _navigationService.Initialize(CurrentFrame);
 
+            _navigationService = navigationService;
+            _navigationService.Initialize(CurrentFrame);
             _navigationService.NavigateTo(_mainPage);
         }
 
@@ -39,20 +42,42 @@ namespace GGPlayer
 
         private void CurrentFrame_Navigated(object sender, NavigationEventArgs e)
         {
-            BackButton.Visibility = _navigationService.CanGoBack ? Visibility.Visible : Visibility.Hidden;
+            var isMainPage = nameof(MainPage) == e.Content.GetType().Name;
+            if (isMainPage || !_navigationService.CanGoBack)
+            {
+                BackButton.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                BackButton.Visibility = Visibility.Visible;
+            }
         }
 
         private void BackButton_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            var isClickedOnMainPage = CurrentFrame.Content.GetType().Name == nameof(MainPage);
-
-            if (_navigationService.CanGoBack && !isClickedOnMainPage)
+            if (!_navigationService.CanGoBack)
             {
-                _navigationService.NavigateTo(_mainPage);
+                return;
             }
-            else
+
+            var originatingType = CurrentFrame.Content.GetType();
+            switch (originatingType.Name)
             {
-                BackButton.Visibility = Visibility.Hidden;
+                case nameof(SegmentPage):
+                    _navigationService.NavigateTo<MainPage>();
+                    break;
+
+                case nameof(MaterialViewerPage):
+                    _navigationService.NavigateTo<SegmentPage>();
+                    break;
+
+                case nameof(AssignmentsPage):
+                    _navigationService.NavigateTo<SegmentPage>();
+                    break;
+
+                case nameof(AssignmentViewerPage):
+                    _navigationService.NavigateTo<AssignmentsPage>();
+                    break;
             }
         }
     }

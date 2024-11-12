@@ -55,7 +55,7 @@ namespace GGPlayer.Pages
             {
                 return;
             }
-            _segmentPage.Load(selectedSegment);
+            _segmentPage.LoadSegment(selectedSegment);
             _navigationService.NavigateTo(_segmentPage);
         }
 

@@ -31,12 +31,12 @@ namespace GGPlayer.Pages
             _materialViewerPage = materialViewerPage;
         }
 
-        public void Load(Segment segment)
+        public void LoadSegment(Segment segment)
         {
             _segment = segment;
 
             RtfService.LoadRtfFromText(rtbDescription, segment.Description);
-            Title = segment.Title;
+            tbSegmentTitle.Text = segment.Title;
             if (segment == null)
             {
                 throw new ArgumentNullException(nameof(segment), "Segment cannot be null");
@@ -70,7 +70,6 @@ namespace GGPlayer.Pages
                 Materials.Add(fakeSegmentMaterial);
             }
         }
-
 
         private List<IAssignment> GetAllAssignments()
         {

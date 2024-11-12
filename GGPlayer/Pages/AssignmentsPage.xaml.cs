@@ -21,6 +21,7 @@ namespace GGPlayer.Pages
         public AssignmentsPage(ShellNavigationService navigationService, AssignmentViewerPage assignmentViewerPage)
         {
             InitializeComponent();
+
             _navigationService = navigationService;
             _assignmentViewerPage = assignmentViewerPage;
         }

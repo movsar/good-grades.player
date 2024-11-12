@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System.Windows.Controls;
 
 namespace GGPlayer.Services
 {
@@ -13,6 +14,11 @@ namespace GGPlayer.Services
 
         public void NavigateTo(Page page)
         {
+            _frame.Navigate(page);
+        }
+        public void NavigateTo<T>() where T : Page
+        {
+            var page = App.AppHost!.Services.GetRequiredService<T>();
             _frame.Navigate(page);
         }
 
