@@ -33,6 +33,7 @@ namespace GGPlayer
             {
                 e.Cancel = true;
             }
+            Application.Current.Shutdown();
         }
 
         private void CurrentFrame_Navigating(object sender, NavigatingCancelEventArgs e)

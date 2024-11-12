@@ -5,6 +5,7 @@ using GGManager.Stores;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Win32;
 using Shared;
+using Shared.Controls;
 using Shared.Services;
 using System.Diagnostics;
 using System.IO;
@@ -54,7 +55,7 @@ namespace GGPlayer
             // If the user cancels and closes the window
             if (string.IsNullOrEmpty(dbAbsolutePath))
             {
-                throw new OperationCanceledException();
+                return;
             }
 
             //открытие последней открытой БД
@@ -90,14 +91,18 @@ namespace GGPlayer
             MessageBox.Show(Translations.GetValue("DBFileChoose"));
             return GetDatabasePath();
         }
-
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
+            Application.Current.Shutdown();
+        }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             // Создание и показ основного окна
             _shell.Show();
 
             // Закрытие стартового окна
-            this.Close();
+            Hide();
         }
 
         private void AboutMenuItem_Click(object sender, RoutedEventArgs e)
