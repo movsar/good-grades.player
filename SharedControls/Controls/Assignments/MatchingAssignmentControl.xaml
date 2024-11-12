@@ -60,17 +60,8 @@
                                   VerticalAlignment="Center"
                                   VerticalScrollBarVisibility="Disabled">
 
-                    <Grid x:Name="gridMatchOptions">
-                        <Grid.RowDefinitions>
-                            <!-- Row for images -->
-                            <RowDefinition Height="Auto" />
-                            <!-- Row for names -->
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <!-- Columns will be added dynamically in the code-behind -->
-                        </Grid.ColumnDefinitions>
-                    </Grid>
+                    <StackPanel x:Name="spMatchOptions"
+                                Orientation="Horizontal" />
 
                 </ScrollViewer>
             </Border>

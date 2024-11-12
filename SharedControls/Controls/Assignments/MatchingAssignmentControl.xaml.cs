@@ -45,8 +45,9 @@ namespace Shared.Controls.Assignments
         private void LoadContent()
         {
             _matchingPairs.Clear();
-            gridMatchOptions.ColumnDefinitions.Clear();
-            gridMatchOptions.Children.Clear();
+            spMatchOptions.Children.Clear();
+
+            int numberOfPairs = _assignment.Items.Count;
 
             // Load matching pairs from the assignment into the dictionary.
             foreach (var item in _assignment.Items)
@@ -54,59 +55,40 @@ namespace Shared.Controls.Assignments
                 _matchingPairs.Add(item.Text, ConvertByteArrayToBitmapImage(item.Image));
             }
 
-            // Set up the grid columns based on the number of items to match.
-            int numberOfColumns = _assignment.Items.Count;
-            for (int i = 0; i < numberOfColumns; i++)
-            {
-                gridMatchOptions.ColumnDefinitions.Add(
-                    new ColumnDefinition { Width = GridLength.Auto }
-                );
-            }
+            // Shuffle the items to randomize their positions
+            var randomIndexesForTexts = Enumerable.Range(0, numberOfPairs).OrderBy(i => Guid.NewGuid()).ToArray();
+            var randomIndexesForImages = Enumerable.Range(0, numberOfPairs).OrderBy(i => Guid.NewGuid()).ToArray();
 
-            // Shuffle the items to randomize their positions in the grid.
-            var randomColumnIndexesForTexts = Enumerable.Range(0, numberOfColumns).OrderBy(i => Guid.NewGuid()).ToArray();
-            var randomColumnIndexesForImages = Enumerable.Range(0, numberOfColumns).OrderBy(i => Guid.NewGuid()).ToArray();
-
-            var gridItems = new List<GridItem>();
+            var matchingItemPanels = new List<StackPanel>();
 
             // Create UI elements for each pair and assign them to random columns.
-            for (int i = 0; i < _matchingPairs.Count; i++)
+            spMatchOptions.Children.Clear();
+            for (int pairIndex = 0; pairIndex < numberOfPairs; pairIndex++)
             {
-                var text = _matchingPairs.Keys.ToList()[i];
-                var image = _matchingPairs.Values.ToList()[i];
+                var stackPanel = new StackPanel();
 
-                int pairIndex = i;
+                var text = _matchingPairs.Keys.ToList()[pairIndex];
+                var image = _matchingPairs.Values.ToList()[pairIndex];
 
-                var imageUiElement = new Image
+
+                var imageElement = CreateBorderWithChild(new Image
                 {
                     Source = image,
                     Name = $"Pair_{pairIndex}",
                     Style = (Style)FindResource("MatchingImageStyle")
-                };
+                });
 
-                var textBlockUiElement = new TextBlock
+                var textBlockElement = CreateBorderWithChild(new TextBlock
                 {
                     Text = text,
                     Name = $"Pair_{pairIndex}",
-                };
-
-                gridItems.Add(new GridItem
-                {
-                    Element = imageUiElement,
-                    Row = 0,
-                    Column = randomColumnIndexesForImages[i]
                 });
 
-                gridItems.Add(new GridItem
-                {
-                    Element = textBlockUiElement,
-                    Row = 1,
-                    Column = randomColumnIndexesForTexts[i]
-                });
+                stackPanel.Children.Add(imageElement);
+                stackPanel.Children.Add(textBlockElement);
+
+                spMatchOptions.Children.Add(stackPanel);
             }
-
-            // Add the elements to the grid.
-            AddElementsToGrid(gridMatchOptions, gridItems);
         }
 
         #endregion
@@ -209,18 +191,6 @@ namespace Shared.Controls.Assignments
             border.Background = Brushes.White;
         }
 
-        // Adds UI elements to the grid based on the list of GridItem objects.
-        private void AddElementsToGrid(Grid grid, List<GridItem> items)
-        {
-            foreach (var item in items)
-            {
-                var border = CreateBorderWithChild(item.Element);
-                Grid.SetRow(border, item.Row);
-                Grid.SetColumn(border, item.Column);
-                grid.Children.Add(border);
-            }
-        }
-
         // Creates a styled Border element containing a child UIElement.
         private Border CreateBorderWithChild(UIElement child)
         {
@@ -270,10 +240,12 @@ namespace Shared.Controls.Assignments
             IsEnabled = false;
 
             // Iterate through grid rows, assuming each row contains an image and text block pair.
-            for (int column = 0; column < gridMatchOptions.RowDefinitions.Count; column++)
+            for (int column = 0; column < _assignment.Items.Count; column++)
             {
-                var imageBorder = FindChildInGrid<Border>(gridMatchOptions, 0, column);
-                var textBlockBorder = FindChildInGrid<Border>(gridMatchOptions, 1, column);
+                var pairStackPanel = spMatchOptions.Children[column] as StackPanel;
+
+                var imageBorder = pairStackPanel.Children[0] as Border;
+                var textBlockBorder = pairStackPanel.Children[1] as Border;
 
                 // Skip the iteration if either image or text block is missing.
                 if (imageBorder == null || textBlockBorder == null) continue;
