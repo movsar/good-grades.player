@@ -16,10 +16,12 @@ namespace GGPlayer.Pages.Assignments
         public event Action<IAssignment, bool> AssignmentCompleted;
 
         private readonly ShellNavigationService _navigationService;
+
         private IAssignmentViewer _userControl;
         private IAssignment _assignment;
+
         private bool _isAssignmentCompleted;
-        private int _currentStep = 1;
+        private int _currentStep;
         public AssignmentViewerPage(ShellNavigationService navigationService)
         {
             InitializeComponent();
@@ -29,7 +31,9 @@ namespace GGPlayer.Pages.Assignments
 
         public void LoadAssignmentView(IAssignment assignment)
         {
+            _currentStep = 1;
             _assignment = assignment;
+            _isAssignmentCompleted = false;
 
             UserControl uc = null!;
             switch (_assignment)
