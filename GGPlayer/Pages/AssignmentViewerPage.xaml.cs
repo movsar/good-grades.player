@@ -29,7 +29,7 @@ namespace GGPlayer.Pages.Assignments
             _navigationService = navigationService;
         }
 
-        public void LoadAssignmentView(IAssignment assignment)
+        public void Initialize(IAssignment assignment)
         {
             _currentStep = 1;
             _assignment = assignment;

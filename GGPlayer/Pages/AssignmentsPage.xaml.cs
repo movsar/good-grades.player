@@ -109,7 +109,7 @@ namespace GGPlayer.Pages
 
         private void NavigateToAssignment(IAssignment assignment)
         {
-            _assignmentViewerPage.LoadAssignmentView(assignment);
+            _assignmentViewerPage.Initialize(assignment);
 
             _assignmentViewerPage.AssignmentCompleted -= OnAssignmentCompleted;
             _assignmentViewerPage.AssignmentCompleted += OnAssignmentCompleted;
