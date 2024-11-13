@@ -1,13 +1,10 @@
 ﻿
 using Data;
 using Data.Services;
-using GGManager.Stores;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Win32;
 using Shared;
-using Shared.Controls;
 using Shared.Services;
-using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Media;

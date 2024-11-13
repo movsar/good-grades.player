@@ -61,12 +61,7 @@ namespace Shared.Controls
         {
             CrossSimpleAudioPlayer.Current.Play();
         }
-        //protected void OnClose()
-        //{
-        //    CrossSimpleAudioPlayer.Current.Stop();
-        //    CrossSimpleAudioPlayer.Current.Dispose();
-        //    base.OnClosing(e);
-        //}
+        
         #endregion
 
         private void PurgeCache()

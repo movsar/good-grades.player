@@ -1,6 +1,7 @@
 ﻿using GGPlayer.Pages;
 using GGPlayer.Pages.Assignments;
 using GGPlayer.Services;
+using Plugin.SimpleAudioPlayer;
 using Shared;
 using Shared.Controls;
 using System.Windows;
@@ -69,6 +70,7 @@ namespace GGPlayer
                     break;
 
                 case nameof(MaterialViewerPage):
+                    CrossSimpleAudioPlayer.Current.Stop();
                     _navigationService.NavigateTo<SegmentPage>();
                     break;
 

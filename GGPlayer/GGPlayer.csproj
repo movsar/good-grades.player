@@ -23,7 +23,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\GGManager\GGManager.csproj" />
 		<ProjectReference Include="..\SharedControls\Shared.csproj" />
 	</ItemGroup>
 
