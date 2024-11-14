@@ -9,7 +9,7 @@
              d:DesignHeight="450" d:DesignWidth="800">
 
     <UserControl.Resources>
-        
+
         <Style x:Key="FillInLabelStyle" TargetType="Label">
             <Setter Property="Padding" Value="0 0 0 0"/>
             <Setter Property="Margin" Value="0 0 0 8"/>
@@ -26,29 +26,9 @@
         </Style>
 
     </UserControl.Resources>
-    
-    <UserControl.Background>
-        <!-- Фон на всю область UserControl -->
-        <ImageBrush ImageSource="pack://application:,,,/Shared;component/Images/task_background.png"
-          Stretch="UniformToFill"/>
-    </UserControl.Background>
 
-    <Viewbox Stretch="Uniform">
-        <Grid Width="600" Height="330">
-                <Image Style="{StaticResource TaskTopOrnamentStyle}" />
-                <Border Style="{StaticResource TaskTitleBorderStyle}" Panel.ZIndex="3">
-                <TextBlock x:Name="tbTitle" Style="{StaticResource TaskTitleTextStyle}" />
-                </Border>
-
-                <Border Style="{StaticResource TaskContentStyle}">
-
-                    <StackPanel x:Name="spItems"
-                                VerticalAlignment="Top"
-                                HorizontalAlignment="Left"
-                                Margin="20,20,20,20"/>
-                </Border>
-
-                <Image Style="{StaticResource TaskBottomOrnamentStyle}" />
-            </Grid>
-        </Viewbox>
+    <StackPanel x:Name="spItems"
+                VerticalAlignment="Top"
+                HorizontalAlignment="Left"
+                Margin="20,40,20,20"/>
 </UserControl>

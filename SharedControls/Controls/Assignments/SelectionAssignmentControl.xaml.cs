@@ -26,7 +26,6 @@ namespace Shared.Controls.Assignments
 
             _assignment = selectingTask;
             _question = _assignment.Question;
-            tbTitle.Text = _assignment.Question.Text;
 
             var questionViewControl = new SelectingQuestionViewControl(_assignment.Question);
             ccQuestion.Content = questionViewControl;

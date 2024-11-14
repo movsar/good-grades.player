@@ -18,10 +18,10 @@
             <Setter Property="HorizontalAlignment" Value="Right"/>
             <Setter Property="Stretch" Value="UniformToFill"/>
         </Style>
-        
+
         <Style x:Key="CheckButtonStyle" TargetType="Image" BasedOn="{StaticResource ControlButton}">
             <Setter Property="Source" Value="pack://application:,,,/Shared;component/Images/Buttons/check.png"/>
-       
+
             <!-- Change appearance when button is hovered over -->
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
@@ -29,7 +29,7 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-        
+
         <Style x:Key="TaskResult" TargetType="Image">
             <Setter Property="Height" Value="400"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -38,7 +38,13 @@
             <Setter Property="Visibility" Value="Collapsed"/>
         </Style>
     </Page.Resources>
-    
+
+    <Page.Background>
+        <!-- Фон на всю область UserControl -->
+        <ImageBrush ImageSource="pack://application:,,,/Shared;component/Images/task_background.png"
+                    Stretch="UniformToFill"/>
+    </Page.Background>
+
     <Grid>
         <Image  x:Name="msgSuccess"
                 Source="pack://application:,,,/Shared;component/Images/task_result_msg_correct.png" 
@@ -79,6 +85,20 @@
                 VerticalAlignment="Bottom"
                 Panel.ZIndex="105" />
 
-        <ContentControl  x:Name="ucRoot" />
+        <!-- Viewbox для пропорционального масштабирования содержимого -->
+        <Viewbox Stretch="Uniform">
+            <Grid Width="600" Height="330">
+                <Image Style="{StaticResource TaskTopOrnamentStyle}" />
+                <Border Style="{StaticResource TaskTitleBorderStyle}">
+                    <TextBlock x:Name="tbTitle" Style="{StaticResource TaskTitleTextStyle}" />
+                </Border>
+
+                <Border Style="{StaticResource TaskContentStyle}" Padding="0">
+                    <ContentControl  x:Name="ucRoot" />
+                </Border>
+
+                <Image Style="{StaticResource TaskBottomOrnamentStyle}" />
+            </Grid>
+        </Viewbox>
     </Grid>
 </Page>

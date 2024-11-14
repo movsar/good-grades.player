@@ -7,6 +7,8 @@ using Shared.Interfaces;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows;
+using Data.Entities.TaskItems;
+using System.Text;
 
 namespace GGPlayer.Pages.Assignments
 {
@@ -65,7 +67,7 @@ namespace GGPlayer.Pages.Assignments
         }
 
         private void _userControl_AssignmentCompleted(IAssignment assignment, bool success)
-        {           
+        {
             if (!success)
             {
                 SetUiStateToFailure();
@@ -105,8 +107,6 @@ namespace GGPlayer.Pages.Assignments
         {
             _currentStep++;
 
-            SetUiStateToReady();
-
             if (_isAssignmentCompleted)
             {
                 AssignmentCompleted?.Invoke(_assignment, true);
@@ -114,6 +114,7 @@ namespace GGPlayer.Pages.Assignments
             else
             {
                 _userControl.OnNextClicked();
+                SetUiStateToReady();
             }
         }
         private void btnPrevious_MouseUp(object sender, MouseButtonEventArgs e)
@@ -140,9 +141,30 @@ namespace GGPlayer.Pages.Assignments
             }
         }
 
+        private string GetAssignmentTitle()
+        {
+            if (_assignment is not TestingAssignment)
+            {
+                return _assignment.Title;
+            }
+            else
+            {
+                var testingAssignment = _assignment as TestingAssignment;
+                var sb = new StringBuilder();
+                sb.Append(_currentStep);
+                sb.Append(" / ");
+                sb.Append(testingAssignment.Questions.Count);
+                sb.Append(" ");
+                sb.Append(testingAssignment.Questions[_currentStep - 1].Text);
+                return sb.ToString();
+            }
+        }
+
         #region UI states
         private void SetUiStateToReady()
         {
+            tbTitle.Text = GetAssignmentTitle();
+
             btnRetry.Visibility = Visibility.Collapsed;
 
             if (_currentStep >= _userControl.StepsCount)

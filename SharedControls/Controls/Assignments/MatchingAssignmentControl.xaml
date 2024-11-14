@@ -37,37 +37,14 @@
         </Style>
     </UserControl.Resources>
 
-    <UserControl.Background>
-        <!-- Фон на всю область UserControl -->
-        <ImageBrush ImageSource="pack://application:,,,/Shared;component/Images/task_background.png"
-                    Stretch="UniformToFill"/>
-    </UserControl.Background>
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" 
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    VerticalScrollBarVisibility="Disabled">
 
-    <!-- Viewbox для пропорционального масштабирования содержимого -->
-    <Viewbox Stretch="Uniform">
-        <Grid Width="600" Height="330">
+        <StackPanel x:Name="spMatchOptions"
+                    Orientation="Horizontal" />
 
-            <Image Style="{StaticResource TaskTopOrnamentStyle}" />
-            <Border Style="{StaticResource TaskTitleBorderStyle}" Panel.ZIndex="3">
-                <TextBlock x:Name="tbTitle" Style="{StaticResource TaskTitleTextStyle}" />
-            </Border>
-
-            <Border Style="{StaticResource TaskContentStyle}">
-
-                <!--Содержимое задания-->
-                <ScrollViewer HorizontalScrollBarVisibility="Auto" 
-                                  HorizontalAlignment="Center"
-                                  VerticalAlignment="Center"
-                                  VerticalScrollBarVisibility="Disabled">
-
-                    <StackPanel x:Name="spMatchOptions"
-                                Orientation="Horizontal" />
-
-                </ScrollViewer>
-            </Border>
-
-            <Image Style="{StaticResource TaskBottomOrnamentStyle}" />
-        </Grid>
-    </Viewbox>
+    </ScrollViewer>
 
 </UserControl>

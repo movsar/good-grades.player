@@ -35,7 +35,6 @@ namespace Shared.Controls.Assignments
             DataContext = this;
 
             _assignment = assignment;
-            tbTitle.Text = _assignment.Title;
 
             LoadContent();
         }

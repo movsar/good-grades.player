@@ -53,26 +53,11 @@ namespace Shared.Controls.Assignments
         private void LoadNextItem()
         {
             ccQuestion.Content = _questionViewControls[++_currentQuestionIndex];
-
-            tbTitle.Text = GetCurrentQuestionTitle();
         }
 
         private void LoadPreviousItem()
         {
             ccQuestion.Content = _questionViewControls[--_currentQuestionIndex];
-
-            tbTitle.Text = GetCurrentQuestionTitle();
-        }
-
-        private string GetCurrentQuestionTitle()
-        {
-            var sb = new StringBuilder();
-            sb.Append(_currentQuestionIndex + 1);
-            sb.Append(" / ");
-            sb.Append(_assignment.Questions.Count);
-            sb.Append(" ");
-            sb.Append(_assignment.Questions[_currentQuestionIndex].Text);
-            return sb.ToString();
         }
 
         private void RestartTest()

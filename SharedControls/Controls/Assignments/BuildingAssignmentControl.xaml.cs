@@ -27,8 +27,6 @@ namespace Shared.Controls.Assignments
 
             _assignment = assignment;
 
-            tbTitle.Text = _assignment.Title;
-
             foreach (var item in _assignment.Items)
             {
                 var buildingItemViewControl = new BuildingItemViewControl(item) { Tag = item.Text };

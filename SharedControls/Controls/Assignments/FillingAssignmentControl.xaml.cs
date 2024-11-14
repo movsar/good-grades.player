@@ -6,7 +6,6 @@ using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 
 namespace Shared.Controls.Assignments
 {
@@ -22,8 +21,6 @@ namespace Shared.Controls.Assignments
             DataContext = this;
 
             _assignment = fillingTask;
-
-            tbTitle.Text = _assignment.Title;
 
             GenerateItemsUI();
         }
