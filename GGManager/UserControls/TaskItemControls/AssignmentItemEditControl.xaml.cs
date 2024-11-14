@@ -211,10 +211,17 @@ namespace GGManager.UserControls
             string filePath = FileService.SelectImageFilePath();
             if (string.IsNullOrEmpty(filePath)) return;
 
+            var sizeInKilobytes = (new FileInfo(filePath)).Length / 1024;
+            if (sizeInKilobytes > 1000)
+            {
+                MessageBox.Show("Размер изображения не должен превышать 1Mb");
+                return;
+            }
+
             // Чтение содержимого файла и добавление его в объект Item
             var content = File.ReadAllBytes(filePath);
             if (content.Length == 0) return;
-
+                      
             Item.Image = content;
 
             OnImageSet(true);

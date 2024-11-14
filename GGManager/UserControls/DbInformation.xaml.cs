@@ -42,7 +42,6 @@ namespace GGManager.UserControls
 
         private void btnChooseBackground_Click(object sender, RoutedEventArgs e)
         {
-
             //выбор файла с изображением для фона
             string filePath = FileService.SelectImageFilePath();
             if (string.IsNullOrEmpty(filePath))
@@ -50,15 +49,14 @@ namespace GGManager.UserControls
                 return;
             }
 
-            // Read, load contents to the object and add to collection
-            var fi = new FileInfo(filePath);
-            var size = fi.Length / 1024;
-            if (size > 1024)
+            var sizeInKilobytes = (new FileInfo(filePath)).Length / 1024;
+            if (sizeInKilobytes > 1024)
             {
                 MessageBox.Show("Размер изображения не должен превышать 1Mb");
                 return;
             }
 
+            // Read, load contents to the object and add to collection
             var content = File.ReadAllBytes(filePath);
             if (content.Length == 0) return;
 

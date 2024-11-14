@@ -12,6 +12,7 @@ using Shared;
 using Shared.Services;
 using System.Windows.Input;
 using Shared.Controls;
+using Plugin.SimpleAudioPlayer;
 
 namespace GGManager.UserControls
 {
@@ -158,15 +159,25 @@ namespace GGManager.UserControls
         #endregion
 
         #region ButtonHandlers
-      
+
         private void btnChooseText_Click(object sender, RoutedEventArgs e)
         {
             string filePath = FileService.SelectPdfFilePath();
             if (string.IsNullOrEmpty(filePath)) return;
 
-            // Read, load contents to the object and add to collection
+            var sizeInKilobytes = (new FileInfo(filePath)).Length / 1024;
+            if (sizeInKilobytes > 10_000)
+            {
+                MessageBox.Show("Размер файла не должен превышать 10Mb");
+                return;
+            }
+
+            // Read, load contents to the object and add to collection            
             var content = File.ReadAllBytes(filePath);
-            if (string.IsNullOrEmpty(filePath)) return;
+            if (content.Length == 0)
+            {
+                return;
+            }
 
             PdfData = content;
             OnTextSet(true);
@@ -182,6 +193,12 @@ namespace GGManager.UserControls
             var content = File.ReadAllBytes(filePath);
             if (content.Length == 0) return;
 
+            if (content.Length > 6_000_000)
+            {
+                MessageBox.Show("Слишком большой файл, должен быть до 5Мб");
+                return;
+            }
+
             Audio = content;
             OnAudioSet(true);
         }
@@ -194,7 +211,13 @@ namespace GGManager.UserControls
             };
 
             window.Content = new MaterialViewerControl(Title, PdfData, Audio);
+            window.Closing += Window_Closing;
             window.ShowDialog();
+        }
+
+        private void Window_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
+        {
+            CrossSimpleAudioPlayer.Current.Stop();
         }
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
