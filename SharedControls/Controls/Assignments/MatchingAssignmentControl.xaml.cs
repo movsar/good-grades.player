@@ -89,7 +89,7 @@ namespace Shared.Controls.Assignments
             spMatchOptions.Children.Clear();
 
             var randomizer = new Random(DateTime.Now.Millisecond);
-          
+
             for (var i = 0; i < _matchingPairs.Count; i++)
             {
                 var image = imageBorders[randomIndexesForImages[i]];
@@ -287,6 +287,10 @@ namespace Shared.Controls.Assignments
 
         public void OnNextClicked()
         {
+            IsEnabled = true;
+        }
+
+        public void OnPreviousClicked() {
             IsEnabled = true;
         }
     }

@@ -41,6 +41,16 @@ namespace Shared.Controls.Assignments
             spItems.Children.Clear();
             spItems.Children.Add(buildingItemViewControl);
         }
+
+        private void LoadPreviousItem()
+        {
+            var item = _assignment.Items[--_currentItemIndex];
+            var buildingItemViewControl = new BuildingItemViewControl(item) { Tag = item.Text };
+
+            spItems.Children.Clear();
+            spItems.Children.Add(buildingItemViewControl);
+        }
+
         public void OnCheckClicked()
         {
             if (spItems.Children.Count == 0)
@@ -90,18 +100,20 @@ namespace Shared.Controls.Assignments
 
         public void OnRetryClicked()
         {
-            IsEnabled = true;
-
             _currentItemIndex = -1;
             LoadNextItem();
         }
 
         public void OnNextClicked()
         {
-            IsEnabled = true;
-
             LoadNextItem();
+            IsEnabled = true;
         }
 
+        public void OnPreviousClicked()
+        {
+            LoadPreviousItem();
+            IsEnabled = true;
+        }
     }
 }

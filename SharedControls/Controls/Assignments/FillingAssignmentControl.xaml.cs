@@ -112,5 +112,9 @@ namespace Shared.Controls.Assignments
         {
             IsEnabled = true;
         }
+
+        public void OnPreviousClicked() { 
+            IsEnabled = true;
+        }
     }
 }

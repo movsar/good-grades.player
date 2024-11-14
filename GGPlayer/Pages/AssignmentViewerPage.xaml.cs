@@ -6,6 +6,7 @@ using Shared.Controls.Assignments;
 using Shared.Interfaces;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows;
 
 namespace GGPlayer.Pages.Assignments
 {
@@ -60,7 +61,7 @@ namespace GGPlayer.Pages.Assignments
             _userControl.AssignmentItemSubmitted += _userControl_AssignmentItemSubmitted;
             _userControl.AssignmentCompleted += _userControl_AssignmentCompleted;
 
-            SetUiStateToInitial();
+            SetUiStateToReady();
         }
 
         private void _userControl_AssignmentCompleted(IAssignment assignment, bool success)
@@ -102,7 +103,7 @@ namespace GGPlayer.Pages.Assignments
                 ucRoot.Content = _userControl;
             }
 
-            SetUiStateToInitial();
+            SetUiStateToReady();
             _userControl.OnRetryClicked();
         }
         private void btnCheck_MouseUp(object sender, MouseButtonEventArgs e) => _userControl.OnCheckClicked();
@@ -110,7 +111,7 @@ namespace GGPlayer.Pages.Assignments
         {
             _currentStep++;
 
-            SetUiStateToInitial();
+            SetUiStateToReady();
 
             if (_isAssignmentCompleted)
             {
@@ -123,21 +124,22 @@ namespace GGPlayer.Pages.Assignments
         }
         private void btnPrevious_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            if (_navigationService.CanGoBack)
-            {
-                _navigationService.GoBack();
-            }
+            _currentStep--;
+
+            SetUiStateToReady();
+
+            _userControl.OnPreviousClicked();
         }
 
         private void Page_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
-                if (btnCheck.Visibility == System.Windows.Visibility.Visible)
+                if (btnCheck.Visibility == Visibility.Visible)
                 {
                     btnCheck_MouseUp(this, null);
                 }
-                else if (btnNext.Visibility == System.Windows.Visibility.Visible)
+                else if (btnNext.Visibility == Visibility.Visible)
                 {
                     btnNext_MouseUp(this, null);
                 }
@@ -145,43 +147,45 @@ namespace GGPlayer.Pages.Assignments
         }
 
         #region UI states
-        private void SetUiStateToInitial()
+        private void SetUiStateToReady()
         {
-            btnRetry.Visibility = System.Windows.Visibility.Collapsed;
+            btnRetry.Visibility = Visibility.Collapsed;
 
             if (_currentStep >= _userControl.StepsCount)
             {
-                btnCheck.Visibility = System.Windows.Visibility.Visible;
-                btnNext.Visibility = System.Windows.Visibility.Collapsed;
+                btnCheck.Visibility = Visibility.Visible;
+                btnNext.Visibility = Visibility.Collapsed;
             }
             else
             {
-                btnCheck.Visibility = System.Windows.Visibility.Collapsed;
-                btnNext.Visibility = System.Windows.Visibility.Visible;
+                btnCheck.Visibility = Visibility.Collapsed;
+                btnNext.Visibility = Visibility.Visible;
             }
 
-            msgFailure.Visibility = System.Windows.Visibility.Collapsed;
-            msgSuccess.Visibility = System.Windows.Visibility.Collapsed;
+            btnPrevious.Visibility = (_currentStep > 1) ? Visibility.Visible : Visibility.Collapsed;
+
+            msgFailure.Visibility = Visibility.Collapsed;
+            msgSuccess.Visibility = Visibility.Collapsed;
         }
         private void SetUiStateToFailure()
         {
-            btnNext.Visibility = System.Windows.Visibility.Collapsed;
+            btnNext.Visibility = Visibility.Collapsed;
 
-            btnRetry.Visibility = System.Windows.Visibility.Visible;
-            btnCheck.Visibility = System.Windows.Visibility.Collapsed;
+            btnRetry.Visibility = Visibility.Visible;
+            btnCheck.Visibility = Visibility.Collapsed;
 
-            msgFailure.Visibility = System.Windows.Visibility.Visible;
-            msgSuccess.Visibility = System.Windows.Visibility.Collapsed;
+            msgFailure.Visibility = Visibility.Visible;
+            msgSuccess.Visibility = Visibility.Collapsed;
         }
         private void SetUiStateToSuccess()
         {
-            btnNext.Visibility = System.Windows.Visibility.Visible;
-            btnCheck.Visibility = System.Windows.Visibility.Collapsed;
+            btnNext.Visibility = Visibility.Visible;
+            btnCheck.Visibility = Visibility.Collapsed;
 
-            btnRetry.Visibility = System.Windows.Visibility.Collapsed;
+            btnRetry.Visibility = Visibility.Collapsed;
 
-            msgFailure.Visibility = System.Windows.Visibility.Collapsed;
-            msgSuccess.Visibility = System.Windows.Visibility.Visible;
+            msgFailure.Visibility = Visibility.Collapsed;
+            msgSuccess.Visibility = Visibility.Visible;
         }
         #endregion
     }

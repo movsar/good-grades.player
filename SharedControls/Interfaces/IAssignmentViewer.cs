@@ -17,5 +17,6 @@ namespace Shared.Interfaces
         void OnCheckClicked();
         void OnRetryClicked();
         void OnNextClicked();
+        void OnPreviousClicked();
     }
 }
