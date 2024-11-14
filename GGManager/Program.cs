@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Serilog;
+using Shared;
 using Shared.Services;
 using System;
 using System.IO;
@@ -12,6 +13,8 @@ namespace GGManager
         [STAThread]
         public static void Main(string[] args)
         {
+            CultureService.RunPowerShellScriptToRegisterCulture("Register-Culture.ps1");
+            Translations.SetToCulture("ce");
 
             string logPath = Path.Combine("logs", "logs.txt");
             Log.Logger = new LoggerConfiguration()

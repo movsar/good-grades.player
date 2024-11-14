@@ -6,10 +6,8 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Windows;
 using Serilog;
-using System.IO;
 using Shared.Services;
 using Data.Services;
-using Velopack;
 using Shared;
 
 namespace GGManager
