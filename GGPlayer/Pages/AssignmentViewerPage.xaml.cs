@@ -65,13 +65,7 @@ namespace GGPlayer.Pages.Assignments
         }
 
         private void _userControl_AssignmentCompleted(IAssignment assignment, bool success)
-        {
-            if (assignment is TestingAssignment)
-            {
-                var testingAssignmentControl = _userControl as TestingAssignmentControl;
-                ucRoot.Content = new StatisticsControl(testingAssignmentControl.CorrectAnswers, testingAssignmentControl.IncorrectAnswers);
-            }
-
+        {           
             if (!success)
             {
                 SetUiStateToFailure();

@@ -19,7 +19,7 @@ namespace Shared.Controls.Assignments
 
         public string TaskTitle { get; }
         public int StepsCount { get; } = 1;
-
+        private List<BuildingItemViewControl> viewControls = new List<BuildingItemViewControl>();
         public BuildingAssignmentControl(BuildingAssignment assignment)
         {
             InitializeComponent();
@@ -29,26 +29,25 @@ namespace Shared.Controls.Assignments
 
             tbTitle.Text = _assignment.Title;
 
+            foreach (var item in _assignment.Items)
+            {
+                var buildingItemViewControl = new BuildingItemViewControl(item) { Tag = item.Text };
+                viewControls.Add(buildingItemViewControl);
+            }
+
             LoadNextItem();
         }
 
-        // Метод для загрузки текущего элемента
         private void LoadNextItem()
         {
-            var item = _assignment.Items[++_currentItemIndex];
-            var buildingItemViewControl = new BuildingItemViewControl(item) { Tag = item.Text };
-
             spItems.Children.Clear();
-            spItems.Children.Add(buildingItemViewControl);
+            spItems.Children.Add(viewControls[++_currentItemIndex]);
         }
 
         private void LoadPreviousItem()
         {
-            var item = _assignment.Items[--_currentItemIndex];
-            var buildingItemViewControl = new BuildingItemViewControl(item) { Tag = item.Text };
-
             spItems.Children.Clear();
-            spItems.Children.Add(buildingItemViewControl);
+            spItems.Children.Add(viewControls[--_currentItemIndex]);
         }
 
         public void OnCheckClicked()
@@ -100,8 +99,9 @@ namespace Shared.Controls.Assignments
 
         public void OnRetryClicked()
         {
-            _currentItemIndex = -1;
+            _currentItemIndex--;
             LoadNextItem();
+            IsEnabled = true;
         }
 
         public void OnNextClicked()

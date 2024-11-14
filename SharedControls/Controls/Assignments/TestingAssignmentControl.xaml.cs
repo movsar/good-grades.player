@@ -93,7 +93,10 @@ namespace Shared.Controls.Assignments
             CorrectAnswers = _questionViewControls.Count(qvc => QuestionService.CheckUserAnswers(qvc.Question, qvc.SelectedOptionIds));
             IncorrectAnswers = _assignment.Questions.Count - CorrectAnswers;
 
-            AssignmentCompleted?.Invoke(_assignment, IncorrectAnswers == 0);
+            var success = IncorrectAnswers == 0;
+
+            AssignmentCompleted?.Invoke(_assignment, success);
+            ccQuestion.Content = new StatisticsControl(CorrectAnswers, IncorrectAnswers);
 
             IsEnabled = false;
         }
