@@ -119,8 +119,8 @@ namespace GGPlayer
 
         private void mnuSetLanguageChechen_Click(object sender, RoutedEventArgs e)
         {
-            _settingsService.SetValue("uiLanguageCode", "kk");
-            Translations.SetToCulture("kk");
+            _settingsService.SetValue("uiLanguageCode", "uk");
+            Translations.SetToCulture("uk");
             Translations.RestartApp();
         }
 

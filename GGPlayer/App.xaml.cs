@@ -68,7 +68,7 @@ namespace GGPlayer
             base.OnStartup(e);
 
             var uiLanguageCode = AppHost.Services.GetRequiredService<SettingsService>().GetValue("uiLanguageCode");
-            Translations.SetToCulture(uiLanguageCode ?? "kk");
+            Translations.SetToCulture(uiLanguageCode ?? "uk");
 
             var startWindow = AppHost.Services.GetRequiredService<StartWindow>();
             startWindow.Show();

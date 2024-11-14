@@ -58,7 +58,7 @@ namespace GGManager
             base.OnStartup(e);
 
             var uiLanguageCode = AppHost.Services.GetRequiredService<SettingsService>().GetValue("uiLanguageCode");
-            Translations.SetToCulture(uiLanguageCode ?? "kk");
+            Translations.SetToCulture(uiLanguageCode ?? "uk");
 
             var startUpForm = AppHost!.Services.GetRequiredService<MainWindow>();
             startUpForm.Show();
