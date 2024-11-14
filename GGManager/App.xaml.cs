@@ -38,7 +38,8 @@ namespace GGManager
         {
             e.Handled = true;
 
-            ExceptionService.HandleError(e.Exception, e.Exception.Message);
+            MessageBox.Show("Произошла непредвиденная ошибка", "Good Grades", MessageBoxButton.OK, MessageBoxImage.Error);
+            Log.Error(e.Exception, e.Exception.Message);
             Application.Current.Shutdown();
         }
 
@@ -47,7 +48,8 @@ namespace GGManager
             if (e.ExceptionObject is Exception ex)
             {
                 // Log the exception
-                ExceptionService.HandleError(ex, "Произошла непредвиденная ошибка ");
+                MessageBox.Show("Произошла непредвиденная ошибка", "Good Grades", MessageBoxButton.OK, MessageBoxImage.Error);
+                Log.Error(ex, ex.Message);
                 Application.Current.Shutdown();
             }
         }

@@ -37,7 +37,8 @@ namespace GGPlayer
             }
             catch (Exception ex)
             {
-                ExceptionService.HandleError(ex, ex.Message);
+                MessageBox.Show("Произошла ошибка инициализации главного окна", "Good Grades", MessageBoxButton.OK, MessageBoxImage.Error);
+                Serilog.Log.Error(ex, ex.Message);
             }
         }
         public void LoadDatabase(bool restoreLatest = true)

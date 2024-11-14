@@ -16,9 +16,9 @@ namespace GGPlayer
             //создание лога, настройка конфигурации и его запись в файл
             string logPath = Path.Combine("logs", "logs.txt");
             Log.Logger = new LoggerConfiguration()
-            .MinimumLevel.Error()
-            .WriteTo.File(logPath, rollingInterval: RollingInterval.Day)
-            .CreateLogger();
+                .MinimumLevel.Warning()
+                .WriteTo.File(logPath, rollingInterval: RollingInterval.Day)
+                .CreateLogger();
 
             VelopackApp.Build().Run(LoggingInstance<Program>());
 

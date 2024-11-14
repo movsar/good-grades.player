@@ -12,10 +12,9 @@ namespace GGManager
         [STAThread]
         public static void Main(string[] args)
         {
-
             string logPath = Path.Combine("logs", "logs.txt");
             Log.Logger = new LoggerConfiguration()
-            .MinimumLevel.Error()
+            .MinimumLevel.Warning()
             .WriteTo.File(logPath, rollingInterval: RollingInterval.Day)
             .CreateLogger();
 

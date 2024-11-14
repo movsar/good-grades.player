@@ -2,9 +2,11 @@
 using Data.Entities;
 using Data.Interfaces;
 using Data.Services;
+using Serilog;
 using Shared.Services;
 using System;
 using System.Reflection;
+using System.Windows;
 
 namespace GGManager.Stores
 {
@@ -60,7 +62,8 @@ namespace GGManager.Stores
             }
             catch (Exception ex)
             {
-                ExceptionService.HandleError(ex, "Произошла ошибка с открытием Базы Данных предыдущей сессии");
+                MessageBox.Show("Произошла ошибка с открытием Базы Данных предыдущей сессии", "Good Grades", MessageBoxButton.OK, MessageBoxImage.Error);
+                Log.Error(ex, ex.Message);
             }
         }
         internal void CreateDatabase(string filePath)
