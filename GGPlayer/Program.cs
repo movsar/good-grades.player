@@ -11,7 +11,7 @@ namespace GGPlayer
         [STAThread]
         public static void Main(string[] args)
         {
-            Translations.SetToCulture("ce");
+            Translations.SetToCulture("kk");
             
             //создание лога, настройка конфигурации и его запись в файл
             string logPath = Path.Combine("logs", "logs.txt");

@@ -129,8 +129,8 @@ namespace GGManager
 
         private void mnuSetLanguageChechen_Click(object sender, RoutedEventArgs e)
         {
-            _settingsService.SetValue("uiLanguageCode", "ce");
-            Translations.SetToCulture("ce");
+            _settingsService.SetValue("uiLanguageCode", "kk");
+            Translations.SetToCulture("kk");
             Translations.RestartApp();
         }
 

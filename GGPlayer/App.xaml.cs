@@ -20,13 +20,6 @@ namespace GGPlayer
         public static IHost? AppHost { get; private set; }
         public App()
         {
-            //создание лога и его запись в файл
-            string logPath = Path.Combine("logs", "logs.txt");
-            Log.Logger = new LoggerConfiguration()
-            .MinimumLevel.Error()
-            .WriteTo.File(logPath, rollingInterval: RollingInterval.Day)
-            .CreateLogger();
-
             // Handle unhandled exceptions
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             DispatcherUnhandledException += App_DispatcherUnhandledException;
@@ -75,7 +68,7 @@ namespace GGPlayer
             base.OnStartup(e);
 
             var uiLanguageCode = AppHost.Services.GetRequiredService<SettingsService>().GetValue("uiLanguageCode");
-            Translations.SetToCulture(uiLanguageCode ?? "ce");
+            Translations.SetToCulture(uiLanguageCode ?? "kk");
 
             var startWindow = AppHost.Services.GetRequiredService<StartWindow>();
             startWindow.Show();

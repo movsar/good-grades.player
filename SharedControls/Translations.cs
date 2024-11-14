@@ -12,7 +12,7 @@ namespace Shared
     {
         static Translations()
         {
-            //SetToCulture("ce");
+            //SetToCulture("kk");
         }
 
         public static string GetValue(string key)
