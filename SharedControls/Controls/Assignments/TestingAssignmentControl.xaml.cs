@@ -6,22 +6,19 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Windows;
 using System.Windows.Controls;
 
 namespace Shared.Controls.Assignments
 {
     public partial class TestingAssignmentControl : UserControl, IAssignmentViewer
     {
-        private readonly TestingAssignment _assignment;
-        private int _currentQuestionIndex = -1;
+        private int _currentQuestionIndex;
+        private TestingAssignment _assignment;
         private List<TestingQuestionViewControl> _questionViewControls;
 
         public event Action<IAssignment, bool> AssignmentCompleted;
         public event Action<IAssignment, string, bool> AssignmentItemSubmitted;
         public event PropertyChangedEventHandler? PropertyChanged;
-
 
         protected virtual void OnPropertyChanged(string propertyName)
         {
@@ -30,24 +27,12 @@ namespace Shared.Controls.Assignments
 
         public int CorrectAnswers { get; private set; }
         public int IncorrectAnswers { get; private set; }
-        public int StepsCount { get; }
+        public int StepsCount { get; set; }
 
-        public TestingAssignmentControl(TestingAssignment testingTask)
+        public TestingAssignmentControl()
         {
             InitializeComponent();
             DataContext = this;
-
-            _assignment = testingTask;
-            StepsCount = _assignment.Questions.Count;
-            _questionViewControls = new List<TestingQuestionViewControl>();
-
-            foreach (var question in _assignment.Questions)
-            {
-                var questionViewControl = new TestingQuestionViewControl(question);
-                _questionViewControls.Add(questionViewControl);
-            }
-
-            LoadNextItem();
         }
 
         private void LoadNextItem()
@@ -102,6 +87,29 @@ namespace Shared.Controls.Assignments
         {
             LoadPreviousItem();
             IsEnabled = true;
+        }
+
+        public void Initialize(IAssignment assignment)
+        {
+            IsEnabled = true;
+            _currentQuestionIndex = -1;
+
+            if (_assignment == assignment)
+            {
+                return;
+            }
+            _assignment = (TestingAssignment)assignment;
+            _questionViewControls = new List<TestingQuestionViewControl>();
+
+            StepsCount = _assignment.Questions.Count;
+
+            foreach (var question in _assignment.Questions)
+            {
+                var questionViewControl = new TestingQuestionViewControl(question);
+                _questionViewControls.Add(questionViewControl);
+            }
+
+            LoadNextItem();
         }
     }
 }

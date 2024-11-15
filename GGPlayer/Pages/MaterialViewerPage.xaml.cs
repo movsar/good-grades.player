@@ -1,4 +1,5 @@
 ﻿using Data.Entities;
+using Microsoft.Extensions.DependencyInjection;
 using Shared.Controls;
 using System.Windows.Controls;
 
@@ -16,7 +17,10 @@ namespace GGPlayer.Pages
         {
             Title = material.Title;
 
-            ucRoot.Content = new MaterialViewerControl(material.Title, material.PdfData, material.Audio);
+            var materialControl = App.AppHost!.Services.GetRequiredService<MaterialViewerControl>();
+            materialControl.Initialize(material.Title, material.PdfData, material.Audio);
+
+            ucRoot.Content = materialControl;
             InitializeComponent();
         }
     }

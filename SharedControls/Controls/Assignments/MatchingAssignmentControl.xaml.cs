@@ -1,7 +1,6 @@
 ﻿using Data.Entities;
 using Data.Interfaces;
 using Shared.Interfaces;
-using Shared.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -21,7 +20,7 @@ namespace Shared.Controls.Assignments
         // A dictionary to hold matching pairs with string identifiers and corresponding images.
         private readonly Dictionary<string, BitmapImage> _matchingPairs = new Dictionary<string, BitmapImage>();
         // The matching task assignment to be completed in this viewer.
-        private readonly MatchingAssignment _assignment;
+        private MatchingAssignment _assignment;
 
         // An event that signals when the completion state of the assignment changes.
         public event Action<IAssignment, bool> AssignmentCompleted;
@@ -29,18 +28,22 @@ namespace Shared.Controls.Assignments
 
         #region Properties, Fields and Constructors
         // Constructor initializes the MatchingViewer with a specific assignment.
-        public MatchingAssignmentControl(MatchingAssignment assignment)
+        public MatchingAssignmentControl()
         {
             InitializeComponent();
             DataContext = this;
-
-            _assignment = assignment;
-
-            LoadContent();
         }
 
-        private void LoadContent()
+        public void Initialize(IAssignment assignment)
         {
+            IsEnabled = true;
+            if (assignment == _assignment)
+            {
+                return;
+            }
+
+            _assignment = (MatchingAssignment)assignment;
+
             _matchingPairs.Clear();
 
             int numberOfPairs = _assignment.Items.Count;
@@ -289,7 +292,8 @@ namespace Shared.Controls.Assignments
             IsEnabled = true;
         }
 
-        public void OnPreviousClicked() {
+        public void OnPreviousClicked()
+        {
             IsEnabled = true;
         }
     }

@@ -210,7 +210,10 @@ namespace GGManager.UserControls
                 Title = Title
             };
 
-            window.Content = new MaterialViewerControl(Title, PdfData, Audio);
+            var materialControl = new MaterialViewerControl();
+            materialControl.Initialize(Title, PdfData, Audio);
+
+            window.Content = materialControl;
             window.Closing += Window_Closing;
             window.ShowDialog();
         }
@@ -227,7 +230,6 @@ namespace GGManager.UserControls
 
         private void Save()
         {
-
             //MessageBox.Show(Ru.NecessaryInfoForContent);
 
             if (string.IsNullOrEmpty(Id))

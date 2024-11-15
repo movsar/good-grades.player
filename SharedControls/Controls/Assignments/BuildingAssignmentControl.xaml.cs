@@ -11,8 +11,8 @@ namespace Shared.Controls.Assignments
     public partial class BuildingAssignmentControl : UserControl, IAssignmentViewer
     {
 
-        private readonly BuildingAssignment _assignment;
-        private int _currentItemIndex = -1;
+        private BuildingAssignment _assignment;
+        private int _currentItemIndex;
 
         public event Action<IAssignment, bool> AssignmentCompleted;
         public event Action<IAssignment, string, bool> AssignmentItemSubmitted;
@@ -20,20 +20,10 @@ namespace Shared.Controls.Assignments
         public string TaskTitle { get; }
         public int StepsCount { get; } = 1;
         private List<BuildingItemViewControl> viewControls = new List<BuildingItemViewControl>();
-        public BuildingAssignmentControl(BuildingAssignment assignment)
+        public BuildingAssignmentControl()
         {
             InitializeComponent();
             DataContext = this;
-
-            _assignment = assignment;
-
-            foreach (var item in _assignment.Items)
-            {
-                var buildingItemViewControl = new BuildingItemViewControl(item) { Tag = item.Text };
-                viewControls.Add(buildingItemViewControl);
-            }
-
-            LoadNextItem();
         }
 
         private void LoadNextItem()
@@ -112,6 +102,27 @@ namespace Shared.Controls.Assignments
         {
             LoadPreviousItem();
             IsEnabled = true;
+        }
+
+        public void Initialize(IAssignment assignment)
+        {
+            IsEnabled = true;
+            _currentItemIndex = -1;
+         
+            if (_assignment == assignment)
+            {
+                return;
+            }
+            _assignment = (BuildingAssignment)assignment;
+
+            viewControls.Clear();
+            foreach (var item in _assignment.Items)
+            {
+                var buildingItemViewControl = new BuildingItemViewControl(item) { Tag = item.Text };
+                viewControls.Add(buildingItemViewControl);
+            }
+
+            LoadNextItem();
         }
     }
 }

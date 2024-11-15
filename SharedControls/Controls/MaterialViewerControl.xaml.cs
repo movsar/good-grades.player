@@ -6,32 +6,32 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Shapes;
 using Path = System.IO.Path;
 
 namespace Shared.Controls
 {
     public partial class MaterialViewerControl : UserControl
     {
-
-        private string _pdfBase64;
         private bool _isWebViewReady = false;
-
+        private string materialTitle;
         #region Initialization
-        private void SharedInitialization()
+        public MaterialViewerControl()
         {
-            PurgeCache();
+            DataContext = this;
             InitializeComponent();
         }
-        public MaterialViewerControl(string title, byte[] data)
-        {
-            SharedInitialization();
-            webView.LoadPdfAsync(data);
-        }
+        #endregion
 
-        public MaterialViewerControl(string title, byte[] data, byte[]? audio)
+        public void Initialize(string title, byte[] data, byte[]? audio)
         {
-            SharedInitialization();
+            if (materialTitle == title)
+            {
+                return;
+            }
+            materialTitle = title;
+
+            CrossSimpleAudioPlayer.Current.Stop();
+            PurgeCache();
 
             if (audio != null)
             {
@@ -41,7 +41,6 @@ namespace Shared.Controls
 
             webView.LoadPdfAsync(data);
         }
-        #endregion
 
         #region AudioControls
         private void btnStop_MouseUp(object sender, MouseButtonEventArgs e)
@@ -61,7 +60,7 @@ namespace Shared.Controls
         {
             CrossSimpleAudioPlayer.Current.Play();
         }
-        
+
         #endregion
 
         private void PurgeCache()

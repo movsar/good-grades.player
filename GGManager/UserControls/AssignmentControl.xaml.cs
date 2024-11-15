@@ -15,6 +15,7 @@ using System.Windows;
 using System.Windows.Controls;
 using Shared;
 using Shared.Controls.Assignments;
+using Serilog.Filters;
 
 namespace GGManager.UserControls
 {
@@ -129,29 +130,37 @@ namespace GGManager.UserControls
                 Title = "Good Grades"
             };
 
+            UserControl userControl = null!;
+
             switch (_taskType)
             {
                 case AssignmentType.Matching:
-                    viewer.Content = new MatchingAssignmentControl((MatchingAssignment)_taskAssignment);
+                    var matching = new MatchingAssignmentControl();
+                    matching.Initialize((MatchingAssignment)_taskAssignment);
                     break;
 
                 case AssignmentType.Test:
-                    viewer.Content = new TestingAssignmentControl((TestingAssignment)_taskAssignment);
+                    var testAssignment = new TestingAssignmentControl();
+                    testAssignment.Initialize((TestingAssignment)_taskAssignment);
                     break;
 
                 case AssignmentType.Filling:
-                    viewer.Content = new FillingAssignmentControl((FillingAssignment)_taskAssignment);
+                    var fillingAssignment = new FillingAssignmentControl();
+                    fillingAssignment.Initialize((FillingAssignment)_taskAssignment);
                     break;
 
                 case AssignmentType.Selecting:
-                    viewer.Content = new SelectionAssignmentControl(((SelectingAssignment)_taskAssignment));
+                    var selectingAssignment = new SelectingAssignmentControl();
+                    selectingAssignment.Initialize((SelectingAssignment)_taskAssignment);
                     break;
 
                 case AssignmentType.Building:
-                    viewer.Content = new BuildingAssignmentControl((BuildingAssignment)_taskAssignment);
+                    var buildingAssignment = new BuildingAssignmentControl();
+                    buildingAssignment.Initialize((BuildingAssignment)_taskAssignment);
                     break;
             }
 
+            viewer.Content = userControl;
             viewer.Show();
         }
 

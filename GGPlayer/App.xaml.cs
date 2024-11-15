@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using Serilog;
 using Shared;
 using Shared.Controls;
+using Shared.Controls.Assignments;
 using Shared.Services;
 using System.IO;
 using System.Windows;
@@ -27,19 +28,26 @@ namespace GGPlayer
             AppHost = Host.CreateDefaultBuilder()
                     .ConfigureServices((hostContext, services) =>
                     {
+                        services.AddSingleton<ShellWindow>();
+
                         services.AddSingleton<Storage>();
                         services.AddSingleton<SettingsService>();
                         services.AddSingleton<StylingService>();
                         services.AddSingleton<ShellNavigationService>();
 
-                        services.AddSingleton<ShellWindow>();
                         services.AddSingleton<StartPage>();
-
                         services.AddSingleton<MaterialViewerPage>();
                         services.AddSingleton<MainPage>();
                         services.AddSingleton<SegmentPage>();
                         services.AddSingleton<AssignmentViewerPage>();
                         services.AddSingleton<AssignmentsPage>();
+
+                        services.AddSingleton<MatchingAssignmentControl>();
+                        services.AddSingleton<SelectingAssignmentControl>();
+                        services.AddSingleton<BuildingAssignmentControl>();
+                        services.AddSingleton<FillingAssignmentControl>();
+                        services.AddSingleton<TestingAssignmentControl>();
+                        services.AddSingleton<MaterialViewerControl>();
                     }).Build();
         }
         private void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)

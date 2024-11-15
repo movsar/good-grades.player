@@ -11,23 +11,15 @@ namespace Shared.Controls.Assignments
 {
     public partial class FillingAssignmentControl : UserControl, IAssignmentViewer
     {
-        private readonly FillingAssignment _assignment;
-
         public int StepsCount { get; } = 1;
-
-        public FillingAssignmentControl(FillingAssignment fillingTask)
+        private FillingAssignment _assignment;
+        public event Action<IAssignment, bool> AssignmentCompleted;
+        public event Action<IAssignment, string, bool> AssignmentItemSubmitted;
+        public FillingAssignmentControl()
         {
             InitializeComponent();
             DataContext = this;
-
-            _assignment = fillingTask;
-
-            GenerateItemsUI();
         }
-
-        public event Action<IAssignment, bool> AssignmentCompleted;
-        public event Action<IAssignment, string, bool> AssignmentItemSubmitted;
-
         private void GenerateItemsUI()
         {
             spItems.Children.Clear();
@@ -112,6 +104,18 @@ namespace Shared.Controls.Assignments
 
         public void OnPreviousClicked() { 
             IsEnabled = true;
+        }
+
+        public void Initialize(IAssignment assignment)
+        {
+            IsEnabled = true;
+            if (_assignment == assignment)
+            {
+                return;
+            }
+            _assignment = (FillingAssignment)assignment;
+
+            GenerateItemsUI();
         }
     }
 }

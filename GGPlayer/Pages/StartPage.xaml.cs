@@ -100,7 +100,7 @@ namespace GGPlayer.Pages
 
         private void CloseProgram_Click(object sender, RoutedEventArgs e)
         {
-            var window = this.Parent is Window;
+            Application.Current.Shutdown();
         }
         private void OpenDatabase_Click(object sender, RoutedEventArgs e)
         {

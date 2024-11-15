@@ -4,31 +4,22 @@ using Data.Interfaces;
 using Shared.Interfaces;
 using Shared.Services;
 using System;
-using System.Windows;
 using System.Windows.Controls;
 
 namespace Shared.Controls.Assignments
 {
-    public partial class SelectionAssignmentControl : UserControl, IAssignmentViewer
+    public partial class SelectingAssignmentControl : UserControl, IAssignmentViewer
     {
-        private readonly SelectingAssignment _assignment;
-        private readonly Question _question;
         public int StepsCount { get; set; } = 1;
-
+        private SelectingAssignment _assignment;
+        private Question _question;
         public event Action<IAssignment, bool>? AssignmentCompleted;
         public event Action<IAssignment, string, bool> AssignmentItemSubmitted;
 
-        public SelectionAssignmentControl(SelectingAssignment selectingTask)
+        public SelectingAssignmentControl()
         {
             InitializeComponent();
-
             DataContext = this;
-
-            _assignment = selectingTask;
-            _question = _assignment.Question;
-
-            var questionViewControl = new SelectingQuestionViewControl(_assignment.Question);
-            ccQuestion.Content = questionViewControl;
         }
 
         public void OnCheckClicked()
@@ -64,8 +55,24 @@ namespace Shared.Controls.Assignments
             IsEnabled = true;
         }
 
-        public void OnPreviousClicked() {
+        public void OnPreviousClicked()
+        {
             IsEnabled = true;
+        }
+
+        public void Initialize(IAssignment assignment)
+        {
+            IsEnabled = true;
+            if (_assignment == assignment)
+            {
+                return;
+            }
+
+            _assignment = (SelectingAssignment)assignment;
+            _question = _assignment.Question;
+
+            var questionViewControl = new SelectingQuestionViewControl(_question);
+            ccQuestion.Content = questionViewControl;
         }
     }
 }

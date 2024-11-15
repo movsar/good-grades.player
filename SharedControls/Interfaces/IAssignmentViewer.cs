@@ -1,4 +1,5 @@
-﻿using Data.Interfaces;
+﻿using Data.Entities;
+using Data.Interfaces;
 using System;
 
 namespace Shared.Interfaces
@@ -18,5 +19,6 @@ namespace Shared.Interfaces
         void OnRetryClicked();
         void OnNextClicked();
         void OnPreviousClicked();
+        void Initialize(IAssignment assignment);
     }
 }

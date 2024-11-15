@@ -9,6 +9,8 @@ using System.Windows.Input;
 using System.Windows;
 using Data.Entities.TaskItems;
 using System.Text;
+using Serilog.Filters;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace GGPlayer.Pages.Assignments
 {
@@ -31,35 +33,38 @@ namespace GGPlayer.Pages.Assignments
             _navigationService = navigationService;
         }
 
-        public void Initialize(IAssignment assignment)
+        public void LoadAssignment(IAssignment assignment)
         {
             _currentStep = 1;
             _assignment = assignment;
             _isAssignmentCompleted = false;
 
-            UserControl uc = null!;
             switch (_assignment)
             {
                 case MatchingAssignment:
-                    uc = new MatchingAssignmentControl((MatchingAssignment)_assignment);
+                    _userControl = App.AppHost!.Services.GetRequiredService<MatchingAssignmentControl>();
+                    _userControl.Initialize((MatchingAssignment)_assignment);
                     break;
                 case TestingAssignment:
-                    uc = new TestingAssignmentControl((TestingAssignment)_assignment);
+                    _userControl = App.AppHost!.Services.GetRequiredService<TestingAssignmentControl>();
+                    _userControl.Initialize((TestingAssignment)_assignment);
                     break;
                 case FillingAssignment:
-                    uc = new FillingAssignmentControl((FillingAssignment)_assignment);
+                    _userControl = App.AppHost!.Services.GetRequiredService<FillingAssignmentControl>();
+                    _userControl.Initialize((FillingAssignment)_assignment);
                     break;
                 case SelectingAssignment:
-                    uc = new SelectionAssignmentControl((SelectingAssignment)_assignment);
+                    _userControl = App.AppHost!.Services.GetRequiredService<SelectingAssignmentControl>();
+                    _userControl.Initialize((SelectingAssignment)_assignment);
                     break;
                 case BuildingAssignment:
-                    uc = new BuildingAssignmentControl((BuildingAssignment)_assignment);
+                    _userControl = App.AppHost!.Services.GetRequiredService<BuildingAssignmentControl>();
+                    _userControl.Initialize((BuildingAssignment)_assignment);
                     break;
             }
 
-            ucRoot.Content = uc;
+            ucRoot.Content = _userControl;
 
-            _userControl = (IAssignmentViewer)uc;
             _userControl.AssignmentItemSubmitted += _userControl_AssignmentItemSubmitted;
             _userControl.AssignmentCompleted += _userControl_AssignmentCompleted;
 
