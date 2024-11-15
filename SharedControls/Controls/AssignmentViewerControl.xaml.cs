@@ -19,7 +19,7 @@ namespace Shared.Controls
 
         private bool _isAssignmentCompleted;
         private int _currentStep;
-     
+
         public AssignmentViewerControl()
         {
             InitializeComponent();
@@ -53,7 +53,9 @@ namespace Shared.Controls
 
             ucRoot.Content = _userControl;
 
+            _userControl.AssignmentItemSubmitted -= _userControl_AssignmentItemSubmitted;
             _userControl.AssignmentItemSubmitted += _userControl_AssignmentItemSubmitted;
+            _userControl.AssignmentCompleted -= _userControl_AssignmentCompleted;
             _userControl.AssignmentCompleted += _userControl_AssignmentCompleted;
 
             SetUiStateToReady();
@@ -119,7 +121,7 @@ namespace Shared.Controls
             _userControl.OnPreviousClicked();
         }
 
-  
+
 
         private string GetAssignmentTitle()
         {
