@@ -66,9 +66,9 @@ namespace GGPlayer.Pages
                 logo.BeginInit();
                 logo.StreamSource = new MemoryStream(dbMeta.BackgroundImage);
                 logo.EndInit();
-                ImageBrush myBrush = new ImageBrush();
-                myBrush.ImageSource = logo;
-                pnlMain.Background = myBrush;
+                ImageBrush myBrush = new ImageBrush(logo);
+                myBrush.Stretch = Stretch.UniformToFill;
+                grdMain.Background = myBrush;
             }
         }
         private string GetDatabasePath()

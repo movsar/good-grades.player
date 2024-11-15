@@ -6,7 +6,6 @@
       xmlns:local="clr-namespace:GGPlayer.Pages"
       xmlns:shared="clr-namespace:Shared;assembly=Shared"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
       Title="StartPage">
 
     <DockPanel x:Name="pnlMain">
@@ -69,14 +68,15 @@
             </MenuItem>
         </Menu>
         <Viewbox>
-            <Button x:Name="btnGo"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Click="Button_Click"
-                    IsEnabled="False"
-                    Width="40"
-                    Margin="100, 30, 100, 0"                    
-                    FocusVisualStyle="{x:Null}">
+            <Grid x:Name="grdMain" Width="640" Height="360">
+                <Button x:Name="btnGo"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Click="Button_Click"
+                        IsEnabled="False"
+                        Width="120"
+                        Margin="100, 120, 100, 0"                    
+                        FocusVisualStyle="{x:Null}">
 
                     <Button.Template>
                         <ControlTemplate TargetType="Button">
@@ -84,7 +84,8 @@
                         </ControlTemplate>
                     </Button.Template>
 
-            </Button>
+                </Button>
+            </Grid>
         </Viewbox>
 
     </DockPanel>
