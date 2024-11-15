@@ -167,11 +167,6 @@ namespace GGPlayer.Pages
             ChangeBorderColor(assignment, successfullyCompleted);
         }
 
-        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            // Подстраивание под изменение окна
-            wrapPanel.Children.Clear();
-            GenerateAssignmentButtons();
-        }
+       
     }
 }
