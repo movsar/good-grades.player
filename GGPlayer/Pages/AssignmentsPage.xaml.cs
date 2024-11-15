@@ -18,6 +18,7 @@ namespace GGPlayer.Pages
 
         private readonly ShellNavigationService _navigationService;
         private readonly AssignmentViewerPage _assignmentViewerPage;
+        private bool _isLoadingAssignment = false;
 
         public AssignmentsPage(ShellNavigationService navigationService, AssignmentViewerPage assignmentViewerPage)
         {
@@ -101,11 +102,26 @@ namespace GGPlayer.Pages
 
         private void AssignmentButton_Click(object sender, MouseButtonEventArgs e)
         {
-            var clickedButton = (Label)sender;
-            var taskIndex = int.Parse(clickedButton.Content.ToString()!) - 1;
-            var assignment = Assignments[taskIndex];
+            // Проверяем, загружается ли задание
+            if (_isLoadingAssignment)
+            {
+                return;
+            }
 
-            NavigateToAssignment(assignment);
+            _isLoadingAssignment = true;
+
+            try
+            {
+                var clickedButton = (Label)sender;
+                var taskIndex = int.Parse(clickedButton.Content.ToString()!) - 1;
+                var assignment = Assignments[taskIndex];
+
+                NavigateToAssignment(assignment);
+            }
+            finally
+            {
+                _isLoadingAssignment = false;
+            }
         }
 
         private void NavigateToAssignment(IAssignment assignment)
