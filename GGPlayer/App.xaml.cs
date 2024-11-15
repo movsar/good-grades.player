@@ -48,6 +48,7 @@ namespace GGPlayer
                         services.AddSingleton<FillingAssignmentControl>();
                         services.AddSingleton<TestingAssignmentControl>();
                         services.AddSingleton<MaterialViewerControl>();
+                        services.AddSingleton<AssignmentViewerControl>();
                     }).Build();
         }
         private void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)

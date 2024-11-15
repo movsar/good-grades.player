@@ -43,7 +43,7 @@ namespace GGPlayer.Pages.Assignments
                     break;
             }
 
-            var viewer = new AssignmentViewerControl();
+            var viewer = App.AppHost!.Services.GetRequiredService<AssignmentViewerControl>();
             viewer.Initialize(assignment, assignmentControl);
             viewer.AssignmentCompleted -= Viewer_AssignmentCompleted;
             viewer.AssignmentCompleted += Viewer_AssignmentCompleted;
