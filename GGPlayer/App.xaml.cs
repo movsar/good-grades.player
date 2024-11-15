@@ -33,7 +33,7 @@ namespace GGPlayer
                         services.AddSingleton<ShellNavigationService>();
 
                         services.AddSingleton<ShellWindow>();
-                        services.AddSingleton<StartWindow>();
+                        services.AddSingleton<StartPage>();
 
                         services.AddSingleton<MaterialViewerPage>();
                         services.AddSingleton<MainPage>();
@@ -70,7 +70,7 @@ namespace GGPlayer
             var uiLanguageCode = AppHost.Services.GetRequiredService<SettingsService>().GetValue("uiLanguageCode");
             Translations.SetToCulture(uiLanguageCode ?? "uk");
 
-            var startWindow = AppHost.Services.GetRequiredService<StartWindow>();
+            var startWindow = AppHost.Services.GetRequiredService<ShellWindow>();
             startWindow.Show();
         }
 

@@ -1,43 +1,39 @@
-﻿
+﻿using Data.Services;
 using Data;
-using Data.Services;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Win32;
-using Shared;
-using Shared.Services;
-using System.IO;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Microsoft.Win32;
+using Shared.Services;
+using Shared;
+using System.IO;
+using GGPlayer.Services;
 
-namespace GGPlayer
+namespace GGPlayer.Pages
 {
-    public partial class StartWindow : Window
+    public partial class StartPage : Page
     {
         private readonly SettingsService _settingsService;
         private readonly Storage _storage;
-        private readonly ShellWindow _shell;
+        private readonly ShellNavigationService _navigationService;
 
-        public StartWindow(SettingsService settingsService, Storage storage)
+        public StartPage(SettingsService settingsService, Storage storage, ShellNavigationService navigationService)
         {
             InitializeComponent();
             DataContext = this;
 
-            _settingsService = settingsService;
             _storage = storage;
+            _settingsService = settingsService;
+            _navigationService = navigationService;
 
             try
             {
                 LoadDatabase();
-                _shell = App.AppHost!.Services.GetRequiredService<ShellWindow>();
-            }
-            catch (OperationCanceledException)
-            {
-                // Do nothing, user cancelled 
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Произошла ошибка инициализации главного окна", "Good Grades", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Произошла ошибка инициализации", "Good Grades", MessageBoxButton.OK, MessageBoxImage.Error);
                 Serilog.Log.Error(ex, ex.Message);
             }
         }
@@ -89,18 +85,11 @@ namespace GGPlayer
             MessageBox.Show(Translations.GetValue("DBFileChoose"));
             return GetDatabasePath();
         }
-        protected override void OnClosed(EventArgs e)
-        {
-            base.OnClosed(e);
-            Application.Current.Shutdown();
-        }
+      
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             // Создание и показ основного окна
-            _shell.Show();
-
-            // Закрытие стартового окна
-            Hide();
+            _navigationService.NavigateTo<MainPage>();
         }
 
         private void AboutMenuItem_Click(object sender, RoutedEventArgs e)
@@ -111,7 +100,7 @@ namespace GGPlayer
 
         private void CloseProgram_Click(object sender, RoutedEventArgs e)
         {
-            Close();
+            var window = this.Parent is Window;
         }
         private void OpenDatabase_Click(object sender, RoutedEventArgs e)
         {
@@ -121,14 +110,12 @@ namespace GGPlayer
         private void mnuSetLanguageChechen_Click(object sender, RoutedEventArgs e)
         {
             _settingsService.SetValue("uiLanguageCode", "uk");
-            Translations.SetToCulture("uk");
             Translations.RestartApp();
         }
 
         private void mnuSetLanguageRussian_Click(object sender, RoutedEventArgs e)
         {
             _settingsService.SetValue("uiLanguageCode", "ru");
-            Translations.SetToCulture("ru");
             Translations.RestartApp();
         }
 

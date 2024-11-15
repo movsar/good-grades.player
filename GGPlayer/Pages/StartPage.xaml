@@ -1,0 +1,91 @@
+﻿<Page x:Class="GGPlayer.Pages.StartPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:GGPlayer.Pages"
+      xmlns:shared="clr-namespace:Shared;assembly=Shared"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="StartPage">
+
+    <DockPanel x:Name="pnlMain">
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="{x:Static shared:GgLocalization.DataBase}">
+                <MenuItem Header="{x:Static shared:GgLocalization.Open}" Click="OpenDatabase_Click">
+                    <MenuItem.Icon>
+                        <TextBlock
+                        HorizontalAlignment="Center" 
+                        VerticalAlignment="Center" 
+                        FontFamily="Segoe MDL2 Assets">
+                        &#xE8E5;
+                        </TextBlock>
+                    </MenuItem.Icon>
+                </MenuItem>
+
+                <MenuItem Header="{x:Static shared:GgLocalization.Exit}" Click="CloseProgram_Click"/>
+            </MenuItem>
+
+            <MenuItem Header="{x:Static shared:GgLocalization.Help}" >
+
+                <MenuItem Header="{x:Static shared:GgLocalization.Language}">
+                    <MenuItem.Icon>
+                        <TextBlock
+                         HorizontalAlignment="Center" 
+                         VerticalAlignment="Center" 
+                         FontFamily="Segoe MDL2 Assets">
+                         &#xe775;
+                        </TextBlock>
+                    </MenuItem.Icon>
+
+                    <MenuItem x:Name="mnuSetLanguageChechen" Header="{x:Static shared:GgLocalization.Chechen}" 
+                    Click="mnuSetLanguageChechen_Click"/>
+
+                    <MenuItem x:Name="mnuSetLanguageRussian" Header="{x:Static shared:GgLocalization.Russian}" 
+                    Click="mnuSetLanguageRussian_Click"/>
+                </MenuItem>
+
+                <MenuItem Header="{x:Static shared:GgLocalization.Update}" Click="mnuCheckUpdates_Click">
+                    <MenuItem.Icon>
+                        <TextBlock
+                        HorizontalAlignment="Center" 
+                        VerticalAlignment="Center" 
+                        FontFamily="Segoe MDL2 Assets">
+                        &#xECC5;
+                        </TextBlock>
+                    </MenuItem.Icon>
+                </MenuItem>
+
+                <MenuItem Header="{x:Static shared:GgLocalization.AboutProgram}" Click="AboutMenuItem_Click">
+                    <MenuItem.Icon>
+                        <TextBlock
+                      HorizontalAlignment="Center" 
+                      VerticalAlignment="Center" 
+                      FontFamily="Segoe MDL2 Assets">
+                      &#xF167;
+                        </TextBlock>
+                    </MenuItem.Icon>
+                </MenuItem>
+            </MenuItem>
+        </Menu>
+        <Viewbox>
+            <Button x:Name="btnGo"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Click="Button_Click"
+                    IsEnabled="False"
+                    Width="40"
+                    Margin="100, 30, 100, 0"                    
+                    FocusVisualStyle="{x:Null}">
+
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Image Source="pack://application:,,,/Shared;component/Images/Start_btn.png" Stretch="Uniform"/>
+                        </ControlTemplate>
+                    </Button.Template>
+
+            </Button>
+        </Viewbox>
+
+    </DockPanel>
+</Page>

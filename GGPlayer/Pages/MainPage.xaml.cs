@@ -28,8 +28,7 @@ namespace GGPlayer.Pages
             _segmentPage = segmentPage;
             _navigationService = navigationService;
 
-            // Intialize the visual elements
-            InitializeComponent();
+            Initialize();
         }
 
         public void Initialize()
@@ -44,6 +43,9 @@ namespace GGPlayer.Pages
             _dbInfo = _storage.DbContext.DbMetas.First();
             DbTitle = _dbInfo.Title;
             DbDescription = _dbInfo.Description ?? string.Empty;
+
+            // Intialize the visual elements
+            InitializeComponent();
         }
 
         private void NavigateToSelectedSegment()
