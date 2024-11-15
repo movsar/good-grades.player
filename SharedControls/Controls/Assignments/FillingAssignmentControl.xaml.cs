@@ -9,7 +9,7 @@ using System.Windows.Controls;
 
 namespace Shared.Controls.Assignments
 {
-    public partial class FillingAssignmentControl : UserControl, IAssignmentViewer
+    public partial class FillingAssignmentControl : UserControl, IAssignmentControl
     {
         public int StepsCount { get; } = 1;
         private FillingAssignment _assignment;

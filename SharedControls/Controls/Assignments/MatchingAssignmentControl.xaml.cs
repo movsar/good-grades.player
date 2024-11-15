@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 
 namespace Shared.Controls.Assignments
 {
-    public partial class MatchingAssignmentControl : UserControl, IAssignmentViewer
+    public partial class MatchingAssignmentControl : UserControl, IAssignmentControl
     {
         public int StepsCount { get; } = 1;
 

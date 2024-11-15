@@ -16,6 +16,8 @@ using System.Windows.Controls;
 using Shared;
 using Shared.Controls.Assignments;
 using Serilog.Filters;
+using Shared.Interfaces;
+using Shared.Controls;
 
 namespace GGManager.UserControls
 {
@@ -29,7 +31,7 @@ namespace GGManager.UserControls
 
         public bool IsContentSet { get; set; }
 
-        private readonly IAssignment _taskAssignment;
+        private readonly IAssignment _assignment;
 
         #endregion
 
@@ -69,7 +71,7 @@ namespace GGManager.UserControls
 
         public AssignmentControl(IAssignment taskMaterial)
         {
-            _taskAssignment = taskMaterial;
+            _assignment = taskMaterial;
             IsContentSet = GetCurrentTaskItems().Count() > 0;
 
             SharedInitialization(true);
@@ -98,18 +100,18 @@ namespace GGManager.UserControls
             //редакторы заданий в зависимости от типа задания
             IAssignmentEditor taskEditor = _taskType switch
             {
-                AssignmentType.Matching => new MatchingAssignmentEditor(_taskAssignment as MatchingAssignment),
-                AssignmentType.Filling => new FillingAssignmentEditor(_taskAssignment as FillingAssignment),
-                AssignmentType.Selecting => new SelectionAssignmentEditor(_taskAssignment as SelectingAssignment),
-                AssignmentType.Building => new BuildingAssignmentEditor(_taskAssignment as BuildingAssignment),
-                AssignmentType.Test => new TestingAssignmentEditor(_taskAssignment as TestingAssignment),
+                AssignmentType.Matching => new MatchingAssignmentEditor(_assignment as MatchingAssignment),
+                AssignmentType.Filling => new FillingAssignmentEditor(_assignment as FillingAssignment),
+                AssignmentType.Selecting => new SelectionAssignmentEditor(_assignment as SelectingAssignment),
+                AssignmentType.Building => new BuildingAssignmentEditor(_assignment as BuildingAssignment),
+                AssignmentType.Test => new TestingAssignmentEditor(_assignment as TestingAssignment),
                 _ => throw new NotImplementedException()
             };
 
             taskEditor.ShowDialog();
             taskAssignment = taskEditor.Assignment;
 
-            if (_taskAssignment != null)
+            if (_assignment != null)
             {
                 // Data update may or may not have been done
                 ContentStore.RaiseItemUpdatedEvent(taskAssignment);
@@ -123,53 +125,49 @@ namespace GGManager.UserControls
 
         private void btnPreview_Click(object sender, RoutedEventArgs e)
         {
-            Window viewer = new Window()
+            Window window = new Window()
             {
                 Width = 1280,
                 Height = 720,
                 Title = "Good Grades"
             };
 
-            UserControl userControl = null!;
-
+            IAssignmentControl assignmentControl = null!;
             switch (_taskType)
             {
                 case AssignmentType.Matching:
-                    var matching = new MatchingAssignmentControl();
-                    matching.Initialize((MatchingAssignment)_taskAssignment);
+                    assignmentControl = new MatchingAssignmentControl();
                     break;
 
                 case AssignmentType.Test:
-                    var testAssignment = new TestingAssignmentControl();
-                    testAssignment.Initialize((TestingAssignment)_taskAssignment);
+                    assignmentControl = new TestingAssignmentControl();
                     break;
 
                 case AssignmentType.Filling:
-                    var fillingAssignment = new FillingAssignmentControl();
-                    fillingAssignment.Initialize((FillingAssignment)_taskAssignment);
+                    assignmentControl = new FillingAssignmentControl();
                     break;
 
                 case AssignmentType.Selecting:
-                    var selectingAssignment = new SelectingAssignmentControl();
-                    selectingAssignment.Initialize((SelectingAssignment)_taskAssignment);
+                    assignmentControl = new SelectingAssignmentControl();
                     break;
 
                 case AssignmentType.Building:
-                    var buildingAssignment = new BuildingAssignmentControl();
-                    buildingAssignment.Initialize((BuildingAssignment)_taskAssignment);
+                    assignmentControl = new BuildingAssignmentControl();
                     break;
             }
 
-            viewer.Content = userControl;
-            viewer.Show();
+            var viewer = new AssignmentViewerControl();
+            viewer.Initialize(_assignment, assignmentControl);
+            window.Content = viewer;
+            window.Show();
         }
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-            ContentStore.DbContext.Remove(_taskAssignment);
+            ContentStore.DbContext.Remove(_assignment);
             ContentStore.DbContext.SaveChanges();
 
-            ContentStore.RaiseItemDeletedEvent(_taskAssignment);
+            ContentStore.RaiseItemDeletedEvent(_assignment);
         }
 
         private void cmbTaskType_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -223,7 +221,7 @@ namespace GGManager.UserControls
         //получение текущих элементов заданий
         private IEnumerable<object> GetCurrentTaskItems()
         {
-            IEnumerable<object> items = _taskAssignment switch
+            IEnumerable<object> items = _assignment switch
             {
                 MatchingAssignment mt => mt.Items,
                 FillingAssignment ft => ft.Items,
@@ -239,7 +237,7 @@ namespace GGManager.UserControls
         private void SetSelectedTaskType()
         {
             //установка выбранного типа задания
-            string selectedTaskName = _taskAssignment switch
+            string selectedTaskName = _assignment switch
             {
                 FillingAssignment _ => Translations.GetValue("FillingTaskName"),
                 SelectingAssignment _ => Translations.GetValue("SelectingTaskName"),

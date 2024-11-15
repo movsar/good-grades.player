@@ -8,7 +8,7 @@ using System.Windows.Controls;
 
 namespace Shared.Controls.Assignments
 {
-    public partial class SelectingAssignmentControl : UserControl, IAssignmentViewer
+    public partial class SelectingAssignmentControl : UserControl, IAssignmentControl
     {
         public int StepsCount { get; set; } = 1;
         private SelectingAssignment _assignment;

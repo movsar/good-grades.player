@@ -4,7 +4,7 @@ using System;
 
 namespace Shared.Interfaces
 {
-    public interface IAssignmentViewer
+    public interface IAssignmentControl
     {
         // Assignment, Success (true/false)
         event Action<IAssignment, bool> AssignmentCompleted;

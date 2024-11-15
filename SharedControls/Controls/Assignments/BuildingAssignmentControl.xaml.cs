@@ -8,7 +8,7 @@ using System.Windows.Controls;
 
 namespace Shared.Controls.Assignments
 {
-    public partial class BuildingAssignmentControl : UserControl, IAssignmentViewer
+    public partial class BuildingAssignmentControl : UserControl, IAssignmentControl
     {
 
         private BuildingAssignment _assignment;

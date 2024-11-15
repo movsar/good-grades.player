@@ -10,7 +10,7 @@ using System.Windows.Controls;
 
 namespace Shared.Controls.Assignments
 {
-    public partial class TestingAssignmentControl : UserControl, IAssignmentViewer
+    public partial class TestingAssignmentControl : UserControl, IAssignmentControl
     {
         private int _currentQuestionIndex;
         private TestingAssignment _assignment;
@@ -94,10 +94,11 @@ namespace Shared.Controls.Assignments
             IsEnabled = true;
             _currentQuestionIndex = -1;
 
-            if (_assignment == assignment)
+            if (_assignment == assignment && ccQuestion.Content is not StatisticsControl)
             {
                 return;
             }
+
             _assignment = (TestingAssignment)assignment;
             _questionViewControls = new List<TestingQuestionViewControl>();
 
