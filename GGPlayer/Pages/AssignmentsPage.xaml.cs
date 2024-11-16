@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -106,11 +107,22 @@ namespace GGPlayer.Pages
 
         private void AssignmentButton_Click(object sender, MouseButtonEventArgs e)
         {
-            var clickedButton = (Label)sender;
-            var taskIndex = int.Parse(clickedButton.Content.ToString()!) - 1;
-            var assignment = _assignments[taskIndex];
-            try { 
+            // Проверяем, загружается ли задание
+            if (_isLoadingAssignment)
+            {
+                return;
+            }
+
+            _isLoadingAssignment = true;
+
+            try
+            {
+                var clickedButton = (Label)sender;
+                var taskIndex = int.Parse(clickedButton.Content.ToString()!) - 1;
+                var assignment = _assignments[taskIndex];
+
                 NavigateToAssignment(assignment);
+                Debug.Write("navigated");
             }
             finally
             {
