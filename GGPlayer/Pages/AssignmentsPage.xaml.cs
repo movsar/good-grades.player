@@ -14,7 +14,7 @@ namespace GGPlayer.Pages
     public partial class AssignmentsPage : Page
     {
         private List<int> _completedAssignments = new List<int>();
-        private List<IAssignment> Assignments { get; } = new List<IAssignment>();
+        private List<IAssignment> _assignments;
 
         private readonly ShellNavigationService _navigationService;
         private readonly AssignmentViewerPage _assignmentViewerPage;
@@ -29,8 +29,12 @@ namespace GGPlayer.Pages
 
         public void Initialize(List<IAssignment> assignments)
         {
-            Assignments.Clear();
-            Assignments.AddRange(assignments);
+            // This prevents re-rendering if it's the same segment, maiinly to keep the button completion effects
+            if (_assignments != null && _assignments.FirstOrDefault()?.Id == assignments.FirstOrDefault()?.Id)
+            {
+                return;
+            }
+            _assignments = assignments;
 
             GenerateAssignmentButtons();
         }
@@ -41,7 +45,7 @@ namespace GGPlayer.Pages
             wrapPanel.Children.Clear();
 
             int count = 1;
-            foreach (var assignment in Assignments)
+            foreach (var assignment in _assignments)
             {
                 var label = new Label()
                 {
@@ -103,7 +107,7 @@ namespace GGPlayer.Pages
         {
             var clickedButton = (Label)sender;
             var taskIndex = int.Parse(clickedButton.Content.ToString()!) - 1;
-            var assignment = Assignments[taskIndex];
+            var assignment = _assignments[taskIndex];
 
             NavigateToAssignment(assignment);
         }
@@ -121,7 +125,7 @@ namespace GGPlayer.Pages
         private void OnAssignmentCompleted(IAssignment assignment, bool success)
         {
             // Находим индекс задания в списке
-            var assignmentIndex = Assignments.IndexOf(assignment);
+            var assignmentIndex = _assignments.IndexOf(assignment);
             if (assignmentIndex == -1)
             {
                 return;
@@ -136,16 +140,16 @@ namespace GGPlayer.Pages
             // Находим изображение задания и перекрашиваем его границу в зеленый
             SetAssignmentButtonState(assignment, true);
 
-            if (_completedAssignments.Count == Assignments.Count)
+            if (_completedAssignments.Count == _assignments.Count)
             {
                 return;
             }
 
             var nextTaskIndex = assignmentIndex + 1;
-            if (nextTaskIndex < Assignments.Count)
+            if (nextTaskIndex < _assignments.Count)
             {
                 // Загрузка следующего задания
-                var nextAssignment = Assignments[nextTaskIndex];
+                var nextAssignment = _assignments[nextTaskIndex];
                 NavigateToAssignment(nextAssignment);
             }
             else
@@ -167,6 +171,6 @@ namespace GGPlayer.Pages
             ChangeBorderColor(assignment, successfullyCompleted);
         }
 
-       
+
     }
 }
