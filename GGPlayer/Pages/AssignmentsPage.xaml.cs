@@ -109,7 +109,7 @@ namespace GGPlayer.Pages
             var clickedButton = (Label)sender;
             var taskIndex = int.Parse(clickedButton.Content.ToString()!) - 1;
             var assignment = _assignments[taskIndex];
-
+            try { 
                 NavigateToAssignment(assignment);
             }
             finally
