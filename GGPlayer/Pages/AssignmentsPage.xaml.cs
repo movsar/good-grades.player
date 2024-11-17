@@ -128,7 +128,7 @@ namespace GGPlayer.Pages
                 }
             }
             var taskIndex = int.Parse(clickedButton.Content.ToString()!) - 1;
-            var assignment = Assignments[taskIndex];
+            var assignment = _assignments[taskIndex];
 
 
             NavigateToAssignment(assignment);
