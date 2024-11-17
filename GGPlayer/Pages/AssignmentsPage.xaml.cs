@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -18,14 +19,25 @@ namespace GGPlayer.Pages
 
         private readonly ShellNavigationService _navigationService;
         private readonly AssignmentViewerPage _assignmentViewerPage;
-        private bool _isLoadingAssignment = false;
 
         public AssignmentsPage(ShellNavigationService navigationService, AssignmentViewerPage assignmentViewerPage)
         {
             InitializeComponent();
-
             _navigationService = navigationService;
             _assignmentViewerPage = assignmentViewerPage;
+
+            _assignmentViewerPage.AssignmentLoaded += OnAssignmentLoaded;
+        }
+        private void OnAssignmentLoaded(IAssignment assignment)
+        {
+            Debug.WriteLine($"Assignment {assignment.Id} loaded.");
+             foreach (var child in wrapPanel.Children)
+             {
+                    if (child is Label button)
+                    {
+                        button.IsEnabled = true;
+                    }
+             }
         }
 
         public void Initialize(List<IAssignment> assignments)
@@ -102,26 +114,21 @@ namespace GGPlayer.Pages
 
         private void AssignmentButton_Click(object sender, MouseButtonEventArgs e)
         {
-            // Проверяем, загружается ли задание
-            if (_isLoadingAssignment)
-            {
-                return;
-            }
+            var clickedButton = (Label)sender;
 
-            _isLoadingAssignment = true;
-
-            try
+            foreach (var child in wrapPanel.Children)
             {
-                var clickedButton = (Label)sender;
-                var taskIndex = int.Parse(clickedButton.Content.ToString()!) - 1;
-                var assignment = Assignments[taskIndex];
+                if (child is Label button)
+                {
+                    button.IsEnabled = false;
+                }
+            }
+            var taskIndex = int.Parse(clickedButton.Content.ToString()!) - 1;
+            var assignment = Assignments[taskIndex];
 
-                NavigateToAssignment(assignment);
-            }
-            finally
-            {
-                _isLoadingAssignment = false;
-            }
+
+            NavigateToAssignment(assignment);
+            Debug.WriteLine("Navigate");
         }
 
         private void NavigateToAssignment(IAssignment assignment)
@@ -184,5 +191,17 @@ namespace GGPlayer.Pages
         }
 
        
+
+        private void EnableAssignmentButtons()
+        {
+            foreach (var child in wrapPanel.Children)
+            {
+                if (child is Label button)
+                {
+                    button.IsEnabled = true;
+                }
+            }
+        }
+
     }
 }
