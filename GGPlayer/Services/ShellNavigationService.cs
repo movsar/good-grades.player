@@ -21,8 +21,8 @@ namespace GGPlayer.Services
         public void NavigateTo(Page page)
         {
             _currentPage = page;
-            _frame.Navigate(page);
             _frame.Navigated += _frame_Navigated;
+            _frame.Navigate(page);
         }
 
         private void _frame_Navigated(object sender, NavigationEventArgs e)
