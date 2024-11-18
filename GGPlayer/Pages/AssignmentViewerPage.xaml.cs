@@ -13,7 +13,6 @@ namespace GGPlayer.Pages.Assignments
     public partial class AssignmentViewerPage : Page
     {
         public event Action<IAssignment, bool> AssignmentCompleted;
-        public event Action<IAssignment> AssignmentLoaded;
         public AssignmentViewerPage()
         {
             InitializeComponent();
@@ -50,7 +49,6 @@ namespace GGPlayer.Pages.Assignments
             viewer.AssignmentCompleted -= Viewer_AssignmentCompleted;
             viewer.AssignmentCompleted += Viewer_AssignmentCompleted;
             ucRoot.Content = viewer;
-            AssignmentLoaded?.Invoke(assignment);
         }
 
         private void Viewer_AssignmentCompleted(IAssignment assignment, bool success)

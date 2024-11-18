@@ -26,18 +26,14 @@ namespace GGPlayer.Pages
             _navigationService = navigationService;
             _assignmentViewerPage = assignmentViewerPage;
 
-            _assignmentViewerPage.AssignmentLoaded += OnAssignmentLoaded;
         }
-        private void OnAssignmentLoaded(IAssignment assignment)
+        private void OnNavigated(Page page)
         {
-            Debug.WriteLine($"Assignment {assignment.Id} loaded.");
-             foreach (var child in wrapPanel.Children)
-             {
-                    if (child is Label button)
-                    {
-                        button.IsEnabled = true;
-                    }
-             }
+            if (page is AssignmentViewerPage)
+            {
+                this.IsEnabled = true;
+                Debug.WriteLine("Страница включена");
+            }
         }
 
         public void Initialize(List<IAssignment> assignments)
@@ -118,20 +114,19 @@ namespace GGPlayer.Pages
 
         private void AssignmentButton_Click(object sender, MouseButtonEventArgs e)
         {
-            var clickedButton = (Label)sender;
-
-            foreach (var child in wrapPanel.Children)
+            if(this.IsEnabled == false) 
             {
-                if (child is Label button)
-                {
-                    button.IsEnabled = false;
-                }
+                return;
             }
+            var clickedButton = (Label)sender;
+            this.IsEnabled = false;
+            Debug.WriteLine(this.IsEnabled);
+           
             var taskIndex = int.Parse(clickedButton.Content.ToString()!) - 1;
             var assignment = _assignments[taskIndex];
 
-
             NavigateToAssignment(assignment);
+
             Debug.WriteLine("Navigate");
         }
 
@@ -141,6 +136,8 @@ namespace GGPlayer.Pages
 
             _assignmentViewerPage.AssignmentCompleted -= OnAssignmentCompleted;
             _assignmentViewerPage.AssignmentCompleted += OnAssignmentCompleted;
+            _navigationService.Navigated -= OnNavigated;
+            _navigationService.Navigated += OnNavigated;
 
             _navigationService.NavigateTo(_assignmentViewerPage);
         }
