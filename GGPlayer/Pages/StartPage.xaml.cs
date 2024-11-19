@@ -9,6 +9,7 @@ using Shared.Services;
 using Shared;
 using System.IO;
 using GGPlayer.Services;
+using System.Diagnostics;
 
 namespace GGPlayer.Pages
 {
@@ -124,6 +125,29 @@ namespace GGPlayer.Pages
             IsEnabled = false;
             await UpdateService.UpdateMyApp("player");
             IsEnabled = true;
+        }
+
+        private void MnuCheckLogs_Click(object sender, RoutedEventArgs e)
+        {
+            string appName = "GGPlayer";
+            string logsPath = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                appName,
+                "current",
+                "logs"
+            );
+
+            if (!Directory.Exists(logsPath))
+            {
+                Directory.CreateDirectory(logsPath);
+            }
+
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = logsPath,
+                UseShellExecute = true,
+                Verb = "open"
+            });
         }
     }
 }

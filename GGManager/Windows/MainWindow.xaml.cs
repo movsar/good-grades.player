@@ -12,6 +12,7 @@ using Data.Services;
 using System.Diagnostics;
 using Shared;
 using Shared.Services;
+using System;
 
 namespace GGManager
 {
@@ -139,6 +140,29 @@ namespace GGManager
             _settingsService.SetValue("uiLanguageCode", "ru");
             Translations.SetToCulture("ru");
             Translations.RestartApp();
-        }     
+        }
+
+        private void MnuCheckLogs_Click(object sender, RoutedEventArgs e)
+        {
+            string appName = "GGManager";
+            string logsPath = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                appName,
+                "current",
+                "logs"
+            );
+
+            if (!Directory.Exists(logsPath))
+            {
+                Directory.CreateDirectory(logsPath);
+            }
+
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = logsPath,
+                UseShellExecute = true,
+                Verb = "open"
+            });
+        }
     }
 }
