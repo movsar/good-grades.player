@@ -11,11 +11,13 @@ using Shared.Services;
 using Data.Services;
 using Velopack;
 using Shared;
+using System.Threading;
 
 namespace GGManager
 {
     public partial class App : Application
     {
+        private static Mutex? _appMutex;
         public static IHost? AppHost { get; private set; }
         public App()
         {
@@ -37,25 +39,35 @@ namespace GGManager
         private void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
             e.Handled = true;
-
             MessageBox.Show("Произошла непредвиденная ошибка", "Good Grades", MessageBoxButton.OK, MessageBoxImage.Error);
             Log.Error(e.Exception, e.Exception.Message);
-            Application.Current.Shutdown();
+            Shutdown();
         }
 
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             if (e.ExceptionObject is Exception ex)
             {
-                // Log the exception
                 MessageBox.Show("Произошла непредвиденная ошибка", "Good Grades", MessageBoxButton.OK, MessageBoxImage.Error);
                 Log.Error(ex, ex.Message);
-                Application.Current.Shutdown();
+                Shutdown();
             }
         }
 
         protected override void OnStartup(StartupEventArgs e)
         {
+            const string appMutexName = "GGManager_SingleInstance";
+
+            bool isNewInstance;
+            _appMutex = new Mutex(true, appMutexName, out isNewInstance);
+
+            if (!isNewInstance)
+            {
+                MessageBox.Show("GGManager уже запущен.", "Good Grades", MessageBoxButton.OK, MessageBoxImage.Information);
+                Shutdown();
+                return;
+            }
+
             AppHost.Start();
             base.OnStartup(e);
 
@@ -68,9 +80,18 @@ namespace GGManager
 
         protected override void OnExit(ExitEventArgs e)
         {
-            Log.CloseAndFlush();
-            AppHost!.StopAsync();
-            base.OnExit(e);
+            try
+            {
+                _appMutex?.ReleaseMutex();
+                _appMutex?.Dispose();
+                Log.CloseAndFlush();
+                AppHost!.StopAsync();
+                base.OnExit(e);
+            }
+            catch(Exception ex)
+            {
+                Log.Error(ex, "Error during OnExit");
+            }
         }
     }
 }

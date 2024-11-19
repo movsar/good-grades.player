@@ -18,6 +18,7 @@ namespace GGPlayer
 {
     public partial class App : Application
     {
+        private static Mutex? _appMutex;
         public static IHost? AppHost { get; private set; }
         public App()
         {
@@ -73,6 +74,17 @@ namespace GGPlayer
 
         protected override void OnStartup(StartupEventArgs e)
         {
+            const string appMutexName = "GGPlayer_SingleInstance";
+
+            bool isNewInstance;
+            _appMutex = new Mutex(true, appMutexName, out isNewInstance);
+
+            if (!isNewInstance)
+            {
+                MessageBox.Show("GGPlayer уже запущен.", "Good Grades", MessageBoxButton.OK, MessageBoxImage.Information);
+                Shutdown();
+                return;
+            }
             AppHost.Start();
             base.OnStartup(e);
 
@@ -85,6 +97,8 @@ namespace GGPlayer
 
         protected override async void OnExit(ExitEventArgs e)
         {
+            _appMutex?.ReleaseMutex();
+            _appMutex?.Dispose();
             Log.CloseAndFlush();
             await AppHost!.StopAsync();
             base.OnExit(e);
