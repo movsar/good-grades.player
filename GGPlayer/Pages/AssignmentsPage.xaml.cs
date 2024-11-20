@@ -20,20 +20,16 @@ namespace GGPlayer.Pages
         private readonly ShellNavigationService _navigationService;
         private readonly AssignmentViewerPage _assignmentViewerPage;
 
+        private bool _canClick = true;
+        private readonly TimeSpan _clickDelay = TimeSpan.FromMilliseconds(100);
+
         public AssignmentsPage(ShellNavigationService navigationService, AssignmentViewerPage assignmentViewerPage)
         {
             InitializeComponent();
             _navigationService = navigationService;
             _assignmentViewerPage = assignmentViewerPage;
 
-        }
-        private void OnNavigated(Page page)
-        {
-            if (page is AssignmentViewerPage)
-            {
-                this.IsEnabled = true;
-                Debug.WriteLine("Страница включена");
-            }
+            _assignmentViewerPage.AssignmentCompleted += OnAssignmentCompleted;
         }
 
         public void Initialize(List<IAssignment> assignments)
@@ -111,34 +107,29 @@ namespace GGPlayer.Pages
             }
             return null;
         }
-
-        private void AssignmentButton_Click(object sender, MouseButtonEventArgs e)
+        private async void AssignmentButton_Click(object sender, MouseButtonEventArgs e)
         {
-            if(this.IsEnabled == false) 
+            if (!this.IsEnabled)
             {
                 return;
             }
-            var clickedButton = (Label)sender;
             this.IsEnabled = false;
-            Debug.WriteLine(this.IsEnabled);
-           
-            var taskIndex = int.Parse(clickedButton.Content.ToString()!) - 1;
-            var assignment = _assignments[taskIndex];
 
+            var clickedButtonLabel = (Label)sender;
+            var assignmentIndex = int.Parse(clickedButtonLabel.Content.ToString()!) - 1;
+            
+            var assignment = _assignments[assignmentIndex];
+            Debug.WriteLine("Navigating");
             NavigateToAssignment(assignment);
 
-            Debug.WriteLine("Navigate");
+            // Wait for x ms before letting user to click again
+            await Task.Delay(_clickDelay);
+            this.IsEnabled = true;
         }
 
         private void NavigateToAssignment(IAssignment assignment)
         {
             _assignmentViewerPage.LoadAssignment(assignment);
-
-            _assignmentViewerPage.AssignmentCompleted -= OnAssignmentCompleted;
-            _assignmentViewerPage.AssignmentCompleted += OnAssignmentCompleted;
-            _navigationService.Navigated -= OnNavigated;
-            _navigationService.Navigated += OnNavigated;
-
             _navigationService.NavigateTo(_assignmentViewerPage);
         }
 
@@ -191,6 +182,6 @@ namespace GGPlayer.Pages
             ChangeBorderColor(assignment, successfullyCompleted);
         }
 
-       
+
     }
 }
