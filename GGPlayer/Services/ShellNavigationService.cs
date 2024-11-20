@@ -9,7 +9,9 @@ namespace GGPlayer.Services
 {
     public class ShellNavigationService
     {
+        public event Action<Page> Navigated;
         private Frame _frame;
+        private Page _currentPage;
 
         public void Initialize(Frame frame)
         {
@@ -18,12 +20,20 @@ namespace GGPlayer.Services
 
         public void NavigateTo(Page page)
         {
+            _currentPage = page;
+            _frame.Navigated += _frame_Navigated;
             _frame.Navigate(page);
         }
+
+        private void _frame_Navigated(object sender, NavigationEventArgs e)
+        {
+            Navigated?.Invoke(_currentPage);
+        }
+
         public void NavigateTo<T>() where T : Page
         {
             var page = App.AppHost!.Services.GetRequiredService<T>();
-            _frame.Navigate(page);
+            NavigateTo(page);
         }
 
         public bool CanGoBack => _frame?.CanGoBack ?? false;
