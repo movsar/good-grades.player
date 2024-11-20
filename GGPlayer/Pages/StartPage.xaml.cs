@@ -131,7 +131,7 @@ namespace GGPlayer.Pages
         private void MnuOpenLogFiles_Click(object sender, RoutedEventArgs e)
         { 
            
-            string appName = Assembly.GetEntryAssembly()?.GetName().Name ?? "Application";
+            string appName = Assembly.GetEntryAssembly().GetName().Name;
 
             string logsPath = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
