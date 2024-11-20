@@ -119,7 +119,6 @@ namespace GGPlayer.Pages
             var assignmentIndex = int.Parse(clickedButtonLabel.Content.ToString()!) - 1;
             
             var assignment = _assignments[assignmentIndex];
-            Debug.WriteLine("Navigating");
             NavigateToAssignment(assignment);
 
             // Wait for x ms before letting user to click again
