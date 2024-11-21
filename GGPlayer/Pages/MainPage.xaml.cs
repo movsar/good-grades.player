@@ -33,7 +33,6 @@ namespace GGPlayer.Pages
 
         public void Initialize()
         {
-            Segments.Clear();
             // Load Segments into the collection view
             foreach (var segment in _storage.DbContext.Segments)
             {
