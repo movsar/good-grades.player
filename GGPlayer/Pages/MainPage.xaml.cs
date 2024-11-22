@@ -57,6 +57,7 @@ namespace GGPlayer.Pages
             }
             _segmentPage.Initialize(selectedSegment);
             _navigationService.NavigateTo(_segmentPage);
+            lvSegments.SelectedItem = null;
         }
 
         #region Event handlers
