@@ -556,6 +556,15 @@ namespace Shared {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Лог файлы.
+        /// </summary>
+        public static string LogFiles {
+            get {
+                return ResourceManager.GetString("LogFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Главная.
         /// </summary>
         public static string MainPage {

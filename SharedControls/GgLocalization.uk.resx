@@ -384,4 +384,7 @@
   <data name="Cancel" xml:space="preserve">
     <value>ДIайаккха</value>
   </data>
+  <data name="LogFiles" xml:space="preserve">
+    <value>Лог файлаш</value>
+  </data>
 </root>
