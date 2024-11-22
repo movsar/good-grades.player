@@ -41,33 +41,47 @@
                           BorderBrush="Transparent"
                           BorderThickness="0"
                           HorizontalAlignment="Left" VerticalAlignment="Top"
-                          Width="480" Height="431" Margin="50,100,0,0"> 
+                          Width="480" Height="431" Margin="50,100,0,0">
+                    
                     <ListView.Resources>
-                        <!-- Styles for ListView items -->
                         <Style TargetType="ListViewItem">
                             <Setter Property="HorizontalAlignment" Value="Left"/>
                             <Setter Property="HorizontalContentAlignment" Value="Center"/>
                             <Setter Property="FontWeight" Value="Bold"/>
                             <Setter Property="FontSize" Value="15"/>
+                            <Setter Property="Width" Value="440"/>
                             <Setter Property="Cursor" Value="Hand"/>
-                            <Setter Property="Background" Value="Transparent"/>
-                            <!-- Ensures no background color -->
+                            
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListViewItem">
+                                        <Border x:Name="ItemBorder"                                                
+                                                CornerRadius="5"
+                                                Background="#d6dfde"
+                                                BorderBrush="#084732"
+                                                BorderThickness="1.5">
+                                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="ItemBorder" Property="BorderBrush" Value="#17d184"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
                         </Style>
                     </ListView.Resources>
+                    
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Border CornerRadius="5"
-                                    Width="440px"
-                                    Background="#d6dfde"
-                                    BorderBrush="#084732"
-                                    BorderThickness="1.5">
-                                <TextBlock 
-                                        Text="{Binding Title}"
-                                        Padding="3"
-                                        TextAlignment="Center"
-                                        Foreground="#084732"
-                                        TextWrapping="Wrap"/>
-                            </Border>
+                            <TextBlock 
+                                Text="{Binding Title}"
+                                Padding="3"
+                                TextAlignment="Center"
+                                Foreground="#084732"
+                                TextWrapping="Wrap"/>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
