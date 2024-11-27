@@ -124,7 +124,7 @@ namespace GGPlayer.Pages
         private async void mnuCheckUpdates_Click(object sender, RoutedEventArgs e)
         {
             IsEnabled = false;
-            await UpdateService.UpdateMyApp("player");
+            await UpdateService.UpdateMyApp("player", ignoreSkipVersion: true, showSkipOption: false);
             IsEnabled = true;
         }
 
@@ -151,6 +151,13 @@ namespace GGPlayer.Pages
                 UseShellExecute = true,
                 Verb = "open"
             });
+        }
+
+        private async void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            IsEnabled = false;
+            await UpdateService.UpdateMyApp("player", showSkipOption: true);
+            IsEnabled = true;
         }
     }
 }

@@ -124,7 +124,7 @@ namespace GGManager
         private async void mnuCheckUpdates_Click(object sender, RoutedEventArgs e)
         {
             IsEnabled = false;
-            await UpdateService.UpdateMyApp("manager");
+            await UpdateService.UpdateMyApp("manager", ignoreSkipVersion: true, showSkipOption: false);
             IsEnabled = true;
         }
 
@@ -165,6 +165,13 @@ namespace GGManager
                 UseShellExecute = true,
                 Verb = "open"
             });
+        }
+
+        private async void mainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            IsEnabled = false;
+            await UpdateService.UpdateMyApp("manager", showSkipOption: true);
+            IsEnabled = true;
         }
     }
 }

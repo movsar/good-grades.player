@@ -69,6 +69,7 @@ namespace GGManager
             }
 
             AppHost.Start();
+            UpdateService.AppHost = AppHost;
             base.OnStartup(e);
 
             var uiLanguageCode = AppHost.Services.GetRequiredService<SettingsService>().GetValue("uiLanguageCode");
