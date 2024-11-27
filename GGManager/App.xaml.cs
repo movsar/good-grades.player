@@ -17,10 +17,14 @@ namespace GGManager
 {
     public partial class App : Application
     {
+        private readonly SettingsService _settingsService;
+        private readonly UpdateService _updateService;
         private static Mutex? _appMutex;
         public static IHost? AppHost { get; private set; }
         public App()
         {
+            _settingsService = new SettingsService();
+            _updateService = new UpdateService(_settingsService);
             // Handle unhandled exceptions
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             DispatcherUnhandledException += App_DispatcherUnhandledException;
@@ -54,7 +58,7 @@ namespace GGManager
             }
         }
 
-        protected override void OnStartup(StartupEventArgs e)
+        protected override async void OnStartup(StartupEventArgs e)
         {
             const string appMutexName = "GGManager_SingleInstance";
 
@@ -69,7 +73,6 @@ namespace GGManager
             }
 
             AppHost.Start();
-            UpdateService.AppHost = AppHost;
             base.OnStartup(e);
 
             var uiLanguageCode = AppHost.Services.GetRequiredService<SettingsService>().GetValue("uiLanguageCode");
@@ -77,6 +80,7 @@ namespace GGManager
 
             var startUpForm = AppHost!.Services.GetRequiredService<MainWindow>();
             startUpForm.Show();
+            await _updateService.AutoUpdate("manager");
         }
 
         protected override void OnExit(ExitEventArgs e)

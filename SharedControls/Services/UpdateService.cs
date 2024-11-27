@@ -15,10 +15,16 @@ using Velopack;
 
 namespace Shared.Services
 {
-    public static class UpdateService
+    public class UpdateService
     {
-        public static IHost? AppHost { get; set; }
-        public static async Task UpdateMyApp(string module, bool ignoreSkipVersion = false, bool showSkipOption = false)
+        private readonly SettingsService _settingsService;
+
+        public UpdateService(SettingsService settingsService)
+        {
+            _settingsService = settingsService;
+        }
+
+        public async Task UpdateMyApp(string module)
         {
             try
             {
@@ -35,44 +41,14 @@ namespace Shared.Services
                     throw new Exception("Couldn't fetch current version information");
                 }
                 var currentVersionAsString = $"{currentVersion.Major}.{currentVersion.Minor}.{currentVersion.Build}".Trim();
-               
-                var settingsService = AppHost?.Services.GetRequiredService<SettingsService>();
-                if (settingsService == null)
-                {
-                    throw new Exception("SettingsService is not available");
-                }
-                var skipVersion = settingsService.GetValue("SkipVersion");
-                if (!ignoreSkipVersion && skipVersion == latestVersion)
-                {
-                    Log.Information("Update skipped due to SkipVersion.");
-                    return;
-                }
-
                 if (currentVersionAsString.Equals(latestVersion))
                 {
                     OkDialog.Show(Translations.GetValue("LastVersionInstalled"));
                     return;
                 }
 
-                var message = string.Format(Translations.GetValue("AvailableNewVersion"), latestVersion);
-
-                MessageBoxResult result;
-                if (showSkipOption == true)
+                if (YesNoDialog.Show(string.Format(Translations.GetValue("AvailableNewVersion"), latestVersion)) != MessageBoxResult.Yes)
                 {
-                    result = SkipYesNoDialog.Show(message);
-                }
-                else
-                {
-                    result = YesNoDialog.Show(message);
-                }
-
-                if (result == MessageBoxResult.No)
-                {
-                    return;
-                }
-                else if (result == MessageBoxResult.Cancel && showSkipOption)
-                {
-                    settingsService.SetValue("SkipVersion", latestVersion);
                     return;
                 }
 
@@ -95,5 +71,40 @@ namespace Shared.Services
                 });
             }
         }
+
+        public async Task AutoUpdate(string module)
+        {
+            try
+            {
+                var skipVersion = _settingsService.GetValue("SkipVersion");
+
+                var latestRelease = await GitHubService.GetLatestRelease(module);
+                var latestVersion = Regex.Match(latestRelease.Name!, @"\d+\.\d+\.\d+").Value.Trim();
+
+                if (skipVersion == latestVersion)
+                {
+                    Debug.WriteLine("Пользователь пропустил эту версию.");
+                    return;
+                }
+
+               if( SkipYesNoDialog.Show(string.Format(Translations.GetValue("AvailableNewVersion"), latestVersion)) == MessageBoxResult.No){
+                    return;
+                }
+
+                else if (SkipYesNoDialog.Show(string.Format(Translations.GetValue("AvailableNewVersion"), latestVersion)) == MessageBoxResult.Cancel)
+                {
+                    _settingsService.SetValue("SkipVersion", latestVersion);
+                    return;
+                }
+
+                // Запуск обновления
+                await UpdateMyApp(module);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Ошибка автообновления: {ex.Message}");
+            }
+        }
     }
 }
+

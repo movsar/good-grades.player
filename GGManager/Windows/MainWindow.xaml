@@ -4,7 +4,7 @@
         Title="Good Grades" Height="600" Width="900" MinHeight="600" MinWidth="900"
         xmlns:usercontrols="clr-namespace:GGManager.UserControls"
         xmlns:shared="clr-namespace:Shared;assembly=Shared"
-        x:Name="mainWindow" Loaded="mainWindow_Loaded">
+        x:Name="mainWindow">
 
     <DockPanel>
         <Menu DockPanel.Dock="Top" Height="21">

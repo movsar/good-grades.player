@@ -18,10 +18,14 @@ namespace GGPlayer
 {
     public partial class App : Application
     {
+        private readonly SettingsService _settingsService;
+        private readonly UpdateService _updateService;
         private static Mutex? _appMutex;
         public static IHost? AppHost { get; private set; }
         public App()
         {
+            _settingsService = new SettingsService();
+            _updateService = new UpdateService(_settingsService);
             // Handle unhandled exceptions
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             DispatcherUnhandledException += App_DispatcherUnhandledException;
@@ -72,7 +76,7 @@ namespace GGPlayer
             }
         }
 
-        protected override void OnStartup(StartupEventArgs e)
+        protected override async void OnStartup(StartupEventArgs e)
         {
             const string appMutexName = "GGPlayer_SingleInstance";
 
@@ -86,7 +90,6 @@ namespace GGPlayer
                 return;
             }
             AppHost.Start();
-            UpdateService.AppHost = AppHost;
             base.OnStartup(e);
 
             var uiLanguageCode = AppHost.Services.GetRequiredService<SettingsService>().GetValue("uiLanguageCode");
@@ -94,6 +97,7 @@ namespace GGPlayer
 
             var startWindow = AppHost.Services.GetRequiredService<ShellWindow>();
             startWindow.Show();
+            await _updateService.AutoUpdate("player");
         }
 
         protected override async void OnExit(ExitEventArgs e)
