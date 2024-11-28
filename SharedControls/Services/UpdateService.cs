@@ -76,18 +76,31 @@ namespace Shared.Services
         {
             try
             {
-                var skipVersion = _settingsService.GetValue("SkipVersion");
+               var skipVersion = _settingsService.GetValue("SkipVersion");
 
                 var latestRelease = await GitHubService.GetLatestRelease(module);
                 var latestVersion = Regex.Match(latestRelease.Name!, @"\d+\.\d+\.\d+").Value.Trim();
+                var setupAsset = latestRelease.Assets
+                       .Where(a => a.Name!.ToLower().Contains("setup"))
+                       .FirstOrDefault();
 
                 if (skipVersion == latestVersion)
                 {
-                    Debug.WriteLine("Пользователь пропустил эту версию.");
+                   Debug.WriteLine("Пользователь пропустил эту версию.");
+                   return;
+                }
+                var currentVersion = Assembly.GetEntryAssembly()?.GetName().Version;
+                if (currentVersion == null)
+                {
+                    throw new Exception("Couldn't fetch current version information");
+                }
+                var currentVersionAsString = $"{currentVersion.Major}.{currentVersion.Minor}.{currentVersion.Build}".Trim();
+                if (currentVersionAsString.Equals(latestVersion))
+                {
+                    OkDialog.Show(Translations.GetValue("LastVersionInstalled"));
                     return;
                 }
-
-               if( SkipYesNoDialog.Show(string.Format(Translations.GetValue("AvailableNewVersion"), latestVersion)) == MessageBoxResult.No){
+                if ( SkipYesNoDialog.Show(string.Format(Translations.GetValue("AvailableNewVersion"), latestVersion)) == MessageBoxResult.No){
                     return;
                 }
 
@@ -97,8 +110,12 @@ namespace Shared.Services
                     return;
                 }
 
-                // Запуск обновления
-                await UpdateMyApp(module);
+                var filePath = await GitHubService.DownloadUpdate(setupAsset);
+                if (!string.IsNullOrWhiteSpace(filePath))
+                {
+                    Process.Start(filePath);
+                    Application.Current.Shutdown();
+                }
             }
             catch (Exception ex)
             {

@@ -24,8 +24,6 @@ namespace GGPlayer
         public static IHost? AppHost { get; private set; }
         public App()
         {
-            _settingsService = new SettingsService();
-            _updateService = new UpdateService(_settingsService);
             // Handle unhandled exceptions
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             DispatcherUnhandledException += App_DispatcherUnhandledException;
@@ -37,6 +35,7 @@ namespace GGPlayer
 
                         services.AddSingleton<Storage>();
                         services.AddSingleton<SettingsService>();
+                        services.AddSingleton<UpdateService>();
                         services.AddSingleton<StylingService>();
                         services.AddSingleton<ShellNavigationService>();
 
@@ -96,7 +95,7 @@ namespace GGPlayer
             Translations.SetToCulture(uiLanguageCode ?? "uk");
 
             var startWindow = AppHost.Services.GetRequiredService<ShellWindow>();
-            startWindow.Show();
+            startWindow.Show(); AppHost.Services.GetService<UpdateService>();
             await _updateService.AutoUpdate("player");
         }
 

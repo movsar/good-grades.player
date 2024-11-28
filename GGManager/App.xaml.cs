@@ -36,6 +36,7 @@ namespace GGManager
                         services.AddSingleton<Storage>();
                         services.AddSingleton<MainWindow>();
                         services.AddSingleton<SettingsService>();
+                        services.AddSingleton<UpdateService>();
                         services.AddSingleton<StylingService>();
                         services.AddSingleton<ContentStore>();
                     }).Build();
@@ -80,6 +81,7 @@ namespace GGManager
 
             var startUpForm = AppHost!.Services.GetRequiredService<MainWindow>();
             startUpForm.Show();
+            AppHost.Services.GetService<UpdateService>();
             await _updateService.AutoUpdate("manager");
         }
 
