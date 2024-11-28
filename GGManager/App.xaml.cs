@@ -17,14 +17,10 @@ namespace GGManager
 {
     public partial class App : Application
     {
-        private readonly SettingsService _settingsService;
-        private readonly UpdateService _updateService;
         private static Mutex? _appMutex;
         public static IHost? AppHost { get; private set; }
         public App()
         {
-            _settingsService = new SettingsService();
-            _updateService = new UpdateService(_settingsService);
             // Handle unhandled exceptions
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             DispatcherUnhandledException += App_DispatcherUnhandledException;
@@ -81,8 +77,8 @@ namespace GGManager
 
             var startUpForm = AppHost!.Services.GetRequiredService<MainWindow>();
             startUpForm.Show();
-            AppHost.Services.GetService<UpdateService>();
-            await _updateService.AutoUpdate("manager");
+            var updateService = AppHost.Services.GetRequiredService<UpdateService>();
+            await updateService.AutoUpdate("manager");
         }
 
         protected override void OnExit(ExitEventArgs e)

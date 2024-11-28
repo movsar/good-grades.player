@@ -18,8 +18,6 @@ namespace GGPlayer
 {
     public partial class App : Application
     {
-        private readonly SettingsService _settingsService;
-        private readonly UpdateService _updateService;
         private static Mutex? _appMutex;
         public static IHost? AppHost { get; private set; }
         public App()
@@ -95,8 +93,9 @@ namespace GGPlayer
             Translations.SetToCulture(uiLanguageCode ?? "uk");
 
             var startWindow = AppHost.Services.GetRequiredService<ShellWindow>();
-            startWindow.Show(); AppHost.Services.GetService<UpdateService>();
-            await _updateService.AutoUpdate("player");
+            startWindow.Show(); 
+            var updateService = AppHost.Services.GetRequiredService<UpdateService>();
+            await updateService.AutoUpdate("player");
         }
 
         protected override async void OnExit(ExitEventArgs e)
