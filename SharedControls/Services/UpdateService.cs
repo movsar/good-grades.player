@@ -97,14 +97,15 @@ namespace Shared.Services
                 var currentVersionAsString = $"{currentVersion.Major}.{currentVersion.Minor}.{currentVersion.Build}".Trim();
                 if (currentVersionAsString.Equals(latestVersion))
                 {
-                    OkDialog.Show(Translations.GetValue("LastVersionInstalled"));
                     return;
                 }
-                if ( SkipYesNoDialog.Show(string.Format(Translations.GetValue("AvailableNewVersion"), latestVersion)) == MessageBoxResult.No){
-                    return;
-                }
+                var result = SkipYesNoDialog.Show(string.Format(Translations.GetValue("AvailableNewVersion"), latestVersion));
 
-                else if (SkipYesNoDialog.Show(string.Format(Translations.GetValue("AvailableNewVersion"), latestVersion)) == MessageBoxResult.Cancel)
+                if (result == MessageBoxResult.No)
+                {
+                    return;
+                } 
+                else if (result == MessageBoxResult.Cancel)
                 {
                     _settingsService.SetValue("SkipVersion", latestVersion);
                     return;
