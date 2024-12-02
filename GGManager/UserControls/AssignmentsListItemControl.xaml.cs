@@ -18,6 +18,8 @@ using Shared.Controls.Assignments;
 using Serilog.Filters;
 using Shared.Interfaces;
 using Shared.Controls;
+using System.Windows.Media;
+using Shared.Utilities;
 
 namespace GGManager.UserControls
 {
@@ -46,6 +48,9 @@ namespace GGManager.UserControls
             btnSetData.Background = IsContentSet ? StylingService.ReadyBrush : StylingService.StagedBrush;
             btnDelete.Visibility = Visibility.Visible;
             cmbTaskType.IsEnabled = false;
+
+            TaskTitleTextBlock.Text = _assignment.Title.Truncate(40);
+            TaskTitleTextBlock.Visibility = Visibility.Visible;
         }
 
         private void SharedInitialization(bool isExistingMaterial = false)
@@ -185,7 +190,6 @@ namespace GGManager.UserControls
 
         private void AddTaskTypes()
         {
-            //варианты задания
             var fillingTaskType = new ComboBoxItem()
             {
                 Content = Translations.GetValue("FillingTaskName")

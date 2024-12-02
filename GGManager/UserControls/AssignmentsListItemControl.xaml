@@ -8,15 +8,26 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <StackPanel Margin="0 10 0 0" Orientation="Horizontal" Height="30">
-            <ComboBox x:Name="cmbTaskType"
-                Margin="10 0 0 0" 
-                Padding="5 0 0 0"
-                Width="300"
-                VerticalContentAlignment="Center"
-                SelectionChanged="cmbTaskType_SelectionChanged"
-               />
-               <!--Text="{Binding Path=DataContext.RmTitle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"--> 
+        <StackPanel Margin="0 10 0 0" Orientation="Horizontal">
+            <Border BorderBrush="Gray" BorderThickness="1" Padding="0, 0, 0, 0">
+                <StackPanel Orientation="Vertical">
+                    <ComboBox x:Name="cmbTaskType"
+                          FontSize="16"
+                          Margin="0 0 0 0"
+                          Padding="5 0 0 0"
+                          Width="300"
+                          VerticalContentAlignment="Center"
+                          SelectionChanged="cmbTaskType_SelectionChanged" />
+                    <TextBlock x:Name="TaskTitleTextBlock"
+                           FontSize="13"
+                           Foreground="Gray"
+                           Margin="10,0,0,0"
+                           TextWrapping="Wrap"
+                           TextTrimming="None"
+                           Visibility="Collapsed"/>
+        </StackPanel>
+       </Border>
+        <!--Text="{Binding Path=DataContext.RmTitle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"--> 
 
             <Button x:Name="btnSetData"
               Margin="10 0 0 0" Padding="7 0 7 0" 
