@@ -387,4 +387,7 @@
   <data name="LogFiles" xml:space="preserve">
     <value>Лог файлаш</value>
   </data>
+  <data name="SkipUpdate" xml:space="preserve">
+    <value>Верси т1ехйалийта</value>
+  </data>
 </root>

@@ -32,6 +32,7 @@ namespace GGManager
                         services.AddSingleton<Storage>();
                         services.AddSingleton<MainWindow>();
                         services.AddSingleton<SettingsService>();
+                        services.AddSingleton<UpdateService>();
                         services.AddSingleton<StylingService>();
                         services.AddSingleton<ContentStore>();
                     }).Build();
@@ -54,7 +55,7 @@ namespace GGManager
             }
         }
 
-        protected override void OnStartup(StartupEventArgs e)
+        protected override async void OnStartup(StartupEventArgs e)
         {
             const string appMutexName = "GGManager_SingleInstance";
 
@@ -76,6 +77,8 @@ namespace GGManager
 
             var startUpForm = AppHost!.Services.GetRequiredService<MainWindow>();
             startUpForm.Show();
+            var updateService = AppHost.Services.GetRequiredService<UpdateService>();
+            await updateService.AutoUpdate("manager");
         }
 
         protected override void OnExit(ExitEventArgs e)

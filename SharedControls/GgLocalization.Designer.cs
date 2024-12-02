@@ -781,6 +781,15 @@ namespace Shared {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Пропустить версию.
+        /// </summary>
+        public static string SkipUpdate {
+            get {
+                return ResourceManager.GetString("SkipUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Статистика.
         /// </summary>
         public static string Statistics {

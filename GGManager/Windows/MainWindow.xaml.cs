@@ -20,6 +20,7 @@ namespace GGManager
     {
         private readonly ContentStore _contentStore;
         private readonly SettingsService _settingsService;
+        private readonly UpdateService _updateService;
 
         public MainWindow(ContentStore contentStore, SettingsService settingsService)
         {          
@@ -28,6 +29,7 @@ namespace GGManager
 
             //инициализация и подписка на события
             _settingsService = settingsService;
+            _updateService = new UpdateService(_settingsService);
             _contentStore = contentStore;
             _contentStore.SelectedSegmentChanged += SelectedSegmentChanged;
             _contentStore.CurrentDatabaseChanged += OnDatabaseOpened;
@@ -123,8 +125,9 @@ namespace GGManager
 
         private async void mnuCheckUpdates_Click(object sender, RoutedEventArgs e)
         {
+            var updateService = new UpdateService(_settingsService);
             IsEnabled = false;
-            await UpdateService.UpdateMyApp("manager");
+            await _updateService.UpdateMyApp("manager");
             IsEnabled = true;
         }
 
@@ -166,5 +169,6 @@ namespace GGManager
                 Verb = "open"
             });
         }
+
     }
 }

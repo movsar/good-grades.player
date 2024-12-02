@@ -19,14 +19,17 @@ namespace GGPlayer.Pages
         private readonly SettingsService _settingsService;
         private readonly Storage _storage;
         private readonly ShellNavigationService _navigationService;
+        private readonly UpdateService _updateService;
 
         public StartPage(SettingsService settingsService, Storage storage, ShellNavigationService navigationService)
         {
             InitializeComponent();
             DataContext = this;
 
+
             _storage = storage;
             _settingsService = settingsService;
+            _updateService = new UpdateService(_settingsService);
             _navigationService = navigationService;
 
             try
@@ -123,8 +126,9 @@ namespace GGPlayer.Pages
 
         private async void mnuCheckUpdates_Click(object sender, RoutedEventArgs e)
         {
+            var updateService = new UpdateService(_settingsService);
             IsEnabled = false;
-            await UpdateService.UpdateMyApp("player");
+            await _updateService.UpdateMyApp("player");
             IsEnabled = true;
         }
 
@@ -152,5 +156,6 @@ namespace GGPlayer.Pages
                 Verb = "open"
             });
         }
+
     }
 }

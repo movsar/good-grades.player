@@ -33,6 +33,7 @@ namespace GGPlayer
 
                         services.AddSingleton<Storage>();
                         services.AddSingleton<SettingsService>();
+                        services.AddSingleton<UpdateService>();
                         services.AddSingleton<StylingService>();
                         services.AddSingleton<ShellNavigationService>();
 
@@ -72,7 +73,7 @@ namespace GGPlayer
             }
         }
 
-        protected override void OnStartup(StartupEventArgs e)
+        protected override async void OnStartup(StartupEventArgs e)
         {
             const string appMutexName = "GGPlayer_SingleInstance";
 
@@ -92,7 +93,9 @@ namespace GGPlayer
             Translations.SetToCulture(uiLanguageCode ?? "uk");
 
             var startWindow = AppHost.Services.GetRequiredService<ShellWindow>();
-            startWindow.Show();
+            startWindow.Show(); 
+            var updateService = AppHost.Services.GetRequiredService<UpdateService>();
+            await updateService.AutoUpdate("player");
         }
 
         protected override async void OnExit(ExitEventArgs e)
