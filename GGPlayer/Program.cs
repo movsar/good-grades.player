@@ -12,18 +12,13 @@ namespace GGPlayer
         [STAThread]
         public static void Main(string[] args)
         {
-            File.AppendAllText("log.txt", $"Application started at {DateTime.Now}\n");
+
             if (IsWindows7())
             {
-                File.AppendAllText("log.txt", "Detected Windows 7.\n");
                 RunFontInstallScript();
             }
-            else
-            {
-                File.AppendAllText("log.txt", "Current OS is not Windows 7.\n");
-            }
             Translations.SetToCulture("uk");
-            
+
             //создание лога, настройка конфигурации и его запись в файл
             string logPath = Path.Combine("logs", "logs.txt");
             Log.Logger = new LoggerConfiguration()
@@ -51,7 +46,6 @@ namespace GGPlayer
 
             if (!File.Exists(scriptPath))
             {
-                File.AppendAllText("log.txt", "The script file 'install_font.bat' was not found.\n");
                 return;
             }
 
@@ -60,11 +54,9 @@ namespace GGPlayer
                 Process.Start(new ProcessStartInfo
                 {
                     FileName = scriptPath,
-                    Verb = "runas", // Запуск с правами администратора
+                    Verb = "runas",
                     UseShellExecute = true
                 })?.WaitForExit();
-
-                File.AppendAllText("log.txt", "Script execution completed.\n");
             }
             catch (Exception ex)
             {
