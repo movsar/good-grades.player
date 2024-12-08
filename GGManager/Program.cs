@@ -1,7 +1,9 @@
 ﻿using Microsoft.Extensions.Logging;
 using Serilog;
 using Shared.Services;
+using Shared.Utilities;
 using System;
+using System.Diagnostics;
 using System.IO;
 using Velopack;
 
@@ -12,6 +14,10 @@ namespace GGManager
         [STAThread]
         public static void Main(string[] args)
         {
+            if (FontInstaller.IsWindows7())
+            {
+                FontInstaller.RunFontInstallScript();
+            }
             string logPath = Path.Combine("logs", "logs.txt");
             Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Warning()
@@ -24,7 +30,6 @@ namespace GGManager
             application.InitializeComponent();
             application.Run();
         }
-
 
         public static Microsoft.Extensions.Logging.ILogger LoggingInstance<T>()
         {

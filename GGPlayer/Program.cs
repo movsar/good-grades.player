@@ -1,8 +1,10 @@
 ﻿using Microsoft.Extensions.Logging;
 using Serilog;
 using Shared;
+using System.Diagnostics;
 using System.IO;
 using Velopack;
+using Shared.Utilities;
 
 namespace GGPlayer
 {
@@ -11,8 +13,13 @@ namespace GGPlayer
         [STAThread]
         public static void Main(string[] args)
         {
+
+            if (FontInstaller.IsWindows7())
+            {
+                FontInstaller.RunFontInstallScript();
+            }
             Translations.SetToCulture("uk");
-            
+
             //создание лога, настройка конфигурации и его запись в файл
             string logPath = Path.Combine("logs", "logs.txt");
             Log.Logger = new LoggerConfiguration()
