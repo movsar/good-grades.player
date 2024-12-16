@@ -21,6 +21,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Update="Assets\Fonts\InstallFont.bat">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	  <None Update="Assets\Fonts\segmdl2.ttf">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
