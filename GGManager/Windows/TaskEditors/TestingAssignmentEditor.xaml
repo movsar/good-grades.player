@@ -22,6 +22,7 @@
             <TextBox 
                 x:Name="txtTitle"
                 Style="{StaticResource InputFieldStyle}" 
+                MaxLength="150"
                 Text="{x:Static shared:GgLocalization.TestTaskText}">
             </TextBox>
 
