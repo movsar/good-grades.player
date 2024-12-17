@@ -24,85 +24,91 @@ namespace Shared.Controls.Assignments
         private void GenerateItemsUI()
         {
             spItems.Children.Clear();
+
             foreach (var item in _assignment.Items)
             {
-                // Split the text into lines to preserve formatting
-                string[] lines = item.Text.Split(new[] { '\n' }, StringSplitOptions.None);
-
-                foreach (var line in lines)
+                // Create a TextBlock to represent the current item
+                var textBlock = new TextBlock
                 {
-                    // Create a TextBlock to handle inline elements
-                    var textBlock = new TextBlock
+                    Margin = new Thickness(0, 0, 0, 10),
+                    TextWrapping = TextWrapping.Wrap,
+                    MaxWidth = 500
+                };
+
+                // Split line into parts (static text and placeholders)
+                string[] parts = item.Text.Split(new[] { '{', '}' }, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+
+                for (int i = 0; i < parts.Length; i++)
+                {
+                    /*
+                        * Text outside of {} becomes even-indexed parts (e.g., index 0, 2, 4, ...)
+                        * Placeholder content inside {} becomes odd-indexed parts (e.g., index 1, 3, 5, ...)
+                     */
+                    if (i % 2 == 0)
                     {
-                        TextWrapping = TextWrapping.Wrap,
-                        MaxWidth = 500
-                    };
-
-                    // Split line into parts (static text and placeholders)
-                    string[] parts = line.Split(new[] { '{', '}' }, StringSplitOptions.RemoveEmptyEntries);
-
-                    for (int i = 0; i < parts.Length; i++)
-                    {
-                        if (i % 2 == 0)
-                        {
-                            // Add static text using Run
-                            textBlock.Inlines.Add(new Run(parts[i]));
-                        }
-                        else
-                        {
-                            // Add a placeholder as a TextBox using InlineUIContainer
-                            var options = parts[i].Split('|').Select(o => o.ToLower().Trim()).ToArray();
-
-                            var textBox = new TextBox
-                            {
-                                Tag = options, // Store options for later use
-                                Width = options[0].Length * 8, // Adjust width dynamically
-                                Margin = new Thickness(2, 0, 2, 0),
-                                Style = (Style)FindResource("FillInTextBoxStyle")
-                            };
-
-                            // Wrap the TextBox in InlineUIContainer
-                            var container = new InlineUIContainer(textBox)
-                            {
-                                BaselineAlignment = BaselineAlignment.Center
-                            };
-
-                            textBlock.Inlines.Add(container);
-                        }
+                        // Add static text using Run
+                        textBlock.Inlines.Add(new Run(parts[i]));
                     }
+                    else
+                    {
+                        // Add a placeholder as a TextBox using InlineUIContainer
+                        var options = parts[i].Split('|', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries).Select(o => o.ToLower().Trim()).ToArray();
 
-                    // Add the formatted TextBlock to the main StackPanel
-                    spItems.Children.Add(textBlock);
+                        var textBox = new TextBox
+                        {
+                            // Store options for later use
+                            Tag = options,
+                            // Adjust width dynamically
+                            Width = options[0].Length * 8,
+                            MaxLength = options[0].Length * 2,
+                            Margin = new Thickness(2, 0, 2, 0),
+                            Style = (Style)FindResource("FillInTextBoxStyle")
+                        };
+
+                        // Wrap the TextBox in InlineUIContainer
+                        var container = new InlineUIContainer(textBox)
+                        {
+                            BaselineAlignment = BaselineAlignment.Center
+                        };
+
+                        textBlock.Inlines.Add(container);
+                    }
                 }
+
+                // Add the formatted TextBlock to the main StackPanel
+                spItems.Children.Add(textBlock);
             }
-
-
         }
 
         public void OnCheckClicked()
         {
-            foreach (StackPanel panel in spItems.Children)
+            foreach (var child in spItems.Children)
             {
-                foreach (var child in panel.Children)
+                if (child is TextBlock textBlock)
                 {
-                    if (child is TextBox textBox)
+                    // Iterate through the inlines of the TextBlock
+                    foreach (var inline in textBlock.Inlines)
                     {
-                        // Retrieve the options stored in the Tag property
-                        var options = (string[])textBox.Tag;
-
-                        // Check if the user input matches one of the options
-                        var userInput = TextService.GetChechenString(textBox.Text).ToLower();
-
-                        if (!options.Contains(userInput))
+                        if (inline is InlineUIContainer container && container.Child is TextBox textBox)
                         {
-                            AssignmentCompleted?.Invoke(_assignment, false);
-                            return;
+                            // Retrieve the options stored in the Tag property
+                            var options = (string[])textBox.Tag;
+
+                            // Check if the user input matches one of the options
+                            var userInput = TextService.GetChechenString(textBox.Text).ToLower();
+
+                            if (!options.Contains(userInput))
+                            {
+                                // Notify that the assignment is incomplete
+                                AssignmentCompleted?.Invoke(_assignment, false);
+                                return;
+                            }
                         }
                     }
                 }
             }
 
-            // Show a message if all inputs are correct
+            // If all TextBoxes are correct
             AssignmentCompleted?.Invoke(_assignment, true);
         }
 
@@ -116,7 +122,8 @@ namespace Shared.Controls.Assignments
             IsEnabled = true;
         }
 
-        public void OnPreviousClicked() { 
+        public void OnPreviousClicked()
+        {
             IsEnabled = true;
         }
 
