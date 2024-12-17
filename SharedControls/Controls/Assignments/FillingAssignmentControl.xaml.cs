@@ -6,6 +6,7 @@ using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 
 namespace Shared.Controls.Assignments
 {
@@ -23,46 +24,59 @@ namespace Shared.Controls.Assignments
         private void GenerateItemsUI()
         {
             spItems.Children.Clear();
-
             foreach (var item in _assignment.Items)
             {
-                var panel = new StackPanel
+                // Split the text into lines to preserve formatting
+                string[] lines = item.Text.Split(new[] { '\n' }, StringSplitOptions.None);
+
+                foreach (var line in lines)
                 {
-                    Orientation = Orientation.Horizontal,
-                    MaxWidth = 500,
-                };
-
-                // Разделяем текст на части для добавления меток и полей для ввода
-                string[] parts = item.Text.Split(new[] { '{', '}' }, StringSplitOptions.RemoveEmptyEntries);
-
-                for (int i = 0; i < parts.Length; i++)
-                {
-                    if (i % 2 == 0)
+                    // Create a TextBlock to handle inline elements
+                    var textBlock = new TextBlock
                     {
-                        // Статический текст как Label
-                        var label = new Label
-                        {
-                            Content = parts[i],
-                            Style = (Style)FindResource("FillInLabelStyle"),
-                        };
-                        panel.Children.Add(label);
-                    }
-                    else
-                    {
-                        // Поле для ввода без фона, с подчеркиванием
-                        var options = parts[i].Split('|').Select(o => o.ToLower().Trim()).ToArray();
-                        var textBox = new TextBox
-                        {
-                            Tag = options,
-                            Width = Math.Min(150, options[0].Length * 8),
-                        };
-                        textBox.Style = (Style)FindResource("FillInTextBoxStyle");
+                        TextWrapping = TextWrapping.Wrap,
+                        MaxWidth = 500
+                    };
 
-                        panel.Children.Add(textBox);
+                    // Split line into parts (static text and placeholders)
+                    string[] parts = line.Split(new[] { '{', '}' }, StringSplitOptions.RemoveEmptyEntries);
+
+                    for (int i = 0; i < parts.Length; i++)
+                    {
+                        if (i % 2 == 0)
+                        {
+                            // Add static text using Run
+                            textBlock.Inlines.Add(new Run(parts[i]));
+                        }
+                        else
+                        {
+                            // Add a placeholder as a TextBox using InlineUIContainer
+                            var options = parts[i].Split('|').Select(o => o.ToLower().Trim()).ToArray();
+
+                            var textBox = new TextBox
+                            {
+                                Tag = options, // Store options for later use
+                                Width = options[0].Length * 8, // Adjust width dynamically
+                                Margin = new Thickness(2, 0, 2, 0),
+                                Style = (Style)FindResource("FillInTextBoxStyle")
+                            };
+
+                            // Wrap the TextBox in InlineUIContainer
+                            var container = new InlineUIContainer(textBox)
+                            {
+                                BaselineAlignment = BaselineAlignment.Center
+                            };
+
+                            textBlock.Inlines.Add(container);
+                        }
                     }
+
+                    // Add the formatted TextBlock to the main StackPanel
+                    spItems.Children.Add(textBlock);
                 }
-                spItems.Children.Add(panel);
             }
+
+
         }
 
         public void OnCheckClicked()

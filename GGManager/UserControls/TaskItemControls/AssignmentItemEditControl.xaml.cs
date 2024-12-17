@@ -12,6 +12,7 @@ using Shared;
 using Image = System.Windows.Controls.Image;
 using System.Text.RegularExpressions;
 using Shared.Services;
+using System.Windows.Media;
 
 namespace GGManager.UserControls
 {
@@ -70,10 +71,10 @@ namespace GGManager.UserControls
             switch (_assignmentType)
             {
                 case AssignmentType.Filling:
-                    Hint = Translations.GetValue("FillingQuestion"); 
+                    Hint = Translations.GetValue("FillingQuestion");
                     break;
                 case AssignmentType.Matching:
-                    Hint = Translations.GetValue("SetImageDescription"); 
+                    Hint = Translations.GetValue("SetImageDescription");
 
                     btnChooseImage.Visibility = Visibility.Visible;
 
@@ -193,6 +194,17 @@ namespace GGManager.UserControls
                 return;
             }
 
+            if (sender is TextBox textBox)
+            {
+                var scrollViewer = GetDescendantByType<ScrollViewer>(textBox);
+
+                if (scrollViewer != null)
+                {
+                    // Adjust the height of the TextBox dynamically
+                    textBox.Height = Math.Max(textBox.MinHeight, scrollViewer.ExtentHeight + textBox.Padding.Top + textBox.Padding.Bottom * 2);
+                }
+            }
+
             // Если текст пустой или равен подсказке, вызывается OnTextSet с параметром false
             if (string.IsNullOrEmpty(txtItemText.Text) || txtItemText.Text.Equals(Hint))
             {
@@ -203,6 +215,25 @@ namespace GGManager.UserControls
                 Item.Text = TextService.GetChechenString(txtItemText.Text);
                 OnTextSet(true);
             }
+        }// Helper method to find a descendant of a specific type
+        private T GetDescendantByType<T>(DependencyObject element) where T : DependencyObject
+        {
+            if (element == null)
+                return null;
+
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(element); i++)
+            {
+                var child = VisualTreeHelper.GetChild(element, i);
+
+                if (child is T typedChild)
+                    return typedChild;
+
+                var descendant = GetDescendantByType<T>(child);
+                if (descendant != null)
+                    return descendant;
+            }
+
+            return null;
         }
 
         private void btnChooseImage_Click(object sender, RoutedEventArgs e)
@@ -221,7 +252,7 @@ namespace GGManager.UserControls
             // Чтение содержимого файла и добавление его в объект Item
             var content = File.ReadAllBytes(filePath);
             if (content.Length == 0) return;
-                      
+
             Item.Image = content;
 
             OnImageSet(true);
@@ -267,10 +298,10 @@ namespace GGManager.UserControls
 
         private void txtItemText_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
-            {
-                Commit();
-            }
+            //if (e.Key == System.Windows.Input.Key.Enter)
+            //{
+            //    Commit();
+            //}
         }
         #endregion
     }

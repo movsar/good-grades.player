@@ -8,10 +8,11 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <StackPanel Margin="10 2 0 0" 
-                    Orientation="Horizontal" 
-                    Height="30">
+                    Orientation="Horizontal" >
 
             <CheckBox x:Name="chkIsChecked"
+                    Height="30"
+                    VerticalAlignment="Top"
                     Margin="5"
                     Visibility="Collapsed"
                     BorderThickness="2"
@@ -22,10 +23,11 @@
             </CheckBox>
 
             <Button x:Name="btnChooseImage"
+                    Height="30"
+                    VerticalAlignment="Top"
                     Visibility="Collapsed"
                     Margin="2 0 0 0"
                     Width="30"
-                    Height="30"
                     Click="btnChooseImage_Click"
                     FontFamily="Segoe MDL2 Assets" Content="&#xE722;" 
                 >
@@ -33,26 +35,40 @@
 
             <TextBox x:Name="txtItemText"
                      Style="{StaticResource InputFieldStyle}"
+                     MaxHeight="300"
                      Width="386"
+                     Padding="0 5 0 5"
                      TextAlignment="Left"
+                     TextWrapping="Wrap"
+                     TextChanged="txtItemText_TextChanged"
+                     AcceptsReturn="True"
+                     VerticalScrollBarVisibility="Auto"
                      VerticalContentAlignment="Center"
                      GotFocus="txtItemText_GotFocus"
                      LostFocus="txtItemText_LostFocus"
-                     TextChanged="txtItemText_TextChanged"
                      KeyUp="txtItemText_KeyUp"
                      />
+            
             <Button x:Name="btnCommit" 
-                    Background="LightSeaGreen"
+                    Height="30"
+                    VerticalAlignment="Top"
                     Margin="2 0 0 0" Padding="7 0 7 0" 
                     Cursor="Hand"
-                    FontFamily="Segoe MDL2 Assets" Content="&#xECC8;" 
+                    FontFamily="Segoe MDL2 Assets"
+                    
+                    Background="LightSeaGreen"
+                    Content="&#xECC8;" 
                     Click="btnCommit_Click"/>
 
             <Button x:Name="btnDiscard"
-                    Background="IndianRed"
+                    Height="30"
+                    VerticalAlignment="Top"
                     Margin="2 0 0 0" Padding="7 0 7 0" 
                     Cursor="Hand"
-                    FontFamily="Segoe MDL2 Assets" Content="&#xECC9;" 
+                    FontFamily="Segoe MDL2 Assets" 
+                    
+                    Background="IndianRed"
+                    Content="&#xECC9;" 
                     Click="btnDiscard_Click"/>
         </StackPanel>
     </Grid>

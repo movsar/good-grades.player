@@ -22,13 +22,16 @@
             <Setter Property="Padding" Value="0 0 0 0"/>
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Margin" Value="0 0 0 8"/>
-            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontSize" Value="13"/>
         </Style>
 
     </UserControl.Resources>
 
-    <StackPanel x:Name="spItems"
-                VerticalAlignment="Top"
-                HorizontalAlignment="Left"
-                Margin="20,40,20,20"/>
+    <ScrollViewer>
+        <StackPanel x:Name="spItems"
+            VerticalAlignment="Top"
+            HorizontalAlignment="Left"
+            Margin="20,40,20,20"/>
+    </ScrollViewer>
+    
 </UserControl>
