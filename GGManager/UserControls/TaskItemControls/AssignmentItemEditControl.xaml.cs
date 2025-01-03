@@ -22,6 +22,7 @@ namespace GGManager.UserControls
         private string Hint = Translations.GetValue("SetDescription");
         private FormCompletionInfo _formCompletionInfo;
         private AssignmentType _assignmentType;
+        internal string _originalText;
         #endregion
 
         #region Properties and Events
@@ -98,6 +99,7 @@ namespace GGManager.UserControls
         {
             Item = new AssignmentItem();
 
+            _originalText = Item.Text;
             // Prepare UI for a new Assignment Item
             SharedUiInitialization(taskType, false);
             btnCommit.Visibility = Visibility.Visible;
@@ -106,7 +108,7 @@ namespace GGManager.UserControls
         public AssignmentItemEditControl(AssignmentType taskType, AssignmentItem item)
         {
             Item = item;
-
+            _originalText = item.Text;
             // Prepare UI for an existing Assignment Item
             SharedUiInitialization(taskType, true);
             btnDiscard.Visibility = Visibility.Visible;
@@ -123,7 +125,7 @@ namespace GGManager.UserControls
         #endregion
 
         //Валидация заданий на сопоставление и заполнение
-        private void Validate()
+        public void Validate()
         {
             try
             {
