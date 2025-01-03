@@ -127,7 +127,7 @@ namespace GGManager.Windows.Editors
 
         private void RefreshControlUI(AssignmentItemEditControl control)
         {
-            control.txtItemText.Text = control._originalText;
+            control.txtItemText.Text = control.InitialText;
         }
     }
 }
