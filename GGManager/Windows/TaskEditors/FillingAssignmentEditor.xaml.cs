@@ -8,6 +8,8 @@ using Data.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
 using System.Windows;
+using System;
+using Microsoft.EntityFrameworkCore;
 
 namespace GGManager.Windows.Editors
 {
@@ -30,7 +32,7 @@ namespace GGManager.Windows.Editors
 
             RedrawItems();
         }
-       
+
         public void RedrawItems()
         {
             spItems.Children.Clear();
@@ -58,7 +60,7 @@ namespace GGManager.Windows.Editors
             RedrawItems();
         }
         private void OnAssignmentItemDiscarded(AssignmentItem item)
-        {   
+        {
             //удаление элементов из задания
             _assignment.Items.Remove(item);
             RedrawItems();
@@ -76,6 +78,20 @@ namespace GGManager.Windows.Editors
             {
                 MessageBox.Show("Нужно добавить элементы");
                 return;
+            }
+
+            foreach (var control in spItems.Children.OfType<AssignmentItemEditControl>())
+            {
+                if (_assignment.Items.Contains(control.Item))
+                {
+                    control.Validate();
+
+                    if (!control.IsValid)
+                    {
+                        RefreshControlUI(control);
+                        return;
+                    }
+                }
             }
 
             // Update assignment data
@@ -102,10 +118,16 @@ namespace GGManager.Windows.Editors
             }
 
             Close();
+
         }
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
             SaveAndClose();
+        }
+
+        private void RefreshControlUI(AssignmentItemEditControl control)
+        {
+            control.txtItemText.Text = control.InitialText;
         }
     }
 }

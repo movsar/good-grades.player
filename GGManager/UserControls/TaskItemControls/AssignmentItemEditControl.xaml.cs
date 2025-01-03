@@ -30,6 +30,7 @@ namespace GGManager.UserControls
 
         public event Action<AssignmentItem> Discarded;
         public event Action<AssignmentItem> Committed;
+        internal string InitialText { get; private set; }
         #endregion
 
         #region Reactions
@@ -98,6 +99,7 @@ namespace GGManager.UserControls
         {
             Item = new AssignmentItem();
 
+            InitialText = Item.Text;
             // Prepare UI for a new Assignment Item
             SharedUiInitialization(taskType, false);
             btnCommit.Visibility = Visibility.Visible;
@@ -106,7 +108,7 @@ namespace GGManager.UserControls
         public AssignmentItemEditControl(AssignmentType taskType, AssignmentItem item)
         {
             Item = item;
-
+            InitialText = item.Text;
             // Prepare UI for an existing Assignment Item
             SharedUiInitialization(taskType, true);
             btnDiscard.Visibility = Visibility.Visible;
@@ -123,7 +125,7 @@ namespace GGManager.UserControls
         #endregion
 
         //Валидация заданий на сопоставление и заполнение
-        private void Validate()
+        public void Validate()
         {
             try
             {
