@@ -13,5 +13,6 @@ namespace Data.Entities.TaskItems
         /******************************************************************/
         public string Text { get; set; }
         public virtual IList<AssignmentItem> Options { get; } = new List<AssignmentItem>();
+        public int Order { get; set; }
     }
 }

@@ -16,5 +16,6 @@ namespace Data.Entities
         [Required] public string Title { get; set; }
         public virtual Question Question { get; set; } = new Question();
         public bool IsContentSet => Question.Options.Count() > 1 && Question.Options.Any(o => o.IsChecked) == true;
+        public int Order { get; set; }
     }
 }

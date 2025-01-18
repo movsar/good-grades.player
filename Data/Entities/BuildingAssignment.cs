@@ -15,6 +15,7 @@ namespace Data.Entities
         public string Title { get; set; }
         public virtual IList<AssignmentItem> Items { get; } = new List<AssignmentItem>();
         public bool IsContentSet => Items.Count() > 0;
+        public int Order { get; set; }
 
     }
 }

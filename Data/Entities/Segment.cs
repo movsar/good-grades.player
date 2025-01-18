@@ -18,5 +18,6 @@ namespace Data.Entities
         public virtual IList<FillingAssignment> FillingAssignments { get; set; } = new List<FillingAssignment>();
         public virtual IList<TestingAssignment> TestingAssignments { get; set; } = new List<TestingAssignment>();
         public virtual IList<Material> Materials { get; set; } = new List<Material>();
+        public int Order { get; set; }
     }
 }
