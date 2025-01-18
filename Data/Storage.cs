@@ -28,7 +28,6 @@ namespace Data
             {
                 _logger.LogCritical(ex.Message, ex.Source, ex.StackTrace, ex.InnerException);
                 throw;
-                //return false;
             }
 
             _databasePath = databasePath;
