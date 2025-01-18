@@ -6,7 +6,7 @@ namespace Data
 {
     public class DataContext : DbContext
     {
-        public string DbPath { get; set; } = string.Empty;
+        public string DbPath { get; set; } = @"D:\source\movsar\good-grades.assets\Database\GoodGradesSqlite22.sgb";
 
         public DbSet<DbMeta> DbMetas { get; set; }
 
@@ -24,10 +24,10 @@ namespace Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-
             string connectionString = $"Data Source=" + DbPath;
             options.UseLazyLoadingProxies();
-            options.UseSqlite(connectionString);
+            options.UseSqlite(connectionString, options => options.MigrationsAssembly("Data"));
+
             base.OnConfiguring(options);
         }
     }

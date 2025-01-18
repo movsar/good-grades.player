@@ -102,6 +102,13 @@ namespace GGManager
 
         private void OnDatabaseOpened()
         {
+            if (!_contentStore.DbContext.DbMetas.Any())
+            {
+                _contentStore.SetDbMeta();
+                var dbInfo = new DbInfoWindow();
+                dbInfo.ShowDialog();
+            }
+
             _contentStore.SelectedSegment = _contentStore.DbContext.Segments.FirstOrDefault();
 
             lblChooseDb.Visibility = Visibility.Collapsed;

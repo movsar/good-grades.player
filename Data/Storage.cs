@@ -1,5 +1,7 @@
 ﻿using Data.Entities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System.Reflection;
 
 namespace Data
 {
@@ -20,7 +22,7 @@ namespace Data
             try
             {
                 DbContext = new DataContext() { DbPath = databasePath };
-                DbContext.Database.EnsureCreated();
+                DbContext.Database.Migrate();
             }
             catch (Exception ex)
             {
@@ -31,7 +33,7 @@ namespace Data
 
             _databasePath = databasePath;
         }
-        public void CreateDatabase(string databasePath, string? appVersion)
+        public void CreateDatabase(string databasePath)
         {
             if (File.Exists(databasePath))
             {
@@ -39,6 +41,14 @@ namespace Data
             }
 
             SetDatabaseConfig(databasePath);
+
+            SetDbMeta(databasePath);
+
+            DbContext.SaveChanges();
+        }
+        public void SetDbMeta(string databasePath)
+        {
+            string? appVersion = Assembly.GetExecutingAssembly().GetName().Version?.ToString();
 
             var dbMeta = new DbMeta()
             {

@@ -15,5 +15,7 @@ namespace Data.Entities.TaskItems
         public byte[]? Image { get; set; } = null;
         // For questions etc
         public bool IsChecked { get; set; } = false;
+
+        public int Order { get; set; }
     }
 }

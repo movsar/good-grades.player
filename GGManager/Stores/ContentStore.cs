@@ -68,8 +68,7 @@ namespace GGManager.Stores
         }
         internal void CreateDatabase(string filePath)
         {
-            string? appVersion = Assembly.GetExecutingAssembly().GetName().Version?.ToString();
-            _storage.CreateDatabase(filePath, appVersion);
+            _storage.CreateDatabase(filePath);
             OpenDatabase(filePath);
         }
 
@@ -89,6 +88,11 @@ namespace GGManager.Stores
         internal void RaiseItemAddedEvent(IEntityBase entity)
         {
             ItemAdded?.Invoke(entity);
+        }
+        internal void SetDbMeta()
+        {
+            var dbPath = _fileService.GetValue("lastOpenedDatabasePath");
+            _storage.SetDbMeta(dbPath);
         }
     }
 }
